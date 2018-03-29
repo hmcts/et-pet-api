@@ -1,0 +1,3 @@
+class UniqueReference < ApplicationRecord
+
+end
