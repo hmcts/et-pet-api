@@ -13,17 +13,26 @@ RSpec.describe "RequestReferenceNumbers", type: :request do
       }
     end
     let(:json_response) { JSON.parse(response.body) }
+
     it "returns the correct status code" do
       # Act - Send a valid post code which should be found
-      post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", default_headers: default_headers
+      post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", headers: default_headers
 
       # Assert - Make sure we get a 201 - to say the reference number is created
       expect(response).to have_http_status(201)
     end
 
+    it "returns the correct content type" do
+      # Act - Send a valid post code which should be found
+      post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", headers: default_headers
+
+      # Assert - Make sure we get a json content type in the response
+      expect(response.headers['Content-Type']).to include 'application/json'
+    end
+
     it "returns the correct response if the office is found" do
       # Act - Send a valid post code which should be found
-      post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", default_headers: default_headers
+      post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", headers: default_headers
 
       # Assert - Make sure the response contains the correct data
       # apart from the fgr which is tested independently.
@@ -37,14 +46,14 @@ RSpec.describe "RequestReferenceNumbers", type: :request do
 
     it 'returns the correct reference number' do
       # Act - Send a valid post code which should be found
-      post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", default_headers: default_headers
+      post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", headers: default_headers
 
       # Assert - Make sure the response contains fgr
-      expect(json_response['fgr']).to eql '22<ref>00'
+      expect(json_response['fgr']).to match_regex /\A22(\d{8,})00\z/
     end
 
     it "returns the correct response if the office is not found" do
-      post '/api/v1/fgr-et-office', params: "postcode=BA99%1DY", default_headers: default_headers
+      post '/api/v1/fgr-et-office', params: "postcode=FF1 1ZZ", headers: default_headers
       expect(json_response).to include 'status' => 'ok',
         'fgr' => an_instance_of(String),
         'ETOfficeCode' => 99,
