@@ -394,6 +394,38 @@ ALTER SEQUENCE claim_respondents_id_seq OWNED BY claim_respondents.id;
 
 
 --
+-- Name: claim_uploaded_files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE claim_uploaded_files (
+    id bigint NOT NULL,
+    claim_id bigint,
+    uploaded_file_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: claim_uploaded_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE claim_uploaded_files_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: claim_uploaded_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE claim_uploaded_files_id_seq OWNED BY claim_uploaded_files.id;
+
+
+--
 -- Name: claimants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -658,6 +690,39 @@ ALTER SEQUENCE unique_references_id_seq OWNED BY unique_references.id;
 
 
 --
+-- Name: uploaded_files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE uploaded_files (
+    id bigint NOT NULL,
+    filename character varying,
+    string character varying,
+    checksum character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: uploaded_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE uploaded_files_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: uploaded_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE uploaded_files_id_seq OWNED BY uploaded_files.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -731,6 +796,13 @@ ALTER TABLE ONLY claim_respondents ALTER COLUMN id SET DEFAULT nextval('claim_re
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY claim_uploaded_files ALTER COLUMN id SET DEFAULT nextval('claim_uploaded_files_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY claimants ALTER COLUMN id SET DEFAULT nextval('claimants_id_seq'::regclass);
 
 
@@ -774,6 +846,13 @@ ALTER TABLE ONLY respondents ALTER COLUMN id SET DEFAULT nextval('respondents_id
 --
 
 ALTER TABLE ONLY unique_references ALTER COLUMN id SET DEFAULT nextval('unique_references_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY uploaded_files ALTER COLUMN id SET DEFAULT nextval('uploaded_files_id_seq'::regclass);
 
 
 --
@@ -865,6 +944,14 @@ ALTER TABLE ONLY claim_respondents
 
 
 --
+-- Name: claim_uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_uploaded_files
+    ADD CONSTRAINT claim_uploaded_files_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: claimants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -926,6 +1013,14 @@ ALTER TABLE ONLY schema_migrations
 
 ALTER TABLE ONLY unique_references
     ADD CONSTRAINT unique_references_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY uploaded_files
+    ADD CONSTRAINT uploaded_files_pkey PRIMARY KEY (id);
 
 
 --
@@ -1041,6 +1136,20 @@ CREATE INDEX index_claim_respondents_on_respondent_id ON claim_respondents USING
 
 
 --
+-- Name: index_claim_uploaded_files_on_claim_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claim_uploaded_files_on_claim_id ON claim_uploaded_files USING btree (claim_id);
+
+
+--
+-- Name: index_claim_uploaded_files_on_uploaded_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claim_uploaded_files_on_uploaded_file_id ON claim_uploaded_files USING btree (uploaded_file_id);
+
+
+--
 -- Name: index_claimants_on_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1124,6 +1233,14 @@ ALTER TABLE ONLY claim_respondents
 
 
 --
+-- Name: fk_rails_aef838d57f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_uploaded_files
+    ADD CONSTRAINT fk_rails_aef838d57f FOREIGN KEY (uploaded_file_id) REFERENCES uploaded_files(id);
+
+
+--
 -- Name: fk_rails_b2834e6387; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1137,6 +1254,14 @@ ALTER TABLE ONLY respondents
 
 ALTER TABLE ONLY claim_respondents
     ADD CONSTRAINT fk_rails_c38ecd1031 FOREIGN KEY (claim_id) REFERENCES claims(id);
+
+
+--
+-- Name: fk_rails_c95be0dd75; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_uploaded_files
+    ADD CONSTRAINT fk_rails_c95be0dd75 FOREIGN KEY (claim_id) REFERENCES claims(id);
 
 
 --
@@ -1188,6 +1313,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180403082849'),
 ('20180403105143'),
 ('20180403105212'),
-('20180403113336');
+('20180403113336'),
+('20180403140530'),
+('20180403140552');
 
 

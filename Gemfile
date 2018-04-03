@@ -46,6 +46,11 @@ end
 group :test do
   gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_bot', '~> 4.8'
+  gem 'aws-sdk-s3', '~> 1.8', '>= 1.8.2'
+end
+
+group :production do
+  gem 'aws-sdk-s3', '~> 1.8', '>= 1.8.2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

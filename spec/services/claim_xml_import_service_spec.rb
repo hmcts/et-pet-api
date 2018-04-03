@@ -109,6 +109,15 @@ RSpec.describe ClaimXmlImportService do
       </ETFeesEntry>
     EOS
   end
+  let(:simple_example_input_files) do
+    {
+      'et1_first_last.pdf' => {
+        filename: 'et1_first_last.pdf',
+        checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
+        file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf')
+      }
+    }
+  end
   describe '#files' do
     subject(:service) { described_class.new(simple_example_data) }
 
@@ -121,8 +130,17 @@ RSpec.describe ClaimXmlImportService do
     end
   end
 
-  describe 'import' do
+  describe '#uploaded_files=' do
     subject(:service) { described_class.new(simple_example_data) }
+
+    it 'persists them in the instance' do
+      subject.uploaded_files = { anything: :goes }
+      expect(subject.uploaded_files).to eql(anything: :goes)
+    end
+  end
+
+  describe 'import' do
+    subject(:service) { described_class.new(simple_example_data).tap { |s| s.uploaded_files = simple_example_input_files } }
 
     it 'creates a new claim' do
       expect { subject.import }.to change(Claim, :count).by(1)
@@ -225,10 +243,11 @@ RSpec.describe ClaimXmlImportService do
       subject.import
 
       # Assert
-      claim = Claim.where(reference: reference).first
-      expect(claim.files).to contain_exactly an_object_having_attributes filename_ 'et1_first_last.pdf',
+
+      claim = Claim.find_by(reference: reference)
+      expect(claim.uploaded_files).to contain_exactly an_object_having_attributes filename: 'et1_first_last.pdf',
         checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
-        file: instance_of(File)
+        file: be_a_stored_file
     end
     # @TODO Make sure validation is covered
   end

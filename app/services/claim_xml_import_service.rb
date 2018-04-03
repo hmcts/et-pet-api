@@ -13,6 +13,8 @@ class ClaimXmlImportService
   }.freeze
   private_constant :REPRESENTATIVE_TYPE_MAPPINGS
 
+  attr_accessor :uploaded_files
+
   def initialize(data)
     self.data = Hash.from_xml(data)
   end
@@ -43,7 +45,8 @@ class ClaimXmlImportService
       administrator: r['Administrator'].to_i > 0,
       claimants_attributes: converted_claimants_data,
       respondents_attributes: converted_respondents_data,
-      representatives_attributes: converted_representatives_data
+      representatives_attributes: converted_representatives_data,
+      uploaded_files_attributes: converted_files_data
     }
   end
 
@@ -122,6 +125,20 @@ class ClaimXmlImportService
         email_address: r['Email'],
         representative_type: convert_representative_type(r['Type']),
         dx_number: r['DXNumber']
+      }
+    end
+  end
+
+  def converted_files_data
+    r = root
+    files = r['Files']['File']
+    files = [files] unless files.is_a?(Array)
+    files.map do |f|
+      filename = f['Filename']
+      {
+        filename: filename,
+        checksum: f['Checksum'],
+        file: uploaded_files.dig(filename, :file)
       }
     end
   end

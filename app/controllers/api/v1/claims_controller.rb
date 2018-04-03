@@ -3,6 +3,7 @@
 module Api
   module V1
     class ClaimsController < ::ActionController::API
+      before_action :provide_files, only: :create
       before_action :validate_files, only: :create
       before_action :import_claim, only: :create
       # This is sent the following parameters
@@ -42,6 +43,10 @@ module Api
             acc[hash[:filename]] = hash.merge(file: params.require(hash[:filename]))
           end
         end
+      end
+
+      def provide_files
+        import_service.uploaded_files = temp_files
       end
 
       attr_accessor :claim

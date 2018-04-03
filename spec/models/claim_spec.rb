@@ -91,4 +91,20 @@ RSpec.describe Claim, type: :model do
       expect(reps).to contain_exactly an_object_having_attributes name: 'Solicitor Name'
     end
   end
+
+  describe '#uploaded_files' do
+    it 'returns uploaded files built in memory' do
+      # Act
+      claim.uploaded_files_attributes = [
+        {
+          filename: 'et1_first_last.pdf',
+          checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
+          file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf')
+        }
+      ]
+
+      # Assert
+      expect(claim.uploaded_files).to contain_exactly an_object_having_attributes filename: 'et1_first_last.pdf'
+    end
+  end
 end
