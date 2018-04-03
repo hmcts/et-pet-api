@@ -14,4 +14,20 @@ class Claim < ApplicationRecord
   accepts_nested_attributes_for :respondents
   accepts_nested_attributes_for :representatives
   accepts_nested_attributes_for :uploaded_files
+
+  after_commit :queue_send_pdf_to_landing_folder, only: :create
+
+  private
+
+  def pdf_file
+    uploaded_files.detect {|f| f.filename.ends_with?('.pdf')}
+  end
+
+  def primary_claimant
+    claimants.first
+  end
+
+  def queue_send_pdf_to_landing_folder
+    ClaimShipPdfFileJob.perform_later(file: pdf_file, destination_filename: "#{reference}PP_ET1_#{primary_claimant.first_name}_#{primary_claimant.last_name}.pdf")
+  end
 end

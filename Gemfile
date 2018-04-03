@@ -47,6 +47,7 @@ group :test do
   gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_bot', '~> 4.8'
   gem 'aws-sdk-s3', '~> 1.8', '>= 1.8.2'
+  gem 'rspec-eventually', '~> 0.2.2'
 end
 
 group :production do

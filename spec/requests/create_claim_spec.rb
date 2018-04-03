@@ -63,5 +63,25 @@ RSpec.describe 'CreateClaim Request', type: :request do
       # Assert - make sure it is a claim
       expect(result).to be_an_instance_of Claim
     end
+
+    context 'looking in landing folder' do
+      let(:landing_folder) { Rails.root.join('tmp', 'storage', 'app', 'landing_folder') }
+      it 'stores the pdf file with the correct filename in the landing folder' do
+        # Arrange - Make sure the file is not already in the landing folder if so delete it
+        correct_file = File.join(landing_folder, '222000000300PP_ET1_first_last.pdf')
+        File.unlink(correct_file) if File.exist?(correct_file)
+
+        # Act - Send some claim data
+        file_name = 'et1_first_last.pdf'
+        uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
+        xml_data = File.read(File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user.xml'), __FILE__))
+        post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
+
+        # Assert - look for the correct file in the landing folder - will be async
+
+        expect { File.exist?(correct_file) }.to eventually be true
+      end
+
+    end
   end
 end

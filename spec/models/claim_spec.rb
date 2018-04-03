@@ -107,4 +107,6 @@ RSpec.describe Claim, type: :model do
       expect(claim.uploaded_files).to contain_exactly an_object_having_attributes filename: 'et1_first_last.pdf'
     end
   end
+
+  # @TODO Security - make sure first and last names cannot contain anything that might screw up the file copying
 end
