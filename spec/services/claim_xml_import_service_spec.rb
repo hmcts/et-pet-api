@@ -219,6 +219,17 @@ RSpec.describe ClaimXmlImportService do
 
 
     end
+
+    it 'converts the files correctly' do
+      # Act
+      subject.import
+
+      # Assert
+      claim = Claim.where(reference: reference).first
+      expect(claim.files).to contain_exactly an_object_having_attributes filename_ 'et1_first_last.pdf',
+        checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
+        file: instance_of(File)
+    end
     # @TODO Make sure validation is covered
   end
 end
