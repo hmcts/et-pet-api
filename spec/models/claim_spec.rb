@@ -61,4 +61,34 @@ RSpec.describe Claim, type: :model do
       expect(claim.respondents).to contain_exactly an_object_having_attributes name: 'Fred Bloggs'
     end
   end
+
+  describe '#representatives' do
+    it 'returns representatives built in memory' do
+      # Arrange
+      claim.representatives_attributes = [
+        {
+          name: 'Solicitor Name',
+          organisation_name: 'Solicitors Are Us Fake Company',
+          address_attributes: {
+            building: '106',
+            street: 'Mayfair',
+            locality: 'London',
+            county: 'Greater London',
+            post_code: 'SW1H 9PP'
+          },
+          address_telephone_number: '01111 123456',
+          mobile_number: '02222 654321',
+          email_address: 'solicitor.test@digital.justice.gov.uk',
+          representative_type: 'Solicitor',
+          dx_number: 'dx1234567890'
+        }
+      ]
+
+      # Act
+      reps = claim.representatives
+
+      # Assert
+      expect(reps).to contain_exactly an_object_having_attributes name: 'Solicitor Name'
+    end
+  end
 end

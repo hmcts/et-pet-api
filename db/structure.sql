@@ -262,6 +262,38 @@ ALTER SEQUENCE claim_claimants_id_seq OWNED BY claim_claimants.id;
 
 
 --
+-- Name: claim_representatives; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE claim_representatives (
+    id bigint NOT NULL,
+    claim_id bigint,
+    representative_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: claim_representatives_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE claim_representatives_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: claim_representatives_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE claim_representatives_id_seq OWNED BY claim_representatives.id;
+
+
+--
 -- Name: claim_respondents; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -443,6 +475,44 @@ ALTER SEQUENCE offices_id_seq OWNED BY offices.id;
 
 
 --
+-- Name: representatives; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE representatives (
+    id bigint NOT NULL,
+    name character varying,
+    organisation_name character varying,
+    address_id bigint,
+    address_telephone_number character varying,
+    mobile_number character varying,
+    email_address character varying,
+    representative_type character varying,
+    dx_number character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: representatives_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE representatives_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: representatives_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE representatives_id_seq OWNED BY representatives.id;
+
+
+--
 -- Name: respondents; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -565,6 +635,13 @@ ALTER TABLE ONLY claim_claimants ALTER COLUMN id SET DEFAULT nextval('claim_clai
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY claim_representatives ALTER COLUMN id SET DEFAULT nextval('claim_representatives_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY claim_respondents ALTER COLUMN id SET DEFAULT nextval('claim_respondents_id_seq'::regclass);
 
 
@@ -594,6 +671,13 @@ ALTER TABLE ONLY office_post_codes ALTER COLUMN id SET DEFAULT nextval('office_p
 --
 
 ALTER TABLE ONLY offices ALTER COLUMN id SET DEFAULT nextval('offices_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY representatives ALTER COLUMN id SET DEFAULT nextval('representatives_id_seq'::regclass);
 
 
 --
@@ -667,6 +751,14 @@ ALTER TABLE ONLY claim_claimants
 
 
 --
+-- Name: claim_representatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_representatives
+    ADD CONSTRAINT claim_representatives_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: claim_respondents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -704,6 +796,14 @@ ALTER TABLE ONLY office_post_codes
 
 ALTER TABLE ONLY offices
     ADD CONSTRAINT offices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: representatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY representatives
+    ADD CONSTRAINT representatives_pkey PRIMARY KEY (id);
 
 
 --
@@ -794,6 +894,20 @@ CREATE INDEX index_claim_claimants_on_claimant_id ON claim_claimants USING btree
 
 
 --
+-- Name: index_claim_representatives_on_claim_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claim_representatives_on_claim_id ON claim_representatives USING btree (claim_id);
+
+
+--
+-- Name: index_claim_representatives_on_representative_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claim_representatives_on_representative_id ON claim_representatives USING btree (representative_id);
+
+
+--
 -- Name: index_claim_respondents_on_claim_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -822,6 +936,13 @@ CREATE INDEX index_office_post_codes_on_office_id ON office_post_codes USING btr
 
 
 --
+-- Name: index_representatives_on_address_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_representatives_on_address_id ON representatives USING btree (address_id);
+
+
+--
 -- Name: index_respondents_on_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -833,6 +954,14 @@ CREATE INDEX index_respondents_on_address_id ON respondents USING btree (address
 --
 
 CREATE INDEX index_respondents_on_work_address_id ON respondents USING btree (work_address_id);
+
+
+--
+-- Name: fk_rails_303e8e36aa; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_representatives
+    ADD CONSTRAINT fk_rails_303e8e36aa FOREIGN KEY (representative_id) REFERENCES representatives(id);
 
 
 --
@@ -849,6 +978,22 @@ ALTER TABLE ONLY claim_claimants
 
 ALTER TABLE ONLY claimants
     ADD CONSTRAINT fk_rails_5b676c7564 FOREIGN KEY (address_id) REFERENCES addresses(id);
+
+
+--
+-- Name: fk_rails_6b02086897; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_representatives
+    ADD CONSTRAINT fk_rails_6b02086897 FOREIGN KEY (claim_id) REFERENCES claims(id);
+
+
+--
+-- Name: fk_rails_6e31f27150; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY representatives
+    ADD CONSTRAINT fk_rails_6e31f27150 FOREIGN KEY (address_id) REFERENCES addresses(id);
 
 
 --
@@ -921,6 +1066,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180403072137'),
 ('20180403072323'),
 ('20180403082719'),
-('20180403082849');
+('20180403082849'),
+('20180403105143'),
+('20180403105212');
 
 

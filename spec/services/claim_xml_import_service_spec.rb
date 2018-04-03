@@ -195,6 +195,30 @@ RSpec.describe ClaimXmlImportService do
                                                                                ),
                                                                                alt_phone_number: '03333 423554'
     end
+
+    it 'converts the representatives correctly' do
+      # Act
+      subject.import
+
+      # Assert
+      claim = Claim.where(reference: reference).first
+      expect(claim.representatives).to contain_exactly an_object_having_attributes name: 'Solicitor Name',
+                                                                                   organisation_name: 'Solicitors Are Us Fake Company',
+                                                                                   address: an_object_having_attributes(
+                                                                                     building: '106',
+                                                                                     street: 'Mayfair',
+                                                                                     locality: 'London',
+                                                                                     county: 'Greater London',
+                                                                                     post_code: 'SW1H 9PP'
+                                                                                   ),
+                                                                                   address_telephone_number: '01111 123456',
+                                                                                   mobile_number: '02222 654321',
+                                                                                   email_address: 'solicitor.test@digital.justice.gov.uk',
+                                                                                   representative_type: 'solicitor',
+                                                                                   dx_number: 'dx1234567890'
+
+
+    end
     # @TODO Make sure validation is covered
   end
 end

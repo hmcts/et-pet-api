@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 class ClaimXmlImportService
+  REPRESENTATIVE_TYPE_MAPPINGS = {
+    'CAB' => 'citizen_advice_bureau',
+    'FRU' => 'free_representation_unit',
+    'Law Centre' => 'law_centre',
+    'Union' => 'trade_union',
+    'Solicitor' => 'solicitor',
+    'Private Individual' => 'private_individual',
+    'Trade Association' => 'trade_association',
+    'Other' => 'other'
+  }.freeze
+  private_constant :REPRESENTATIVE_TYPE_MAPPINGS
+
   def initialize(data)
     self.data = Hash.from_xml(data)
   end
@@ -30,7 +42,8 @@ class ClaimXmlImportService
       date_of_receipt: r['DateOfReceiptEt'],
       administrator: r['Administrator'].to_i > 0,
       claimants_attributes: converted_claimants_data,
-      respondents_attributes: converted_respondents_data
+      respondents_attributes: converted_respondents_data,
+      representatives_attributes: converted_representatives_data
     }
   end
 
@@ -87,6 +100,34 @@ class ClaimXmlImportService
         acas_number: r.dig('Acas', 'Number')
       }
     end
+  end
+
+  def converted_representatives_data
+    r = root
+    reps = r['Representatives']['Representative']
+    reps = [reps] unless reps.is_a?(Array)
+    reps.map do |r|
+      {
+        name: r['Name'],
+        organisation_name: r['Organisation'],
+        address_attributes: {
+          building: r.dig('Address', 'Line'),
+          street: r.dig('Address', 'Street'),
+          locality: r.dig('Address', 'Town'),
+          county: r.dig('Address', 'County'),
+          post_code: r.dig('Address', 'Postcode'),
+        },
+        address_telephone_number: r['OfficeNumber'],
+        mobile_number: r['AltPhoneNumber'],
+        email_address: r['Email'],
+        representative_type: convert_representative_type(r['Type']),
+        dx_number: r['DXNumber']
+      }
+    end
+  end
+
+  def convert_representative_type(t)
+    REPRESENTATIVE_TYPE_MAPPINGS[t]
   end
 
   def root
