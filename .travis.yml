@@ -12,6 +12,7 @@ env:
   global:
     - ENABLE_COVERAGE=true
     - DB_USERNAME=postgres
+    - CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
 before_install:
   - "curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter"
 before_script:
@@ -20,8 +21,8 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-- bundle exec rspec
+  - bundle exec rspec
 after_success:
-- bundle exec codeclimate-test-reporter
+  - bundle exec codeclimate-test-reporter
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
