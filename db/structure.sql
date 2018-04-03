@@ -63,6 +63,42 @@ ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
 
 
 --
+-- Name: addresses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE addresses (
+    id bigint NOT NULL,
+    building character varying,
+    street character varying,
+    locality character varying,
+    county character varying,
+    string character varying,
+    post_code character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE addresses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
+
+
+--
 -- Name: admin_permissions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -196,6 +232,147 @@ CREATE TABLE ar_internal_metadata (
 
 
 --
+-- Name: claim_claimants; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE claim_claimants (
+    id bigint NOT NULL,
+    claim_id bigint,
+    claimant_id bigint
+);
+
+
+--
+-- Name: claim_claimants_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE claim_claimants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: claim_claimants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE claim_claimants_id_seq OWNED BY claim_claimants.id;
+
+
+--
+-- Name: claim_respondents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE claim_respondents (
+    id bigint NOT NULL,
+    claim_id bigint,
+    respondent_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: claim_respondents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE claim_respondents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: claim_respondents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE claim_respondents_id_seq OWNED BY claim_respondents.id;
+
+
+--
+-- Name: claimants; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE claimants (
+    id bigint NOT NULL,
+    title character varying,
+    first_name character varying,
+    last_name character varying,
+    address_id bigint,
+    address_telephone_number character varying,
+    mobile_number character varying,
+    email_address character varying,
+    contact_preference character varying,
+    gender character varying,
+    date_of_birth date,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: claimants_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE claimants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: claimants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE claimants_id_seq OWNED BY claimants.id;
+
+
+--
+-- Name: claims; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE claims (
+    id bigint NOT NULL,
+    reference character varying,
+    submission_reference character varying,
+    claimant_count integer,
+    submission_channel character varying,
+    case_type character varying,
+    jurisdiction integer,
+    office_code integer,
+    date_of_receipt timestamp without time zone,
+    administrator boolean,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: claims_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE claims_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: claims_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE claims_id_seq OWNED BY claims.id;
+
+
+--
 -- Name: office_post_codes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -266,6 +443,43 @@ ALTER SEQUENCE offices_id_seq OWNED BY offices.id;
 
 
 --
+-- Name: respondents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE respondents (
+    id bigint NOT NULL,
+    name character varying,
+    address_id bigint,
+    work_address_telephone_number character varying,
+    address_telephone_number character varying,
+    acas_number character varying,
+    work_address_id bigint,
+    alt_phone_number character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: respondents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE respondents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: respondents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE respondents_id_seq OWNED BY respondents.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -316,6 +530,13 @@ ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('acti
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY admin_permissions ALTER COLUMN id SET DEFAULT nextval('admin_permissions_id_seq'::regclass);
 
 
@@ -337,6 +558,34 @@ ALTER TABLE ONLY admin_users ALTER COLUMN id SET DEFAULT nextval('admin_users_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY claim_claimants ALTER COLUMN id SET DEFAULT nextval('claim_claimants_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_respondents ALTER COLUMN id SET DEFAULT nextval('claim_respondents_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claimants ALTER COLUMN id SET DEFAULT nextval('claimants_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claims ALTER COLUMN id SET DEFAULT nextval('claims_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY office_post_codes ALTER COLUMN id SET DEFAULT nextval('office_post_codes_id_seq'::regclass);
 
 
@@ -345,6 +594,13 @@ ALTER TABLE ONLY office_post_codes ALTER COLUMN id SET DEFAULT nextval('office_p
 --
 
 ALTER TABLE ONLY offices ALTER COLUMN id SET DEFAULT nextval('offices_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY respondents ALTER COLUMN id SET DEFAULT nextval('respondents_id_seq'::regclass);
 
 
 --
@@ -360,6 +616,14 @@ ALTER TABLE ONLY unique_references ALTER COLUMN id SET DEFAULT nextval('unique_r
 
 ALTER TABLE ONLY active_admin_comments
     ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY addresses
+    ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
 
 
 --
@@ -395,6 +659,38 @@ ALTER TABLE ONLY ar_internal_metadata
 
 
 --
+-- Name: claim_claimants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_claimants
+    ADD CONSTRAINT claim_claimants_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: claim_respondents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_respondents
+    ADD CONSTRAINT claim_respondents_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: claimants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claimants
+    ADD CONSTRAINT claimants_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: claims_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claims
+    ADD CONSTRAINT claims_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: office_post_codes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -408,6 +704,14 @@ ALTER TABLE ONLY office_post_codes
 
 ALTER TABLE ONLY offices
     ADD CONSTRAINT offices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: respondents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY respondents
+    ADD CONSTRAINT respondents_pkey PRIMARY KEY (id);
 
 
 --
@@ -476,10 +780,99 @@ CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON admin_users USI
 
 
 --
+-- Name: index_claim_claimants_on_claim_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claim_claimants_on_claim_id ON claim_claimants USING btree (claim_id);
+
+
+--
+-- Name: index_claim_claimants_on_claimant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claim_claimants_on_claimant_id ON claim_claimants USING btree (claimant_id);
+
+
+--
+-- Name: index_claim_respondents_on_claim_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claim_respondents_on_claim_id ON claim_respondents USING btree (claim_id);
+
+
+--
+-- Name: index_claim_respondents_on_respondent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claim_respondents_on_respondent_id ON claim_respondents USING btree (respondent_id);
+
+
+--
+-- Name: index_claimants_on_address_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claimants_on_address_id ON claimants USING btree (address_id);
+
+
+--
 -- Name: index_office_post_codes_on_office_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_office_post_codes_on_office_id ON office_post_codes USING btree (office_id);
+
+
+--
+-- Name: index_respondents_on_address_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_respondents_on_address_id ON respondents USING btree (address_id);
+
+
+--
+-- Name: index_respondents_on_work_address_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_respondents_on_work_address_id ON respondents USING btree (work_address_id);
+
+
+--
+-- Name: fk_rails_3b2aad2c6b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_claimants
+    ADD CONSTRAINT fk_rails_3b2aad2c6b FOREIGN KEY (claim_id) REFERENCES claims(id);
+
+
+--
+-- Name: fk_rails_5b676c7564; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claimants
+    ADD CONSTRAINT fk_rails_5b676c7564 FOREIGN KEY (address_id) REFERENCES addresses(id);
+
+
+--
+-- Name: fk_rails_6f891eb8c6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_respondents
+    ADD CONSTRAINT fk_rails_6f891eb8c6 FOREIGN KEY (respondent_id) REFERENCES respondents(id);
+
+
+--
+-- Name: fk_rails_b2834e6387; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY respondents
+    ADD CONSTRAINT fk_rails_b2834e6387 FOREIGN KEY (address_id) REFERENCES addresses(id);
+
+
+--
+-- Name: fk_rails_c38ecd1031; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_respondents
+    ADD CONSTRAINT fk_rails_c38ecd1031 FOREIGN KEY (claim_id) REFERENCES claims(id);
 
 
 --
@@ -488,6 +881,22 @@ CREATE INDEX index_office_post_codes_on_office_id ON office_post_codes USING btr
 
 ALTER TABLE ONLY office_post_codes
     ADD CONSTRAINT fk_rails_d276fbe15b FOREIGN KEY (office_id) REFERENCES offices(id);
+
+
+--
+-- Name: fk_rails_d2d3e755fa; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY respondents
+    ADD CONSTRAINT fk_rails_d2d3e755fa FOREIGN KEY (work_address_id) REFERENCES addresses(id);
+
+
+--
+-- Name: fk_rails_fc3432143b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY claim_claimants
+    ADD CONSTRAINT fk_rails_fc3432143b FOREIGN KEY (claimant_id) REFERENCES claimants(id);
 
 
 --
@@ -506,6 +915,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180324173814'),
 ('20180326103144'),
 ('20180329091655'),
-('20180329092026');
+('20180329092026'),
+('20180403055248'),
+('20180403071925'),
+('20180403072137'),
+('20180403072323'),
+('20180403082719'),
+('20180403082849');
 
 
