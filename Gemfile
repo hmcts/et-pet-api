@@ -41,6 +41,7 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 1.6.2'
+  gem 'factory_bot', '~> 4.8'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
