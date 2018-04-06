@@ -4,7 +4,6 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
@@ -27,7 +26,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: -
+-- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE active_admin_comments (
@@ -63,7 +62,7 @@ ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
 
 
 --
--- Name: admin_permissions; Type: TABLE; Schema: public; Owner: -
+-- Name: admin_permissions; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE admin_permissions (
@@ -94,7 +93,7 @@ ALTER SEQUENCE admin_permissions_id_seq OWNED BY admin_permissions.id;
 
 
 --
--- Name: admin_permissions_roles; Type: TABLE; Schema: public; Owner: -
+-- Name: admin_permissions_roles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE admin_permissions_roles (
@@ -104,7 +103,7 @@ CREATE TABLE admin_permissions_roles (
 
 
 --
--- Name: admin_roles; Type: TABLE; Schema: public; Owner: -
+-- Name: admin_roles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE admin_roles (
@@ -134,7 +133,7 @@ ALTER SEQUENCE admin_roles_id_seq OWNED BY admin_roles.id;
 
 
 --
--- Name: admin_roles_users; Type: TABLE; Schema: public; Owner: -
+-- Name: admin_roles_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE admin_roles_users (
@@ -144,7 +143,7 @@ CREATE TABLE admin_roles_users (
 
 
 --
--- Name: admin_users; Type: TABLE; Schema: public; Owner: -
+-- Name: admin_users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE admin_users (
@@ -184,7 +183,7 @@ ALTER SEQUENCE admin_users_id_seq OWNED BY admin_users.id;
 
 
 --
--- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
+-- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE ar_internal_metadata (
@@ -196,7 +195,7 @@ CREATE TABLE ar_internal_metadata (
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE schema_migrations (
@@ -233,7 +232,7 @@ ALTER TABLE ONLY admin_users ALTER COLUMN id SET DEFAULT nextval('admin_users_id
 
 
 --
--- Name: active_admin_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: active_admin_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY active_admin_comments
@@ -241,7 +240,7 @@ ALTER TABLE ONLY active_admin_comments
 
 
 --
--- Name: admin_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: admin_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY admin_permissions
@@ -249,7 +248,7 @@ ALTER TABLE ONLY admin_permissions
 
 
 --
--- Name: admin_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: admin_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY admin_roles
@@ -257,7 +256,7 @@ ALTER TABLE ONLY admin_roles
 
 
 --
--- Name: admin_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: admin_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY admin_users
@@ -265,7 +264,7 @@ ALTER TABLE ONLY admin_users
 
 
 --
--- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY ar_internal_metadata
@@ -273,7 +272,7 @@ ALTER TABLE ONLY ar_internal_metadata
 
 
 --
--- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY schema_migrations
@@ -281,49 +280,49 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_active_admin_comments_on_author_type_and_author_id ON active_admin_comments USING btree (author_type, author_id);
 
 
 --
--- Name: index_active_admin_comments_on_namespace; Type: INDEX; Schema: public; Owner: -
+-- Name: index_active_admin_comments_on_namespace; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_active_admin_comments_on_namespace ON active_admin_comments USING btree (namespace);
 
 
 --
--- Name: index_active_admin_comments_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_active_admin_comments_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON active_admin_comments USING btree (resource_type, resource_id);
 
 
 --
--- Name: index_admin_roles_users_on_role_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_admin_roles_users_on_role_id_and_user_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_admin_roles_users_on_role_id_and_user_id ON admin_roles_users USING btree (role_id, user_id);
 
 
 --
--- Name: index_admin_roles_users_on_user_id_and_role_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_admin_roles_users_on_user_id_and_role_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE INDEX index_admin_roles_users_on_user_id_and_role_id ON admin_roles_users USING btree (user_id, role_id);
 
 
 --
--- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: -
+-- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_admin_users_on_email ON admin_users USING btree (email);
 
 
 --
--- Name: index_admin_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
+-- Name: index_admin_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON admin_users USING btree (reset_password_token);
