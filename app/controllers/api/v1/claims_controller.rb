@@ -17,6 +17,8 @@ module Api
 
       def import_claim
         self.claim = import_service.import
+        #export_service.schedule_export
+
       end
 
       def validate_files
@@ -30,6 +32,10 @@ module Api
 
       def import_service
         @import_service ||= ClaimXmlImportService.new(claim_params)
+      end
+
+      def export_service
+        @export_service ||= ClaimExportToLandingService.new(claim)
       end
 
       def validator_service

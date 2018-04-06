@@ -5,7 +5,7 @@ class CreateClaims < ActiveRecord::Migration[5.1]
     create_table :claims do |t|
       t.string :reference
       t.string :submission_reference
-      t.integer :claimant_count
+      t.integer :claimant_count, default: 0, null: false
       t.string :submission_channel
       t.string :case_type
       t.integer :jurisdiction
