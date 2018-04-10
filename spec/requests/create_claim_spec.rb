@@ -65,26 +65,38 @@ RSpec.describe 'CreateClaim Request', type: :request do
     end
 
     context 'looking in staging folder' do
+      def force_export_now
+        ExportClaimsWorker.new.perform
+      end
+
       let(:staging_folder) do
-        ETApi::Test::StagingFolder.new list_action: -> do
-          get '/atos_api/v1/filetransfer/list'
-          response.body
-        end
+        actions = {
+          list_action: -> {
+            get '/atos_api/v1/filetransfer/list'
+            response.body
+          },
+          download_action: -> (zip_file) {
+            get "/atos_api/v1/filetransfer/download/#{zip_file}"
+            response
+          }
+
+        }
+        ETApi::Test::StagingFolder.new actions
       end
 
       it 'stores the pdf file with the correct filename in the landing folder' do
-        # Arrange - Make sure the file is not already in the landing folder if so delete it
-        correct_file = '222000000300PP_ET1_first_last.pdf'
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.pdf'
 
-        # Act - Send some claim data
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
         file_name = 'et1_first_last.pdf'
         uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
         xml_data = File.read(File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user.xml'), __FILE__))
         post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
 
         # Assert - look for the correct file in the landing folder - will be async
-
-        expect { staging_folder }.to eventually include(correct_file)
+        force_export_now
+        expect(staging_folder.all_unzipped_filenames).to include(correct_file)
       end
 
     end

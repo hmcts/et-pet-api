@@ -4,7 +4,6 @@ module Api
   module V1
     class ClaimsController < ::ActionController::API
       before_action :provide_files, only: :create
-      before_action :validate_files, only: :create
       before_action :import_claim, only: :create
       # This is sent the following parameters
       # new_claim - This contains the XML document
@@ -21,11 +20,6 @@ module Api
 
       end
 
-      def validate_files
-        return if validator_service.valid?
-        throw :abort
-      end
-
       def claim_params
         params.require('new_claim')
       end
@@ -36,10 +30,6 @@ module Api
 
       def export_service
         @export_service ||= ClaimExportService.new(claim)
-      end
-
-      def validator_service
-        @validator_service ||= ClaimXmlFileValidatorService.new(temp_files)
       end
 
       def temp_files
