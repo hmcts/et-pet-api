@@ -7,7 +7,7 @@ module ETApi
       end
 
       def filenames
-        list_action.call.lines.map {|line| CGI.unescape(line.strip)}
+        list_action.call.lines.map { |line| CGI.unescape(line.strip) }
       end
 
       def all_unzipped_filenames

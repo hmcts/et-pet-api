@@ -11,15 +11,13 @@ class ExportClaimsWorker
   end
 
   def perform(*)
-    begin
-      Dir.mktmpdir do |dir|
-        export_claims to: dir
-        zip_files from: dir, to: zip_filename
-        persist_zip_file
-      end
-    ensure
-      remove_zip_if_exists
+    Dir.mktmpdir do |dir|
+      export_claims to: dir
+      zip_files from: dir, to: zip_filename
+      persist_zip_file
     end
+  ensure
+    remove_zip_if_exists
   end
 
   private
@@ -41,7 +39,7 @@ class ExportClaimsWorker
   def export_pdf_file(claim:, to:)
     stored_file = claim_export_service.new(claim).export_pdf
     primary_claimant = claim.primary_claimant
-    pdf_filename = "#{claim.reference}_ET1_#{primary_claimant.first_name.gsub(' ', '_')}_#{primary_claimant.last_name}.pdf"
+    pdf_filename = "#{claim.reference}_ET1_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.pdf"
     stored_file.download_blob_to File.join(to, pdf_filename)
   end
 

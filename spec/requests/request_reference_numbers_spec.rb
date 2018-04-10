@@ -19,7 +19,7 @@ RSpec.describe "RequestReferenceNumbers", type: :request do
       post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", headers: default_headers
 
       # Assert - Make sure we get a 201 - to say the reference number is created
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(:created)
     end
 
     it "returns the correct content type" do
@@ -37,11 +37,11 @@ RSpec.describe "RequestReferenceNumbers", type: :request do
       # Assert - Make sure the response contains the correct data
       # apart from the fgr which is tested independently.
       expect(json_response).to include 'status' => 'ok',
-        'fgr' => an_instance_of(String),
-        'ETOfficeCode' => 22,
-        'ETOfficeName' => 'London Central',
-        'ETOfficeAddress' => 'Victory House, 30-34 Kingsway, London WC2B 6EX',
-        'ETOfficeTelephone' => '020 7273 8603'
+                                       'fgr' => an_instance_of(String),
+                                       'ETOfficeCode' => 22,
+                                       'ETOfficeName' => 'London Central',
+                                       'ETOfficeAddress' => 'Victory House, 30-34 Kingsway, London WC2B 6EX',
+                                       'ETOfficeTelephone' => '020 7273 8603'
     end
 
     it 'returns the correct reference number' do
@@ -55,11 +55,11 @@ RSpec.describe "RequestReferenceNumbers", type: :request do
     it "returns the correct response if the office is not found" do
       post '/api/v1/fgr-et-office', params: "postcode=FF1 1ZZ", headers: default_headers
       expect(json_response).to include 'status' => 'ok',
-        'fgr' => an_instance_of(String),
-        'ETOfficeCode' => 99,
-        'ETOfficeName' => 'Default',
-        'ETOfficeAddress' => 'Alexandra House, 14-22 The Parsonage, Manchester M3 2JA',
-        'ETOfficeTelephone' => '0161 833 6100'
+                                       'fgr' => an_instance_of(String),
+                                       'ETOfficeCode' => 99,
+                                       'ETOfficeName' => 'Default',
+                                       'ETOfficeAddress' => 'Alexandra House, 14-22 The Parsonage, Manchester M3 2JA',
+                                       'ETOfficeTelephone' => '0161 833 6100'
     end
 
     it 'returns a 422 if the wrong params are provided'

@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe ExportClaimsWorker do
   describe '#perform' do
     subject(:worker) { described_class.new }
+
     # Setup 2 claims that are ready for export
     let!(:claims) do
       create_list(:claim, 2, :with_pdf_file, :ready_for_export)
@@ -26,14 +27,14 @@ RSpec.describe ExportClaimsWorker do
       worker.perform
 
       # Assert
-      expected_filenames = claims.map {|c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.gsub(' ', '_')}_#{c.primary_claimant.last_name}.pdf"}
-      expect(ETApi::Test::StoredZipFile.file_names zip: ExportedFile.last).to match_array expected_filenames
+      expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.pdf" }
+      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to match_array expected_filenames
     end
 
     it 'produces a zip file that contains the correct pdf file contents for each claim' do
       # Act
       worker.perform
-      expected_filenames = claims.map {|c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.gsub(' ', '_')}_#{c.primary_claimant.last_name}.pdf"}
+      expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.pdf" }
 
       # Assert - unzip files to temp dir - and validate just the first and last - no reason any others would be different
       ::Dir.mktmpdir do |dir|

@@ -118,7 +118,7 @@ class ClaimXmlImportService
           street: r.dig('Address', 'Street'),
           locality: r.dig('Address', 'Town'),
           county: r.dig('Address', 'County'),
-          post_code: r.dig('Address', 'Postcode'),
+          post_code: r.dig('Address', 'Postcode')
         },
         address_telephone_number: r['OfficeNumber'],
         mobile_number: r['AltPhoneNumber'],

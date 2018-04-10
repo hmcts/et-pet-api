@@ -16,7 +16,7 @@ class Claim < ApplicationRecord
   accepts_nested_attributes_for :uploaded_files
 
   def pdf_file
-    uploaded_files.detect {|f| f.filename.ends_with?('.pdf')}
+    uploaded_files.detect { |f| f.filename.ends_with?('.pdf') }
   end
 
   def primary_claimant

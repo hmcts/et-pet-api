@@ -17,7 +17,6 @@ module Api
       def import_claim
         self.claim = import_service.import
         export_service.to_be_exported
-
       end
 
       def claim_params

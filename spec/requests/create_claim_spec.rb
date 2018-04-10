@@ -27,7 +27,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
 
       # Assert - Make sure we get a 201 - to say the reference number is created
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(:created)
     end
 
     it 'returns status of ok' do
@@ -71,11 +71,11 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
       let(:staging_folder) do
         actions = {
-          list_action: -> {
+          list_action: lambda {
             get '/atos_api/v1/filetransfer/list'
             response.body
           },
-          download_action: -> (zip_file) {
+          download_action: lambda { |zip_file|
             get "/atos_api/v1/filetransfer/download/#{zip_file}"
             response
           }

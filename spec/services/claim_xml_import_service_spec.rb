@@ -118,6 +118,7 @@ RSpec.describe ClaimXmlImportService do
       }
     }
   end
+
   describe '#files' do
     subject(:service) { described_class.new(simple_example_data) }
 
@@ -235,7 +236,6 @@ RSpec.describe ClaimXmlImportService do
                                                                                    representative_type: 'solicitor',
                                                                                    dx_number: 'dx1234567890'
 
-
     end
 
     it 'converts the files correctly' do
@@ -246,8 +246,8 @@ RSpec.describe ClaimXmlImportService do
 
       claim = Claim.find_by(reference: reference)
       expect(claim.uploaded_files).to contain_exactly an_object_having_attributes filename: 'et1_first_last.pdf',
-        checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
-        file: be_a_stored_file
+                                                                                  checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
+                                                                                  file: be_a_stored_file
     end
     # @TODO Make sure validation is covered
   end

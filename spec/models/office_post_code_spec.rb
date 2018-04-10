@@ -13,7 +13,7 @@ RSpec.describe OfficePostCode, type: :model do
       result = office_post_code.office
 
       # Assert
-      expect(result).to be_a(Office).and(have_attributes code: 14)
+      expect(result).to be_a(Office).and(have_attributes(code: 14))
     end
   end
 
