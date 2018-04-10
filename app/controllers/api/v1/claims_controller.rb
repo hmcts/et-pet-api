@@ -2,9 +2,12 @@
 
 module Api
   module V1
+    # This claims controller is for V1 API which replaces the old JADU
+    # system.  This will be deprecated and we will move over to V2 in time
     class ClaimsController < ::ActionController::API
       before_action :provide_files, only: :create
       before_action :import_claim, only: :create
+
       # This is sent the following parameters
       # new_claim - This contains the XML document
       # et1_<first_name>_<last_name>.pdf - An uploaded pdf file - note the varying parameter name - YUK
