@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ClaimXmlImportService do
   let(:reference) { '222000000300' }
   let(:simple_example_data) do
-    <<~EOS
+    <<~XML
 
       <ETFeesEntry xmlns="http://www.justice.gov.uk/ETFEES" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:noNamespaceSchemaLocation="ETFees_v0.24.xsd">
@@ -107,7 +107,7 @@ RSpec.describe ClaimXmlImportService do
           </File>
         </Files>
       </ETFeesEntry>
-    EOS
+    XML
   end
   let(:simple_example_input_files) do
     {
