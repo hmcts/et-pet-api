@@ -27,6 +27,9 @@ gem 'jbuilder', '~> 2.5'
 gem 'sidekiq', '~> 5.1', '>= 5.1.3'
 gem 'sidekiq-cron', '~> 0.6', '>= 0.6.3'
 
+# ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service (not yet decided)
+gem 'et_atos_file_transfer', path: 'vendor/gems/et_atos_file_transfer'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

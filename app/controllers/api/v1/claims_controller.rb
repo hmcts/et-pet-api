@@ -17,7 +17,7 @@ module Api
 
       def import_claim
         self.claim = import_service.import
-        #export_service.schedule_export
+        export_service.to_be_exported
 
       end
 
@@ -35,7 +35,7 @@ module Api
       end
 
       def export_service
-        @export_service ||= ClaimExportToLandingService.new(claim)
+        @export_service ||= ClaimExportService.new(claim)
       end
 
       def validator_service

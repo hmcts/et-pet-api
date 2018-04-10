@@ -64,12 +64,17 @@ RSpec.describe 'CreateClaim Request', type: :request do
       expect(result).to be_an_instance_of Claim
     end
 
-    context 'looking in landing folder' do
-      let(:landing_folder) { Rails.root.join('tmp', 'storage', 'app', 'landing_folder') }
+    context 'looking in staging folder' do
+      let(:staging_folder) do
+        ETApi::Test::StagingFolder.new list_action: -> do
+          get '/atos_api/v1/filetransfer/list'
+          response.body
+        end
+      end
+
       it 'stores the pdf file with the correct filename in the landing folder' do
         # Arrange - Make sure the file is not already in the landing folder if so delete it
-        correct_file = File.join(landing_folder, '222000000300PP_ET1_first_last.pdf')
-        File.unlink(correct_file) if File.exist?(correct_file)
+        correct_file = '222000000300PP_ET1_first_last.pdf'
 
         # Act - Send some claim data
         file_name = 'et1_first_last.pdf'
@@ -79,7 +84,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
         # Assert - look for the correct file in the landing folder - will be async
 
-        expect { File.exist?(correct_file) }.to eventually be true
+        expect { staging_folder }.to eventually include(correct_file)
       end
 
     end

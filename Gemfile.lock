@@ -1,3 +1,9 @@
+PATH
+  remote: vendor/gems/et_atos_file_transfer
+  specs:
+    et_atos_file_transfer (0.1.0)
+      rails (~> 5.2.0.rc2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -211,6 +217,7 @@ DEPENDENCIES
   aws-sdk-s3 (~> 1.8, >= 1.8.2)
   byebug
   database_cleaner (~> 1.6.2)
+  et_atos_file_transfer!
   factory_bot (~> 4.8)
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)

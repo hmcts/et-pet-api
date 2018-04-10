@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.describe ClaimExportToLandingService do
+RSpec.describe ClaimExportService do
   let(:landing_folder) { Rails.root.join('tmp', 'storage', 'app', 'landing_folder') }
   let(:pdf_file_attributes) do
     {
@@ -11,13 +11,9 @@ RSpec.describe ClaimExportToLandingService do
   let(:claim) { create(:claim, :with_pdf_file) }
   subject(:service) { described_class.new(claim) }
 
-  describe 'schedule_export' do
-    it 'exports the pdf' do
-      correct_file = File.join(landing_folder, '222000000300PP_ET1_first_last.pdf')
-      File.unlink(correct_file) if File.exist?(correct_file)
-
-      service.schedule_export
-      expect { File.exist?(correct_file) }.to eventually be true
+  describe 'to_be_exported' do
+    it 'marks the claim as ready to be exported' do
+      expect { service.to_be_exported }.to change(ClaimExport, :count).by(1)
     end
   end
 end
