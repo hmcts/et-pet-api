@@ -5,7 +5,7 @@ RSpec::Matchers.define(:be_a_file_copy_of) do |expected|
     File.size(actual) == File.size(expected)
   end
 
-  failure_message_for_should do |actual|
+  failure_message do |actual|
     "expected that #{actual} is a file copy of #{expected} but the file sizes were different"
   end
 end
