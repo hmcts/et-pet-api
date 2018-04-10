@@ -8,5 +8,9 @@ class ClaimExportService
     claim_exports.create claim: claim
   end
 
+  def export_pdf
+    claim.pdf_file
+  end
+
   attr_accessor :claim, :claim_exports
 end

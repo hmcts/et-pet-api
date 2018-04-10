@@ -16,4 +16,11 @@ RSpec.describe ClaimExportService do
       expect { service.to_be_exported }.to change(ClaimExport, :count).by(1)
     end
   end
+
+  describe 'export_pdf' do
+    it 'returns a pdf file which happens to be the original' do
+      result = service.export_pdf
+      expect(result).to eql claim.pdf_file
+    end
+  end
 end
