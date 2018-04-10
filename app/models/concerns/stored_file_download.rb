@@ -12,7 +12,7 @@ module StoredFileDownload
     url.to_s
   end
 
-  def download_blob_to(filename) #:doc:
+  def download_blob_to(filename)
     File.open(filename, 'w') do |output_file|
       output_file.binmode
       file.blob.download { |chunk| output_file.write(chunk) }

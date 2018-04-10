@@ -124,7 +124,7 @@ RSpec.describe ClaimXmlImportService do
 
     it 'fetches the value from the xml data' do
       # Act
-      result = subject.files
+      result = service.files
 
       # Assert - make sure only the files listed in the xml are provided
       expect(result).to contain_exactly a_hash_including(filename: 'et1_first_last.pdf', checksum: 'ee2714b8b731a8c1e95dffaa33f89728')
@@ -135,8 +135,8 @@ RSpec.describe ClaimXmlImportService do
     subject(:service) { described_class.new(simple_example_data) }
 
     it 'persists them in the instance' do
-      subject.uploaded_files = { anything: :goes }
-      expect(subject.uploaded_files).to eql(anything: :goes)
+      service.uploaded_files = { anything: :goes }
+      expect(service.uploaded_files).to eql(anything: :goes)
     end
   end
 
@@ -144,12 +144,12 @@ RSpec.describe ClaimXmlImportService do
     subject(:service) { described_class.new(simple_example_data).tap { |s| s.uploaded_files = simple_example_input_files } }
 
     it 'creates a new claim' do
-      expect { subject.import }.to change(Claim, :count).by(1)
+      expect { service.import }.to change(Claim, :count).by(1)
     end
 
     it 'converts the root data correctly' do
       # Act
-      subject.import
+      service.import
 
       # Assert
       claim = Claim.where(reference: reference).first
@@ -160,13 +160,13 @@ RSpec.describe ClaimXmlImportService do
                                        case_type: 'Single',
                                        jurisdiction: 2,
                                        office_code: 22,
-                                       date_of_receipt: DateTime.parse('2018-03-29T16:46:26+01:00'),
+                                       date_of_receipt: Time.zone.parse('2018-03-29T16:46:26+01:00'),
                                        administrator: false
     end
 
     it 'converts the claimants correctly' do
       # Act
-      subject.import
+      service.import
 
       # Assert
       claim = Claim.where(reference: reference).first
@@ -190,7 +190,7 @@ RSpec.describe ClaimXmlImportService do
 
     it 'converts the respondents correctly' do
       # Act
-      subject.import
+      service.import
 
       # Assert
       claim = Claim.where(reference: reference).first
@@ -217,7 +217,7 @@ RSpec.describe ClaimXmlImportService do
 
     it 'converts the representatives correctly' do
       # Act
-      subject.import
+      service.import
 
       # Assert
       claim = Claim.where(reference: reference).first
@@ -240,7 +240,7 @@ RSpec.describe ClaimXmlImportService do
 
     it 'converts the files correctly' do
       # Act
-      subject.import
+      service.import
 
       # Assert
 

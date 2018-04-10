@@ -64,7 +64,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       expect(result).to be_an_instance_of Claim
     end
 
-    context 'looking in staging folder' do
+    context 'with staging folder visibility' do
       def force_export_now
         ExportClaimsWorker.new.perform
       end

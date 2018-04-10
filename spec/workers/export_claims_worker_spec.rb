@@ -40,8 +40,10 @@ RSpec.describe ExportClaimsWorker do
       ::Dir.mktmpdir do |dir|
         ETApi::Test::StoredZipFile.extract zip: ExportedFile.last, to: dir
         files_found = ::Dir.glob(File.join(dir, '*.pdf'))
-        expect(files_found.first).to be_a_file_copy_of(File.join(dir, expected_filenames.first))
-        expect(files_found.last).to be_a_file_copy_of(File.join(dir, expected_filenames.last))
+        aggregate_failures 'verifying first and last files' do
+          expect(files_found.first).to be_a_file_copy_of(File.join(dir, expected_filenames.first))
+          expect(files_found.last).to be_a_file_copy_of(File.join(dir, expected_filenames.last))
+        end
       end
 
     end

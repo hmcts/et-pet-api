@@ -34,18 +34,12 @@ class ClaimXmlImportService
   def converted_root_data
     r = root
     {
-      reference: r['FeeGroupReference'],
-      submission_reference: r['SubmissionUrn'],
-      claimant_count: r['CurrentQuantityOfClaimants'],
-      submission_channel: r['SubmissionChannel'],
-      case_type: r['CaseType'],
-      jurisdiction: r['Jurisdiction'],
-      office_code: r['OfficeCode'],
-      date_of_receipt: r['DateOfReceiptEt'],
-      administrator: r['Administrator'].to_i > 0,
-      claimants_attributes: converted_claimants_data,
-      respondents_attributes: converted_respondents_data,
-      representatives_attributes: converted_representatives_data,
+      reference: r['FeeGroupReference'], submission_reference: r['SubmissionUrn'],
+      claimant_count: r['CurrentQuantityOfClaimants'], submission_channel: r['SubmissionChannel'],
+      case_type: r['CaseType'], jurisdiction: r['Jurisdiction'],
+      office_code: r['OfficeCode'], date_of_receipt: r['DateOfReceiptEt'],
+      administrator: r['Administrator'].to_i > 0, claimants_attributes: converted_claimants_data,
+      respondents_attributes: converted_respondents_data, representatives_attributes: converted_representatives_data,
       uploaded_files_attributes: converted_files_data
     }
   end

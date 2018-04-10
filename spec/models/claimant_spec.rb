@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Claimant, type: :model do
   subject(:claimant) { described_class.new }
+
   describe '#address' do
     it 'can be built from nested attributes' do
       # Arrange

@@ -49,7 +49,7 @@ RSpec.describe "RequestReferenceNumbers", type: :request do
       post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", headers: default_headers
 
       # Assert - Make sure the response contains fgr
-      expect(json_response['fgr']).to match_regex /\A22(\d{8,})00\z/
+      expect(json_response['fgr']).to match_regex(/\A22(\d{8,})00\z/)
     end
 
     it "returns the correct response if the office is not found" do

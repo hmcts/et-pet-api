@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Claim, type: :model do
   subject(:claim) { described_class.new }
+
   describe '#claimants' do
     it 'returns claimants built in memory' do
       # Arrange
@@ -26,7 +27,7 @@ RSpec.describe Claim, type: :model do
       results = claim.claimants
 
       # Assert
-      expect(claim.claimants).to contain_exactly an_object_having_attributes first_name: 'Fred', last_name: 'Bloggs'
+      expect(results).to contain_exactly an_object_having_attributes first_name: 'Fred', last_name: 'Bloggs'
     end
   end
 

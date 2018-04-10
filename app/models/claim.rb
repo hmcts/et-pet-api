@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class Claim < ApplicationRecord
-  has_many :claim_claimants
-  has_many :claim_respondents
-  has_many :claim_representatives
-  has_many :claim_uploaded_files
+  has_many :claim_claimants, dependent: :destroy
+  has_many :claim_respondents, dependent: :destroy
+  has_many :claim_representatives, dependent: :destroy
+  has_many :claim_uploaded_files, dependent: :destroy
   has_many :claimants, through: :claim_claimants
   has_many :respondents, through: :claim_respondents
   has_many :representatives, through: :claim_representatives

@@ -4,7 +4,8 @@ require 'zip'
 class ExportClaimsWorker
   include Sidekiq::Worker
 
-  def initialize(claims_to_export: ClaimExport.includes(:claim), claim_export_service: ClaimExportService, exported_file: ExportedFile)
+  def initialize(claims_to_export: ClaimExport.includes(:claim),
+    claim_export_service: ClaimExportService, exported_file: ExportedFile)
     self.claims_to_export = claims_to_export
     self.claim_export_service = claim_export_service
     self.exported_file = exported_file
@@ -25,13 +26,12 @@ class ExportClaimsWorker
   attr_accessor :claims_to_export, :claim_export_service, :exported_file
 
   def zip_filename
-    @zip_filename ||= File.join(Dir.mktmpdir, "ET_Fees_#{Time.now.strftime('%d%m%y%H%M%S')}.zip")
+    @zip_filename ||= File.join(Dir.mktmpdir, "ET_Fees_#{Time.zone.now.strftime('%d%m%y%H%M%S')}.zip")
   end
 
   def export_claims(to:)
-    pdf_files = []
     claims_to_export.each do |claim_export|
-      pdf_file = claim_export_service.new(claim_export.claim).export_pdf
+      claim_export_service.new(claim_export.claim).export_pdf
       export_pdf_file(claim: claim_export.claim, to: to)
     end
   end
@@ -39,8 +39,8 @@ class ExportClaimsWorker
   def export_pdf_file(claim:, to:)
     stored_file = claim_export_service.new(claim).export_pdf
     primary_claimant = claim.primary_claimant
-    pdf_filename = "#{claim.reference}_ET1_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.pdf"
-    stored_file.download_blob_to File.join(to, pdf_filename)
+    pdf_fn = "#{claim.reference}_ET1_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.pdf"
+    stored_file.download_blob_to File.join(to, pdf_fn)
   end
 
   def zip_files(from:, to:)
@@ -60,7 +60,8 @@ class ExportClaimsWorker
   def persist_zip_file
     filename = File.basename(zip_filename)
     File.open(zip_filename) do |file|
-      exported_file.create!(file_attributes: { io: file, filename: filename, content_type: "application/zip" }, filename: filename)
+      file_attributes = { io: file, filename: filename, content_type: "application/zip" }
+      exported_file.create!(file_attributes: file_attributes, filename: filename)
     end
   end
 end

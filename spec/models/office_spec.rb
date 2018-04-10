@@ -12,7 +12,6 @@ RSpec.describe Office, type: :model do
       result = office.post_codes.to_a
 
       # Assert
-      expect(result.length).to be > 0
       expect(result.first).to be_a(OfficePostCode)
     end
   end

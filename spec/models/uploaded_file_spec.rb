@@ -17,7 +17,7 @@ RSpec.describe UploadedFile, type: :model do
     it 'returns a local url as we are in test mode' do
       uploaded_file.file = fixture_file
 
-      expect(uploaded_file.url).to match(/\Ahttp:\/\/example.com\/rails\/active_storage\/disk\/.*et1_first_last\.pdf\z/)
+      expect(uploaded_file.url).to match(%r{\Ahttp:\/\/example.com\/rails\/active_storage\/disk\/.*et1_first_last\.pdf\z})
     end
   end
 end

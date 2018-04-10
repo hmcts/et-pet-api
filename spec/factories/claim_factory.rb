@@ -16,7 +16,7 @@ FactoryBot.define do
     case_type 'Single'
     jurisdiction 2
     office_code 22
-    date_of_receipt { Time.now }
+    date_of_receipt { Time.zone.now }
 
     after(:build) do |claim, evaluator|
       claim.claimants.concat build_list(:claimant, evaluator.number_of_claimants)
