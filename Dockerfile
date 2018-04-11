@@ -4,7 +4,7 @@ FROM ministryofjustice/ruby:2.3.3-webapp-onbuild
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-    apt-get install -y pdftk
+    apt-get install -y pdftk unzip zip
 
 EXPOSE 8080
 
