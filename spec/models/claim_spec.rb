@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe Claim, type: :model do
-  subject(:claim) { described_class.new }
   subject(:example_address_attrs) { attributes_for :address }
+
+  let(:claim) { described_class.new }
 
   describe '#claimants' do
     it 'returns claimants built in memory' do

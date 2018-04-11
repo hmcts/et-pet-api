@@ -48,5 +48,5 @@ RSpec.describe ClaimsExportService do
 
     end
   end
-  
+
 end

@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Respondent, type: :model do
   subject(:respondent) { described_class.new }
+
   let(:example_address_attrs) { attributes_for :address }
 
   it 'loads address from nested attributes' do

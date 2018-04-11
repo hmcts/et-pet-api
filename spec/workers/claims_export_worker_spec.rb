@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe ClaimsExportWorker do
   describe '#perform' do
     subject(:worker) { described_class.new(claims_export_service: export_service_instance) }
+
     let(:export_service_instance) { instance_spy('ClaimsExportService') }
+
     it 'delegates its work to the injected ClaimsExportService' do
       # Act
       worker.perform

@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Claimant, type: :model do
   subject(:claimant) { described_class.new }
+
   let(:example_address_attributes) { attributes_for :address }
 
   describe '#address' do
