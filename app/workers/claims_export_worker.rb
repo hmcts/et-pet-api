@@ -2,7 +2,7 @@
 
 # A sidekiq worker which simply delegates its work to ClaimsExportService
 # @see ClaimsExportService
-class ClaimExportWorker
+class ClaimsExportWorker
   include Sidekiq::Worker
 
   def initialize(claims_export_service: ClaimsExportService.new)

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ClaimExportWorker do
+RSpec.describe ClaimsExportWorker do
   describe '#perform' do
     subject(:worker) { described_class.new(claims_export_service: export_service_instance) }
     let(:export_service_instance) { instance_spy('ClaimsExportService') }
