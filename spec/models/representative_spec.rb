@@ -4,22 +4,13 @@ require 'rails_helper'
 
 RSpec.describe Representative, type: :model do
   subject(:rep) { described_class.new }
+  let(:example_address_attrs) { attributes_for(:address) }
 
   it 'allows building of the address using nested attributes' do
     # Act
-    rep.address_attributes = {
-      building: '102',
-      street: 'Petty France',
-      locality: 'London',
-      county: 'Greater London',
-      post_code: 'SW1 9AJ'
-    }
+    rep.address_attributes = example_address_attrs
 
     # Assert
-    expect(rep.address).to have_attributes building: '102',
-                                           street: 'Petty France',
-                                           locality: 'London',
-                                           county: 'Greater London',
-                                           post_code: 'SW1 9AJ'
+    expect(rep.address).to have_attributes example_address_attrs
   end
 end
