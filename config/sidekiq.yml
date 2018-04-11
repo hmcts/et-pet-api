@@ -1,0 +1,11 @@
+---
+:concurrency: 5
+:verbose: true
+staging:
+  :concurrency: 10
+production:
+  :concurrency: 20
+:queues:
+  - export_claims
+  - default
+  - low
