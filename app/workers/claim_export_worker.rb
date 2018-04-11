@@ -1,7 +1,7 @@
 require 'zip'
 # Currently exports all claims that are waiting to be exported to a directory and zips them up.
 # Depending on performance,this may get split into multiple workers to do stuff in parallel
-class ExportClaimsWorker
+class ClaimExportWorker
   include Sidekiq::Worker
 
   def initialize(claims_to_export: ClaimExport.includes(:claim),

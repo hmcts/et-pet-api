@@ -61,7 +61,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
     context 'with staging folder visibility' do
       def force_export_now
-        ExportClaimsWorker.new.perform
+        ClaimExportWorker.new.perform
       end
 
       let(:staging_folder) do

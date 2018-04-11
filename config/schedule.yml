@@ -1,4 +1,4 @@
 export_claims_job:
   cron: "*/<%= ENV.fetch('EXPORT_CLAIMS_EVERY', '15') %> * * * *"
-  class: "ExportClaimsWorker"
+  class: "ClaimExportWorker"
   queue: "export_claims"

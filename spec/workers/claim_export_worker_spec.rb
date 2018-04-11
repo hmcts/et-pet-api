@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ExportClaimsWorker do
+RSpec.describe ClaimExportWorker do
   describe '#perform' do
     subject(:worker) { described_class.new }
 
