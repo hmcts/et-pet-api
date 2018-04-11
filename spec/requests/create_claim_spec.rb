@@ -19,12 +19,16 @@ RSpec.describe 'CreateClaim Request', type: :request do
     end
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
 
-    it 'returns the correct status code' do
-      # Act - Send some claim data
+    def perform_action
       file_name = 'et1_first_last.pdf'
       uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
       xml_data = File.read(File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user.xml'), __FILE__))
       post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
+    end
+
+    it 'returns the correct status code' do
+      # Act - Send some claim data
+      perform_action
 
       # Assert - Make sure we get a 201 - to say the reference number is created
       expect(response).to have_http_status(:created)
@@ -32,10 +36,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
     it 'returns status of ok' do
       # Act - Send some claim data
-      file_name = 'et1_first_last.pdf'
-      uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
-      xml_data = File.read(File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user.xml'), __FILE__))
-      post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
+      perform_action
 
       # Assert - make sure we get status of ok
       expect(json_response).to include status: 'ok'
@@ -43,10 +44,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
     it 'returns a reference number which contains 12 digits' do
       # Act - Send some claim data
-      file_name = 'et1_first_last.pdf'
-      uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
-      xml_data = File.read(File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user.xml'), __FILE__))
-      post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
+      perform_action
 
       # Assert - make sure we get status of ok
       expect(json_response).to include feeGroupReference: a_string_matching(/\A\d{12}\z/)
@@ -54,10 +52,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
     it 'returns a valid reference number that is persisted in the database' do
       # Act - Send some claim data
-      file_name = 'et1_first_last.pdf'
-      uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
-      xml_data = File.read(File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user.xml'), __FILE__))
-      post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
+      perform_action
       result = Claim.where(reference: json_response[:feeGroupReference]).first
 
       # Assert - make sure it is a claim
@@ -89,10 +84,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
         correct_file = '222000000300_ET1_First_Last.pdf'
 
         # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-        file_name = 'et1_first_last.pdf'
-        uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
-        xml_data = File.read(File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user.xml'), __FILE__))
-        post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
+        perform_action
 
         # Assert - look for the correct file in the landing folder - will be async
         force_export_now
