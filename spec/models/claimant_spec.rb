@@ -4,27 +4,18 @@ require 'rails_helper'
 
 RSpec.describe Claimant, type: :model do
   subject(:claimant) { described_class.new }
+  let(:example_address_attributes) { attributes_for :address }
 
   describe '#address' do
     it 'can be built from nested attributes' do
       # Arrange
-      claimant.address_attributes = {
-        building: '102',
-        street: 'Petty France',
-        locality: 'London',
-        county: 'Greater London',
-        post_code: 'SW1H 9AJ'
-      }
+      claimant.address_attributes = example_address_attributes
 
       # Act
       address = claimant.address
 
       # Assert
-      expect(address).to have_attributes building: '102',
-                                         street: 'Petty France',
-                                         locality: 'London',
-                                         county: 'Greater London',
-                                         post_code: 'SW1H 9AJ'
+      expect(address).to have_attributes example_address_attributes
     end
   end
 end

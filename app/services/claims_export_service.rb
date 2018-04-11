@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
+# Exports all claims that have been marked for needing export
 class ClaimsExportService
+
   def initialize(claims_to_export: ClaimExport.includes(:claim),
     claim_export_service: ClaimExportService, exported_file: ExportedFile)
     self.claims_to_export = claims_to_export
@@ -6,6 +10,7 @@ class ClaimsExportService
     self.exported_file = exported_file
   end
 
+  # Exports everything
   def export
     Dir.mktmpdir do |dir|
       export_claims to: dir

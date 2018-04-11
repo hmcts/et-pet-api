@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Claim, type: :model do
   subject(:claim) { described_class.new }
+  subject(:example_address_attrs) { attributes_for :address }
 
   describe '#claimants' do
     it 'returns claimants built in memory' do
@@ -13,13 +14,7 @@ RSpec.describe Claim, type: :model do
           title: 'Mr',
           first_name: 'Fred',
           last_name: 'Bloggs',
-          address_attributes: {
-            building: '102',
-            street: 'Petty France',
-            locality: 'London',
-            county: 'Greater London',
-            post_code: 'SW1H 9AJ'
-          }
+          address_attributes: example_address_attrs
         }
       ]
 
@@ -37,23 +32,11 @@ RSpec.describe Claim, type: :model do
       claim.respondents_attributes = [
         {
           name: 'Fred Bloggs',
-          address_attributes: {
-            building: '102',
-            street: 'Petty France',
-            locality: 'London',
-            county: 'Greater London',
-            post_code: 'SW1H 9AJ'
-          },
+          address_attributes: example_address_attrs,
           work_address_telephone_number: '03333 423554',
           address_telephone_number: '02222 321654',
           acas_number: 'AC123456/78/90',
-          work_address_attributes: {
-            building: '102',
-            street: 'Petty France',
-            locality: 'London',
-            county: 'Greater London',
-            post_code: 'SW1H 9AJ'
-          },
+          work_address_attributes: example_address_attrs,
           alt_phone_number: '03333 423554'
         }
       ]
@@ -70,13 +53,7 @@ RSpec.describe Claim, type: :model do
         {
           name: 'Solicitor Name',
           organisation_name: 'Solicitors Are Us Fake Company',
-          address_attributes: {
-            building: '106',
-            street: 'Mayfair',
-            locality: 'London',
-            county: 'Greater London',
-            post_code: 'SW1H 9PP'
-          },
+          address_attributes: example_address_attrs,
           address_telephone_number: '01111 123456',
           mobile_number: '02222 654321',
           email_address: 'solicitor.test@digital.justice.gov.uk',
@@ -109,5 +86,5 @@ RSpec.describe Claim, type: :model do
     end
   end
 
-  # @TODO Security - make sure first and last names cannot contain anything that might screw up the file copying
+  # @TODO RST-1014 - Security - make sure first and last names cannot contain anything that might screw up the file copying
 end
