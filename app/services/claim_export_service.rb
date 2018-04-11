@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# This service is responsible for (but may delegate to others to perform) exporting everything from a claim
 class ClaimExportService
   def initialize(claim, claim_exports: ClaimExport)
     self.claim = claim
