@@ -14,7 +14,7 @@ class ClaimsExportService
   def export
     Dir.mktmpdir do |dir|
       export_claims to: dir
-      zip_files from: dir, to: zip_filename
+      zip_files from: dir
       persist_zip_file
     end
   ensure
@@ -43,9 +43,9 @@ class ClaimsExportService
     stored_file.download_blob_to File.join(to, pdf_fn)
   end
 
-  def zip_files(from:, to:)
+  def zip_files(from:)
     input_filenames = Dir.glob(File.join(from, '*'))
-    Zip::File.open(to, Zip::File::CREATE) do |zipfile|
+    Zip::File.open(zip_filename, Zip::File::CREATE) do |zipfile|
       input_filenames.each do |filename|
         zipfile.add(File.basename(filename), filename)
       end
