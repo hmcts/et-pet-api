@@ -9,8 +9,15 @@ Sidekiq.configure_server do |config|
   schedule_file = "config/schedule.yml"
 
   if File.exist?(schedule_file)
+    Rails.logger.info " -----------------------******************************--------------------------------***********************"
+    Rails.logger.info "sidekiq configured from schedule file"
+    Rails.logger.info " -----------------------******************************--------------------------------***********************"
+
     Sidekiq::Cron::Job.load_from_hash YAML.safe_load(ERB.new(File.read(schedule_file)).result)
+  else
+    Rails.logger.error "********************************* Sidekiq Cron Not Initialized ********************************"
   end
+
 end
 
 Sidekiq.configure_client do |config|

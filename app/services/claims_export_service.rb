@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-
+require 'zip'
 # Exports all claims that have been marked for needing export
 class ClaimsExportService
 
@@ -45,7 +45,7 @@ class ClaimsExportService
 
   def zip_files(from:)
     input_filenames = Dir.glob(File.join(from, '*'))
-    Zip::File.open(zip_filename, Zip::File::CREATE) do |zipfile|
+    ::Zip::File.open(zip_filename, ::Zip::File::CREATE) do |zipfile|
       input_filenames.each do |filename|
         zipfile.add(File.basename(filename), filename)
       end

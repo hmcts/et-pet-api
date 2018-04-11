@@ -14,6 +14,10 @@ This application is to replace the current JADU system as of March 2018
 
 See [this page](docs/design.md)
 
+## Manual Testing
+
+See [this page](docs/manual_testing.md)
+
 ## External Dependencies
 
 Unless you are using docker, then you must make sure you have the following dependencies met
