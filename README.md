@@ -1,11 +1,38 @@
 # ET API
 
-Experiment - DO NOT USE
+<a href="https://codeclimate.com/github/ministryofjustice/et_api/maintainability"><img src="https://api.codeclimate.com/v1/badges/1229a56ce687e1a1376d/maintainability" /></a>
+
+<a href="https://codeclimate.com/github/ministryofjustice/et_api/test_coverage"><img src="https://api.codeclimate.com/v1/badges/1229a56ce687e1a1376d/test_coverage" /></a>
+
+The API server for the ET service including ET1 and ET3 (WORK IN PROGRESS)
 
 ## Introduction
 
-At the moment, this is an exploratory application that will replace the
-JADU system.
+This application is to replace the current JADU system as of March 2018
+
+## Design
+
+See [this page](docs/design.md)
+
+## External Dependencies
+
+Unless you are using docker, then you must make sure you have the following dependencies met
+
+### zip and unzip
+
+These are used to produce and test the zip files during exporting of claims
+
+### pdftk
+
+Used to produce PDF's
+
+### postgres
+
+Both server, client and nescessary headers for development
+
+### redis
+
+Used for background jobs - not entirely nescessary depending on what you are working on
 
 ## Developing And Testing Using Docker
 
@@ -110,11 +137,20 @@ Simply do :-
 
 ```
 
-./bin/dev/docker-support-services
+./bin/dev/docker-support-services up
 
 ```
 
-which will bring up the database on a random port and a redis server on a random port.
+which will bring up the database on a random port and a redis server on a random port unless changed by the environment vars.
+
+to kill them (assuming CTRL-C didn't do it)
+
+```
+
+./bin/dev/docker-support-services down
+
+```
+
 
 As stated above in the 'Running a server section' - you can use 
 
@@ -214,4 +250,94 @@ foreman start
    
 If you are doing things manually, remember you may need sidekiq running depending
 on what area of the system you are using.   
-   
+
+# Other Environment Variables
+
+## EXPORT_CLAIMS_EVERY
+
+The claims are batched up and zipped ready for consumption by the ATOS API every 15 minutes
+
+If you want to change this during development, set this environment variable - e.g.
+
+```
+
+EXPORT_CLAIMS_EVERY=5
+
+```
+
+will set it to every 5 minutes
+
+# Development Guidelines
+
+The team uses a BDD / TDD approach so it is expected for the specs to be written before the implementation as required.
+The use of BDD / TDD should provide us with good test coverage, so a code coverage tool will be used to keep an eye on this.
+
+# API Versioning
+
+## V1 - The Old JADU API
+
+As we need to get the project off the ground very quickly, the V1 API will look and feel
+just like the original JADU API - so there are no changes to the ET1 application.
+
+However, this API is very clunky in that it uses XML as part of a multi part form which also sends the files as well.
+This can now be done much better using a simple REST interface with base64 encoding of the files as just normal data.
+
+## V2 - The New API For ET3 - and eventually ET1
+
+Version 2 will be written from the ground up for ET3 to begin with, but the long term goal is for ET1 to move over to it so we can remove all of the XML code from ET1 app and just send the data over this RESTful interface.
+
+## The Test Suite
+
+### Database cleaning
+
+In general, it is thought that each test example does not need a perfectly clean database, so at least for now, the database will be partially cleaned when the example
+specifies db_clean: true in the example metadata.  
+
+A lot of time can get wasted cleaning the database when not required, so it is up to the developer to either write their tests in a way that
+does not need a perfectly clean database OR specify that it should be cleaned first using db_clean: true
+
+For example :-
+
+```
+
+RSpec.describe 'Some feature', type: :request do
+  it 'should do something with a clean DB to start with', db_clean: true do
+    <<code>>
+  end
+end
+
+```
+
+Note that the strategy at the moment is to clean before a marked example using 'truncation' as opposed to using transactions.
+
+This is because transactions modify the behavior of rails when using postgres. The high level transaction is done one way and the rest are done another - so adding a transaction at the start makes things behave differently.
+Also, transactions cannot be used when testing over a real http connection as opposed to rack-test which we may well do.
+
+If on the other hand, we decide the suite is too slow, this may well get changed - but it is much easier to change from truncation to transaction
+than the other way around.
+
+### Database test data
+
+Seed data is setup for use in both development and test - containing what is considered to be static data such as offices etc..
+
+### Direct Database Access
+
+There is no admin interface or any way that a 'user' (a user in this case is an API client) can validate that things have been persisted for later use.
+
+Whilst there is an admin project that will connect to the same database as this application, this will not be used during the automated testing of this application.
+
+Instead, we will be going for the direct database approach where the ruby test code can access the same database as the application under test.
+
+# Administering The Database
+
+This application has a partner admin application (https://github.com/ministryofjustice/et-admin) which needs to be setup to share the same database.
+
+The admin is kept separate for scaling purposes as we expect more API users than admin users by a significant factor.
+
+If you just want to do this and nothing else during development and are OK working with ruby - just clone it, set the DB_HOST, DB_NAME, DB_PORT and DB_USERNAME env vars
+to point to the same DB as this application and go for it.
+
+If you want to run an entire system including the admin but are not interested in using ruby - i.e. you are testing or just viewing this application, you may want to consider it's "umbrella" project (https://github.com/ministryofjustice/et-full-system) 
+which used docker-compose to bring all of the components together and allows you to run them much easier.
+
+
