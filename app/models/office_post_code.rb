@@ -5,7 +5,7 @@
 class OfficePostCode < ApplicationRecord
   belongs_to :office
 
-  scope :active, -> { where('postcode is not null') }
+  scope :active, -> { where.not(postcode: nil) }
   scope :with_partial_match, lambda { |postcode|
     active.where("? LIKE concat(postcode, '%')", postcode).order(Arel.sql('length(postcode) DESC'))
   }
