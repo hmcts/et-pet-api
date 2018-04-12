@@ -11,14 +11,7 @@ module StoredFileDownload
   #
   # @return [String] The url to download from
   def url(local_options: Rails.application.config.action_controller.default_url_options)
-    url = URI.parse file.service_url
-    if url.host.nil?
-      default_options = { scheme: 'http' }
-      default_options.merge(local_options).each_pair do |key, value|
-        url.send(:"#{key}=", value)
-      end
-    end
-    url.to_s
+    file.service_url
   end
 
   # Downloads the stored file to the local file system

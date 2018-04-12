@@ -14,6 +14,17 @@ RSpec.describe ExportedFile, type: :model do
   end
 
   describe '#url' do
+    around do |example|
+      old_value = ActiveStorage::Current.host
+      begin
+        ActiveStorage::Current.host = 'http://example.com'
+        example.call
+        ActiveStorage::Current.host = old_value
+      ensure
+        ActiveStorage::Current.host = old_value
+      end
+    end
+
     it 'returns a local url as we are in test mode' do
       exported_file.file = fixture_file
 

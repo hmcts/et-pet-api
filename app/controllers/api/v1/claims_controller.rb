@@ -4,7 +4,7 @@ module Api
   module V1
     # This claims controller is for V1 API which replaces the old JADU
     # system.  This will be deprecated and we will move over to V2 in time
-    class ClaimsController < ::ActionController::API
+    class ClaimsController < ::ApplicationController
       before_action :provide_files, only: :create
       before_action :import_claim, only: :create
 
