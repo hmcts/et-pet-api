@@ -8,14 +8,17 @@ class ClaimsExportService
     self.claims_to_export = claims_to_export
     self.claim_export_service = claim_export_service
     self.exported_file = exported_file
+    self.claim_exports = []
   end
 
-  # Exports everything
+  # Exports everything and marks the claims as exported so they cannot be exported again
   def export
     Dir.mktmpdir do |dir|
       export_claims to: dir
+      next if claim_exports.empty?
       zip_files from: dir
       persist_zip_file
+      mark_claims_as_exported
     end
   ensure
     remove_zip_if_exists
@@ -23,7 +26,7 @@ class ClaimsExportService
 
   private
 
-  attr_accessor :claims_to_export, :claim_export_service, :exported_file
+  attr_accessor :claims_to_export, :claim_export_service, :exported_file, :claim_exports
 
   def zip_filename
     @zip_filename ||= File.join(Dir.mktmpdir, "ET_Fees_#{Time.zone.now.strftime('%d%m%y%H%M%S')}.zip")
@@ -31,9 +34,15 @@ class ClaimsExportService
 
   def export_claims(to:)
     claims_to_export.each do |claim_export|
+      claim_exports << claim_export
       claim_export_service.new(claim_export.claim).export_pdf
       export_pdf_file(claim: claim_export.claim, to: to)
     end
+  end
+
+  def mark_claims_as_exported
+    # Destroy each individually to
+    claims_to_export.where(id: claim_exports.map(&:id)).delete_all
   end
 
   def export_pdf_file(claim:, to:)

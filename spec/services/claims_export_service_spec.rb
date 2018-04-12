@@ -45,7 +45,26 @@ RSpec.describe ClaimsExportService do
           expect(files_found.last).to be_a_file_copy_of(File.join(dir, expected_filenames.last))
         end
       end
+    end
 
+    it 'produces only one zip file when called twice' do
+      run_twice = lambda do
+        described_class.new.export
+        service.export
+      end
+
+      expect(&run_twice).to change(ExportedFile, :count).by(1)
+    end
+
+    context 'with nothing to process' do
+      # This time, the claims are not marked as to be exported
+      let!(:claims) do
+        create_list(:claim, 2, :with_pdf_file)
+      end
+
+      it 'does not produce a zip file if there is nothing to process' do
+        expect { service.export }.to change(ExportedFile, :count).by(0)
+      end
     end
   end
 
