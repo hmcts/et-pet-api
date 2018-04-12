@@ -6,11 +6,8 @@ module StoredFileDownload
 
   # Calculates the URL whether local or remote
   #
-  # @param [Hash] local_options Used to add the host etc.. to the local path - defaults to
-  #   Rails.application.config.action_controller.default_url_options
-  #
   # @return [String] The url to download from
-  def url(local_options: Rails.application.config.action_controller.default_url_options)
+  def url
     file.service_url
   end
 
