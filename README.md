@@ -14,6 +14,10 @@ This application is to replace the current JADU system as of March 2018
 
 See [this page](docs/design.md)
 
+## Manual Testing
+
+See [this page](docs/manual_testing.md)
+
 ## External Dependencies
 
 Unless you are using docker, then you must make sure you have the following dependencies met
@@ -291,7 +295,7 @@ Version 2 will be written from the ground up for ET3 to begin with, but the long
 ### Database cleaning
 
 In general, it is thought that each test example does not need a perfectly clean database, so at least for now, the database will be partially cleaned when the example
-specifies db_clean: true in the example metadata.  
+specifies db_clean: true in the example metadata.
 
 A lot of time can get wasted cleaning the database when not required, so it is up to the developer to either write their tests in a way that
 does not need a perfectly clean database OR specify that it should be cleaned first using db_clean: true
@@ -337,7 +341,7 @@ The admin is kept separate for scaling purposes as we expect more API users than
 If you just want to do this and nothing else during development and are OK working with ruby - just clone it, set the DB_HOST, DB_NAME, DB_PORT and DB_USERNAME env vars
 to point to the same DB as this application and go for it.
 
-If you want to run an entire system including the admin but are not interested in using ruby - i.e. you are testing or just viewing this application, you may want to consider it's "umbrella" project (https://github.com/ministryofjustice/et-full-system) 
+If you want to run an entire system including the admin but are not interested in using ruby - i.e. you are testing or just viewing this application, you may want to consider it's "umbrella" project (https://github.com/ministryofjustice/et-full-system)
 which used docker-compose to bring all of the components together and allows you to run them much easier.
 
 
