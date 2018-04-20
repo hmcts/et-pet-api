@@ -18,11 +18,12 @@ RSpec.describe 'CreateClaim Request', type: :request do
       }
     end
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
+    let(:xml_input_filename) { File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user.xml'), __FILE__) }
 
     def perform_action
       file_name = 'et1_first_last.pdf'
       uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
-      xml_data = File.read(File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user.xml'), __FILE__))
+      xml_data = File.read(xml_input_filename)
       post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
     end
 
@@ -85,12 +86,37 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
         # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
         perform_action
+        force_export_now
 
         # Assert - look for the correct file in the landing folder - will be async
-        force_export_now
         expect(staging_folder.all_unzipped_filenames).to include(correct_file)
       end
 
+      it 'stores the xml file with the correct filename in the landing folder' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.xml'
+
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
+
+        # Assert - look for the correct file in the landing folder - will be async
+        expect(staging_folder.all_unzipped_filenames).to include(correct_file)
+      end
+
+      it 'stores a copy of the original xml data' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.xml'
+
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
+
+        # Assert - look for the correct file in the landing folder - will be async
+        tmp_file = Tempfile.new
+        staging_folder.extract(correct_file, to: tmp_file.path)
+        expect(tmp_file.path).to be_an_xml_file_copy_of(xml_input_filename)
+      end
     end
   end
 end

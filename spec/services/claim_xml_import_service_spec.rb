@@ -245,9 +245,29 @@ RSpec.describe ClaimXmlImportService do
       # Assert
 
       claim = Claim.find_by(reference: reference)
-      expect(claim.uploaded_files).to contain_exactly an_object_having_attributes filename: 'et1_first_last.pdf',
+      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_first_last.pdf',
                                                                                   checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
                                                                                   file: be_a_stored_file
+    end
+
+    it 'stores the xml in a file' do
+      # Act
+      service.import
+
+      # Assert
+      claim = Claim.find_by(reference: reference)
+      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_first_last.xml',
+        file: be_a_stored_file
+    end
+
+    it 'stores the xml as a byte for byte copy' do
+      # Act
+      service.import
+
+      # Assert
+      claim = Claim.find_by(reference: reference)
+      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_first_last.xml',
+        file: a_stored_file_with_contents(simple_example_data)
     end
     # @TODO Make sure validation is covered
   end

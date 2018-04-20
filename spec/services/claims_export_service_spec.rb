@@ -6,7 +6,7 @@ RSpec.describe ClaimsExportService do
 
     # Setup 2 claims that are ready for export
     let!(:claims) do
-      create_list(:claim, 2, :with_pdf_file, :ready_for_export)
+      create_list(:claim, 2, :with_pdf_file, :with_xml_file, :ready_for_export)
     end
 
     it 'produces an ExportedFile' do
@@ -45,6 +45,15 @@ RSpec.describe ClaimsExportService do
           expect(files_found.last).to be_a_file_copy_of(File.join(dir, expected_filenames.last))
         end
       end
+    end
+
+    it 'produces a zip file that contains an xml file for each claim' do
+      # Act
+      service.export
+
+      # Assert
+      expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.xml" }
+      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to match_array expected_filenames
     end
 
     it 'produces only one zip file when called twice' do
