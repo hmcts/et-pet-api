@@ -12,7 +12,8 @@ class Claim < ApplicationRecord
   has_many :representatives, through: :claim_representatives
   has_many :uploaded_files, through: :claim_uploaded_files
 
-  # @TODO RST-1080 Refactoring Tasks - 'uploaded_files' really needs renaming as these files are not only uploaded files but can be generated internally too
+  # @TODO RST-1080 Refactoring Tasks - 'uploaded_files' really needs renaming as these files are not only
+  #   uploaded files but can be generated internally too
 
   accepts_nested_attributes_for :claimants
   accepts_nested_attributes_for :respondents

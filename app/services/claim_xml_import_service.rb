@@ -8,7 +8,11 @@ require 'action_dispatch/http/upload'
 # API.
 # The JSON version will have to generate its own XML if it REALLY is needed to be exported
 # to the final zip files.  At the time of writing, noone really knows.
-class ClaimXmlImportService
+#
+# Note: The class length has upset the local rubo cops - but I have pleaded with them to let me have it this
+# length as I don't want to split this XML import code up as it will end up being removed soon when we go to
+# API V2
+class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
   REPRESENTATIVE_TYPE_MAPPINGS = {
     'CAB' => 'citizen_advice_bureau', 'FRU' => 'free_representation_unit',
     'Law Centre' => 'law_centre', 'Union' => 'trade_union',

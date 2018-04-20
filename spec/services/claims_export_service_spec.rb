@@ -67,7 +67,7 @@ RSpec.describe ClaimsExportService do
 
     context 'with nothing to process' do
       # This time, the claims are not marked as to be exported
-      let!(:claims) do
+      before do
         create_list(:claim, 2, :with_pdf_file)
       end
 
