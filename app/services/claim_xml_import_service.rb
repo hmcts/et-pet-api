@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 # Imports API V1 XML data from the front end application
+#
+# It is expected that this is to be a short lived service - it will be replaced with
+# a ClaimJsonImportService which does the same thing but with JSON input from the V2
+# API.
+# The JSON version will have to generate its own XML if it REALLY is needed to be exported
+# to the final zip files.  At the time of writing, noone really knows.
 class ClaimXmlImportService
   REPRESENTATIVE_TYPE_MAPPINGS = {
     'CAB' => 'citizen_advice_bureau', 'FRU' => 'free_representation_unit',
