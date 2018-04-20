@@ -6,7 +6,7 @@ RSpec.describe ClaimsExportService do
 
     # Setup 2 claims that are ready for export
     let!(:claims) do
-      create_list(:claim, 2, :with_pdf_file, :ready_for_export)
+      create_list(:claim, 2, :with_pdf_file, :with_xml_file, :ready_for_export)
     end
 
     it 'produces an ExportedFile' do
@@ -28,7 +28,7 @@ RSpec.describe ClaimsExportService do
 
       # Assert
       expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.pdf" }
-      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to match_array expected_filenames
+      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
     end
 
     it 'produces a zip file that contains the correct pdf file contents for each claim' do
@@ -47,6 +47,15 @@ RSpec.describe ClaimsExportService do
       end
     end
 
+    it 'produces a zip file that contains an xml file for each claim' do
+      # Act
+      service.export
+
+      # Assert
+      expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.xml" }
+      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+    end
+
     it 'produces only one zip file when called twice' do
       run_twice = lambda do
         described_class.new.export
@@ -58,7 +67,7 @@ RSpec.describe ClaimsExportService do
 
     context 'with nothing to process' do
       # This time, the claims are not marked as to be exported
-      let!(:claims) do
+      let!(:claims) do # rubocop:disable RSpec/LetSetup - as I want to overwrite the original
         create_list(:claim, 2, :with_pdf_file)
       end
 

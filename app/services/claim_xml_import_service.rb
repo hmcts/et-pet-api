@@ -1,7 +1,18 @@
 # frozen_string_literal: true
+require 'action_dispatch/http/upload'
 
 # Imports API V1 XML data from the front end application
-class ClaimXmlImportService
+#
+# It is expected that this is to be a short lived service - it will be replaced with
+# a ClaimJsonImportService which does the same thing but with JSON input from the V2
+# API.
+# The JSON version will have to generate its own XML if it REALLY is needed to be exported
+# to the final zip files.  At the time of writing, noone really knows.
+#
+# Note: The class length has upset the local rubo cops - but I have pleaded with them to let me have it this
+# length as I don't want to split this XML import code up as it will end up being removed soon when we go to
+# API V2
+class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
   REPRESENTATIVE_TYPE_MAPPINGS = {
     'CAB' => 'citizen_advice_bureau', 'FRU' => 'free_representation_unit',
     'Law Centre' => 'law_centre', 'Union' => 'trade_union',
@@ -16,6 +27,7 @@ class ClaimXmlImportService
   #
   # @param [String] data The XML data
   def initialize(data)
+    self.original_data = data
     self.data = Hash.from_xml(data)
   end
 
@@ -110,7 +122,7 @@ class ClaimXmlImportService
         filename: filename, checksum: f['Checksum'],
         file: uploaded_files.dig(filename, :file)
       }
-    end
+    end + [file_for_data]
   end
 
   def convert_representative_type(rep_type)
@@ -127,5 +139,22 @@ class ClaimXmlImportService
     collection
   end
 
-  attr_accessor :data
+  def file_for_data
+    claimant = converted_claimants_data.first
+    filename = "ET1_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.xml"
+    {
+      filename: filename,
+      file: raw_file_for_data(filename)
+    }
+  end
+
+  def raw_file_for_data(filename)
+    tempfile = Tempfile.new.tap do |file|
+      file.write original_data
+      file.rewind
+    end
+    ActionDispatch::Http::UploadedFile.new filename: filename, tempfile: tempfile, type: 'text/xml'
+  end
+
+  attr_accessor :data, :original_data
 end
