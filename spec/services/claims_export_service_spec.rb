@@ -28,7 +28,7 @@ RSpec.describe ClaimsExportService do
 
       # Assert
       expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.pdf" }
-      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to match_array expected_filenames
+      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
     end
 
     it 'produces a zip file that contains the correct pdf file contents for each claim' do
@@ -53,7 +53,7 @@ RSpec.describe ClaimsExportService do
 
       # Assert
       expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.xml" }
-      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to match_array expected_filenames
+      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
     end
 
     it 'produces only one zip file when called twice' do

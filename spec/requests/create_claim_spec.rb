@@ -113,9 +113,10 @@ RSpec.describe 'CreateClaim Request', type: :request do
         force_export_now
 
         # Assert - look for the correct file in the landing folder - will be async
-        tmp_file = Tempfile.new
-        staging_folder.extract(correct_file, to: tmp_file.path)
-        expect(tmp_file.path).to be_an_xml_file_copy_of(xml_input_filename)
+        Dir.tmpdir do |dir|
+          staging_folder.extract(correct_file, to: dir)
+          expect(File.join(dir, correct_file)).to be_an_xml_file_copy_of(xml_input_filename)
+        end
       end
     end
   end

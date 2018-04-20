@@ -31,9 +31,27 @@ module ETApi
         end
       end
 
+      def extract(filename, to:)
+        Dir.mktmpdir do |dir|
+          full_paths = filenames.map { |f| File.join(dir, f) }
+          zip = full_paths.find do |zip_file_path|
+            download(File.basename(zip_file_path), to: zip_file_path)
+            ::Zip::File.open(zip_file_path) { |z| z.glob('**/*').map(&:name) }.include?(filename)
+          end
+          return nil if zip.nil?
+          extract_file_from_zip(filename, zip, to: to)
+        end
+      end
+
       private
 
       attr_accessor :list_action, :download_action
+
+      def extract_file_from_zip(filename, zip_filename, to:)
+        ::Zip::File.open(zip_filename) do |z|
+          z.extract(filename, to)
+        end
+      end
     end
   end
 end

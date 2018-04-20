@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'action_dispatch/http/upload'
 
 # Imports API V1 XML data from the front end application
 #
@@ -22,6 +23,7 @@ class ClaimXmlImportService
   #
   # @param [String] data The XML data
   def initialize(data)
+    self.original_data = data
     self.data = Hash.from_xml(data)
   end
 
@@ -116,7 +118,7 @@ class ClaimXmlImportService
         filename: filename, checksum: f['Checksum'],
         file: uploaded_files.dig(filename, :file)
       }
-    end
+    end + [file_for_data]
   end
 
   def convert_representative_type(rep_type)
@@ -133,5 +135,22 @@ class ClaimXmlImportService
     collection
   end
 
-  attr_accessor :data
+  def file_for_data
+    claimant = converted_claimants_data.first
+    filename = "ET1_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.xml"
+    {
+      filename: filename,
+      file: raw_file_for_data(filename)
+    }
+  end
+
+  def raw_file_for_data(filename)
+    tempfile = Tempfile.new.tap do |file|
+      file.write original_data
+      file.rewind
+    end
+    ActionDispatch::Http::UploadedFile.new filename: filename, tempfile: tempfile, type: 'text/xml'
+  end
+
+  attr_accessor :data, :original_data
 end

@@ -246,8 +246,8 @@ RSpec.describe ClaimXmlImportService do
 
       claim = Claim.find_by(reference: reference)
       expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_first_last.pdf',
-                                                                                  checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
-                                                                                  file: be_a_stored_file
+                                                                          checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
+                                                                          file: be_a_stored_file
     end
 
     it 'stores the xml in a file' do
@@ -256,8 +256,8 @@ RSpec.describe ClaimXmlImportService do
 
       # Assert
       claim = Claim.find_by(reference: reference)
-      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_first_last.xml',
-        file: be_a_stored_file
+      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'ET1_First_Last.xml',
+                                                                          file: be_a_stored_file
     end
 
     it 'stores the xml as a byte for byte copy' do
@@ -266,8 +266,8 @@ RSpec.describe ClaimXmlImportService do
 
       # Assert
       claim = Claim.find_by(reference: reference)
-      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_first_last.xml',
-        file: a_stored_file_with_contents(simple_example_data)
+      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'ET1_First_Last.xml',
+                                                                          file: be_a_stored_file_with_contents(simple_example_data)
     end
     # @TODO Make sure validation is covered
   end

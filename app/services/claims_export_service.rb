@@ -35,8 +35,8 @@ class ClaimsExportService
   def export_claims(to:)
     claims_to_export.each do |claim_export|
       claim_exports << claim_export
-      claim_export_service.new(claim_export.claim).export_pdf
       export_pdf_file(claim: claim_export.claim, to: to)
+      export_xml_file(claim: claim_export.claim, to: to)
     end
   end
 
@@ -50,6 +50,13 @@ class ClaimsExportService
     primary_claimant = claim.primary_claimant
     pdf_fn = "#{claim.reference}_ET1_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.pdf"
     stored_file.download_blob_to File.join(to, pdf_fn)
+  end
+
+  def export_xml_file(claim:, to:)
+    stored_file = claim_export_service.new(claim).export_xml
+    primary_claimant = claim.primary_claimant
+    xml_fn = "#{claim.reference}_ET1_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.xml"
+    stored_file.download_blob_to File.join(to, xml_fn)
   end
 
   def zip_files(from:)
