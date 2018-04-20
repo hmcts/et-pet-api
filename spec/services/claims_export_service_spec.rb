@@ -67,7 +67,7 @@ RSpec.describe ClaimsExportService do
 
     context 'with nothing to process' do
       # This time, the claims are not marked as to be exported
-      before do
+      let!(:claims) do # rubocop:disable RSpec/LetSetup - as I want to overwrite the original
         create_list(:claim, 2, :with_pdf_file)
       end
 
