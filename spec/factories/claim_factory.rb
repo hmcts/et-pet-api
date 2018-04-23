@@ -35,6 +35,12 @@ FactoryBot.define do
       end
     end
 
+    trait :with_text_file do
+      after(:build) do |claim, _evaluator|
+        claim.uploaded_files << build(:uploaded_file, :example_claim_text)
+      end
+    end
+
     trait :ready_for_export do
       # Ready for export MUST be in the database and files stored - so we dont do build here
       after(:create) do |claim, _evaluator|

@@ -269,6 +269,28 @@ RSpec.describe ClaimXmlImportService do
       expect(claim.uploaded_files).to include an_object_having_attributes filename: 'ET1_First_Last.xml',
                                                                           file: be_a_stored_file_with_contents(simple_example_data)
     end
+
+    it 'stores an ET1 txt file with the correct filename' do
+      # Act
+      service.import
+
+      # Assert
+      claim = Claim.find_by(reference: reference)
+      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'ET1_First_Last.txt',
+                                                                          file: be_a_stored_file
+
+    end
+
+    it 'stores an ET1 txt file with the correct contents' do
+      # Act
+      service.import
+      reference_text_file_contents = File.read Rails.root.join('spec', 'fixtures', 'et1_first_last_expectation.txt')
+
+      # Assert
+      claim = Claim.find_by(reference: reference)
+      uploaded_file = claim.uploaded_files.where(filename: 'ET1_First_Last.txt').first
+      expect(uploaded_file.file.download).to eq reference_text_file_contents
+    end
     # @TODO Make sure validation is covered
   end
 end

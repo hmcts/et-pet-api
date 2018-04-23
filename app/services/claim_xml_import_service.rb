@@ -44,7 +44,10 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
   #
   # @return [Claim] The imported claim
   def import
-    Claim.create! converted_root_data.merge(converted_associated_data)
+    claim = Claim.new(converted_root_data.merge(converted_associated_data))
+    add_file :text_file, to: claim
+    claim.save!
+    claim
   end
 
   private
@@ -154,6 +157,32 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
       file.rewind
     end
     ActionDispatch::Http::UploadedFile.new filename: filename, tempfile: tempfile, type: 'text/xml'
+  end
+
+  def text_file(claim)
+    claimant = claim.claimants.first
+    filename = "ET1_#{claimant.first_name.tr(' ', '_')}_#{claimant.last_name}.txt"
+    {
+      filename: filename,
+      file: raw_text_file(filename, claim: claim)
+    }
+  end
+
+  def raw_text_file(filename, claim:)
+    tempfile = Tempfile.new.tap do |file|
+      file.write ApplicationController.render "api/v1/claims/export.txt.erb", locals: {
+        claim: claim, primary_claimant: claim.claimants.first,
+        primary_respondent: claim.respondents.first,
+        primary_representative: claim.representatives.first,
+        additional_respondents: claim.respondents[1..-1]
+      }
+      file.rewind
+    end
+    ActionDispatch::Http::UploadedFile.new filename: filename, tempfile: tempfile, type: 'text/xml'
+  end
+
+  def add_file(method, to:)
+    to.uploaded_files.build send(method, to)
   end
 
   attr_accessor :data, :original_data
