@@ -84,22 +84,13 @@ Representative's E-mail address: <%= rep.email_address %>
 Name of your employer of the organisation you are claiming against<%= respondent_number %>:
 Address:
 <% additional_respondents[respondent_number - 1].tap do |respondent| %>
-<% if respondent.present? %>
-<% respondent.address.tap do |address| %>
-AdditionalAddress<%= respondent_number %> 1: <%= address.building %>
-AdditionalAddress<%= respondent_number %> 2: <%= address.street %>
-AdditionalAddress<%= respondent_number %> 3: <%= address.locality %>
-AdditionalAddress<%= respondent_number %> 4: <%= address.county %>
-AdditionalPostcode<%= respondent_number %>: <%= address.post_code %>
+<% respondent.try(:address).tap do |address| %>
+AdditionalAddress<%= respondent_number %> 1: <%= address.try(:building) %>
+AdditionalAddress<%= respondent_number %> 2: <%= address.try(:street) %>
+AdditionalAddress<%= respondent_number %> 3: <%= address.try(:locality) %>
+AdditionalAddress<%= respondent_number %> 4: <%= address.try(:county) %>
+AdditionalPostcode<%= respondent_number %>: <%= address.try(:post_code) %>
 <% end %>
-AdditionalPhoneNumber1: <%= respondent.address_telephone_number %>
-<% else %>
-AdditionalAddress<%= respondent_number %> 1:
-AdditionalAddress<%= respondent_number %> 2:
-AdditionalAddress<%= respondent_number %> 3:
-AdditionalAddress<%= respondent_number %> 4:
-AdditionalPostcode<%= respondent_number %>:
-AdditionalPhoneNumber<%= respondent_number %>:
-<% end %>
+AdditionalPhoneNumber1: <%= respondent.try(:address_telephone_number) %>
 <% end %>
 <% end %>

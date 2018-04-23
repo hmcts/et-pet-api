@@ -284,12 +284,11 @@ RSpec.describe ClaimXmlImportService do
     it 'stores an ET1 txt file with the correct contents' do
       # Act
       service.import
-      reference_text_file_contents = File.read Rails.root.join('spec', 'fixtures', 'et1_first_last_expectation.txt')
 
       # Assert
       claim = Claim.find_by(reference: reference)
       uploaded_file = claim.uploaded_files.where(filename: 'ET1_First_Last.txt').first
-      expect(uploaded_file.file.download).to eq reference_text_file_contents
+      expect(uploaded_file.file.download).to be_valid_et1_claim_text
     end
     # @TODO Make sure validation is covered
   end
