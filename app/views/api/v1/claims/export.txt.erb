@@ -81,9 +81,9 @@ Representative's E-mail address: <%= rep.email_address %>
 ## Section 11: Details of Additional Respondents
 
 <% (1..3).each do |respondent_number| %>
-Name of your employer of the organisation you are claiming against<%= respondent_number %>:
-Address:
 <% additional_respondents[respondent_number - 1].tap do |respondent| %>
+Name of your employer of the organisation you are claiming against<%= respondent_number %>: <%= respondent.try(:name) %>
+Address:
 <% respondent.try(:address).tap do |address| %>
 AdditionalAddress<%= respondent_number %> 1: <%= address.try(:building) %>
 AdditionalAddress<%= respondent_number %> 2: <%= address.try(:street) %>
@@ -91,6 +91,6 @@ AdditionalAddress<%= respondent_number %> 3: <%= address.try(:locality) %>
 AdditionalAddress<%= respondent_number %> 4: <%= address.try(:county) %>
 AdditionalPostcode<%= respondent_number %>: <%= address.try(:post_code) %>
 <% end %>
-AdditionalPhoneNumber1: <%= respondent.try(:address_telephone_number) %>
+AdditionalPhoneNumber<%= respondent_number %>: <%= respondent.try(:address_telephone_number) %>
 <% end %>
 <% end %>
