@@ -1,0 +1,96 @@
+ET1 - Online Application to an Employment Tribunal
+
+For Office Use
+
+Received at ET: 29/03/2018
+Case Number:
+Code:
+Initials:
+
+Online Submission Reference: 222000000300
+
+FormVersion: 2
+
+~1.1 Title: Mr
+Title (other):
+~1.2 First Names: First
+~1.3 Surname: Last
+~1.4 Date of Birth: 21/11/1982
+You are: Male
+~1.5 Address:
+Address 1: 102
+Address 2: Petty France
+Address 3: London
+Address 4: Greater London
+Postcode: SW1H 9AJ
+~1.6 Phone number: 01234 567890
+Mobile number: 01234 098765
+~1.7 How would you prefer us to communicate with you?: Email
+E-mail address: test@digital.justice.gov.uk
+
+## Section 2: Respondent's details
+
+~2.1 Give the name of your employer or the organisation or person you are complaining about (the respondent):
+Respondent name: Respondent Name
+~2.2 Address:
+Respondent Address 1: 108
+Respondent Address 2: Regent Street
+Respondent Address 3: London
+Respondent Address 4: Greater London
+Respondent Postcode: SW1H 9QR
+Respondent Phone: 02222 321654
+~2.3 If you worked at an address different from the one you have given at 2.2, please give the full address:
+Alternative Respondent Address1: 110
+Alternative Respondent Address2: Piccadily Circus
+Alternative Respondent Address3: London
+Alternative Respondent Address4: Greater London
+Alternative Postcode: SW1H 9ST
+Alternative Phone: 03333 423554
+
+## Section 8: Your representative
+
+~8.1 Representative's name: Solicitor Name
+~8.2 Name of the representative's organisation: Solicitors Are Us Fake Company
+~8.3 Address:
+Representative's Address 1: 106
+Representative's Address 2: Mayfair
+Representative's Address 3: London
+Representative's Address 4: Greater London
+Representative's Postcode: SW1H 9PP
+~8.4 Representative's Phone number: 01111 123456
+Representative's Mobile number: 02222 654321
+~8.5 Representative's Reference: dx1234567890
+~8.6 How would they prefer us to communicate with them?:
+Representative's E-mail address: solicitor.test@digital.justice.gov.uk
+~8.7 Representative's Occupation:
+
+## Section 10: Multiple cases
+
+~10.2 ET1a Submitted: More than a single claimant
+
+## Section 11: Details of Additional Respondents
+
+Name of your employer of the organisation you are claiming against1:
+Address:
+AdditionalAddress1 1:
+AdditionalAddress1 2:
+AdditionalAddress1 3:
+AdditionalAddress1 4:
+AdditionalPostcode1:
+AdditionalPhoneNumber1:
+Name of your employer of the organisation you are claiming against2:
+Address:
+AdditionalAddress2 1:
+AdditionalAddress2 2:
+AdditionalAddress2 3:
+AdditionalAddress2 4:
+AdditionalPostcode2:
+AdditionalPhoneNumber2:
+Name of your employer of the organisation you are claiming against3:
+Address:
+AdditionalAddress3 1:
+AdditionalAddress3 2:
+AdditionalAddress3 3:
+AdditionalAddress3 4:
+AdditionalPostcode3:
+AdditionalPhoneNumber3:

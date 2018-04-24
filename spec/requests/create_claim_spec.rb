@@ -118,6 +118,33 @@ RSpec.describe 'CreateClaim Request', type: :request do
           expect(File.join(dir, correct_file)).to be_an_xml_file_copy_of(xml_input_filename)
         end
       end
+
+      it 'stores a txt file with the correct filename in the landing folder' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.txt'
+
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
+
+        # Assert - look for the correct file in the landing folder - will be async
+        expect(staging_folder.all_unzipped_filenames).to include(correct_file)
+      end
+
+      it 'produces the correct txt file contents' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.txt'
+
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
+
+        # Assert - look for the correct file in the landing folder - will be async
+        Dir.tmpdir do |dir|
+          staging_folder.extract(correct_file, to: dir)
+          expect(File.read File.join(dir, correct_file)).to be_valid_et1_claim_text
+        end
+      end
     end
   end
 end
