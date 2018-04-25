@@ -87,6 +87,7 @@ RSpec.describe ClaimsExportService do
       let!(:claims) do
         create_list(:claim, 2, :with_pdf_file, :with_xml_file, :with_text_file, :ready_for_export, :with_claimants_text_file, number_of_claimants: 11)
       end
+
       it 'produces a zip file that contains an ET1a txt file for each claim' do
         # Act
         service.export

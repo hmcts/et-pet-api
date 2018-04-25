@@ -5,12 +5,8 @@ module EtApi
     # Note that this is deliberately strict - even to the popint of expecting
     # blank lines etc..
     # This is because it is unknown how the receiving system would react to any differences from the example
-    class BeValidEt1ClaimTextMatcher
+    class BeValidEt1ClaimTextMatcher # rubocop:disable Metrics/ClassLength
       include ::RSpec::Matchers
-      def initialize(options={})
-        self.options = options
-      end
-
       def matches?(actual)
         actual_lines = actual.lines.map { |l| l. gsub(/\n\z/, '') }
         aggregate_failures 'Match content against a standard ET1 Claim Text File' do
@@ -110,23 +106,13 @@ module EtApi
           expect(actual_lines[93]).to eql "AdditionalAddress3 4: "
           expect(actual_lines[94]).to eql "AdditionalPostcode3: "
           expect(actual_lines[95]).to eql "AdditionalPhoneNumber3: "
-
-
-
-
-
-
         end
         true
       end
-
-      private
-
-      attr_accessor :options
     end
   end
 end
 
-def be_valid_et1_claim_text(options={})
-  ::EtApi::Test::BeValidEt1ClaimTextMatcher.new(options)
+def be_valid_et1_claim_text
+  ::EtApi::Test::BeValidEt1ClaimTextMatcher.new
 end

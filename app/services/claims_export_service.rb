@@ -35,11 +35,15 @@ class ClaimsExportService
   def export_claims(to:)
     claims_to_export.each do |claim_export|
       claim_exports << claim_export
-      export_pdf_file(claim: claim_export.claim, to: to)
-      export_xml_file(claim: claim_export.claim, to: to)
-      export_text_file(claim: claim_export.claim, to: to)
-      export_claimants_text_file(claim: claim_export.claim, to: to) if claim_export.claim.claimants.count > 1
+      export_files(claim_export.claim, to: to)
     end
+  end
+
+  def export_files(claim, to:)
+    export_pdf_file(claim: claim, to: to)
+    export_xml_file(claim: claim, to: to)
+    export_text_file(claim: claim, to: to)
+    export_claimants_text_file(claim: claim, to: to) if claim.claimants.count > 1
   end
 
   def mark_claims_as_exported

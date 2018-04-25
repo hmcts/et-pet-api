@@ -645,16 +645,16 @@ RSpec.describe ClaimXmlImportService do
         # Assert
         claim = Claim.where(reference: reference).first
         expect(claim.claimants).to contain_exactly an_object_having_attributes(title: 'Mr', first_name: 'First', last_name: 'Last'),
-                                                   an_object_having_attributes(title: 'Mrs', first_name: 'tamara', last_name: 'swift'),
-                                                   an_object_having_attributes(title: 'Mr', first_name: 'diana', last_name: 'flatley'),
-                                                   an_object_having_attributes(title: 'Ms', first_name: 'mariana', last_name: 'mccullough'),
-                                                   an_object_having_attributes(title: 'Mr', first_name: 'eden', last_name: 'upton'),
-                                                   an_object_having_attributes(title: 'Miss', first_name: 'annie', last_name: 'schulist'),
-                                                   an_object_having_attributes(title: 'Mrs', first_name: 'thad', last_name: 'johns'),
-                                                   an_object_having_attributes(title: 'Miss', first_name: 'coleman', last_name: 'kreiger'),
-                                                   an_object_having_attributes(title: 'Ms', first_name: 'jensen', last_name: 'deckow'),
-                                                   an_object_having_attributes(title: 'Mr', first_name: 'darien', last_name: 'bahringer'),
-                                                   an_object_having_attributes(title: 'Mrs', first_name: 'eulalia', last_name: 'hammes')
+          an_object_having_attributes(title: 'Mrs', first_name: 'tamara', last_name: 'swift'),
+          an_object_having_attributes(title: 'Mr', first_name: 'diana', last_name: 'flatley'),
+          an_object_having_attributes(title: 'Ms', first_name: 'mariana', last_name: 'mccullough'),
+          an_object_having_attributes(title: 'Mr', first_name: 'eden', last_name: 'upton'),
+          an_object_having_attributes(title: 'Miss', first_name: 'annie', last_name: 'schulist'),
+          an_object_having_attributes(title: 'Mrs', first_name: 'thad', last_name: 'johns'),
+          an_object_having_attributes(title: 'Miss', first_name: 'coleman', last_name: 'kreiger'),
+          an_object_having_attributes(title: 'Ms', first_name: 'jensen', last_name: 'deckow'),
+          an_object_having_attributes(title: 'Mr', first_name: 'darien', last_name: 'bahringer'),
+          an_object_having_attributes(title: 'Mrs', first_name: 'eulalia', last_name: 'hammes')
 
       end
 
@@ -678,8 +678,6 @@ RSpec.describe ClaimXmlImportService do
         expect(uploaded_file.file.download).to be_valid_et1a_claim_text
       end
     end
-
-
 
     # @TODO Make sure validation is covered
   end

@@ -118,7 +118,7 @@ RSpec.describe Claim, type: :model do
       claim = described_class.find(id)
 
       # Act - make a change
-      claim.claimant_count=100
+      claim.claimant_count = 100
       claim.save(validate: false)
 
       # Assert - Make sure it is correct

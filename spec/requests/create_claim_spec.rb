@@ -142,7 +142,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
         # Assert - look for the correct file in the landing folder - will be async
         Dir.tmpdir do |dir|
           staging_folder.extract(correct_file, to: dir)
-          expect(File.read File.join(dir, correct_file)).to be_valid_et1_claim_text
+          expect(File.read(File.join(dir, correct_file))).to be_valid_et1_claim_text
         end
       end
     end
