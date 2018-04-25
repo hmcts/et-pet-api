@@ -65,6 +65,15 @@ RSpec.describe ClaimsExportService do
       expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
     end
 
+    it 'produces a zip file that does not contain the additional claimants text file' do
+      # Act
+      service.export
+
+      # Assert
+      expected_filenames = claims.map { |c| "#{c.reference}_ET1a_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.txt" }
+      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).not_to include(*expected_filenames)
+    end
+
     it 'produces only one zip file when called twice' do
       run_twice = lambda do
         described_class.new.export
@@ -72,6 +81,20 @@ RSpec.describe ClaimsExportService do
       end
 
       expect(&run_twice).to change(ExportedFile, :count).by(1)
+    end
+
+    context 'with multiple claimants from a CSV file' do
+      let!(:claims) do
+        create_list(:claim, 2, :with_pdf_file, :with_xml_file, :with_text_file, :ready_for_export, :with_claimants_text_file, number_of_claimants: 11)
+      end
+      it 'produces a zip file that contains an ET1a txt file for each claim' do
+        # Act
+        service.export
+
+        # Assert
+        expected_filenames = claims.map { |c| "#{c.reference}_ET1a_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.txt" }
+        expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+      end
     end
 
     context 'with nothing to process' do

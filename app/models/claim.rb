@@ -12,6 +12,7 @@ class Claim < ApplicationRecord
   has_many :representatives, through: :claim_representatives
   has_many :uploaded_files, through: :claim_uploaded_files
 
+  before_save :cache_claimant_count
   # @TODO RST-1080 Refactoring Tasks - 'uploaded_files' really needs renaming as these files are not only
   #   uploaded files but can be generated internally too
 
@@ -32,5 +33,11 @@ class Claim < ApplicationRecord
   # @return [Claimant, nil] The primary claimant if it exists
   def primary_claimant
     claimants.first
+  end
+
+  private
+
+  def cache_claimant_count
+    self.claimant_count = claimants.length
   end
 end

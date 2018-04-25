@@ -34,7 +34,14 @@ class ClaimExportService
   #
   # @return [UploadedFile] The text file
   def export_txt
-    claim.uploaded_files.detect { |f| f.filename.ends_with?('.txt') }
+    claim.uploaded_files.detect { |f| f.filename.starts_with?('et1_') && f.filename.ends_with?('.txt') }
+  end
+
+  # Exports the claimants text file for use by ClaimsExportService (produces ET1a txt file)
+  #
+  # @return [UploadedFile] The text file
+  def export_claimants_txt
+    claim.uploaded_files.detect { |f| f.filename.starts_with?('et1a') && f.filename.ends_with?('.txt') }
   end
 
   attr_accessor :claim, :claim_exports

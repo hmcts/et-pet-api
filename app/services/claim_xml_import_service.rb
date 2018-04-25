@@ -35,7 +35,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
   #
   # @return [Array<Hash>] An array of hashes like { filename: xxx, checksum: yyy }
   def files
-    root['Files'].map do |_, node|
+    collection(root, 'Files').map do |node|
       { filename: node['Filename'], checksum: node['Checksum'] }
     end
   end
@@ -46,6 +46,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
   def import
     claim = Claim.new(converted_root_data.merge(converted_associated_data))
     add_file :text_file, to: claim
+    add_file :claimants_text_file, to: claim if claim.claimants.length > 1
     claim.save!
     claim
   end
@@ -144,7 +145,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
 
   def file_for_data
     claimant = converted_claimants_data.first
-    filename = "ET1_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.xml"
+    filename = "et1_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.xml"
     {
       filename: filename,
       file: raw_file_for_data(filename)
@@ -161,7 +162,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
 
   def text_file(claim)
     claimant = claim.claimants.first
-    filename = "ET1_#{claimant.first_name.tr(' ', '_')}_#{claimant.last_name}.txt"
+    filename = "et1_#{claimant.first_name.tr(' ', '_')}_#{claimant.last_name}.txt"
     {
       filename: filename,
       file: raw_text_file(filename, claim: claim)
@@ -175,6 +176,27 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
         primary_respondent: claim.respondents.first,
         primary_representative: claim.representatives.first,
         additional_respondents: claim.respondents[1..-1]
+      }
+      file.rewind
+    end
+    ActionDispatch::Http::UploadedFile.new filename: filename, tempfile: tempfile, type: 'text/xml'
+  end
+
+  def claimants_text_file(claim)
+    claimant = claim.claimants.first
+    filename = "et1a_#{claimant.first_name.tr(' ', '_')}_#{claimant.last_name}.txt"
+    {
+      filename: filename,
+      file: raw_claimants_text_file(filename, claim: claim)
+    }
+  end
+
+  def raw_claimants_text_file(filename, claim:)
+    tempfile = Tempfile.new.tap do |file|
+      file.write ApplicationController.render "api/v1/claims/export_claimants.txt.erb", locals: {
+        claim: claim, primary_claimant: claim.claimants.first,
+        secondary_claimants: claim.claimants[1..-1],
+        primary_respondent: claim.respondents.first
       }
       file.rewind
     end
