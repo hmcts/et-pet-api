@@ -76,7 +76,7 @@ Representative's E-mail address: <%= rep.email_address %>
 
 ## Section 10: Multiple cases
 
-~10.2 ET1a Submitted: More than a single claimant
+~10.2 ET1a Submitted: <%= claim.claimants.length > 1 ? 'Yes' : '' %>
 
 ## Section 11: Details of Additional Respondents
 

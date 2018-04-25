@@ -7,6 +7,10 @@ module EtApi
     # This is because it is unknown how the receiving system would react to any differences from the example
     class BeValidEt1ClaimTextMatcher # rubocop:disable Metrics/ClassLength
       include ::RSpec::Matchers
+      def initialize(multiple_claimants: false)
+        self.multiple_claimants = multiple_claimants
+      end
+
       def matches?(actual)
         actual_lines = actual.lines.map { |l| l. gsub(/\n\z/, '') }
         aggregate_failures 'Match content against a standard ET1 Claim Text File' do
@@ -78,7 +82,11 @@ module EtApi
           expect(actual_lines[65]).to eql ""
           expect(actual_lines[66]).to eql "## Section 10: Multiple cases"
           expect(actual_lines[67]).to eql ""
-          expect(actual_lines[68]).to eql "~10.2 ET1a Submitted: More than a single claimant"
+          if multiple_claimants
+            expect(actual_lines[68]).to eql "~10.2 ET1a Submitted: Yes"
+          else
+            expect(actual_lines[68]).to eql "~10.2 ET1a Submitted: "
+          end
           expect(actual_lines[69]).to eql ""
           expect(actual_lines[70]).to eql "## Section 11: Details of Additional Respondents"
           expect(actual_lines[71]).to eql ""
@@ -109,10 +117,14 @@ module EtApi
         end
         true
       end
+
+      private
+
+      attr_accessor :multiple_claimants
     end
   end
 end
 
-def be_valid_et1_claim_text
-  ::EtApi::Test::BeValidEt1ClaimTextMatcher.new
+def be_valid_et1_claim_text(*args)
+  ::EtApi::Test::BeValidEt1ClaimTextMatcher.new(*args)
 end
