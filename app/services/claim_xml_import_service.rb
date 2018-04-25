@@ -13,14 +13,6 @@ require 'action_dispatch/http/upload'
 # length as I don't want to split this XML import code up as it will end up being removed soon when we go to
 # API V2
 class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
-  REPRESENTATIVE_TYPE_MAPPINGS = {
-    'CAB' => 'citizen_advice_bureau', 'FRU' => 'free_representation_unit',
-    'Law Centre' => 'law_centre', 'Union' => 'trade_union',
-    'Solicitor' => 'solicitor', 'Private Individual' => 'private_individual',
-    'Trade Association' => 'trade_association', 'Other' => 'other'
-  }.freeze
-  private_constant :REPRESENTATIVE_TYPE_MAPPINGS
-
   attr_accessor :uploaded_files
 
   # Creates an instance of this service for use
@@ -114,7 +106,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
         name: r['Name'], organisation_name: r['Organisation'],
         address_attributes: convert_address_data(r, 'Address'), address_telephone_number: r['OfficeNumber'],
         mobile_number: r['AltPhoneNumber'], email_address: r['Email'],
-        representative_type: convert_representative_type(r['Type']), dx_number: r['DXNumber']
+        representative_type: r['Type'], dx_number: r['DXNumber']
       }
     end
   end
@@ -127,10 +119,6 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
         file: uploaded_files.dig(filename, :file)
       }
     end + [file_for_data]
-  end
-
-  def convert_representative_type(rep_type)
-    REPRESENTATIVE_TYPE_MAPPINGS[rep_type]
   end
 
   def root

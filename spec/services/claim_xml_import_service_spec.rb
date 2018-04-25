@@ -236,7 +236,7 @@ RSpec.describe ClaimXmlImportService do
                                                                                      address_telephone_number: '01111 123456',
                                                                                      mobile_number: '02222 654321',
                                                                                      email_address: 'solicitor.test@digital.justice.gov.uk',
-                                                                                     representative_type: 'solicitor',
+                                                                                     representative_type: 'Solicitor',
                                                                                      dx_number: 'dx1234567890'
 
       end

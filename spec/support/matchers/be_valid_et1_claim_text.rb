@@ -74,7 +74,7 @@ module EtApi
           expect(actual_lines[61]).to eql "~8.5 Representative's Reference: dx1234567890"
           expect(actual_lines[62]).to eql "~8.6 How would they prefer us to communicate with them?:"
           expect(actual_lines[63]).to eql "Representative's E-mail address: solicitor.test@digital.justice.gov.uk"
-          expect(actual_lines[64]).to eql "~8.7 Representative's Occupation:"
+          expect(actual_lines[64]).to eql "~8.7 Representative's Occupation: Solicitor"
           expect(actual_lines[65]).to eql ""
           expect(actual_lines[66]).to eql "## Section 10: Multiple cases"
           expect(actual_lines[67]).to eql ""
