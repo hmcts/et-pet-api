@@ -118,9 +118,11 @@ RSpec.describe ClaimXmlImportService do
       }
     }
   end
+  let(:mock_file_builder_class) { class_spy('ClaimFileBuilderService', new: mock_file_builder_service) }
+  let(:mock_file_builder_service) { instance_spy('ClaimFileBuilderService') }
 
   describe '#files' do
-    subject(:service) { described_class.new(simple_example_data) }
+    subject(:service) { described_class.new(simple_example_data, file_builder_service: mock_file_builder_class) }
 
     it 'fetches the value from the xml data' do
       # Act
@@ -132,7 +134,7 @@ RSpec.describe ClaimXmlImportService do
   end
 
   describe '#uploaded_files=' do
-    subject(:service) { described_class.new(simple_example_data) }
+    subject(:service) { described_class.new(simple_example_data, file_builder_service: mock_file_builder_class) }
 
     it 'persists them in the instance' do
       service.uploaded_files = { anything: :goes }
@@ -141,164 +143,146 @@ RSpec.describe ClaimXmlImportService do
   end
 
   describe 'import' do
-    subject(:service) { described_class.new(simple_example_data).tap { |s| s.uploaded_files = simple_example_input_files } }
+    subject(:service) { described_class.new(simple_example_data, file_builder_service: mock_file_builder_class).tap { |s| s.uploaded_files = simple_example_input_files } }
 
-    it 'creates a new claim' do
-      expect { service.import }.to change(Claim, :count).by(1)
-    end
+    context 'with single claimant, respondent and representative' do
+      it 'creates a new claim' do
+        expect { service.import }.to change(Claim, :count).by(1)
+      end
 
-    it 'converts the root data correctly' do
-      # Act
-      service.import
+      it 'converts the root data correctly' do
+        # Act
+        service.import
 
-      # Assert
-      claim = Claim.where(reference: reference).first
-      expect(claim).to have_attributes reference: reference,
-                                       submission_reference: 'J704-ZK5E',
-                                       claimant_count: 1,
-                                       submission_channel: 'Web',
-                                       case_type: 'Single',
-                                       jurisdiction: 2,
-                                       office_code: 22,
-                                       date_of_receipt: Time.zone.parse('2018-03-29T16:46:26+01:00'),
-                                       administrator: false
-    end
+        # Assert
+        claim = Claim.where(reference: reference).first
+        expect(claim).to have_attributes reference: reference,
+                                         submission_reference: 'J704-ZK5E',
+                                         claimant_count: 1,
+                                         submission_channel: 'Web',
+                                         case_type: 'Single',
+                                         jurisdiction: 2,
+                                         office_code: 22,
+                                         date_of_receipt: Time.zone.parse('2018-03-29T16:46:26+01:00'),
+                                         administrator: false
+      end
 
-    it 'converts the claimants correctly' do
-      # Act
-      service.import
+      it 'converts the claimants correctly' do
+        # Act
+        service.import
 
-      # Assert
-      claim = Claim.where(reference: reference).first
-      expect(claim.claimants).to contain_exactly an_object_having_attributes title: 'Mr',
-                                                                             first_name: 'First',
-                                                                             last_name: 'Last',
-                                                                             address: an_object_having_attributes(
-                                                                               building: '102',
-                                                                               street: 'Petty France',
-                                                                               locality: 'London',
-                                                                               county: 'Greater London',
-                                                                               post_code: 'SW1H 9AJ'
-                                                                             ),
-                                                                             address_telephone_number: '01234 567890',
-                                                                             mobile_number: '01234 098765',
-                                                                             email_address: 'test@digital.justice.gov.uk',
-                                                                             contact_preference: 'Email',
-                                                                             gender: 'Male',
-                                                                             date_of_birth: Date.parse('21/11/1982')
-    end
-
-    it 'converts the respondents correctly' do
-      # Act
-      service.import
-
-      # Assert
-      claim = Claim.where(reference: reference).first
-      expect(claim.respondents).to contain_exactly an_object_having_attributes name: 'Respondent Name',
+        # Assert
+        claim = Claim.where(reference: reference).first
+        expect(claim.claimants).to contain_exactly an_object_having_attributes title: 'Mr',
+                                                                               first_name: 'First',
+                                                                               last_name: 'Last',
                                                                                address: an_object_having_attributes(
-                                                                                 building: '108',
-                                                                                 street: 'Regent Street',
+                                                                                 building: '102',
+                                                                                 street: 'Petty France',
                                                                                  locality: 'London',
                                                                                  county: 'Greater London',
-                                                                                 post_code: 'SW1H 9QR'
+                                                                                 post_code: 'SW1H 9AJ'
                                                                                ),
-                                                                               work_address_telephone_number: '03333 423554',
-                                                                               address_telephone_number: '02222 321654',
-                                                                               acas_number: 'AC123456/78/90',
-                                                                               work_address: an_object_having_attributes(
-                                                                                 building: '110',
-                                                                                 street: 'Piccadily Circus',
-                                                                                 locality: 'London',
-                                                                                 county: 'Greater London',
-                                                                                 post_code: 'SW1H 9ST'
-                                                                               ),
-                                                                               alt_phone_number: '03333 423554'
-    end
+                                                                               address_telephone_number: '01234 567890',
+                                                                               mobile_number: '01234 098765',
+                                                                               email_address: 'test@digital.justice.gov.uk',
+                                                                               contact_preference: 'Email',
+                                                                               gender: 'Male',
+                                                                               date_of_birth: Date.parse('21/11/1982')
+      end
 
-    it 'converts the representatives correctly' do
-      # Act
-      service.import
+      it 'converts the respondents correctly' do
+        # Act
+        service.import
 
-      # Assert
-      claim = Claim.where(reference: reference).first
-      expect(claim.representatives).to contain_exactly an_object_having_attributes name: 'Solicitor Name',
-                                                                                   organisation_name: 'Solicitors Are Us Fake Company',
-                                                                                   address: an_object_having_attributes(
-                                                                                     building: '106',
-                                                                                     street: 'Mayfair',
-                                                                                     locality: 'London',
-                                                                                     county: 'Greater London',
-                                                                                     post_code: 'SW1H 9PP'
-                                                                                   ),
-                                                                                   address_telephone_number: '01111 123456',
-                                                                                   mobile_number: '02222 654321',
-                                                                                   email_address: 'solicitor.test@digital.justice.gov.uk',
-                                                                                   representative_type: 'solicitor',
-                                                                                   dx_number: 'dx1234567890'
+        # Assert
+        claim = Claim.where(reference: reference).first
+        expect(claim.respondents).to contain_exactly an_object_having_attributes name: 'Respondent Name',
+                                                                                 address: an_object_having_attributes(
+                                                                                   building: '108',
+                                                                                   street: 'Regent Street',
+                                                                                   locality: 'London',
+                                                                                   county: 'Greater London',
+                                                                                   post_code: 'SW1H 9QR'
+                                                                                 ),
+                                                                                 work_address_telephone_number: '03333 423554',
+                                                                                 address_telephone_number: '02222 321654',
+                                                                                 acas_number: 'AC123456/78/90',
+                                                                                 work_address: an_object_having_attributes(
+                                                                                   building: '110',
+                                                                                   street: 'Piccadily Circus',
+                                                                                   locality: 'London',
+                                                                                   county: 'Greater London',
+                                                                                   post_code: 'SW1H 9ST'
+                                                                                 ),
+                                                                                 alt_phone_number: '03333 423554'
+      end
 
-    end
+      it 'converts the representatives correctly' do
+        # Act
+        service.import
 
-    it 'converts the files correctly' do
-      # Act
-      service.import
+        # Assert
+        claim = Claim.where(reference: reference).first
+        expect(claim.representatives).to contain_exactly an_object_having_attributes name: 'Solicitor Name',
+                                                                                     organisation_name: 'Solicitors Are Us Fake Company',
+                                                                                     address: an_object_having_attributes(
+                                                                                       building: '106',
+                                                                                       street: 'Mayfair',
+                                                                                       locality: 'London',
+                                                                                       county: 'Greater London',
+                                                                                       post_code: 'SW1H 9PP'
+                                                                                     ),
+                                                                                     address_telephone_number: '01111 123456',
+                                                                                     mobile_number: '02222 654321',
+                                                                                     email_address: 'solicitor.test@digital.justice.gov.uk',
+                                                                                     representative_type: 'solicitor',
+                                                                                     dx_number: 'dx1234567890'
 
-      # Assert
+      end
 
-      claim = Claim.find_by(reference: reference)
-      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_first_last.pdf',
-                                                                          checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
-                                                                          file: be_a_stored_file
-    end
+      it 'converts the files correctly' do
+        # Act
+        service.import
 
-    it 'stores the xml in a file' do
-      # Act
-      service.import
+        # Assert
 
-      # Assert
-      claim = Claim.find_by(reference: reference)
-      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_First_Last.xml',
-                                                                          file: be_a_stored_file
-    end
+        claim = Claim.find_by(reference: reference)
+        expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_first_last.pdf',
+                                                                            checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
+                                                                            file: be_a_stored_file
+      end
 
-    it 'stores the xml as a byte for byte copy' do
-      # Act
-      service.import
+      it 'stores the xml in a file' do
+        # Act
+        service.import
 
-      # Assert
-      claim = Claim.find_by(reference: reference)
-      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_First_Last.xml',
-                                                                          file: be_a_stored_file_with_contents(simple_example_data)
-    end
+        # Assert
+        claim = Claim.find_by(reference: reference)
+        expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_First_Last.xml',
+                                                                            file: be_a_stored_file
+      end
 
-    it 'stores an ET1 txt file with the correct filename' do
-      # Act
-      service.import
+      it 'stores the xml as a byte for byte copy' do
+        # Act
+        service.import
 
-      # Assert
-      claim = Claim.find_by(reference: reference)
-      expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_First_Last.txt',
-                                                                          file: be_a_stored_file
+        # Assert
+        claim = Claim.find_by(reference: reference)
+        expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_First_Last.xml',
+                                                                            file: be_a_stored_file_with_contents(simple_example_data)
+      end
 
-    end
+      it 'calls the file builder to build the rest' do
+        # Act
+        service.import
 
-    it 'stores an ET1 txt file with the correct contents' do
-      # Act
-      service.import
-
-      # Assert
-      claim = Claim.find_by(reference: reference)
-      uploaded_file = claim.uploaded_files.where(filename: 'et1_First_Last.txt').first
-      expect(uploaded_file.file.download).to be_valid_et1_claim_text
-    end
-
-    it 'does not store an ET1a txt file' do
-      # Act
-      service.import
-
-      # Assert
-      claim = Claim.find_by(reference: reference)
-      uploaded_file = claim.uploaded_files.where(filename: 'et1a_First_Last.txt').first
-      expect(uploaded_file).to be_nil
+        # Assert
+        aggregate_failures 'ensure file builder was called with a claim' do
+          expect(mock_file_builder_class).to have_received(:new).with(an_instance_of(Claim))
+          expect(mock_file_builder_service).to have_received(:call)
+        end
+      end
     end
 
     context 'with > 7 claimants uploaded via csv file from front end' do
@@ -658,24 +642,15 @@ RSpec.describe ClaimXmlImportService do
 
       end
 
-      it 'stores an ET1a txt file with the correct filename' do
+      it 'calls the file builder to build the rest' do
         # Act
         service.import
 
         # Assert
-        claim = Claim.find_by(reference: reference)
-        expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1a_First_Last.txt',
-                                                                            file: be_a_stored_file
-      end
-
-      it 'stores an ET1a txt file with the correct contents' do
-        # Act
-        service.import
-
-        # Assert
-        claim = Claim.find_by(reference: reference)
-        uploaded_file = claim.uploaded_files.where(filename: 'et1a_First_Last.txt').first
-        expect(uploaded_file.file.download).to be_valid_et1a_claim_text
+        aggregate_failures 'ensure file builder was called with a claim' do
+          expect(mock_file_builder_class).to have_received(:new).with(an_instance_of(Claim))
+          expect(mock_file_builder_service).to have_received(:call)
+        end
       end
     end
 
