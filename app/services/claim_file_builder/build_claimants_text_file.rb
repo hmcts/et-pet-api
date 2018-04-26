@@ -9,7 +9,7 @@ module ClaimFileBuilder
 
     def self.raw_claimants_text_file(filename, claim:)
       tempfile = Tempfile.new.tap do |file|
-        file.write ApplicationController.render "api/v1/claims/export_claimants.txt.erb", locals: {
+        file.write ApplicationController.render "file_builders/export_claimants.txt.erb", locals: {
           claim: claim, primary_claimant: claim.claimants.first,
           secondary_claimants: claim.claimants[1..-1],
           primary_respondent: claim.respondents.first
