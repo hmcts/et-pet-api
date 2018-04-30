@@ -40,11 +40,12 @@ class ClaimsExportService
   end
 
   def export_files(claim, to:)
-    export_pdf_file(claim: claim, to: to)
-    export_xml_file(claim: claim, to: to)
-    export_text_file(claim: claim, to: to)
-    export_claimants_text_file(claim: claim, to: to) if claim.claimants.count > 1
-    export_claimants_csv_file(claim: claim, to: to) if claim_has_claimants_csv?(claim: claim)
+    export_file(claim: claim, to: to, prefix: 'ET1', ext: :pdf, type: :pdf)
+    export_file(claim: claim, to: to, prefix: 'ET1', ext: :xml, type: :xml)
+    export_file(claim: claim, to: to, prefix: 'ET1', ext: :txt, type: :txt)
+    export_file(claim: claim, to: to, prefix: 'ET1a', ext: :txt, type: :claimants_txt) if claim.claimants.count > 1
+    export_file(claim: claim, to: to, prefix: 'ET1a', ext: :csv, type: :claimants_csv) if claim_has_csv?(claim: claim)
+    export_file(claim: claim, to: to, prefix: 'ET1_Attachment', ext: :rtf, type: :rtf) if claim_has_rtf?(claim: claim)
   end
 
   def mark_claims_as_exported
@@ -52,39 +53,11 @@ class ClaimsExportService
     claims_to_export.where(id: claim_exports.map(&:id)).delete_all
   end
 
-  def export_pdf_file(claim:, to:)
-    stored_file = claim_export_service.new(claim).export_pdf
+  def export_file(claim:, to:, prefix:, ext:, type:)
+    stored_file = claim_export_service.new(claim).send(:"export_#{type}")
     primary_claimant = claim.primary_claimant
-    pdf_fn = "#{claim.reference}_ET1_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.pdf"
-    stored_file.download_blob_to File.join(to, pdf_fn)
-  end
-
-  def export_xml_file(claim:, to:)
-    stored_file = claim_export_service.new(claim).export_xml
-    primary_claimant = claim.primary_claimant
-    xml_fn = "#{claim.reference}_ET1_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.xml"
-    stored_file.download_blob_to File.join(to, xml_fn)
-  end
-
-  def export_text_file(claim:, to:)
-    stored_file = claim_export_service.new(claim).export_txt
-    primary_claimant = claim.primary_claimant
-    txt_fn = "#{claim.reference}_ET1_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.txt"
-    stored_file.download_blob_to File.join(to, txt_fn)
-  end
-
-  def export_claimants_text_file(claim:, to:)
-    stored_file = claim_export_service.new(claim).export_claimants_txt
-    primary_claimant = claim.primary_claimant
-    txt_fn = "#{claim.reference}_ET1a_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.txt"
-    stored_file.download_blob_to File.join(to, txt_fn)
-  end
-
-  def export_claimants_csv_file(claim:, to:)
-    stored_file = claim_export_service.new(claim).export_claimants_csv
-    primary_claimant = claim.primary_claimant
-    csv_fn = "#{claim.reference}_ET1a_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.csv"
-    stored_file.download_blob_to File.join(to, csv_fn)
+    fn = "#{claim.reference}_#{prefix}_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.#{ext}"
+    stored_file.download_blob_to File.join(to, fn)
   end
 
   def zip_files(from:)
@@ -109,7 +82,11 @@ class ClaimsExportService
     end
   end
 
-  def claim_has_claimants_csv?(claim:)
+  def claim_has_csv?(claim:)
     claim.uploaded_files.any? { |f| f.filename.starts_with?('et1a') && f.filename.ends_with?('.csv') }
+  end
+
+  def claim_has_rtf?(claim:)
+    claim.uploaded_files.any? { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.rtf') }
   end
 end

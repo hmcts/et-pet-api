@@ -231,5 +231,38 @@ RSpec.describe 'CreateClaim Request', type: :request do
         end
       end
     end
+
+    context 'with xml for single claimant, single respondent and representative - with rtf file uploaded' do
+      let(:xml_input_filename) { File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user_with_rtf.xml'), __FILE__) }
+      let(:rtf_file) { File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user_with_rtf.rtf'), __FILE__) }
+
+      def perform_action
+        file_name = 'et1_first_last.pdf'
+        uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
+        uploaded_rtf_file = fixture_file_upload(rtf_file)
+        xml_data = File.read(xml_input_filename)
+        post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file, 'simple_user_with_rtf.rtf' => uploaded_rtf_file }, headers: default_headers
+      end
+
+      include_examples 'any claim variation'
+      context 'with staging folder visibility' do
+        include_context 'with staging folder visibility'
+
+        it 'stores the rtf file with the correct filename and is a copy of the original' do
+          # Arrange - Determine what the correct file should be
+          correct_file = '222000000300_ET1_Attachment_First_Last.rtf'
+
+          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+          perform_action
+          force_export_now
+
+          # Assert - look for the correct file in the landing folder - will be async
+          Dir.mktmpdir do |dir|
+            staging_folder.extract(correct_file, to: File.join(dir, correct_file))
+            expect(File.join(dir, correct_file)).to be_a_file_copy_of(rtf_file)
+          end
+        end
+      end
+    end
   end
 end

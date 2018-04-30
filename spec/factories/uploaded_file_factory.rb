@@ -24,6 +24,14 @@ FactoryBot.define do
       end
     end
 
+    trait :example_claim_rtf do
+      filename 'et1_attachment_first_last.rtf'
+      checksum 'ee2714b8b731a8c1e95dffaa33f89728'
+      after(:build) do |uploaded_file, _evaluator|
+        uploaded_file.file.attach(Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf'), 'application/rtf'))
+      end
+    end
+
     trait :example_claim_claimants_text do
       filename 'et1a_first_last.txt'
       checksum 'ee2714b8b731a8c1e95dffaa33f89728'
