@@ -18,6 +18,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       }
     end
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
+
     shared_context 'with staging folder visibility' do
       def force_export_now
         ClaimsExportWorker.new.perform
