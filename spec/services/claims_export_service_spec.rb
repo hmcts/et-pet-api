@@ -85,7 +85,7 @@ RSpec.describe ClaimsExportService do
 
     context 'with multiple claimants from a CSV file' do
       let!(:claims) do
-        create_list(:claim, 2, :with_pdf_file, :with_xml_file, :with_text_file, :ready_for_export, :with_claimants_text_file, number_of_claimants: 11)
+        create_list(:claim, 2, :with_pdf_file, :with_xml_file, :with_text_file, :ready_for_export, :with_claimants_text_file, :with_claimants_csv_file, number_of_claimants: 11)
       end
 
       it 'produces a zip file that contains an ET1a txt file for each claim' do
@@ -94,6 +94,15 @@ RSpec.describe ClaimsExportService do
 
         # Assert
         expected_filenames = claims.map { |c| "#{c.reference}_ET1a_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.txt" }
+        expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+      end
+
+      it 'produces a zip file that contains an ET1a csv file for each claim' do
+        # Act
+        service.export
+
+        # Assert
+        expected_filenames = claims.map { |c| "#{c.reference}_ET1a_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.csv" }
         expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
       end
     end

@@ -44,6 +44,7 @@ class ClaimsExportService
     export_xml_file(claim: claim, to: to)
     export_text_file(claim: claim, to: to)
     export_claimants_text_file(claim: claim, to: to) if claim.claimants.count > 1
+    export_claimants_csv_file(claim: claim, to: to) if claim_has_claimants_csv?(claim: claim)
   end
 
   def mark_claims_as_exported
@@ -79,6 +80,13 @@ class ClaimsExportService
     stored_file.download_blob_to File.join(to, txt_fn)
   end
 
+  def export_claimants_csv_file(claim:, to:)
+    stored_file = claim_export_service.new(claim).export_claimants_csv
+    primary_claimant = claim.primary_claimant
+    csv_fn = "#{claim.reference}_ET1a_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.csv"
+    stored_file.download_blob_to File.join(to, csv_fn)
+  end
+
   def zip_files(from:)
     input_filenames = Dir.glob(File.join(from, '*'))
     ::Zip::File.open(zip_filename, ::Zip::File::CREATE) do |zipfile|
@@ -99,5 +107,9 @@ class ClaimsExportService
       file_attributes = { io: file, filename: filename, content_type: "application/zip" }
       exported_file.create!(file_attributes: file_attributes, filename: filename)
     end
+  end
+
+  def claim_has_claimants_csv?(claim:)
+    claim.uploaded_files.any? {|f| f.filename.starts_with?('et1a') && f.filename.ends_with?('.csv')}
   end
 end

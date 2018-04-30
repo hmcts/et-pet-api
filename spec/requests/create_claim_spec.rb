@@ -174,13 +174,13 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
     context 'with xml for multiple claimants, single respondent and representative - with csv file uploaded' do
       let(:xml_input_filename) { File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user_with_csv.xml'), __FILE__) }
+      let(:csv_file) { File.absolute_path(File.join('..', '..', 'fixtures', "simple_user_with_csv_group_claims.csv"), __FILE__) }
 
       def perform_action
         file_name = 'et1_first_last.pdf'
         uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
-        csv_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', "simple_user_with_csv_group_claims.csv"), __FILE__))
         xml_data = File.read(xml_input_filename)
-        post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file, "simple_user_with_csv_group_claims.csv" => csv_file }, headers: default_headers
+        post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file, "simple_user_with_csv_group_claims.csv" => fixture_file_upload(csv_file) }, headers: default_headers
       end
 
       include_examples 'any claim variation'
@@ -200,6 +200,21 @@ RSpec.describe 'CreateClaim Request', type: :request do
           Dir.mktmpdir do |dir|
             staging_folder.extract(correct_file, to: File.join(dir, correct_file))
             expect(File.read(File.join(dir, correct_file))).to be_valid_et1_claim_text(multiple_claimants: true)
+          end
+        end
+
+        it 'stores the csv file' do
+          # Arrange - Determine what the correct file should be
+          correct_file = '222000000300_ET1a_First_Last.csv'
+
+          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+          perform_action
+          force_export_now
+
+          # Assert - look for the correct file in the landing folder - will be async
+          Dir.mktmpdir do |dir|
+            staging_folder.extract(correct_file, to: File.join(dir, correct_file))
+            expect(File.join(dir, correct_file)).to be_a_file_copy_of(csv_file)
           end
         end
 

@@ -39,6 +39,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
   def import
     claim = Claim.new(converted_root_data.merge(converted_associated_data))
     file_builder_service.new(claim).call
+    rename_csv_file(claim: claim)
     claim.save!
     claim
   end
@@ -119,6 +120,13 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
         file: uploaded_files.dig(filename, :file)
       }
     end + [file_for_data]
+  end
+
+  def rename_csv_file(claim:)
+    file = claim.uploaded_files.detect { |f| f.filename.ends_with?('.csv') }
+    return if file.nil?
+    claimant = claim.primary_claimant
+    file.filename = "et1a_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.csv"
   end
 
   def root

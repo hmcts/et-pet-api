@@ -601,6 +601,11 @@ RSpec.describe ClaimXmlImportService do
             filename: 'et1_first_last.pdf',
             checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
             file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf')
+          },
+          'simple_user_with_csv_group_claims.csv' => {
+            filename: 'simple_user_with_csv_group_claims.csv',
+            checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
+            file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims.csv'), 'text/csv')
           }
         }
       end
@@ -639,7 +644,22 @@ RSpec.describe ClaimXmlImportService do
           an_object_having_attributes(title: 'Ms', first_name: 'jensen', last_name: 'deckow'),
           an_object_having_attributes(title: 'Mr', first_name: 'darien', last_name: 'bahringer'),
           an_object_having_attributes(title: 'Mrs', first_name: 'eulalia', last_name: 'hammes')
+      end
 
+      it 'converts the files correctly with the csv renamed' do
+        # Act
+        service.import
+
+        # Assert
+
+        claim = Claim.find_by(reference: reference)
+        expect(claim.uploaded_files).to include \
+          an_object_having_attributes(filename: 'et1_first_last.pdf',
+                                      checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
+                                      file: be_a_stored_file),
+          an_object_having_attributes(filename: 'et1a_First_Last.csv',
+                                      checksum: '7ac66d9f4af3b498e4cf7b9430974618',
+                                      file: be_a_stored_file)
       end
 
       it 'calls the file builder to build the rest' do
