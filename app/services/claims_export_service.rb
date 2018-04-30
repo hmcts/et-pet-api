@@ -110,6 +110,6 @@ class ClaimsExportService
   end
 
   def claim_has_claimants_csv?(claim:)
-    claim.uploaded_files.any? {|f| f.filename.starts_with?('et1a') && f.filename.ends_with?('.csv')}
+    claim.uploaded_files.any? { |f| f.filename.starts_with?('et1a') && f.filename.ends_with?('.csv') }
   end
 end
