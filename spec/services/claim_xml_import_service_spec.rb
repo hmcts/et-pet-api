@@ -675,7 +675,6 @@ RSpec.describe ClaimXmlImportService do
     end
 
     context 'with single claimant, respondent, representative and an uploaded rtf file' do
-      # @TODO Why dont we get these from a fixture file - there is one there ?
       let(:simple_example_data) do
         <<~XML
           <ETFeesEntry xmlns="http://www.justice.gov.uk/ETFEES" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
