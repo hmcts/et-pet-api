@@ -37,6 +37,13 @@ class ClaimExportService
     claim.uploaded_files.detect { |f| f.filename.starts_with?('et1_') && f.filename.ends_with?('.txt') }
   end
 
+  # Exports the rtf file for use by ClaimsExportService
+  #
+  # @return [UploadedFile] The rtf file
+  def export_rtf
+    claim.uploaded_files.detect { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.rtf') }
+  end
+
   # Exports the claimants text file for use by ClaimsExportService (produces ET1a txt file)
   #
   # @return [UploadedFile] The text file

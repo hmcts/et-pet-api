@@ -107,6 +107,21 @@ RSpec.describe ClaimsExportService do
       end
     end
 
+    context 'with a single claimant, respondent and representative with an uploaded rtf file' do
+      let!(:claims) do
+        create_list(:claim, 2, :with_pdf_file, :with_xml_file, :with_text_file, :with_rtf_file, :ready_for_export)
+      end
+
+      it 'produces a zip file that contains an rtf file for each claim' do
+        # Act
+        service.export
+
+        # Assert
+        expected_filenames = claims.map { |c| "#{c.reference}_ET1_Attachment_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.rtf" }
+        expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+      end
+    end
+
     context 'with nothing to process' do
       # This time, the claims are not marked as to be exported
       let!(:claims) do # rubocop:disable RSpec/LetSetup - as I want to overwrite the original

@@ -3,7 +3,7 @@ RSpec.describe ClaimExportService do
   subject(:service) { described_class.new(claim) }
 
   let(:landing_folder) { Rails.root.join('tmp', 'storage', 'app', 'landing_folder') }
-  let(:claim) { create(:claim, :with_pdf_file, :with_xml_file, :with_text_file, :with_claimants_text_file, :with_claimants_csv_file) }
+  let(:claim) { create(:claim, :with_pdf_file, :with_xml_file, :with_text_file, :with_claimants_text_file, :with_claimants_csv_file, :with_rtf_file) }
 
   describe 'to_be_exported' do
     it 'marks the claim as ready to be exported' do
@@ -29,6 +29,13 @@ RSpec.describe ClaimExportService do
     it 'returns the txt file saved with the claim' do
       result = service.export_txt
       expect(result).to have_attributes filename: 'et1_first_last.txt'
+    end
+  end
+
+  describe 'export_rtf' do
+    it 'returns an rtf file which happens to be the original' do
+      result = service.export_rtf
+      expect(result).to have_attributes filename: 'et1_attachment_first_last.rtf'
     end
   end
 

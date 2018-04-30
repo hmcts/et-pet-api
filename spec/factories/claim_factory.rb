@@ -41,6 +41,12 @@ FactoryBot.define do
       end
     end
 
+    trait :with_rtf_file do
+      after(:build) do |claim, _evaluator|
+        claim.uploaded_files << build(:uploaded_file, :example_claim_rtf)
+      end
+    end
+
     trait :with_claimants_text_file do
       after(:build) do |claim, _evaluator|
         claim.uploaded_files << build(:uploaded_file, :example_claim_claimants_text)
