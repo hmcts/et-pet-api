@@ -1,6 +1,7 @@
 module ClaimFileBuilder
   module BuildClaimTextFile
     include ClaimFilename
+    include RenderToFile
     def self.call(claim)
       filename = filename_for(claim: claim, prefix: 'et1', extension: 'txt')
       claim.uploaded_files.build filename: filename,
@@ -8,11 +9,9 @@ module ClaimFileBuilder
     end
 
     def self.raw_text_file(filename, claim:)
-      tempfile = Tempfile.new.tap do |file|
-        file.write render(claim)
-        file.rewind
-      end
-      ActionDispatch::Http::UploadedFile.new filename: filename, tempfile: tempfile, type: 'text/xml'
+      ActionDispatch::Http::UploadedFile.new filename: filename,
+                                             tempfile: render_to_file(claim: claim),
+                                             type: 'text/xml'
     end
 
     def self.render(claim)
