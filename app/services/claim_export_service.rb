@@ -44,5 +44,12 @@ class ClaimExportService
     claim.uploaded_files.detect { |f| f.filename.starts_with?('et1a') && f.filename.ends_with?('.txt') }
   end
 
+  # Exports the claimants csv file for use by ClaimsExportService (produces ET1a txt file)
+  #
+  # @return [UploadedFile] The text file
+  def export_claimants_csv
+    claim.uploaded_files.detect { |f| f.filename.starts_with?('et1a') && f.filename.ends_with?('.csv') }
+  end
+
   attr_accessor :claim, :claim_exports
 end
