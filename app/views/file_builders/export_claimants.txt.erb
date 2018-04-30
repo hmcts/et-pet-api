@@ -1,0 +1,35 @@
+ET1a - Online Application to an Employment Tribunal
+
+For Office Use
+
+Received at ET: <%= claim.date_of_receipt.strftime('%d/%m/%Y') %>
+Case Number:
+Code:
+Initials:
+
+Online Submission Reference: <%= claim.reference %>
+
+FormVersion: 2
+
+The following claimants are represented by  (if applicable) and the relevant required information for all the additional claimants is the same as stated in the main claim of <%= primary_claimant.first_name %> <%= primary_claimant.last_name %> v <%= primary_respondent.name %>
+
+
+<% secondary_claimants.each do |c| %>
+## Section et1a: claim
+
+~1.1 Title: <%= c.title %>
+~1.2 First Names: <%= c.first_name %>
+~1.3 Surname: <%= c.last_name %>
+~1.4 Date of Birth: <%= c.date_of_birth.strftime('%d/%m/%Y') %>
+~1.5 Address:
+<% c.address.tap do |address| %>
+Address 1: <%= address.building %>
+Address 2: <%= address.street %>
+Address 3: <%= address.locality %>
+Address 4: <%= address.county %>
+Postcode: <%= address.post_code %>
+<% end %>
+
+
+
+<% end %>

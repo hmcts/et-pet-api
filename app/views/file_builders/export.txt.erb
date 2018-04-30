@@ -71,12 +71,12 @@ Representative's Mobile number: <%= rep.mobile_number %>
 ~8.5 Representative's Reference: <%= rep.dx_number %>
 ~8.6 How would they prefer us to communicate with them?:
 Representative's E-mail address: <%= rep.email_address %>
-~8.7 Representative's Occupation:
+~8.7 Representative's Occupation: <%= rep.representative_type %>
 <% end %>
 
 ## Section 10: Multiple cases
 
-~10.2 ET1a Submitted: More than a single claimant
+~10.2 ET1a Submitted: <%= claim.claimants.length > 1 ? 'Yes' : '' %>
 
 ## Section 11: Details of Additional Respondents
 

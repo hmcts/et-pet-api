@@ -35,10 +35,15 @@ class ClaimsExportService
   def export_claims(to:)
     claims_to_export.each do |claim_export|
       claim_exports << claim_export
-      export_pdf_file(claim: claim_export.claim, to: to)
-      export_xml_file(claim: claim_export.claim, to: to)
-      export_text_file(claim: claim_export.claim, to: to)
+      export_files(claim_export.claim, to: to)
     end
+  end
+
+  def export_files(claim, to:)
+    export_pdf_file(claim: claim, to: to)
+    export_xml_file(claim: claim, to: to)
+    export_text_file(claim: claim, to: to)
+    export_claimants_text_file(claim: claim, to: to) if claim.claimants.count > 1
   end
 
   def mark_claims_as_exported
@@ -64,6 +69,13 @@ class ClaimsExportService
     stored_file = claim_export_service.new(claim).export_txt
     primary_claimant = claim.primary_claimant
     txt_fn = "#{claim.reference}_ET1_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.txt"
+    stored_file.download_blob_to File.join(to, txt_fn)
+  end
+
+  def export_claimants_text_file(claim:, to:)
+    stored_file = claim_export_service.new(claim).export_claimants_txt
+    primary_claimant = claim.primary_claimant
+    txt_fn = "#{claim.reference}_ET1a_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.txt"
     stored_file.download_blob_to File.join(to, txt_fn)
   end
 

@@ -5,10 +5,10 @@ module EtApi
     # Note that this is deliberately strict - even to the popint of expecting
     # blank lines etc..
     # This is because it is unknown how the receiving system would react to any differences from the example
-    class BeValidEt1ClaimTextMatcher
+    class BeValidEt1ClaimTextMatcher # rubocop:disable Metrics/ClassLength
       include ::RSpec::Matchers
-      def initialize(options={})
-        self.options = options
+      def initialize(multiple_claimants: false)
+        self.multiple_claimants = multiple_claimants
       end
 
       def matches?(actual)
@@ -78,11 +78,15 @@ module EtApi
           expect(actual_lines[61]).to eql "~8.5 Representative's Reference: dx1234567890"
           expect(actual_lines[62]).to eql "~8.6 How would they prefer us to communicate with them?:"
           expect(actual_lines[63]).to eql "Representative's E-mail address: solicitor.test@digital.justice.gov.uk"
-          expect(actual_lines[64]).to eql "~8.7 Representative's Occupation:"
+          expect(actual_lines[64]).to eql "~8.7 Representative's Occupation: Solicitor"
           expect(actual_lines[65]).to eql ""
           expect(actual_lines[66]).to eql "## Section 10: Multiple cases"
           expect(actual_lines[67]).to eql ""
-          expect(actual_lines[68]).to eql "~10.2 ET1a Submitted: More than a single claimant"
+          if multiple_claimants
+            expect(actual_lines[68]).to eql "~10.2 ET1a Submitted: Yes"
+          else
+            expect(actual_lines[68]).to eql "~10.2 ET1a Submitted: "
+          end
           expect(actual_lines[69]).to eql ""
           expect(actual_lines[70]).to eql "## Section 11: Details of Additional Respondents"
           expect(actual_lines[71]).to eql ""
@@ -110,23 +114,17 @@ module EtApi
           expect(actual_lines[93]).to eql "AdditionalAddress3 4: "
           expect(actual_lines[94]).to eql "AdditionalPostcode3: "
           expect(actual_lines[95]).to eql "AdditionalPhoneNumber3: "
-
-
-
-
-
-
         end
         true
       end
 
       private
 
-      attr_accessor :options
+      attr_accessor :multiple_claimants
     end
   end
 end
 
-def be_valid_et1_claim_text(options={})
-  ::EtApi::Test::BeValidEt1ClaimTextMatcher.new(options)
+def be_valid_et1_claim_text(*args)
+  ::EtApi::Test::BeValidEt1ClaimTextMatcher.new(*args)
 end

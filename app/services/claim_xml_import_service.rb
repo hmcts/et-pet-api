@@ -13,29 +13,22 @@ require 'action_dispatch/http/upload'
 # length as I don't want to split this XML import code up as it will end up being removed soon when we go to
 # API V2
 class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
-  REPRESENTATIVE_TYPE_MAPPINGS = {
-    'CAB' => 'citizen_advice_bureau', 'FRU' => 'free_representation_unit',
-    'Law Centre' => 'law_centre', 'Union' => 'trade_union',
-    'Solicitor' => 'solicitor', 'Private Individual' => 'private_individual',
-    'Trade Association' => 'trade_association', 'Other' => 'other'
-  }.freeze
-  private_constant :REPRESENTATIVE_TYPE_MAPPINGS
-
   attr_accessor :uploaded_files
 
   # Creates an instance of this service for use
   #
   # @param [String] data The XML data
-  def initialize(data)
+  def initialize(data, file_builder_service: ClaimFileBuilderService)
     self.original_data = data
     self.data = Hash.from_xml(data)
+    self.file_builder_service = file_builder_service
   end
 
   # Provides an array of hashes representing the files in the XML
   #
   # @return [Array<Hash>] An array of hashes like { filename: xxx, checksum: yyy }
   def files
-    root['Files'].map do |_, node|
+    collection(root, 'Files').map do |node|
       { filename: node['Filename'], checksum: node['Checksum'] }
     end
   end
@@ -45,7 +38,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
   # @return [Claim] The imported claim
   def import
     claim = Claim.new(converted_root_data.merge(converted_associated_data))
-    add_file :text_file, to: claim
+    file_builder_service.new(claim).call
     claim.save!
     claim
   end
@@ -113,7 +106,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
         name: r['Name'], organisation_name: r['Organisation'],
         address_attributes: convert_address_data(r, 'Address'), address_telephone_number: r['OfficeNumber'],
         mobile_number: r['AltPhoneNumber'], email_address: r['Email'],
-        representative_type: convert_representative_type(r['Type']), dx_number: r['DXNumber']
+        representative_type: r['Type'], dx_number: r['DXNumber']
       }
     end
   end
@@ -128,10 +121,6 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
     end + [file_for_data]
   end
 
-  def convert_representative_type(rep_type)
-    REPRESENTATIVE_TYPE_MAPPINGS[rep_type]
-  end
-
   def root
     data['ETFeesEntry']
   end
@@ -144,7 +133,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
 
   def file_for_data
     claimant = converted_claimants_data.first
-    filename = "ET1_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.xml"
+    filename = "et1_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.xml"
     {
       filename: filename,
       file: raw_file_for_data(filename)
@@ -158,32 +147,5 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
     end
     ActionDispatch::Http::UploadedFile.new filename: filename, tempfile: tempfile, type: 'text/xml'
   end
-
-  def text_file(claim)
-    claimant = claim.claimants.first
-    filename = "ET1_#{claimant.first_name.tr(' ', '_')}_#{claimant.last_name}.txt"
-    {
-      filename: filename,
-      file: raw_text_file(filename, claim: claim)
-    }
-  end
-
-  def raw_text_file(filename, claim:)
-    tempfile = Tempfile.new.tap do |file|
-      file.write ApplicationController.render "api/v1/claims/export.txt.erb", locals: {
-        claim: claim, primary_claimant: claim.claimants.first,
-        primary_respondent: claim.respondents.first,
-        primary_representative: claim.representatives.first,
-        additional_respondents: claim.respondents[1..-1]
-      }
-      file.rewind
-    end
-    ActionDispatch::Http::UploadedFile.new filename: filename, tempfile: tempfile, type: 'text/xml'
-  end
-
-  def add_file(method, to:)
-    to.uploaded_files.build send(method, to)
-  end
-
-  attr_accessor :data, :original_data
+  attr_accessor :data, :original_data, :file_builder_service
 end

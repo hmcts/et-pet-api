@@ -87,5 +87,44 @@ RSpec.describe Claim, type: :model do
     end
   end
 
+  describe 'claimant_count' do
+    it 'returns the number of claimants built at initialisation time' do
+      # Arrange
+      claim.claimants_attributes = [
+        {
+          title: 'Mr',
+          first_name: 'Fred',
+          last_name: 'Bloggs',
+          address_attributes: example_address_attrs
+        },
+        {
+          title: 'Mrs',
+          first_name: 'Sara',
+          last_name: 'Bloggs',
+          address_attributes: example_address_attrs
+        }
+      ]
+
+      # Act
+      claim.save(validate: false)
+
+      # Assert
+      expect(claim.claimant_count).to be 2
+    end
+
+    it 'returns the number of claimants when loaded from database and then saved with no changes to claimants' do
+      # Arrange - Use a factory to create a record in the database
+      id = create(:claim, number_of_claimants: 3).id
+      claim = described_class.find(id)
+
+      # Act - make a change
+      claim.claimant_count = 100
+      claim.save(validate: false)
+
+      # Assert - Make sure it is correct
+      expect(claim.claimant_count).to be 3
+    end
+  end
+
   # @TODO RST-1014 - Security - make sure first and last names cannot contain anything that might screw up the file copying
 end
