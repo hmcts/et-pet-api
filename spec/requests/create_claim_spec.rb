@@ -130,7 +130,14 @@ RSpec.describe 'CreateClaim Request', type: :request do
     end
 
     context 'with xml for single claimant, respondent and representative' do
-      let(:xml_input_filename) { File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user.xml'), __FILE__) }
+      let(:xml_as_hash) { build(:xml_claim, :simple_user) }
+      let(:xml_input_file) do
+        Tempfile.new.tap do |f|
+          f.write xml_as_hash.to_xml
+          f.rewind
+        end
+      end
+      let(:xml_input_filename) { xml_input_file.path }
 
       def perform_action
         file_name = 'et1_first_last.pdf'
@@ -173,7 +180,14 @@ RSpec.describe 'CreateClaim Request', type: :request do
     end
 
     context 'with xml for multiple claimants, single respondent and representative - with csv file uploaded' do
-      let(:xml_input_filename) { File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user_with_csv.xml'), __FILE__) }
+      let(:xml_as_hash) { build(:xml_claim, :simple_user_with_csv) }
+      let(:xml_input_file) do
+        Tempfile.new.tap do |f|
+          f.write xml_as_hash.to_xml
+          f.rewind
+        end
+      end
+      let(:xml_input_filename) { xml_input_file.path }
       let(:csv_file) { File.absolute_path(File.join('..', '..', 'fixtures', "simple_user_with_csv_group_claims.csv"), __FILE__) }
 
       def perform_action
@@ -233,7 +247,15 @@ RSpec.describe 'CreateClaim Request', type: :request do
     end
 
     context 'with xml for single claimant, single respondent and representative - with rtf file uploaded' do
-      let(:xml_input_filename) { File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user_with_rtf.xml'), __FILE__) }
+      let(:xml_as_hash) { build(:xml_claim, :simple_user_with_rtf) }
+      let(:xml_input_file) do
+        Tempfile.new.tap do |f|
+          f.write xml_as_hash.to_xml
+          f.rewind
+        end
+      end
+      let(:xml_input_filename) { xml_input_file.path }
+
       let(:rtf_file) { File.absolute_path(File.join('..', '..', 'fixtures', 'simple_user_with_rtf.rtf'), __FILE__) }
 
       def perform_action
