@@ -7,8 +7,9 @@ module EtApi
     # This is because it is unknown how the receiving system would react to any differences from the example
     class BeValidEt1ClaimTextMatcher # rubocop:disable Metrics/ClassLength
       include ::RSpec::Matchers
-      def initialize(multiple_claimants: false)
+      def initialize(multiple_claimants: false, representative: true)
         self.multiple_claimants = multiple_claimants
+        self.representative = representative
       end
 
       def matches?(actual)
@@ -65,20 +66,38 @@ module EtApi
           expect(actual_lines[48]).to eql ""
           expect(actual_lines[49]).to eql "## Section 8: Your representative"
           expect(actual_lines[50]).to eql ""
-          expect(actual_lines[51]).to eql "~8.1 Representative's name: Solicitor Name"
-          expect(actual_lines[52]).to eql "~8.2 Name of the representative's organisation: Solicitors Are Us Fake Company"
-          expect(actual_lines[53]).to eql "~8.3 Address:"
-          expect(actual_lines[54]).to eql "Representative's Address 1: 106"
-          expect(actual_lines[55]).to eql "Representative's Address 2: Mayfair"
-          expect(actual_lines[56]).to eql "Representative's Address 3: London"
-          expect(actual_lines[57]).to eql "Representative's Address 4: Greater London"
-          expect(actual_lines[58]).to eql "Representative's Postcode: SW1H 9PP"
-          expect(actual_lines[59]).to eql "~8.4 Representative's Phone number: 01111 123456"
-          expect(actual_lines[60]).to eql "Representative's Mobile number: 02222 654321"
-          expect(actual_lines[61]).to eql "~8.5 Representative's Reference: dx1234567890"
-          expect(actual_lines[62]).to eql "~8.6 How would they prefer us to communicate with them?:"
-          expect(actual_lines[63]).to eql "Representative's E-mail address: solicitor.test@digital.justice.gov.uk"
-          expect(actual_lines[64]).to eql "~8.7 Representative's Occupation: Solicitor"
+          if representative
+            expect(actual_lines[51]).to eql "~8.1 Representative's name: Solicitor Name"
+            expect(actual_lines[52]).to eql "~8.2 Name of the representative's organisation: Solicitors Are Us Fake Company"
+            expect(actual_lines[53]).to eql "~8.3 Address:"
+            expect(actual_lines[54]).to eql "Representative's Address 1: 106"
+            expect(actual_lines[55]).to eql "Representative's Address 2: Mayfair"
+            expect(actual_lines[56]).to eql "Representative's Address 3: London"
+            expect(actual_lines[57]).to eql "Representative's Address 4: Greater London"
+            expect(actual_lines[58]).to eql "Representative's Postcode: SW1H 9PP"
+            expect(actual_lines[59]).to eql "~8.4 Representative's Phone number: 01111 123456"
+            expect(actual_lines[60]).to eql "Representative's Mobile number: 02222 654321"
+            expect(actual_lines[61]).to eql "~8.5 Representative's Reference: dx1234567890"
+            expect(actual_lines[62]).to eql "~8.6 How would they prefer us to communicate with them?:"
+            expect(actual_lines[63]).to eql "Representative's E-mail address: solicitor.test@digital.justice.gov.uk"
+            expect(actual_lines[64]).to eql "~8.7 Representative's Occupation: Solicitor"
+          else
+            expect(actual_lines[51]).to eql "~8.1 Representative's name: "
+            expect(actual_lines[52]).to eql "~8.2 Name of the representative's organisation: "
+            expect(actual_lines[53]).to eql "~8.3 Address:"
+            expect(actual_lines[54]).to eql "Representative's Address 1: "
+            expect(actual_lines[55]).to eql "Representative's Address 2: "
+            expect(actual_lines[56]).to eql "Representative's Address 3: "
+            expect(actual_lines[57]).to eql "Representative's Address 4: "
+            expect(actual_lines[58]).to eql "Representative's Postcode: "
+            expect(actual_lines[59]).to eql "~8.4 Representative's Phone number: "
+            expect(actual_lines[60]).to eql "Representative's Mobile number: "
+            expect(actual_lines[61]).to eql "~8.5 Representative's Reference: "
+            expect(actual_lines[62]).to eql "~8.6 How would they prefer us to communicate with them?:"
+            expect(actual_lines[63]).to eql "Representative's E-mail address: "
+            expect(actual_lines[64]).to eql "~8.7 Representative's Occupation: "
+
+          end
           expect(actual_lines[65]).to eql ""
           expect(actual_lines[66]).to eql "## Section 10: Multiple cases"
           expect(actual_lines[67]).to eql ""
@@ -120,7 +139,7 @@ module EtApi
 
       private
 
-      attr_accessor :multiple_claimants
+      attr_accessor :multiple_claimants, :representative
     end
   end
 end

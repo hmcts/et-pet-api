@@ -47,9 +47,78 @@ module ETApi
   end
 end
 FactoryBot.define do
+  claimants_list = [
+    :mr_first_last,
+    :tamara_swift,
+    :diana_flatley,
+    :mariana_mccullough,
+    :eden_upton,
+    :annie_schulist,
+    :thad_johns,
+    :coleman_kreiger,
+    :jenson_deckow,
+    :darien_bahringer,
+    :eulalia_hammes
+  ]
+  respondents_list = [
+    :respondent_name,
+    :carlos_mills,
+    :felicity_schuster,
+    :glennie_satterfield,
+    :romaine_rowe
+  ]
+  representatives_list = [
+    :solicitor_name
+  ]
+
   factory :xml_claim, class: ::ETApi::Test::XML::Document do
     initialize_with do
       new(attributes)
+    end
+
+    transient do
+      number_of_claimants 1
+      number_of_respondents 1
+      number_of_representatives 1
+    end
+
+    association :document_id, factory: :xml_claim_document_id
+    fee_group_reference '222000000300'
+    submission_urn 'J704-ZK5E'
+    current_quantity_of_claimants '1'
+    submission_channel 'Web'
+    case_type 'Single'
+    jurisdiction '2'
+    office_code '22'
+    date_of_receipt_et '2018-03-29T16:46:26+01:00'
+    remission_indicated 'NotRequested'
+    administrator '-1'
+    association :payment, :zero, factory: :xml_claim_payment
+    files do
+      [build(:xml_claim_file, :et1_first_last_pdf)]
+    end
+
+    after(:build) do |r, evaluator|
+      unless r.claimants.is_a?(Array)
+        r.claimants = []
+        evaluator.number_of_claimants.times do |idx|
+          r.claimants << build(:xml_claimant, claimants_list[idx % claimants_list.length])
+        end
+      end
+
+      unless r.respondents.is_a?(Array)
+        r.respondents = []
+        evaluator.number_of_respondents.times do |idx|
+          r.respondents << build(:xml_claim_respondent, respondents_list[idx % respondents_list.length])
+        end
+      end
+
+      unless r.representatives.is_a?(Array)
+        r.representatives = []
+        evaluator.number_of_representatives.times do |idx|
+          r.representatives << build(:xml_claim_representative, representatives_list[idx % representatives_list.length])
+        end
+      end
     end
 
     trait(:simple_user) do
@@ -134,6 +203,10 @@ FactoryBot.define do
   factory :xml_claimant, class: ::ETApi::Test::XML::Node do
     initialize_with do
       new(attributes)
+    end
+
+    trait :sequenced do
+
     end
 
     trait :mr_first_last do
@@ -354,6 +427,15 @@ FactoryBot.define do
       new(attributes)
     end
 
+    group_contact 'true'
+    name 'Respondent Name'
+    association :address, :regent_street_108, factory: :xml_claim_address
+    office_number '03333 423554'
+    phone_number '02222 321654'
+    association :acas, :ac1234567890, factory: :xml_claim_acas
+    association :alt_address, :piccadilly_circus_110, factory: :xml_claim_address
+    alt_phone_number '03333 423554'
+
     trait :respondent_name do
       group_contact 'true'
       name 'Respondent Name'
@@ -363,6 +445,62 @@ FactoryBot.define do
       association :acas, :ac1234567890, factory: :xml_claim_acas
       association :alt_address, :piccadilly_circus_110, factory: :xml_claim_address
       alt_phone_number '03333 423554'
+    end
+
+    trait :carlos_mills do
+      group_contact 'false'
+      name 'Carlos Mills'
+      association :address,
+        factory: :xml_claim_address,
+        line: "255", street: "Crooks Light", town: "Watersburgh", county: "East Sussex", postcode: "KV8B 6LP"
+
+      office_number '0979 399 5059'
+      phone_number '07628 465233'
+      association :acas, :ac1234567890, factory: :xml_claim_acas
+      association :alt_address, :piccadilly_circus_110, factory: :xml_claim_address
+      alt_phone_number '0979 399 5059'
+    end
+
+    trait :felicity_schuster do
+      group_contact 'false'
+      name 'Felicity Schuster'
+      association :address,
+        factory: :xml_claim_address,
+        line: "988", street: "Purdy Via", town: "Erdmanville", county: "Warwickshire", postcode: "GK40 1RL"
+
+      office_number '0121 334 0437'
+      phone_number '07754 870360'
+      association :acas, :ac1234567890, factory: :xml_claim_acas
+      association :alt_address, :piccadilly_circus_110, factory: :xml_claim_address
+      alt_phone_number '0121 334 0437'
+    end
+
+    trait :glennie_satterfield do
+      group_contact 'false'
+      name 'Glennie Satterfield'
+      association :address,
+        factory: :xml_claim_address,
+        line: "6380", street: "Noah Burg", town: "South Bellashire", county: "Humberside", postcode: "W9G 4XJ"
+
+      office_number '0826 692 1241'
+      phone_number '07761 628758'
+      association :acas, :ac1234567890, factory: :xml_claim_acas
+      association :alt_address, :piccadilly_circus_110, factory: :xml_claim_address
+      alt_phone_number '0826 692 1241'
+    end
+
+    trait :romaine_rowe do
+      group_contact 'false'
+      name 'Romaine Rowe'
+      association :address,
+        factory: :xml_claim_address,
+        line: "189", street: "Schaefer Heights", town: "New Bettyfurt", county: "Kent", postcode: "W6 2HU"
+
+      office_number '0111 786 1278'
+      phone_number '07862 372522'
+      association :acas, :ac1234567890, factory: :xml_claim_acas
+      association :alt_address, :piccadilly_circus_110, factory: :xml_claim_address
+      alt_phone_number '0111 786 1278'
     end
   end
 
