@@ -146,7 +146,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       end
     end
 
-    context 'claims without extra files' do
+    context 'when submitting claims without extra files' do
       # Inputs :-
       #
       # xml_factory - A lambda / block returning a factory built using build(:xml_claim)
@@ -202,18 +202,17 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
       context 'with xml for single claimant, respondent and representative' do
         include_examples 'a claim without additional files',
-                         xml_factory: -> { FactoryBot.build(:xml_claim, :simple_user) },
-                         has_representative: true
+          xml_factory: -> { FactoryBot.build(:xml_claim, :simple_user) },
+          has_representative: true
       end
 
       context 'with xml for single claimant and respondent but no representatives' do
         include_examples 'a claim without additional files',
-                         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 0) },
-                         has_representative: false
+          xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 0) },
+          has_representative: false
       end
 
     end
-
 
     context 'with xml for multiple claimants, single respondent and representative - with csv file uploaded' do
       let(:xml_as_hash) { build(:xml_claim, :simple_user_with_csv) }
