@@ -150,7 +150,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       # Inputs :-
       #
       # xml_factory - A lambda / block returning a factory built using build(:xml_claim)
-      shared_examples 'a claim without additional files' do |xml_factory:, has_representative:|
+      shared_examples 'a claim without additional files' do |xml_factory:, has_representative:, expect_additional_claimants_txt: false|
         let(:xml_as_hash) { xml_factory.call }
         let(:xml_input_file) do
           Tempfile.new.tap do |f|
@@ -182,9 +182,15 @@ RSpec.describe 'CreateClaim Request', type: :request do
             # Assert - look for the correct file in the landing folder - will be async
             Dir.mktmpdir do |dir|
               staging_folder.extract(correct_file, to: File.join(dir, correct_file))
-              expect(File.read(File.join(dir, correct_file))).to be_valid_et1_claim_text(multiple_claimants: false, representative: has_representative)
+              expect(File.read(File.join(dir, correct_file))).to be_valid_et1_claim_text(multiple_claimants: expect_additional_claimants_txt, representative: has_representative)
             end
           end
+        end
+      end
+
+      shared_examples 'a claim with single claimant' do
+        context 'with staging folder visibility' do
+          include_context 'with staging folder visibility'
 
           it 'does not store an ET1a txt file with the correct filename in the landing folder' do
             # Arrange - Determine what the correct file should be
@@ -200,17 +206,47 @@ RSpec.describe 'CreateClaim Request', type: :request do
         end
       end
 
-      context 'with xml for single claimant, respondent and representative' do
-        include_examples 'a claim without additional files',
-          xml_factory: -> { FactoryBot.build(:xml_claim, :simple_user) },
-          has_representative: true
+      shared_examples 'a claim with multiple claimants' do
+        context 'with staging folder visibility' do
+          include_context 'with staging folder visibility'
+
+          it 'does not store an ET1a txt file with the correct filename in the landing folder' do
+            # Arrange - Determine what the correct file should be
+            correct_file = '222000000300_ET1a_First_Last.txt'
+
+            # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+            perform_action
+            force_export_now
+
+            # Assert - look for the correct file in the landing folder - will be async
+            expect(staging_folder.all_unzipped_filenames).to include(correct_file)
+          end
+        end
+
       end
 
       context 'with xml for single claimant and respondent but no representatives' do
         include_examples 'a claim without additional files',
           xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 0) },
           has_representative: false
+        include_examples 'a claim with single claimant'
       end
+
+      context 'with xml for multiple claimants, 1 respondent and no representatives' do
+        include_examples 'a claim without additional files',
+          xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 5, number_of_respondents: 1, number_of_representatives: 0) },
+          has_representative: false,
+          expect_additional_claimants_txt: true
+        include_examples 'a claim with multiple claimants'
+      end
+
+      context 'with xml for single claimant, respondent and representative' do
+        include_examples 'a claim without additional files',
+          xml_factory: -> { FactoryBot.build(:xml_claim, :simple_user) },
+          has_representative: true
+        include_examples 'a claim with single claimant'
+      end
+
 
     end
 
