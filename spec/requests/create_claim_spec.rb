@@ -57,6 +57,24 @@ RSpec.describe 'CreateClaim Request', type: :request do
       end
     end
 
+    shared_context 'setup for claims without additional files' do |xml_factory:|
+      let(:xml_as_hash) { xml_factory.call }
+      let(:xml_input_file) do
+        Tempfile.new.tap do |f|
+          f.write xml_as_hash.to_xml
+          f.rewind
+        end
+      end
+      let(:xml_input_filename) { xml_input_file.path }
+
+      def perform_action
+        file_name = 'et1_first_last.pdf'
+        uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
+        xml_data = File.read(xml_input_filename)
+        post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
+      end
+    end
+
     shared_examples 'any claim variation' do
       it 'returns the correct status code' do
         # Act - Send some claim data
@@ -146,23 +164,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
       end
     end
 
-    shared_context 'setup for claims without additional files' do |xml_factory:|
-      let(:xml_as_hash) { xml_factory.call }
-      let(:xml_input_file) do
-        Tempfile.new.tap do |f|
-          f.write xml_as_hash.to_xml
-          f.rewind
-        end
-      end
-      let(:xml_input_filename) { xml_input_file.path }
-
-      def perform_action
-        file_name = 'et1_first_last.pdf'
-        uploaded_file = fixture_file_upload(File.absolute_path(File.join('..', '..', 'fixtures', file_name), __FILE__))
-        xml_data = File.read(xml_input_filename)
-        post '/api/v1/new-claim', params: { new_claim: xml_data, file_name => uploaded_file }, headers: default_headers
-      end
-    end
 
     shared_examples 'validate text file' do |has_representative:, expect_additional_claimants_txt: false|
 
