@@ -1,5 +1,5 @@
 require 'builder'
-module ETApi
+module EtApi
   module Test
     module XML
       class Node < OpenStruct
@@ -17,7 +17,7 @@ module ETApi
           when String then value
           when Node then value.as_json
           when Array then value.map { |i| normalize(i) }
-          when nil then ::ETApi::Test::XML::NilNode.new
+          when nil then ::EtApi::Test::XML::NilNode.new
           else value
           end
         end
@@ -71,7 +71,7 @@ FactoryBot.define do
     :solicitor_name
   ]
 
-  factory :xml_claim, class: ::ETApi::Test::XML::Document do
+  factory :xml_claim, class: ::EtApi::Test::XML::Document do
     initialize_with do
       new(attributes)
     end
@@ -187,7 +187,7 @@ FactoryBot.define do
     end
   end
 
-  factory :xml_claim_document_id, class: ::ETApi::Test::XML::Node do
+  factory :xml_claim_document_id, class: ::EtApi::Test::XML::Node do
     initialize_with do
       new(attributes)
     end
@@ -200,7 +200,7 @@ FactoryBot.define do
 
   end
 
-  factory :xml_claimant, class: ::ETApi::Test::XML::Node do
+  factory :xml_claimant, class: ::EtApi::Test::XML::Node do
     initialize_with do
       new(attributes)
     end
@@ -422,7 +422,7 @@ FactoryBot.define do
     end
   end
 
-  factory :xml_claim_respondent, class: ::ETApi::Test::XML::Node do
+  factory :xml_claim_respondent, class: ::EtApi::Test::XML::Node do
     initialize_with do
       new(attributes)
     end
@@ -504,7 +504,7 @@ FactoryBot.define do
     end
   end
 
-  factory :xml_claim_address, class: ::ETApi::Test::XML::Node do
+  factory :xml_claim_address, class: ::EtApi::Test::XML::Node do
     initialize_with do
       new(attributes)
     end
@@ -542,7 +542,7 @@ FactoryBot.define do
     end
   end
 
-  factory :xml_claim_acas, class: ::ETApi::Test::XML::Node do
+  factory :xml_claim_acas, class: ::EtApi::Test::XML::Node do
     initialize_with do
       new(attributes)
     end
@@ -552,7 +552,7 @@ FactoryBot.define do
     end
   end
 
-  factory :xml_claim_representative, class: ::ETApi::Test::XML::Node do
+  factory :xml_claim_representative, class: ::EtApi::Test::XML::Node do
     initialize_with do
       new(attributes)
     end
@@ -570,7 +570,7 @@ FactoryBot.define do
     end
   end
 
-  factory :xml_claim_payment, class: ::ETApi::Test::XML::Node do
+  factory :xml_claim_payment, class: ::EtApi::Test::XML::Node do
     initialize_with do
       new(attributes)
     end
@@ -580,7 +580,7 @@ FactoryBot.define do
     end
   end
 
-  factory :xml_claim_payment_fee, class: ::ETApi::Test::XML::Node do
+  factory :xml_claim_payment_fee, class: ::EtApi::Test::XML::Node do
     initialize_with do
       new(attributes)
     end
@@ -592,7 +592,7 @@ FactoryBot.define do
     end
   end
 
-  factory :xml_claim_file, class: ::ETApi::Test::XML::Node do
+  factory :xml_claim_file, class: ::EtApi::Test::XML::Node do
     initialize_with do
       new(attributes)
     end

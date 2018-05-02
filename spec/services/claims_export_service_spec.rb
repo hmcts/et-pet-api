@@ -28,7 +28,7 @@ RSpec.describe ClaimsExportService do
 
       # Assert
       expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.pdf" }
-      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+      expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
     end
 
     it 'produces a zip file that contains the correct pdf file contents for each claim' do
@@ -38,7 +38,7 @@ RSpec.describe ClaimsExportService do
 
       # Assert - unzip files to temp dir - and validate just the first and last - no reason any others would be different
       ::Dir.mktmpdir do |dir|
-        ETApi::Test::StoredZipFile.extract zip: ExportedFile.last, to: dir
+        EtApi::Test::StoredZipFile.extract zip: ExportedFile.last, to: dir
         files_found = ::Dir.glob(File.join(dir, '*.pdf'))
         aggregate_failures 'verifying first and last files' do
           expect(files_found.first).to be_a_file_copy_of(File.join(dir, expected_filenames.first))
@@ -53,7 +53,7 @@ RSpec.describe ClaimsExportService do
 
       # Assert
       expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.xml" }
-      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+      expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
     end
 
     it 'produces a zip file that contains a txt file for each claim' do
@@ -62,7 +62,7 @@ RSpec.describe ClaimsExportService do
 
       # Assert
       expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.txt" }
-      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+      expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
     end
 
     it 'produces a zip file that does not contain the additional claimants text file' do
@@ -71,7 +71,7 @@ RSpec.describe ClaimsExportService do
 
       # Assert
       expected_filenames = claims.map { |c| "#{c.reference}_ET1a_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.txt" }
-      expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).not_to include(*expected_filenames)
+      expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).not_to include(*expected_filenames)
     end
 
     it 'produces only one zip file when called twice' do
@@ -94,7 +94,7 @@ RSpec.describe ClaimsExportService do
 
         # Assert
         expected_filenames = claims.map { |c| "#{c.reference}_ET1a_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.txt" }
-        expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+        expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
       end
 
       it 'produces a zip file that contains an ET1a csv file for each claim' do
@@ -103,7 +103,7 @@ RSpec.describe ClaimsExportService do
 
         # Assert
         expected_filenames = claims.map { |c| "#{c.reference}_ET1a_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.csv" }
-        expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+        expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
       end
     end
 
@@ -118,7 +118,7 @@ RSpec.describe ClaimsExportService do
 
         # Assert
         expected_filenames = claims.map { |c| "#{c.reference}_ET1_Attachment_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.rtf" }
-        expect(ETApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+        expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
       end
     end
 

@@ -53,7 +53,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
           }
 
         }
-        ETApi::Test::StagingFolder.new actions
+        EtApi::Test::StagingFolder.new actions
       end
     end
 

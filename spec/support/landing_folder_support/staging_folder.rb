@@ -1,4 +1,4 @@
-module ETApi
+module EtApi
   module Test
     class StagingFolder
       def initialize(list_action:, download_action:)
