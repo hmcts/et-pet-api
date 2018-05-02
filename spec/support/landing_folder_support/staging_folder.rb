@@ -43,9 +43,35 @@ module EtApi
         end
       end
 
+      def extract_to_tempfile(filename)
+        Dir.mktmpdir do |dir|
+          full_path = File.join(dir, filename)
+          extract(filename, to: full_path)
+          copy_to_temp_file(full_path)
+        end
+      end
+
+      def et1_txt_file(filename)
+        EtApi::Test::FileObjects::Et1TxtFile.new extract_to_tempfile(filename)
+      end
+
       private
 
       attr_accessor :list_action, :download_action
+
+      def copy_to_temp_file(file_path)
+        tempfile = Tempfile.new
+        File.open(file_path) do |f|
+          loop do
+            data = f.read(4096)
+            break if data.nil?
+            tempfile.write data
+          end
+        end
+        tempfile.flush
+        tempfile.rewind
+        tempfile
+      end
 
       def extract_file_from_zip(filename, zip_filename, to:)
         ::Zip::File.open(zip_filename) do |z|
