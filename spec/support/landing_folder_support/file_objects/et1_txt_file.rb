@@ -227,6 +227,24 @@ module EtApi
             representative_type: end_with(rep[:representative_type]),
             dx_number: end_with(rep[:dx_number])
         end
+        
+        def has_no_representative?(errors: [], indent: 1)
+          has_representative_section? errors: errors, indent: indent,
+            name: end_with(': '),
+            organisation_name: end_with(': '),
+            address: {
+              building: end_with(': '),
+              street: end_with(': '),
+              locality: end_with(': '),
+              county: end_with(': '),
+              post_code: end_with(': ')
+            },
+            address_telephone_number: end_with(': '),
+            mobile_number: end_with(': '),
+            email_address: end_with(': '),
+            representative_type: end_with(': '),
+            dx_number: end_with(': ')
+        end
 
         def section_range(match_start:, match_end:)
           start_idx = match_start.is_a?(String) ? contents.index(match_start) : contents.index { |l| l =~ match_start }
