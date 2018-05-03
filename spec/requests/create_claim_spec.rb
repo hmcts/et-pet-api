@@ -28,6 +28,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
   # accept application/json
   #
   describe 'POST /api/v1/new-claim' do
+    let(:errors) { [] }
     let(:default_headers) do
       {
         'Accept': 'application/json',
@@ -57,7 +58,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       end
     end
 
-    shared_context 'setup for claims without additional files' do |xml_factory:|
+    shared_context 'with setup for claims without additional files' do |xml_factory:|
       let(:xml_as_hash) { xml_factory.call }
       let(:xml_input_file) do
         Tempfile.new.tap do |f|
@@ -164,13 +165,31 @@ RSpec.describe 'CreateClaim Request', type: :request do
       end
     end
 
-
-    shared_examples 'validate text file' do |has_representative:, expect_additional_claimants_txt: false|
+    shared_examples 'validate text file structure' do
 
       context 'with staging folder visibility' do
         include_context 'with staging folder visibility'
 
         it 'produces the correct txt file contents' do
+          # Arrange - Determine what the correct file should be
+          errors = []
+          correct_file = '222000000300_ET1_First_Last.txt'
+
+          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+          perform_action
+          force_export_now
+
+          # Assert
+          expect(staging_folder.et1_txt_file(correct_file)).to have_correct_file_structure(errors: errors), -> { errors.join("\n") }
+        end
+      end
+    end
+
+    shared_examples 'a claim with single respondent' do
+      context 'with staging folder visibility' do
+        include_context 'with staging folder visibility'
+
+        it 'has the respondent in the et1 txt file' do
           # Arrange - Determine what the correct file should be
           correct_file = '222000000300_ET1_First_Last.txt'
 
@@ -179,10 +198,8 @@ RSpec.describe 'CreateClaim Request', type: :request do
           force_export_now
 
           # Assert - look for the correct file in the landing folder - will be async
-          Dir.mktmpdir do |dir|
-            staging_folder.extract(correct_file, to: File.join(dir, correct_file))
-            expect(File.read(File.join(dir, correct_file))).to be_valid_et1_claim_text(multiple_claimants: expect_additional_claimants_txt, representative: has_representative)
-          end
+          respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondent]
+          expect(staging_folder.et1_txt_file(correct_file)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
         end
       end
     end
@@ -201,6 +218,57 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
           # Assert - look for the correct file in the landing folder - will be async
           expect(staging_folder.all_unzipped_filenames).not_to include(correct_file)
+        end
+
+        it 'has the claimant in the et1 txt file' do
+          # Arrange - Determine what the correct file should be
+          correct_file = '222000000300_ET1_First_Last.txt'
+
+          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+          perform_action
+          force_export_now
+
+          # Assert - look for the correct file in the landing folder - will be async
+          claimant = normalize_xml_hash(xml_as_hash.as_json)[:claimants].first
+          expect(staging_folder.et1_txt_file(correct_file)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
+        end
+      end
+    end
+
+    shared_examples 'a claim with no representatives' do
+      context 'with staging folder visibility' do
+        include_context 'with staging folder visibility'
+
+        it 'has the respondent in the et1 txt file' do
+          # Arrange - Determine what the correct file should be
+          correct_file = '222000000300_ET1_First_Last.txt'
+
+          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+          perform_action
+          force_export_now
+
+          # Assert - look for the correct file in the landing folder - will be async
+          expect(staging_folder.et1_txt_file(correct_file)).to have_no_representative_(errors: errors), -> { errors.join("\n") }
+        end
+      end
+
+    end
+
+    shared_examples 'a claim with a representative' do
+      context 'with staging folder visibility' do
+        include_context 'with staging folder visibility'
+
+        it 'has the respondent in the et1 txt file' do
+          # Arrange - Determine what the correct file should be
+          correct_file = '222000000300_ET1_First_Last.txt'
+
+          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+          perform_action
+          force_export_now
+
+          # Assert - look for the correct file in the landing folder - will be async
+          rep = normalize_xml_hash(xml_as_hash.as_json)[:representative]
+          expect(staging_folder.et1_txt_file(correct_file)).to have_representative_for(rep, errors: errors), -> { errors.join("\n") }
         end
       end
     end
@@ -225,31 +293,33 @@ RSpec.describe 'CreateClaim Request', type: :request do
     end
 
     context 'with xml for single claimant and respondent but no representatives' do
-      include_context 'setup for claims without additional files',
+      include_context 'with setup for claims without additional files',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 0) }
-      include_examples 'validate text file',
-        has_representative: false
+      include_examples 'validate text file structure'
       include_examples 'any claim variation'
       include_examples 'a claim with single claimant'
+      include_examples 'a claim with single respondent'
+      include_examples 'a claim with no representatives'
     end
 
     context 'with xml for multiple claimants, 1 respondent and no representatives' do
-      include_context 'setup for claims without additional files',
+      include_context 'with setup for claims without additional files',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 5, number_of_respondents: 1, number_of_representatives: 0) }
-      include_examples 'validate text file',
-        has_representative: false,
-        expect_additional_claimants_txt: true
+      include_examples 'validate text file structure'
       include_examples 'any claim variation'
       include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with single respondent'
+      include_examples 'a claim with no representatives'
     end
 
     context 'with xml for single claimant, respondent and representative' do
-      include_context 'setup for claims without additional files',
+      include_context 'with setup for claims without additional files',
         xml_factory: -> { FactoryBot.build(:xml_claim, :simple_user) }
-      include_examples 'validate text file',
-        has_representative: true
+      include_examples 'validate text file structure'
       include_examples 'any claim variation'
       include_examples 'a claim with single claimant'
+      include_examples 'a claim with single respondent'
+      include_examples 'a claim with a representative'
     end
 
     context 'with xml for multiple claimants, single respondent and representative - with csv file uploaded' do

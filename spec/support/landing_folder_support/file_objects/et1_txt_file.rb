@@ -55,7 +55,7 @@ module EtApi
 
         def has_claimant_section?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_section?(section: :claimant, errors: errors, indent: indent) do |lines|
-            expect(lines[0]).to eql "~1.1 Title: Mr"
+            expect(lines[0]).to start_with "~1.1 Title: "
             expect(lines[1]).to eql "Title (other):"
             expect(lines[2]).to start_with "~1.2 First Names: "
             expect(lines[3]).to start_with "~1.3 Surname: "
@@ -159,6 +159,31 @@ module EtApi
             expect(lines[24]).to start_with "AdditionalPostcode3: "
             expect(lines[25]).to start_with "AdditionalPhoneNumber3: "
             expect(lines[26]).to eql ""
+          end
+        end
+
+        def has_claimant_for?(claimant, errors: [], indent: 1)
+          has_section?(section: :claimant, errors: errors, indent: indent) do |lines|
+            expect(lines[0]).to eql "~1.1 Title: #{claimant[:title]}"
+            expect(lines[1]).to eql "Title (other):"
+            expect(lines[2]).to start_with "~1.2 First Names: #{claimant[:first_name]}"
+            expect(lines[3]).to start_with "~1.3 Surname: #{claimant[:last_name]}"
+            expect(lines[4]).to start_with "~1.4 Date of Birth: #{claimant[:date_of_birth].strftime('%d/%m/%Y')}"
+            expect(lines[5]).to start_with "You are: #{claimant[:gender]}"
+            expect(lines[6]).to eql "~1.5 Address:"
+            claimant[:address].tap do |a|
+              expect(lines[7]).to start_with "Address 1: #{a[:building]}"
+              expect(lines[8]).to start_with "Address 2: #{a[:street]}"
+              expect(lines[9]).to start_with "Address 3: #{a[:locality]}"
+              expect(lines[10]).to start_with "Address 4: #{a[:county]}"
+              expect(lines[11]).to start_with "Postcode: #{a[:post_code]}"
+
+            end
+            expect(lines[12]).to start_with "~1.6 Phone number: #{claimant[:address_telephone_number]}"
+            expect(lines[13]).to start_with "Mobile number: #{claimant[:mobile_number]}"
+            expect(lines[14]).to start_with "~1.7 How would you prefer us to communicate with you?: #{claimant[:contact_preference]}"
+            expect(lines[15]).to start_with "E-mail address: #{claimant[:email_address]}"
+            expect(lines[16]).to eql ""
           end
         end
 
