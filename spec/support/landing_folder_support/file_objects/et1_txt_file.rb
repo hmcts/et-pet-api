@@ -53,24 +53,25 @@ module EtApi
           end
         end
 
-        def has_claimant_section?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_claimant_section?(errors: [], indent: 1, **matcher_overrides) # rubocop:disable Naming/PredicateName
+          matchers = claimant_matchers.merge(matcher_overrides)
           has_section?(section: :claimant, errors: errors, indent: indent) do |lines|
-            expect(lines[0]).to start_with "~1.1 Title: "
+            expect(lines[0]).to start_with("~1.1 Title: ").and(matchers[:title])
             expect(lines[1]).to eql "Title (other):"
-            expect(lines[2]).to start_with "~1.2 First Names: "
-            expect(lines[3]).to start_with "~1.3 Surname: "
-            expect(lines[4]).to start_with "~1.4 Date of Birth: "
-            expect(lines[5]).to start_with "You are: "
+            expect(lines[2]).to start_with("~1.2 First Names: ").and(matchers[:first_name])
+            expect(lines[3]).to start_with("~1.3 Surname: ").and(matchers[:last_name])
+            expect(lines[4]).to start_with("~1.4 Date of Birth: ").and(matchers[:date_of_birth])
+            expect(lines[5]).to start_with("You are: ").and(matchers[:gender])
             expect(lines[6]).to eql "~1.5 Address:"
-            expect(lines[7]).to start_with "Address 1: "
-            expect(lines[8]).to start_with "Address 2: "
-            expect(lines[9]).to start_with "Address 3: "
-            expect(lines[10]).to start_with "Address 4: "
-            expect(lines[11]).to start_with "Postcode: "
-            expect(lines[12]).to start_with "~1.6 Phone number: "
-            expect(lines[13]).to start_with "Mobile number: "
-            expect(lines[14]).to start_with "~1.7 How would you prefer us to communicate with you?: "
-            expect(lines[15]).to start_with "E-mail address: "
+            expect(lines[7]).to start_with("Address 1: ").and(matchers[:address][:building])
+            expect(lines[8]).to start_with("Address 2: ").and(matchers[:address][:street])
+            expect(lines[9]).to start_with("Address 3: ").and(matchers[:address][:locality])
+            expect(lines[10]).to start_with("Address 4: ").and(matchers[:address][:county])
+            expect(lines[11]).to start_with("Postcode: ").and(matchers[:address][:post_code])
+            expect(lines[12]).to start_with("~1.6 Phone number: ").and(matchers[:address_telephone_number])
+            expect(lines[13]).to start_with("Mobile number: ").and(matchers[:mobile_number])
+            expect(lines[14]).to start_with("~1.7 How would you prefer us to communicate with you?: ").and(matchers[:contact_preference])
+            expect(lines[15]).to start_with("E-mail address: ").and(matchers[:email_address])
             expect(lines[16]).to eql ""
           end
         end
@@ -163,28 +164,24 @@ module EtApi
         end
 
         def has_claimant_for?(claimant, errors: [], indent: 1)
-          has_section?(section: :claimant, errors: errors, indent: indent) do |lines|
-            expect(lines[0]).to eql "~1.1 Title: #{claimant[:title]}"
-            expect(lines[1]).to eql "Title (other):"
-            expect(lines[2]).to start_with "~1.2 First Names: #{claimant[:first_name]}"
-            expect(lines[3]).to start_with "~1.3 Surname: #{claimant[:last_name]}"
-            expect(lines[4]).to start_with "~1.4 Date of Birth: #{claimant[:date_of_birth].strftime('%d/%m/%Y')}"
-            expect(lines[5]).to start_with "You are: #{claimant[:gender]}"
-            expect(lines[6]).to eql "~1.5 Address:"
-            claimant[:address].tap do |a|
-              expect(lines[7]).to start_with "Address 1: #{a[:building]}"
-              expect(lines[8]).to start_with "Address 2: #{a[:street]}"
-              expect(lines[9]).to start_with "Address 3: #{a[:locality]}"
-              expect(lines[10]).to start_with "Address 4: #{a[:county]}"
-              expect(lines[11]).to start_with "Postcode: #{a[:post_code]}"
-
-            end
-            expect(lines[12]).to start_with "~1.6 Phone number: #{claimant[:address_telephone_number]}"
-            expect(lines[13]).to start_with "Mobile number: #{claimant[:mobile_number]}"
-            expect(lines[14]).to start_with "~1.7 How would you prefer us to communicate with you?: #{claimant[:contact_preference]}"
-            expect(lines[15]).to start_with "E-mail address: #{claimant[:email_address]}"
-            expect(lines[16]).to eql ""
-          end
+          a = claimant[:address]
+          has_claimant_section? errors: errors, indent: indent,
+            title: end_with(claimant[:title]),
+            first_name: end_with(claimant[:first_name]),
+            last_name: end_with(claimant[:last_name]),
+            date_of_birth: end_with(claimant[:date_of_birth].strftime('%d/%m/%Y')),
+            gender: end_with(claimant[:gender]),
+            address: {
+              building: end_with(a[:building]),
+              street: end_with(a[:street]),
+              locality: end_with(a[:locality]),
+              county: end_with(a[:county]),
+              post_code: end_with(a[:post_code])
+            },
+            address_telephone_number: end_with(claimant[:address_telephone_number]),
+            mobile_number: end_with(claimant[:mobile_number]),
+            contact_preference: end_with(claimant[:contact_preference]),
+            email_address: end_with(claimant[:email_address])
         end
 
         def section_range(match_start:, match_end:)
@@ -228,6 +225,28 @@ module EtApi
         end
 
         private
+
+        def claimant_matchers
+          @claimant_matchers ||= {
+            title: be_a(String),
+            first_name: be_a(String),
+            last_name: be_a(String),
+            date_of_birth: be_a(String),
+            gender: be_a(String),
+            address: {
+              building: be_a(String),
+              street: be_a(String),
+              locality: be_a(String),
+              county: be_a(String),
+              post_code: be_a(String)
+
+            },
+            address_telephone_number: be_a(String),
+            mobile_number: be_a(String),
+            contact_preference: be_a(String),
+            email_address: be_a(String)
+          }
+        end
 
         attr_accessor :contents
       end
