@@ -267,7 +267,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
           force_export_now
 
           # Assert - look for the correct file in the landing folder - will be async
-          rep = normalize_xml_hash(xml_as_hash.as_json)[:representative]
+          rep = normalize_xml_hash(xml_as_hash.as_json)[:representatives].first
           expect(staging_folder.et1_txt_file(correct_file)).to have_representative_for(rep, errors: errors), -> { errors.join("\n") }
         end
       end

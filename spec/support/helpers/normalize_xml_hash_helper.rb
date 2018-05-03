@@ -8,6 +8,7 @@ module EtApi
         end
         h[:claimants].map! {|c| normalize_xml_claimant(c)}
         h[:respondents].map! {|r| normalize_xml_respondent(r)}
+        h[:representatives].map! {|r| normalize_xml_representative(r)}
         h
       end
 
@@ -35,6 +36,19 @@ module EtApi
           address_telephone_number: r['PhoneNumber'],
           acas_number: r['Acas']['Number'],
           alt_phone_number: r['AltPhoneNumber']
+        }
+      end
+
+      def normalize_xml_representative(r)
+        {
+          name: r['Name'],
+          organisation_name: r['Organisation'],
+          address: normalize_xml_address(r['Address']),
+          address_telephone_number: r['OfficeNumber'],
+          mobile_number: r['AltPhoneNumber'],
+          email_address: r['Email'],
+          representative_type: r['Type'],
+          dx_number: r['DXNumber']
         }
       end
 

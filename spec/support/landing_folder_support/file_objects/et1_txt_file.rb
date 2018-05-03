@@ -101,24 +101,25 @@ module EtApi
           end
         end
 
-        def has_representative_section?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_representative_section?(errors: [], indent: 1, **matcher_overrides) # rubocop:disable Naming/PredicateName
+          matchers = representative_matchers.merge(matcher_overrides)
           has_section?(section: :representative, errors: errors, indent: indent) do |lines|
             expect(lines[0]).to eql "## Section 8: Your representative"
             expect(lines[1]).to eql ""
-            expect(lines[2]).to start_with "~8.1 Representative's name: "
-            expect(lines[3]).to start_with "~8.2 Name of the representative's organisation: "
+            expect(lines[2]).to start_with("~8.1 Representative's name: ").and(matchers[:name])
+            expect(lines[3]).to start_with("~8.2 Name of the representative's organisation: ").and(matchers[:organisation_name])
             expect(lines[4]).to eql "~8.3 Address:"
-            expect(lines[5]).to start_with "Representative's Address 1: "
-            expect(lines[6]).to start_with "Representative's Address 2: "
-            expect(lines[7]).to start_with "Representative's Address 3: "
-            expect(lines[8]).to start_with "Representative's Address 4: "
-            expect(lines[9]).to start_with "Representative's Postcode: "
-            expect(lines[10]).to start_with "~8.4 Representative's Phone number: "
-            expect(lines[11]).to start_with "Representative's Mobile number: "
-            expect(lines[12]).to start_with "~8.5 Representative's Reference: "
+            expect(lines[5]).to start_with("Representative's Address 1: ").and(matchers[:address][:building])
+            expect(lines[6]).to start_with("Representative's Address 2: ").and(matchers[:address][:street])
+            expect(lines[7]).to start_with("Representative's Address 3: ").and(matchers[:address][:locality])
+            expect(lines[8]).to start_with("Representative's Address 4: ").and(matchers[:address][:county])
+            expect(lines[9]).to start_with("Representative's Postcode: ").and(matchers[:address][:post_code])
+            expect(lines[10]).to start_with("~8.4 Representative's Phone number: ").and(matchers[:address_telephone_number])
+            expect(lines[11]).to start_with("Representative's Mobile number: ").and(matchers[:mobile_number])
+            expect(lines[12]).to start_with("~8.5 Representative's Reference: ").and(matchers[:dx_number])
             expect(lines[13]).to eql "~8.6 How would they prefer us to communicate with them?:"
-            expect(lines[14]).to start_with "Representative's E-mail address: "
-            expect(lines[15]).to start_with "~8.7 Representative's Occupation: "
+            expect(lines[14]).to start_with("Representative's E-mail address: ").and(matchers[:email_address])
+            expect(lines[15]).to start_with("~8.7 Representative's Occupation: ").and(matchers[:representative_type])
             expect(lines[16]).to eql ""
           end
         end
@@ -206,7 +207,25 @@ module EtApi
             },
             work_address_telephone_number: end_with(respondent[:work_address_telephone_number]),
             address_telephone_number: end_with(respondent[:address_telephone_number])
+        end
 
+        def has_representative_for?(rep, errors: [], indent: 1)
+          address = rep[:address]
+          has_representative_section? errors: errors, indent: indent,
+            name: end_with(rep[:name]),
+            organisation_name: end_with(rep[:organisation_name]),
+            address: {
+              building: end_with(address[:building]),
+              street: end_with(address[:street]),
+              locality: end_with(address[:locality]),
+              county: end_with(address[:county]),
+              post_code: end_with(address[:post_code])
+            },
+            address_telephone_number: end_with(rep[:address_telephone_number]),
+            mobile_number: end_with(rep[:mobile_number]),
+            email_address: end_with(rep[:email_address]),
+            representative_type: end_with(rep[:representative_type]),
+            dx_number: end_with(rep[:dx_number])
         end
 
         def section_range(match_start:, match_end:)
@@ -292,6 +311,25 @@ module EtApi
             },
             address_telephone_number: be_a(String),
             work_address_telephone_number: be_a(String)
+          }
+        end
+
+        def representative_matchers
+          @representative_matchers ||= {
+            name: be_a(String),
+            organisation_name: be_a(String),
+            address: {
+              building: be_a(String),
+              street: be_a(String),
+              locality: be_a(String),
+              county: be_a(String),
+              post_code: be_a(String)
+            },
+            address_telephone_number: be_a(String),
+            mobile_number: be_a(String),
+            email_address: be_a(String),
+            representative_type: be_a(String),
+            dx_number: be_a(String)
           }
         end
 
