@@ -7,6 +7,7 @@ module EtApi
           acc
         end
         h[:claimants].map! {|c| normalize_xml_claimant(c)}
+        h[:respondents].map! {|r| normalize_xml_respondent(r)}
         h
       end
 
@@ -22,6 +23,18 @@ module EtApi
           contact_preference: claimant_hash['PreferredContactMethod'],
           gender: claimant_hash['Sex'],
           date_of_birth: Date.parse(claimant_hash['DateOfBirth'])
+        }
+      end
+
+      def normalize_xml_respondent(r)
+        {
+          name: r['Name'],
+          address: normalize_xml_address(r['Address']),
+          work_address: normalize_xml_address(r['AltAddress']),
+          work_address_telephone_number: r['OfficeNumber'],
+          address_telephone_number: r['PhoneNumber'],
+          acas_number: r['Acas']['Number'],
+          alt_phone_number: r['AltPhoneNumber']
         }
       end
 

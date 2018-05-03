@@ -189,7 +189,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       context 'with staging folder visibility' do
         include_context 'with staging folder visibility'
 
-        it 'has the respondent in the et1 txt file' do
+        it 'has the primary respondent in the et1 txt file' do
           # Arrange - Determine what the correct file should be
           correct_file = '222000000300_ET1_First_Last.txt'
 
@@ -198,7 +198,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
           force_export_now
 
           # Assert - look for the correct file in the landing folder - will be async
-          respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondent]
+          respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
           expect(staging_folder.et1_txt_file(correct_file)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
         end
       end
@@ -239,7 +239,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       context 'with staging folder visibility' do
         include_context 'with staging folder visibility'
 
-        it 'has the respondent in the et1 txt file' do
+        it 'has no representative in the et1 txt file' do
           # Arrange - Determine what the correct file should be
           correct_file = '222000000300_ET1_First_Last.txt'
 
@@ -258,7 +258,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       context 'with staging folder visibility' do
         include_context 'with staging folder visibility'
 
-        it 'has the respondent in the et1 txt file' do
+        it 'has the representative in the et1 txt file' do
           # Arrange - Determine what the correct file should be
           correct_file = '222000000300_ET1_First_Last.txt'
 

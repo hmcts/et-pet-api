@@ -76,26 +76,27 @@ module EtApi
           end
         end
 
-        def has_respondents_section?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_respondents_section?(errors: [], indent: 1, **matcher_overrides) # rubocop:disable Naming/PredicateName
+          matchers = respondent_matchers.merge(matcher_overrides)
           has_section?(section: :respondents, errors: errors, indent: indent) do |lines|
             expect(lines[0]).to eql "## Section 2: Respondent's details"
             expect(lines[1]).to eql ""
             expect(lines[2]).to eql "~2.1 Give the name of your employer or the organisation or person you are complaining about (the respondent):"
-            expect(lines[3]).to start_with "Respondent name: "
+            expect(lines[3]).to start_with("Respondent name: ").and(matchers[:name])
             expect(lines[4]).to eql "~2.2 Address:"
-            expect(lines[5]).to start_with "Respondent Address 1: "
-            expect(lines[6]).to start_with "Respondent Address 2: "
-            expect(lines[7]).to start_with "Respondent Address 3: "
-            expect(lines[8]).to start_with "Respondent Address 4: "
-            expect(lines[9]).to start_with "Respondent Postcode: "
-            expect(lines[10]).to start_with "Respondent Phone: "
+            expect(lines[5]).to start_with("Respondent Address 1: ").and(matchers[:address][:building])
+            expect(lines[6]).to start_with("Respondent Address 2: ").and(matchers[:address][:street])
+            expect(lines[7]).to start_with("Respondent Address 3: ").and(matchers[:address][:locality])
+            expect(lines[8]).to start_with("Respondent Address 4: ").and(matchers[:address][:county])
+            expect(lines[9]).to start_with("Respondent Postcode: ").and(matchers[:address][:post_code])
+            expect(lines[10]).to start_with("Respondent Phone: ") .and(matchers[:address_telephone_number])
             expect(lines[11]).to eql "~2.3 If you worked at an address different from the one you have given at 2.2, please give the full address:"
-            expect(lines[12]).to start_with "Alternative Respondent Address1: "
-            expect(lines[13]).to start_with "Alternative Respondent Address2: "
-            expect(lines[14]).to start_with "Alternative Respondent Address3: "
-            expect(lines[15]).to start_with "Alternative Respondent Address4: "
-            expect(lines[16]).to start_with "Alternative Postcode: "
-            expect(lines[17]).to start_with "Alternative Phone: "
+            expect(lines[12]).to start_with("Alternative Respondent Address1: ").and(matchers[:work_address][:building])
+            expect(lines[13]).to start_with("Alternative Respondent Address2: ").and(matchers[:work_address][:street])
+            expect(lines[14]).to start_with("Alternative Respondent Address3: ").and(matchers[:work_address][:locality])
+            expect(lines[15]).to start_with("Alternative Respondent Address4: ").and(matchers[:work_address][:county])
+            expect(lines[16]).to start_with("Alternative Postcode: ").and(matchers[:work_address][:post_code])
+            expect(lines[17]).to start_with("Alternative Phone: ").and(matchers[:work_address_telephone_number])
             expect(lines[18]).to eql ""
           end
         end
@@ -184,6 +185,30 @@ module EtApi
             email_address: end_with(claimant[:email_address])
         end
 
+        def has_respondent_for?(respondent, errors: [], indent: 1)
+          address = respondent[:address]
+          work_address = respondent[:work_address]
+          has_respondents_section? errors: errors, indent: indent,
+            name: end_with(respondent[:name]),
+            address: {
+              building: end_with(address[:building]),
+              street: end_with(address[:street]),
+              locality: end_with(address[:locality]),
+              county: end_with(address[:county]),
+              post_code: end_with(address[:post_code])
+            },
+            work_address: {
+              building: end_with(work_address[:building]),
+              street: end_with(work_address[:street]),
+              locality: end_with(work_address[:locality]),
+              county: end_with(work_address[:county]),
+              post_code: end_with(work_address[:post_code])
+            },
+            work_address_telephone_number: end_with(respondent[:work_address_telephone_number]),
+            address_telephone_number: end_with(respondent[:address_telephone_number])
+
+        end
+
         def section_range(match_start:, match_end:)
           start_idx = match_start.is_a?(String) ? contents.index(match_start) : contents.index { |l| l =~ match_start }
           return nil if start_idx.nil?
@@ -245,6 +270,28 @@ module EtApi
             mobile_number: be_a(String),
             contact_preference: be_a(String),
             email_address: be_a(String)
+          }
+        end
+
+        def respondent_matchers
+          @respondent_matchers ||= {
+            name: be_a(String),
+            address: {
+              building: be_a(String),
+              street: be_a(String),
+              locality: be_a(String),
+              county: be_a(String),
+              post_code: be_a(String)
+            },
+            work_address: {
+              building: be_a(String),
+              street: be_a(String),
+              locality: be_a(String),
+              county: be_a(String),
+              post_code: be_a(String)
+            },
+            address_telephone_number: be_a(String),
+            work_address_telephone_number: be_a(String)
           }
         end
 
