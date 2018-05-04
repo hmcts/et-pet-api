@@ -2,13 +2,13 @@ module EtApi
   module Test
     module NormalizeXmlHashHelper
       def normalize_xml_hash(xml_hash)
-        h = xml_hash.inject({}) do |acc, (k, v) |
+        h = xml_hash.inject({}) do |acc, (k, v)|
           acc[k.to_s.underscore.to_sym] = v
           acc
         end
-        h[:claimants].map! {|c| normalize_xml_claimant(c)}
-        h[:respondents].map! {|r| normalize_xml_respondent(r)}
-        h[:representatives].map! {|r| normalize_xml_representative(r)}
+        h[:claimants].map! { |c| normalize_xml_claimant(c) }
+        h[:respondents].map! { |r| normalize_xml_respondent(r) }
+        h[:representatives].map! { |r| normalize_xml_representative(r) }
         h
       end
 
@@ -27,28 +27,28 @@ module EtApi
         }
       end
 
-      def normalize_xml_respondent(r)
+      def normalize_xml_respondent(respondent)
         {
-          name: r['Name'],
-          address: normalize_xml_address(r['Address']),
-          work_address: normalize_xml_address(r['AltAddress']),
-          work_address_telephone_number: r['OfficeNumber'],
-          address_telephone_number: r['PhoneNumber'],
-          acas_number: r['Acas']['Number'],
-          alt_phone_number: r['AltPhoneNumber']
+          name: respondent['Name'],
+          address: normalize_xml_address(respondent['Address']),
+          work_address: normalize_xml_address(respondent['AltAddress']),
+          work_address_telephone_number: respondent['OfficeNumber'],
+          address_telephone_number: respondent['PhoneNumber'],
+          acas_number: respondent['Acas']['Number'],
+          alt_phone_number: respondent['AltPhoneNumber']
         }
       end
 
-      def normalize_xml_representative(r)
+      def normalize_xml_representative(representative)
         {
-          name: r['Name'],
-          organisation_name: r['Organisation'],
-          address: normalize_xml_address(r['Address']),
-          address_telephone_number: r['OfficeNumber'],
-          mobile_number: r['AltPhoneNumber'],
-          email_address: r['Email'],
-          representative_type: r['Type'],
-          dx_number: r['DXNumber']
+          name: representative['Name'],
+          organisation_name: representative['Organisation'],
+          address: normalize_xml_address(representative['Address']),
+          address_telephone_number: representative['OfficeNumber'],
+          mobile_number: representative['AltPhoneNumber'],
+          email_address: representative['Email'],
+          representative_type: representative['Type'],
+          dx_number: representative['DXNumber']
         }
       end
 

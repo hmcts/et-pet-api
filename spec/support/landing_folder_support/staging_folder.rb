@@ -55,6 +55,10 @@ module EtApi
         EtApi::Test::FileObjects::Et1TxtFile.new extract_to_tempfile(filename)
       end
 
+      def et1a_txt_file(filename)
+        EtApi::Test::FileObjects::Et1aTxtFile.new extract_to_tempfile(filename)
+      end
+
       private
 
       attr_accessor :list_action, :download_action

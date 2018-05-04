@@ -150,6 +150,10 @@ FactoryBot.define do
 
     trait(:simple_user_with_csv) do
       simple_user
+      with_csv
+    end
+
+    trait :with_csv do
       case_type 'Multiple'
       claimants do
         [
@@ -172,18 +176,20 @@ FactoryBot.define do
           build(:xml_claim_file, :simple_user_with_csv_group_claims)
         ]
       end
-
     end
 
     trait :simple_user_with_rtf do
       simple_user
+      with_rtf
+    end
+
+    trait :with_rtf do
       files do
         [
           build(:xml_claim_file, :et1_first_last_pdf),
           build(:xml_claim_file, :simple_user_with_rtf)
         ]
       end
-
     end
   end
 
@@ -225,6 +231,7 @@ FactoryBot.define do
     end
 
     trait :tamara_swift do
+      group_contact 'false'
       title "Mrs"
       forename "tamara"
       surname "swift"
