@@ -125,11 +125,12 @@ module EtApi
           end
         end
 
-        def has_multiple_cases_section?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_multiple_cases_section?(errors: [], indent: 1, **matcher_overrides) # rubocop:disable Naming/PredicateName
+          matchers = multiple_cases_matchers.merge(matcher_overrides)
           has_section?(section: :multiple_cases, errors: errors, indent: indent) do |lines|
             expect(lines[0]).to eql "## Section 10: Multiple cases"
             expect(lines[1]).to eql ""
-            expect(lines[2]).to start_with "~10.2 ET1a Submitted: "
+            expect(lines[2]).to start_with("~10.2 ET1a Submitted: ").and(matchers[:has_additional_claimants])
             expect(lines[3]).to eql ""
           end
         end
@@ -275,6 +276,15 @@ module EtApi
         end
 
 
+        def has_no_additional_claimants_sent?(errors: [], indent: 1)
+          has_multiple_cases_section? errors: errors, indent: indent,
+                                      has_additional_claimants: end_with(': ')
+        end
+
+        def has_additional_claimants_sent?(errors: [], indent: 1)
+          has_multiple_cases_section? errors: errors, indent: indent,
+                                      has_additional_claimants: end_with('Yes')
+        end
 
         def section_range(match_start:, match_end:)
           start_idx = match_start.is_a?(String) ? contents.index(match_start) : contents.index { |l| l =~ match_start }
@@ -392,6 +402,12 @@ module EtApi
             email_address: be_a(String),
             representative_type: be_a(String),
             dx_number: be_a(String)
+          }
+        end
+
+        def multiple_cases_matchers
+          @multiple_cases_matchers ||= {
+            has_additional_claimants: be_a(String)
           }
         end
 
