@@ -103,273 +103,235 @@ RSpec.describe 'CreateClaim Request', type: :request do
         expect(result).to be_an_instance_of Claim
       end
 
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
-        it 'stores the pdf file with the correct filename in the landing folder' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.pdf'
+      it 'stores the pdf file with the correct filename in the landing folder' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.pdf'
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Assert - look for the correct file in the landing folder - will be async
-          expect(staging_folder.all_unzipped_filenames).to include(correct_file)
-        end
+        # Assert - look for the correct file in the landing folder - will be async
+        expect(staging_folder.all_unzipped_filenames).to include(correct_file)
+      end
 
-        it 'stores the xml file with the correct filename in the landing folder' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.xml'
+      it 'stores the xml file with the correct filename in the landing folder' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.xml'
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Assert - look for the correct file in the landing folder - will be async
-          expect(staging_folder.all_unzipped_filenames).to include(correct_file)
-        end
+        # Assert - look for the correct file in the landing folder - will be async
+        expect(staging_folder.all_unzipped_filenames).to include(correct_file)
+      end
 
-        it 'stores a copy of the original xml data' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.xml'
+      it 'stores a copy of the original xml data' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.xml'
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Assert - look for the correct file in the landing folder - will be async
-          Dir.mktmpdir do |dir|
-            staging_folder.extract(correct_file, to: File.join(dir, correct_file))
-            expect(File.join(dir, correct_file)).to be_an_xml_file_copy_of(xml_input_filename)
-          end
-        end
-
-        it 'stores a txt file with the correct filename in the landing folder' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.txt'
-
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert - look for the correct file in the landing folder - will be async
-          expect(staging_folder.all_unzipped_filenames).to include(correct_file)
-        end
-
-        it 'produces the correct txt file contents' do
-          # Arrange - Determine what the correct file should be
-          errors = []
-          correct_file = '222000000300_ET1_First_Last.txt'
-
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert
-          expect(staging_folder.et1_txt_file(correct_file)).to have_correct_file_structure(errors: errors), -> { errors.join("\n") }
-        end
-
-        it 'has the claimant in the et1 txt file' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.txt'
-
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert - look for the correct file in the landing folder - will be async
-          claimant = normalize_xml_hash(xml_as_hash.as_json)[:claimants].first
-          expect(staging_folder.et1_txt_file(correct_file)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
-        end
-
-        it 'has the primary respondent in the et1 txt file' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.txt'
-
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert - look for the correct file in the landing folder - will be async
-          respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
-          expect(staging_folder.et1_txt_file(correct_file)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
+        # Assert - look for the correct file in the landing folder - will be async
+        Dir.mktmpdir do |dir|
+          staging_folder.extract(correct_file, to: File.join(dir, correct_file))
+          expect(File.join(dir, correct_file)).to be_an_xml_file_copy_of(xml_input_filename)
         end
       end
 
+      it 'stores a txt file with the correct filename in the landing folder' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.txt'
 
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
+
+        # Assert - look for the correct file in the landing folder - will be async
+        expect(staging_folder.all_unzipped_filenames).to include(correct_file)
+      end
+
+      it 'produces the correct txt file contents' do
+        # Arrange - Determine what the correct file should be
+        errors = []
+        correct_file = '222000000300_ET1_First_Last.txt'
+
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
+
+        # Assert
+        expect(staging_folder.et1_txt_file(correct_file)).to have_correct_file_structure(errors: errors), -> { errors.join("\n") }
+      end
+
+      it 'has the claimant in the et1 txt file' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.txt'
+
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
+
+        # Assert - look for the correct file in the landing folder - will be async
+        claimant = normalize_xml_hash(xml_as_hash.as_json)[:claimants].first
+        expect(staging_folder.et1_txt_file(correct_file)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
+      end
+
+      it 'has the primary respondent in the et1 txt file' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.txt'
+
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
+
+        # Assert - look for the correct file in the landing folder - will be async
+        respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
+        expect(staging_folder.et1_txt_file(correct_file)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
+      end
     end
 
     shared_examples 'a claim with single respondent' do
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
+      it 'has no secondary respondents in the et1 txt file' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.txt'
 
-        it 'has no secondary respondents in the et1 txt file' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.txt'
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert - look for the correct file in the landing folder - will be async
-          respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
-          expect(staging_folder.et1_txt_file(correct_file)).to have_no_additional_respondents(errors: errors), -> { errors.join("\n") }
-
-        end
+        # Assert - look for the correct file in the landing folder - will be async
+        respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
+        expect(staging_folder.et1_txt_file(correct_file)).to have_no_additional_respondents(errors: errors), -> { errors.join("\n") }
       end
     end
 
     shared_examples 'a claim with multiple respondents' do
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
+      it 'has the primary respondent in the et1 txt file' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.txt'
 
-        it 'has the primary respondent in the et1 txt file' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.txt'
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
+        # Assert - look for the correct file in the landing folder - will be async
+        respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
+        expect(staging_folder.et1_txt_file(correct_file)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
+      end
 
-          # Assert - look for the correct file in the landing folder - will be async
-          respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
-          expect(staging_folder.et1_txt_file(correct_file)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
-        end
+      it 'has the secondary respondents in the et1 txt file' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.txt'
 
-        it 'has the secondary respondents in the et1 txt file' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.txt'
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert - look for the correct file in the landing folder - will be async
-          respondents = normalize_xml_hash(xml_as_hash.as_json)[:respondents][1..-1]
-          expect(staging_folder.et1_txt_file(correct_file)).to have_additional_respondents_for(respondents, errors: errors), -> { errors.join("\n") }
-        end
+        # Assert - look for the correct file in the landing folder - will be async
+        respondents = normalize_xml_hash(xml_as_hash.as_json)[:respondents][1..-1]
+        expect(staging_folder.et1_txt_file(correct_file)).to have_additional_respondents_for(respondents, errors: errors), -> { errors.join("\n") }
       end
     end
 
     shared_examples 'a claim with single claimant' do
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
+      it 'does not store an ET1a txt file with the correct filename in the landing folder' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1a_First_Last.txt'
 
-        it 'does not store an ET1a txt file with the correct filename in the landing folder' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1a_First_Last.txt'
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert - look for the correct file in the landing folder - will be async
-          expect(staging_folder.all_unzipped_filenames).not_to include(correct_file)
-        end
+        # Assert - look for the correct file in the landing folder - will be async
+        expect(staging_folder.all_unzipped_filenames).not_to include(correct_file)
       end
     end
 
     shared_examples 'a claim with no representatives' do
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
+      it 'has no representative in the et1 txt file' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.txt'
 
-        it 'has no representative in the et1 txt file' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.txt'
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert - look for the correct file in the landing folder - will be async
-          expect(staging_folder.et1_txt_file(correct_file)).to have_no_representative(errors: errors), -> { errors.join("\n") }
-        end
+        # Assert - look for the correct file in the landing folder - will be async
+        expect(staging_folder.et1_txt_file(correct_file)).to have_no_representative(errors: errors), -> { errors.join("\n") }
       end
-
     end
 
     shared_examples 'a claim with a representative' do
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
+      it 'has the representative in the et1 txt file' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_First_Last.txt'
 
-        it 'has the representative in the et1 txt file' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.txt'
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert - look for the correct file in the landing folder - will be async
-          rep = normalize_xml_hash(xml_as_hash.as_json)[:representatives].first
-          expect(staging_folder.et1_txt_file(correct_file)).to have_representative_for(rep, errors: errors), -> { errors.join("\n") }
-        end
+        # Assert - look for the correct file in the landing folder - will be async
+        rep = normalize_xml_hash(xml_as_hash.as_json)[:representatives].first
+        expect(staging_folder.et1_txt_file(correct_file)).to have_representative_for(rep, errors: errors), -> { errors.join("\n") }
       end
     end
 
     shared_examples 'a claim with multiple claimants' do
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
+      it 'stores an ET1a txt file with all of the claimants in the correct format' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1a_First_Last.txt'
 
-        it 'stores an ET1a txt file with all of the claimants in the correct format' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1a_First_Last.txt'
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert
-          claimants = normalize_xml_hash(xml_as_hash.as_json)[:claimants][1..-1]
-          expect(staging_folder.et1a_txt_file(correct_file)).to have_claimants_for(claimants, errors: errors), -> { errors.join("\n") }
-        end
+        # Assert
+        claimants = normalize_xml_hash(xml_as_hash.as_json)[:claimants][1..-1]
+        expect(staging_folder.et1a_txt_file(correct_file)).to have_claimants_for(claimants, errors: errors), -> { errors.join("\n") }
       end
-
     end
 
     shared_examples 'a claim with a csv file' do
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
-        let(:input_csv_file) { input_files[xml_as_hash.files.find { |f| f.filename.end_with?('.csv') }.filename] }
+      let(:input_csv_file) { input_files[xml_as_hash.files.find { |f| f.filename.end_with?('.csv') }.filename] }
 
-        it 'stores the csv file' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1a_First_Last.csv'
+      it 'stores the csv file' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1a_First_Last.csv'
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Assert - look for the correct file in the landing folder - will be async
-          Dir.mktmpdir do |dir|
-            staging_folder.extract(correct_file, to: File.join(dir, correct_file))
-            expect(File.join(dir, correct_file)).to be_a_file_copy_of(input_csv_file)
-          end
+        # Assert - look for the correct file in the landing folder - will be async
+        Dir.mktmpdir do |dir|
+          staging_folder.extract(correct_file, to: File.join(dir, correct_file))
+          expect(File.join(dir, correct_file)).to be_a_file_copy_of(input_csv_file)
         end
       end
     end
 
     shared_examples 'a claim with an rtf file' do
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
+      it 'stores the rtf file with the correct filename and is a copy of the original' do
+        # Arrange - Determine what the correct file should be
+        correct_file = '222000000300_ET1_Attachment_First_Last.rtf'
 
-        it 'stores the rtf file with the correct filename and is a copy of the original' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_Attachment_First_Last.rtf'
+        # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+        perform_action
+        force_export_now
 
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert - look for the correct file in the landing folder - will be async
-          Dir.mktmpdir do |dir|
-            staging_folder.extract(correct_file, to: File.join(dir, correct_file))
-            expect(File.join(dir, correct_file)).to be_a_file_copy_of(input_rtf_file)
-          end
+        # Assert - look for the correct file in the landing folder - will be async
+        Dir.mktmpdir do |dir|
+          staging_folder.extract(correct_file, to: File.join(dir, correct_file))
+          expect(File.join(dir, correct_file)).to be_a_file_copy_of(input_rtf_file)
         end
       end
     end
 
+    include_context 'with staging folder visibility'
     context '(1) with xml for single claimant and respondent but no representatives' do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 0) }
