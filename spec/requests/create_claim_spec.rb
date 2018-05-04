@@ -2,29 +2,6 @@
 
 require 'rails_helper'
 
-=begin
-
-Claimant  |   CSV   |   Respondent    | Representative  | RTF |
-Single    |  No
-Multiple  | No
-Multiple  | Yes
-
-1. A single claimant, single respondent and no representative
-2. Multiple claimants (not using CSV), single respondent and no representative
-3. Multiple claimants (using CSV), single respondent and no representative
-4. A single claimant, single respondent and single representative
-5. Multiple claimants (not using CSV), single respondent and single representative
-6. Multiple claimants (using CSV), single respondents and single representative
-7. A single claimant, multiple respondents and no representative
-8. Multiple claimants (not using CSV), multiple respondents and no representative
-9. Multiple claimants (using CSV), multiple respondents and no representative
-10. A single claimant, multiple respondents and single representative
-11. Multiple claimants (not using CSV), multiple respondents and single representative
-12. Multiple claimants (using CSV), multiple respondents and single representative
-13. A single claimant, respondent, representative and rtf file upload
-
-=end
-
 RSpec.describe 'CreateClaim Request', type: :request do
   # content type "multipart/form-data"
   # body params contain :-
@@ -178,13 +155,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
           # Assert - look for the correct file in the landing folder - will be async
           expect(staging_folder.all_unzipped_filenames).to include(correct_file)
         end
-      end
-    end
-
-    shared_examples 'validate text file structure' do
-
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
 
         it 'produces the correct txt file contents' do
           # Arrange - Determine what the correct file should be
@@ -198,12 +168,19 @@ RSpec.describe 'CreateClaim Request', type: :request do
           # Assert
           expect(staging_folder.et1_txt_file(correct_file)).to have_correct_file_structure(errors: errors), -> { errors.join("\n") }
         end
-      end
-    end
 
-    shared_examples 'a claim with single respondent' do
-      context 'with staging folder visibility' do
-        include_context 'with staging folder visibility'
+        it 'has the claimant in the et1 txt file' do
+          # Arrange - Determine what the correct file should be
+          correct_file = '222000000300_ET1_First_Last.txt'
+
+          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+          perform_action
+          force_export_now
+
+          # Assert - look for the correct file in the landing folder - will be async
+          claimant = normalize_xml_hash(xml_as_hash.as_json)[:claimants].first
+          expect(staging_folder.et1_txt_file(correct_file)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
+        end
 
         it 'has the primary respondent in the et1 txt file' do
           # Arrange - Determine what the correct file should be
@@ -216,6 +193,28 @@ RSpec.describe 'CreateClaim Request', type: :request do
           # Assert - look for the correct file in the landing folder - will be async
           respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
           expect(staging_folder.et1_txt_file(correct_file)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
+        end
+      end
+
+
+    end
+
+    shared_examples 'a claim with single respondent' do
+      context 'with staging folder visibility' do
+        include_context 'with staging folder visibility'
+
+        it 'has no secondary respondents in the et1 txt file' do
+          # Arrange - Determine what the correct file should be
+          correct_file = '222000000300_ET1_First_Last.txt'
+
+          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
+          perform_action
+          force_export_now
+
+          # Assert - look for the correct file in the landing folder - will be async
+          respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
+          expect(staging_folder.et1_txt_file(correct_file)).to have_no_additional_respondents(errors: errors), -> { errors.join("\n") }
+
         end
       end
     end
@@ -266,19 +265,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
           # Assert - look for the correct file in the landing folder - will be async
           expect(staging_folder.all_unzipped_filenames).not_to include(correct_file)
-        end
-
-        it 'has the claimant in the et1 txt file' do
-          # Arrange - Determine what the correct file should be
-          correct_file = '222000000300_ET1_First_Last.txt'
-
-          # Act - Send some claim data and force the scheduled job through for exporting - else we wont see anything
-          perform_action
-          force_export_now
-
-          # Assert - look for the correct file in the landing folder - will be async
-          claimant = normalize_xml_hash(xml_as_hash.as_json)[:claimants].first
-          expect(staging_folder.et1_txt_file(correct_file)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
         end
       end
     end
@@ -387,7 +373,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
     context '(1) with xml for single claimant and respondent but no representatives' do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 0) }
-      include_examples 'validate text file structure'
       include_examples 'any claim variation'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
@@ -397,7 +382,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
     context '(2) with xml for multiple claimants, 1 respondent and no representatives' do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 5, number_of_respondents: 1, number_of_representatives: 0) }
-      include_examples 'validate text file structure'
       include_examples 'any claim variation'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
@@ -408,7 +392,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
                       xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 1, number_of_representatives: 0) }
       include_examples 'any claim variation'
-      include_examples 'validate text file structure'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with no representatives'
@@ -418,7 +401,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
     context '(4) with xml for single claimant, respondent and representative' do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 1) }
-      include_examples 'validate text file structure'
       include_examples 'any claim variation'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
@@ -428,7 +410,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
     context '(5) with xml for multiple claimants, 1 respondent and a representative' do
       include_context 'with setup for claims',
                       xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 5, number_of_respondents: 1, number_of_representatives: 1) }
-      include_examples 'validate text file structure'
       include_examples 'any claim variation'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
@@ -437,9 +418,8 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
     context '(6) with xml for multiple claimants, single respondent and representative - with csv file uploaded' do
       include_context 'with setup for claims',
-        xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 1) }
+        xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 1, number_of_representatives: 1) }
       include_examples 'any claim variation'
-      include_examples 'validate text file structure'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with a representative'
@@ -449,11 +429,57 @@ RSpec.describe 'CreateClaim Request', type: :request do
     context '(7) with xml for single claimant and multiple respondents but no representatives' do
       include_context 'with setup for claims',
                       xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 3, number_of_representatives: 0) }
-      include_examples 'validate text file structure'
       include_examples 'any claim variation'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with no representatives'
+    end
+
+    context '(8) with xml for multiple claimant, multiple respondents but no representatives' do
+      include_context 'with setup for claims',
+                      xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 5, number_of_respondents: 3, number_of_representatives: 0) }
+      include_examples 'any claim variation'
+      include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple respondents'
+      include_examples 'a claim with no representatives'
+    end
+
+    context '(9) with xml for multiple claimant, multiple respondents but no representatives - with csv file uploaded' do
+      include_context 'with setup for claims',
+                      xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 3, number_of_representatives: 0) }
+      include_examples 'any claim variation'
+      include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple respondents'
+      include_examples 'a claim with no representatives'
+      include_examples 'a claim with a csv file'
+    end
+
+    context '(10) with xml for single claimant, multiple respondents and a representative' do
+      include_context 'with setup for claims',
+                      xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 3, number_of_representatives: 1) }
+      include_examples 'any claim variation'
+      include_examples 'a claim with single claimant'
+      include_examples 'a claim with multiple respondents'
+      include_examples 'a claim with a representative'
+    end
+
+    context '(11) with xml for multiple claimants, multiple respondents and a representative' do
+      include_context 'with setup for claims',
+                      xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 5, number_of_respondents: 3, number_of_representatives: 1) }
+      include_examples 'any claim variation'
+      include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple respondents'
+      include_examples 'a claim with a representative'
+    end
+
+    context '(12) with xml for multiple claimants, multiple respondents and a representative - with csv file uploaded' do
+      include_context 'with setup for claims',
+                      xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 3, number_of_representatives: 1) }
+      include_examples 'any claim variation'
+      include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple respondents'
+      include_examples 'a claim with a representative'
+      include_examples 'a claim with a csv file'
     end
 
     context '(13) with xml for single claimant, single respondent and representative - with rtf file uploaded' do
@@ -462,7 +488,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
       let(:input_rtf_file) { input_files[xml_as_hash.files.find { |f| f.filename.end_with?('.rtf') }.filename] }
 
       include_examples 'any claim variation'
-      include_examples 'validate text file structure'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with a representative'

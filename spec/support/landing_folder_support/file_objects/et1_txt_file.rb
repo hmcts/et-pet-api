@@ -261,6 +261,21 @@ module EtApi
                                               address_telephone_number: ->(idx) { end_with(r[idx]&.dig(:address_telephone_number).to_s) }
         end
 
+        def has_no_additional_respondents?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+          has_additional_respondents_section? errors: errors, indent: indent,
+                                              name: ->(*) { end_with(': ') },
+                                              address: {
+                                                building: ->(*) { end_with(': ') },
+                                                street: ->(*) { end_with(': ') },
+                                                locality: ->(*) { end_with(': ') },
+                                                county: ->(*) { end_with(': ') },
+                                                post_code: ->(*) { end_with(': ') },
+                                              },
+                                              address_telephone_number: ->(*) { end_with(': ') }
+        end
+
+
+
         def section_range(match_start:, match_end:)
           start_idx = match_start.is_a?(String) ? contents.index(match_start) : contents.index { |l| l =~ match_start }
           return nil if start_idx.nil?
