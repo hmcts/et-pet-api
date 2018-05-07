@@ -5,6 +5,11 @@ Rails.application.routes.draw do
       post 'new-claim' => 'claims#create'
       post 'fgr-et-office' => 'fee_group_offices#create'
     end
+    namespace :v2 do
+      namespace :respondents do
+        resources :response, only: [:create], controller: :responses
+      end
+    end
   end
   mount EtAtosFileTransfer::Engine, at: '/atos_api'
 end
