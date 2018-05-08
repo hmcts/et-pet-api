@@ -72,7 +72,7 @@ RSpec.describe 'Create Response Request', type: :request do
 
     context 'with json for a response to a non existent claim' do
       include_context 'setup for any response',
-        json_factory: -> { build(:json_build_response_commands) }
+        json_factory: -> { FactoryBot.build(:json_build_response_commands) }
       include_examples 'any response variation'
     end
 
