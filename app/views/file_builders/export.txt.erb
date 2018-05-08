@@ -56,22 +56,22 @@ Alternative Phone: <%= primary_respondent.work_address_telephone_number %>
 ## Section 8: Your representative
 <% primary_representative.tap do |rep| %>
 
-~8.1 Representative's name: <%= rep.name %>
-~8.2 Name of the representative's organisation: Solicitors Are Us Fake Company
+~8.1 Representative's name: <%= rep.try(:name) %>
+~8.2 Name of the representative's organisation: <%= rep.try(:organisation_name) %>
 ~8.3 Address:
-<% rep.address.tap do |address| %>
-Representative's Address 1: <%= address.building %>
-Representative's Address 2: <%= address.street %>
-Representative's Address 3: <%= address.locality %>
-Representative's Address 4: <%= address.county %>
-Representative's Postcode: <%= address.post_code %>
+<% rep.try(:address).tap do |address| %>
+Representative's Address 1: <%= address.try(:building) %>
+Representative's Address 2: <%= address.try(:street) %>
+Representative's Address 3: <%= address.try(:locality) %>
+Representative's Address 4: <%= address.try(:county) %>
+Representative's Postcode: <%= address.try(:post_code) %>
 <% end %>
-~8.4 Representative's Phone number: <%= rep.address_telephone_number %>
-Representative's Mobile number: <%= rep.mobile_number %>
-~8.5 Representative's Reference: <%= rep.dx_number %>
+~8.4 Representative's Phone number: <%= rep.try(:address_telephone_number) %>
+Representative's Mobile number: <%= rep.try(:mobile_number) %>
+~8.5 Representative's Reference: <%= rep.try(:dx_number) %>
 ~8.6 How would they prefer us to communicate with them?:
-Representative's E-mail address: <%= rep.email_address %>
-~8.7 Representative's Occupation: <%= rep.representative_type %>
+Representative's E-mail address: <%= rep.try(:email_address) %>
+~8.7 Representative's Occupation: <%= rep.try(:representative_type) %>
 <% end %>
 
 ## Section 10: Multiple cases
@@ -94,3 +94,5 @@ AdditionalPostcode<%= respondent_number %>: <%= address.try(:post_code) %>
 AdditionalPhoneNumber<%= respondent_number %>: <%= respondent.try(:address_telephone_number) %>
 <% end %>
 <% end %>
+<% "\n" %>
+

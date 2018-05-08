@@ -142,6 +142,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
   end
 
   def collection(root, collection_name)
+    return [] if root[collection_name].nil?
     collection = root[collection_name][collection_name.singularize]
     collection = [collection] unless collection.is_a?(Array)
     collection

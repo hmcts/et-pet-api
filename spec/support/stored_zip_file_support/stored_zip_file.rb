@@ -1,5 +1,5 @@
 require 'zip'
-module ETApi
+module EtApi
   module Test
     class StoredZipFile
       def self.file_names(zip:)

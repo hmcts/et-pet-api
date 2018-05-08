@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+require 'builder'
 RSpec.describe "RequestReferenceNumbers", type: :request do
   # content type "application/x-www-form-urlencoded"
   # body "postcode=SW1H%209ST"
