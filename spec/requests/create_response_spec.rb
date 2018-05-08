@@ -69,6 +69,7 @@ RSpec.describe 'Create Response Request', type: :request do
     end
 
     include_context 'with staging folder visibility'
+
     context 'with json for a response to a non existent claim' do
       include_context 'setup for any response',
         json_factory: -> { build(:json_build_response_commands) }

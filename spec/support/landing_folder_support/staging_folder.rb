@@ -59,6 +59,12 @@ module EtApi
         EtApi::Test::FileObjects::Et1aTxtFile.new extract_to_tempfile(filename)
       end
 
+      def tracking_new_files
+        starting_filenames = filenames
+        yield
+        filenames - starting_filenames
+      end
+
       private
 
       attr_accessor :list_action, :download_action
