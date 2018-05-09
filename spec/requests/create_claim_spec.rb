@@ -39,16 +39,16 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
 
       let(:staging_folder) do
+        session = create_session(app)
         actions = {
           list_action: lambda {
-            get '/atos_api/v1/filetransfer/list'
-            response.body
+            session.get '/atos_api/v1/filetransfer/list'
+            session.response.body
           },
           download_action: lambda { |zip_file|
-            get "/atos_api/v1/filetransfer/download/#{zip_file}"
-            response
+            session.get "/atos_api/v1/filetransfer/download/#{zip_file}"
+            session.response
           }
-
         }
         EtApi::Test::StagingFolder.new actions
       end

@@ -14,22 +14,22 @@ RSpec.describe 'Create Response Request', type: :request do
 
     shared_context 'with staging folder visibility' do
       def force_export_now
-        ResponsesExportWorker.new.perform
+        ClaimsExportWorker.new.perform
       end
 
       let(:staging_folder) do
+        session = create_session(app)
         actions = {
           list_action: lambda {
-            get '/atos_api/v1/filetransfer/list'
-            response.body
+            session.get '/atos_api/v1/filetransfer/list'
+            session.response.body
           },
           download_action: lambda { |zip_file|
-            get "/atos_api/v1/filetransfer/download/#{zip_file}"
-            response
+            session.get "/atos_api/v1/filetransfer/download/#{zip_file}"
+            session.response
           }
-
         }
-        ETApi::Test::StagingFolder.new actions
+        EtApi::Test::StagingFolder.new actions
       end
     end
 
@@ -43,11 +43,8 @@ RSpec.describe 'Create Response Request', type: :request do
       end
 
       before do
-        new_files = staging_folder.tracking_new_files do
-          perform_action
-          force_export_now
-        end
-        output_files_generated.concat new_files
+        perform_action
+        force_export_now
       end
     end
 
@@ -62,9 +59,16 @@ RSpec.describe 'Create Response Request', type: :request do
         expect(json_response).to include status: 'accepted', uuid: input_factory.uuid
       end
 
+      it 'should return the reference in the metadata for the response' do
+        # Assert - Make sure we get the reference in the metadata
+        expect(json_response).to include meta: a_hash_including('BuildResponse' => a_hash_including(reference: instance_of(String)))
+      end
+
       it 'creates a valid txt file in the correct place in the landing folder' do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
-        expect(staging_folder.et3_txt_file_from_zips(output_files_generated)).to have_correct_file_structure
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        output_filename_txt = "#{reference}_ET3_.txt"
+        expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_file_structure
       end
     end
 

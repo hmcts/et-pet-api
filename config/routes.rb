@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     end
     namespace :v2 do
       namespace :respondents do
-        resources :response, only: [:create], controller: :responses
+        post "build_response" => 'build_responses#create'
       end
     end
   end

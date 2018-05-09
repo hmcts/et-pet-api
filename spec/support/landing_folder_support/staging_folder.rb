@@ -65,6 +65,10 @@ module EtApi
         filenames - starting_filenames
       end
 
+      def et3_txt_file(filename)
+        EtApi::Test::FileObjects::Et3TxtFile.new extract_to_tempfile(filename)
+      end
+
       private
 
       attr_accessor :list_action, :download_action

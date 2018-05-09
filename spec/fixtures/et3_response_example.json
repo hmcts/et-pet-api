@@ -39,6 +39,8 @@
   "disagree_claimant_pension_benefits_reason": "lorem ipsum claimant pension",
   "defend_claim": true,
   "defend_claim_facts": "lorem ipsum defence",
+
+
   "have_representative": true,
   "type_of_representative": "Private Individual",
   "representative_org_name": "repco ltd",

@@ -698,7 +698,12 @@ CREATE TABLE public.representatives (
     representative_type character varying,
     dx_number character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    reference character varying,
+    contact_preference character varying,
+    fax_number character varying,
+    disability boolean,
+    disability_information character varying
 );
 
 
@@ -735,7 +740,15 @@ CREATE TABLE public.respondents (
     work_address_id bigint,
     alt_phone_number character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    contact character varying,
+    dx_number character varying,
+    contact_preference character varying,
+    email_address character varying,
+    fax_number character varying,
+    organisation_employ_gb character varying,
+    organisation_more_than_one_site character varying,
+    employment_at_site_number character varying
 );
 
 
@@ -756,6 +769,67 @@ CREATE SEQUENCE public.respondents_id_seq
 --
 
 ALTER SEQUENCE public.respondents_id_seq OWNED BY public.respondents.id;
+
+
+--
+-- Name: responses; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.responses (
+    id bigint NOT NULL,
+    respondent_id bigint,
+    representative_id bigint,
+    reference character varying,
+    case_number character varying,
+    claimants_name character varying,
+    agree_with_early_conciliation_details boolean,
+    disagree_conciliation_reason character varying,
+    agree_with_employment_dates character varying,
+    employment_start date,
+    employment_end date,
+    disagree_employment character varying,
+    continued_employment character varying,
+    "boolean" character varying,
+    agree_with_claimants_description_of_job_or_title boolean,
+    disagree_claimants_job_or_title character varying,
+    agree_with_claimants_hours character varying,
+    queried_hours numeric(4,2),
+    agree_with_earnings_details character varying,
+    queried_pay_before_tax numeric(8,2),
+    queried_pay_before_tax_period character varying,
+    queried_take_home_pay numeric(8,2),
+    queried_take_home_pay_period character varying,
+    agree_with_claimant_notice boolean,
+    disagree_claimant_notice_reason character varying,
+    agree_with_claimant_pension_benefits boolean,
+    disagree_claimant_pension_benefits_reason character varying,
+    defend_claim boolean,
+    defend_claim_facts character varying,
+    make_employer_contract_claim boolean,
+    claim_information character varying,
+    email_receipt character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: responses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.responses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: responses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.responses_id_seq OWNED BY public.responses.id;
 
 
 --
@@ -978,6 +1052,13 @@ ALTER TABLE ONLY public.respondents ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: responses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.responses ALTER COLUMN id SET DEFAULT nextval('public.responses_id_seq'::regclass);
+
+
+--
 -- Name: unique_references id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1165,6 +1246,14 @@ ALTER TABLE ONLY public.representatives
 
 ALTER TABLE ONLY public.respondents
     ADD CONSTRAINT respondents_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: responses responses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.responses
+    ADD CONSTRAINT responses_pkey PRIMARY KEY (id);
 
 
 --
@@ -1374,6 +1463,20 @@ CREATE INDEX index_respondents_on_work_address_id ON public.respondents USING bt
 
 
 --
+-- Name: index_responses_on_representative_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_responses_on_representative_id ON public.responses USING btree (representative_id);
+
+
+--
+-- Name: index_responses_on_respondent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_responses_on_respondent_id ON public.responses USING btree (respondent_id);
+
+
+--
 -- Name: claim_representatives fk_rails_303e8e36aa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1514,6 +1617,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180403140530'),
 ('20180403140552'),
 ('20180410052457'),
-('20180410081032');
+('20180410081032'),
+('20180508171227'),
+('20180509071735'),
+('20180509080448');
 
 

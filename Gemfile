@@ -54,6 +54,7 @@ group :test do
   gem 'factory_bot', '~> 4.8'
   gem 'aws-sdk-s3', '~> 1.8', '>= 1.8.2'
   gem 'rspec-eventually', '~> 0.2.2'
+  gem 'faker', '~> 1.8', '>= 1.8.7'
 end
 
 group :production do
