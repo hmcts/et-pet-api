@@ -27,7 +27,7 @@ FactoryBot.define do
     trait :ready_for_export do
       # Ready for export MUST be in the database and files stored - so we dont do build here
       after(:create) do |response, _evaluator|
-        ResponseExport.create response: response
+        Export.create resource: response
       end
     end
 

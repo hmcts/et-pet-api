@@ -10,6 +10,7 @@ class ConvertClaimExportToPolymorphic < ActiveRecord::Migration[5.2]
       t.remove :resource_id
       t.rename :claim_id, :resource_id
     end
+    remove_foreign_key :claim_exports, :claims
     ClaimExport.update_all(resource_type: 'Claim')
   end
 
@@ -17,7 +18,9 @@ class ConvertClaimExportToPolymorphic < ActiveRecord::Migration[5.2]
     change_table :claim_exports do |t|
       t.rename :resource_id, :claim_id
       t.remove :resource_type
+      t.add_foreign_key :claim_id
     end
+    add_foreign_key :claim_exports, :claims
 
   end
 end

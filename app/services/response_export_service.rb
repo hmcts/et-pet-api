@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-# This service provides assistance to the ExportService (will get renamed !)
+# This service provides assistance to the ExportService
 # It provides the methods required to get the data that is needed to export the response
 #
 class ResponseExportService
 
   # @param [Response] response The response to export or mark as to be exported
-  def initialize(response, response_exports: ResponseExport)
+  def initialize(response, exports: Export)
     self.response = response
-    self.response_exports = response_exports
+    self.exports = exports
   end
 
   # Marks the response as available and ready to be exported
   def to_be_exported
-    response_exports.create response: response
+    exports.create resource: response
   end
 
   # Exports the pdf file for use by ExportService
@@ -37,5 +37,5 @@ class ResponseExportService
     response.uploaded_files.detect { |f| f.filename == 'et3_atos_export.rtf' }
   end
 
-  attr_accessor :response, :response_exports
+  attr_accessor :response, :exports
 end
