@@ -3,23 +3,23 @@ module ClaimsExport
     def initialize(claims_to_export: Export.includes(:resource), claim_export_service: ClaimExportService)
       self.claims_to_export = claims_to_export
       self.claim_export_service = claim_export_service
-      self.claim_exports = []
+      self.exports = []
     end
 
     def export_claims(to:)
       claims_to_export.each do |claim_export|
-        claim_exports << claim_export
+        exports << claim_export
         export_files(claim_export.resource, to: to)
       end
     end
 
     def mark_claims_as_exported
       # Destroy each individually to
-      claims_to_export.where(id: claim_exports.map(&:id)).delete_all
+      claims_to_export.where(id: exports.map(&:id)).delete_all
     end
 
     def exported_count
-      claim_exports.length
+      exports.length
     end
 
 
@@ -49,7 +49,7 @@ module ClaimsExport
       claim.uploaded_files.any? { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.rtf') }
     end
 
-    attr_accessor :claim_export_service, :claims_to_export, :claim_exports
+    attr_accessor :claim_export_service, :claims_to_export, :exports
     attr_writer
 
   end

@@ -6,14 +6,14 @@
 class ClaimExportService
 
   # @param [Claim] claim The claim to export or mark as to be exported
-  def initialize(claim, claim_exports: Export)
+  def initialize(claim, exports: Export)
     self.claim = claim
-    self.claim_exports = claim_exports
+    self.exports = exports
   end
 
   # Marks the claim as available and ready to be exported
   def to_be_exported
-    claim_exports.create resource: claim
+    exports.create resource: claim
   end
 
   # Exports the pdf file for use by ExportService
@@ -58,5 +58,5 @@ class ClaimExportService
     claim.uploaded_files.detect { |f| f.filename.starts_with?('et1a') && f.filename.ends_with?('.csv') }
   end
 
-  attr_accessor :claim, :claim_exports
+  attr_accessor :claim, :exports
 end
