@@ -6,7 +6,7 @@
 class ClaimExportService
 
   # @param [Claim] claim The claim to export or mark as to be exported
-  def initialize(claim, exports: Export)
+  def initialize(claim, exports: Export.claims)
     self.claim = claim
     self.exports = exports
   end

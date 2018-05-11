@@ -1,6 +1,6 @@
 module ClaimsExport
   class ClaimExporter
-    def initialize(claims_to_export: Export.includes(:resource), claim_export_service: ClaimExportService)
+    def initialize(claims_to_export: Export.claims.includes(:resource), claim_export_service: ClaimExportService)
       self.claims_to_export = claims_to_export
       self.claim_export_service = claim_export_service
       self.exports = []

@@ -6,7 +6,7 @@ RSpec.describe ResponseExportService do
 
   describe 'to_be_exported' do
     it 'marks the response as ready to be exported' do
-      expect { service.to_be_exported }.to change(ResponseExport, :count).by(1)
+      expect { service.to_be_exported }.to change(Export.responses, :count).by(1)
     end
   end
 

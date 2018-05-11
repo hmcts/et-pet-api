@@ -10,7 +10,7 @@ RSpec.describe ExportService do
     end
 
     let!(:responses) do
-      create_list(:claim, 2, :with_pdf_file, :with_text_file, :ready_for_export)
+      create_list(:response, 2, :with_pdf_file, :with_text_file, :ready_for_export)
     end
 
 
