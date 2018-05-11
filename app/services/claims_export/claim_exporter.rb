@@ -1,6 +1,6 @@
 module ClaimsExport
   class ClaimExporter
-    def initialize(claims_to_export: ClaimExport.includes(:claim), claim_export_service: ClaimExportService)
+    def initialize(claims_to_export: ClaimExport.includes(:resource), claim_export_service: ClaimExportService)
       self.claims_to_export = claims_to_export
       self.claim_export_service = claim_export_service
       self.claim_exports = []
@@ -9,7 +9,7 @@ module ClaimsExport
     def export_claims(to:)
       claims_to_export.each do |claim_export|
         claim_exports << claim_export
-        export_files(claim_export.claim, to: to)
+        export_files(claim_export.resource, to: to)
       end
     end
 

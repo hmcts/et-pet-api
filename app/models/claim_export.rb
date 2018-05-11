@@ -3,6 +3,5 @@
 # @private
 # An internal join model not to be used directly
 class ClaimExport < ApplicationRecord
-  belongs_to :claim
-  belongs_to :pdf_file, class_name: 'UploadedFile', optional: true # rubocop:disable Rails/InverseOf
+  belongs_to :resource, polymorphic: true
 end

@@ -13,7 +13,7 @@ class ClaimExportService
 
   # Marks the claim as available and ready to be exported
   def to_be_exported
-    claim_exports.create claim: claim
+    claim_exports.create resource: claim
   end
 
   # Exports the pdf file for use by ExportService

@@ -378,12 +378,13 @@ ALTER SEQUENCE public.claim_claimants_id_seq OWNED BY public.claim_claimants.id;
 
 CREATE TABLE public.claim_exports (
     id bigint NOT NULL,
-    claim_id bigint,
+    resource_id bigint,
     pdf_file_id bigint,
     in_progress boolean,
     messages character varying[] DEFAULT '{}'::character varying[],
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    resource_type character varying
 );
 
 
@@ -1475,10 +1476,10 @@ CREATE INDEX index_claim_claimants_on_claimant_id ON public.claim_claimants USIN
 
 
 --
--- Name: index_claim_exports_on_claim_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_claim_exports_on_resource_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claim_exports_on_claim_id ON public.claim_exports USING btree (claim_id);
+CREATE INDEX index_claim_exports_on_resource_id ON public.claim_exports USING btree (resource_id);
 
 
 --
@@ -1614,7 +1615,7 @@ ALTER TABLE ONLY public.claim_claimants
 --
 
 ALTER TABLE ONLY public.claim_exports
-    ADD CONSTRAINT fk_rails_5727bba352 FOREIGN KEY (claim_id) REFERENCES public.claims(id);
+    ADD CONSTRAINT fk_rails_5727bba352 FOREIGN KEY (resource_id) REFERENCES public.claims(id);
 
 
 --
@@ -1763,6 +1764,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180509071735'),
 ('20180509080448'),
 ('20180509204605'),
-('20180510184457');
+('20180510184457'),
+('20180511160146');
 
 
