@@ -6,7 +6,7 @@ RSpec.describe ClaimExportService do
 
   describe 'to_be_exported' do
     it 'marks the claim as ready to be exported' do
-      expect { service.to_be_exported }.to change(ClaimExport, :count).by(1)
+      expect { service.to_be_exported }.to change(Export, :count).by(1)
     end
   end
 

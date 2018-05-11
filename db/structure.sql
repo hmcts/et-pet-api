@@ -373,41 +373,6 @@ ALTER SEQUENCE public.claim_claimants_id_seq OWNED BY public.claim_claimants.id;
 
 
 --
--- Name: claim_exports; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.claim_exports (
-    id bigint NOT NULL,
-    resource_id bigint,
-    pdf_file_id bigint,
-    in_progress boolean,
-    messages character varying[] DEFAULT '{}'::character varying[],
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    resource_type character varying
-);
-
-
---
--- Name: claim_exports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.claim_exports_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: claim_exports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.claim_exports_id_seq OWNED BY public.claim_exports.id;
-
-
---
 -- Name: claim_representatives; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -612,6 +577,41 @@ CREATE SEQUENCE public.exported_files_id_seq
 --
 
 ALTER SEQUENCE public.exported_files_id_seq OWNED BY public.exported_files.id;
+
+
+--
+-- Name: exports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.exports (
+    id bigint NOT NULL,
+    resource_id bigint,
+    pdf_file_id bigint,
+    in_progress boolean,
+    messages character varying[] DEFAULT '{}'::character varying[],
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    resource_type character varying
+);
+
+
+--
+-- Name: exports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.exports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: exports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.exports_id_seq OWNED BY public.exports.id;
 
 
 --
@@ -1042,13 +1042,6 @@ ALTER TABLE ONLY public.claim_claimants ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
--- Name: claim_exports id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.claim_exports ALTER COLUMN id SET DEFAULT nextval('public.claim_exports_id_seq'::regclass);
-
-
---
 -- Name: claim_representatives id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1088,6 +1081,13 @@ ALTER TABLE ONLY public.claims ALTER COLUMN id SET DEFAULT nextval('public.claim
 --
 
 ALTER TABLE ONLY public.exported_files ALTER COLUMN id SET DEFAULT nextval('public.exported_files_id_seq'::regclass);
+
+
+--
+-- Name: exports id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.exports ALTER COLUMN id SET DEFAULT nextval('public.exports_id_seq'::regclass);
 
 
 --
@@ -1242,14 +1242,6 @@ ALTER TABLE ONLY public.claim_claimants
 
 
 --
--- Name: claim_exports claim_exports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.claim_exports
-    ADD CONSTRAINT claim_exports_pkey PRIMARY KEY (id);
-
-
---
 -- Name: claim_representatives claim_representatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1295,6 +1287,14 @@ ALTER TABLE ONLY public.claims
 
 ALTER TABLE ONLY public.exported_files
     ADD CONSTRAINT exported_files_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: exports exports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.exports
+    ADD CONSTRAINT exports_pkey PRIMARY KEY (id);
 
 
 --
@@ -1476,13 +1476,6 @@ CREATE INDEX index_claim_claimants_on_claimant_id ON public.claim_claimants USIN
 
 
 --
--- Name: index_claim_exports_on_resource_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_claim_exports_on_resource_id ON public.claim_exports USING btree (resource_id);
-
-
---
 -- Name: index_claim_representatives_on_claim_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1529,6 +1522,13 @@ CREATE INDEX index_claim_uploaded_files_on_uploaded_file_id ON public.claim_uplo
 --
 
 CREATE INDEX index_claimants_on_address_id ON public.claimants USING btree (address_id);
+
+
+--
+-- Name: index_exports_on_resource_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_exports_on_resource_id ON public.exports USING btree (resource_id);
 
 
 --
@@ -1611,10 +1611,10 @@ ALTER TABLE ONLY public.claim_claimants
 
 
 --
--- Name: claim_exports fk_rails_5727bba352; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: exports fk_rails_5727bba352; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.claim_exports
+ALTER TABLE ONLY public.exports
     ADD CONSTRAINT fk_rails_5727bba352 FOREIGN KEY (resource_id) REFERENCES public.claims(id);
 
 
@@ -1765,6 +1765,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180509080448'),
 ('20180509204605'),
 ('20180510184457'),
-('20180511160146');
+('20180511160146'),
+('20180511165345'),
+('20180511165627');
 
 

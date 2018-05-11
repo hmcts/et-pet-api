@@ -62,7 +62,7 @@ FactoryBot.define do
     trait :ready_for_export do
       # Ready for export MUST be in the database and files stored - so we dont do build here
       after(:create) do |claim, _evaluator|
-        ClaimExport.create resource: claim
+        Export.create resource: claim
       end
     end
 
