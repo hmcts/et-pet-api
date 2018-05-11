@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'zip'
 # Exports all claims that have been marked for needing export
-class ClaimsExportService
+class ExportService
 
   def initialize(exported_file: ExportedFile, claim_exporter: ::ClaimsExport::ClaimExporter)
     self.claim_exporter = claim_exporter.new

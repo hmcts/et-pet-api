@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ClaimsExportService do
+RSpec.describe ExportService do
   describe '#export' do
     subject(:service) { described_class.new }
 

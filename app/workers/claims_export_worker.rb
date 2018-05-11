@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-# A sidekiq worker which simply delegates its work to ClaimsExportService
-# @see ClaimsExportService
+# A sidekiq worker which simply delegates its work to ExportService
+# @see ExportService
 class ClaimsExportWorker
   include Sidekiq::Worker
 
-  def initialize(claims_export_service: ClaimsExportService.new)
+  def initialize(claims_export_service: ExportService.new)
     self.claims_export_service = claims_export_service
   end
 
