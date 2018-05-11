@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe BuildResponseCommand do
+  subject(:command) { described_class.new(uuid: uuid, data: data) }
+
   let(:uuid) { SecureRandom.uuid }
   let(:data) do
     {
       case_number: '2234567/2016'
     }
   end
-  subject(:command) { described_class.new(uuid: uuid, data: data) }
-
   let(:root_object) { Response.new }
 
   describe '#apply' do
@@ -26,7 +26,7 @@ RSpec.describe BuildResponseCommand do
 
       # Assert
       office_code = data[:case_number][0..1]
-      expect(root_object.reference).to match(%r{\A#{office_code}\d{8}00\z})
+      expect(root_object.reference).to match(/\A#{office_code}\d{8}00\z/)
     end
 
     it 'stores the reference in the meta hash' do

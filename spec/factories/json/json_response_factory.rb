@@ -37,28 +37,26 @@ FactoryBot.define do
       [
         build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data)),
         build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data)),
-        build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, :private_individual)),
+        build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, :private_individual))
       ]
     end
   end
 
-=begin
-  "case_number": "7654321/2017",
-  "name": "dodgy_co",
-  "contact": "John Smith",
-  "building_name": "the_shard",
-  "street_name": "downing_street",
-  "town": "westminster",
-  "county": "",
-  "postcode": "wc1 1aa",
-  "dx_number": "",
-  "contact_number": "",
-  "mobile_number": "",
-  "contact_preference": "email",
-  "email_address": "john@dodgyco.com",
-  "fax_number": "",
-
-=end
+  #   "case_number": "7654321/2017",
+  #   "name": "dodgy_co",
+  #   "contact": "John Smith",
+  #   "building_name": "the_shard",
+  #   "street_name": "downing_street",
+  #   "town": "westminster",
+  #   "county": "",
+  #   "postcode": "wc1 1aa",
+  #   "dx_number": "",
+  #   "contact_number": "",
+  #   "mobile_number": "",
+  #   "contact_preference": "email",
+  #   "email_address": "john@dodgyco.com",
+  #   "fax_number": "",
+  #
 
   factory :json_response_data, class: ::EtApi::Test::Json::Node do
     case_number '7654321/2017'

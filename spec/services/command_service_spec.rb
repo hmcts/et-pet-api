@@ -18,9 +18,9 @@ RSpec.describe CommandService do
       it 'creates a new instance of the command' do
         # Act - call dispatch
         service.dispatch command: 'Dummy',
-          uuid: uuid,
-          data: data,
-          root_object: root_object
+                         uuid: uuid,
+                         data: data,
+                         root_object: root_object
 
         # Assert - Make sure the command class received new with the correct params
         expect(command_class).to have_received(:new).with(uuid: uuid, data: data)
@@ -29,9 +29,9 @@ RSpec.describe CommandService do
       it 'calls apply on the command with the root object passed in' do
         # Act - call dispatch
         service.dispatch command: 'Dummy',
-          uuid: uuid,
-          data: data,
-          root_object: root_object
+                         uuid: uuid,
+                         data: data,
+                         root_object: root_object
 
         # Assert - Make sure the command instance receives apply with the root object passed
         expect(command_instance).to have_received(:apply).with(root_object)
@@ -40,9 +40,9 @@ RSpec.describe CommandService do
       it 'returns the command' do
         # Act - call dispatch
         result = service.dispatch command: 'Dummy',
-          uuid: uuid,
-          data: data,
-          root_object: root_object
+                                  uuid: uuid,
+                                  data: data,
+                                  root_object: root_object
 
         # Assert - Make sure the command instance is returned
         expect(result).to be command_instance

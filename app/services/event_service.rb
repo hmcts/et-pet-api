@@ -23,9 +23,7 @@ class EventService
       handler_for(handler).handle(*args) unless ignore_events
     end
     publisher.on(event, &handler_proc)
-    handler_procs[event] ||= {}
-    handler_procs[event][handler] ||= []
-    handler_procs[event][handler] << handler_proc
+    register_handler_proc(event, handler, handler_proc)
     self
   end
 
@@ -47,6 +45,12 @@ class EventService
     super
     self.handlers = {}
     self.handler_procs = {}
+  end
+
+  def register_handler_proc(event, handler, handler_proc)
+    handler_procs[event] ||= {}
+    handler_procs[event][handler] ||= []
+    handler_procs[event][handler] << handler_proc
   end
 
   def handler_for(klass)

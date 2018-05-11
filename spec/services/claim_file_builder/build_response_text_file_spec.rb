@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ClaimFileBuilder::BuildResponseTextFile do
   subject(:builder) { described_class }
+
   let(:errors) { [] }
 
   describe '#call' do
@@ -13,7 +14,7 @@ RSpec.describe ClaimFileBuilder::BuildResponseTextFile do
 
       # Assert
       expect(response.uploaded_files).to include an_object_having_attributes filename: 'et3_atos_export.txt',
-        file: be_a_stored_file
+                                                                             file: be_a_stored_file
 
     end
 

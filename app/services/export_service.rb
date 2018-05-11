@@ -3,19 +3,23 @@ require 'zip'
 # Exports all claims that have been marked for needing export
 class ExportService
 
-  def initialize(exported_file: ExportedFile, claim_exporter: ::ClaimsExport::ClaimExporter)
+  def initialize(exported_file: ExportedFile,
+    claim_exporter: ::ExportServiceExporters::ClaimExporter,
+    response_exporter: ::ExportServiceExporters::ResponseExporter)
     self.claim_exporter = claim_exporter.new
+    self.response_exporter = response_exporter.new
     self.exported_file = exported_file
+    self.exported_count = 0
   end
 
   # Exports everything and marks the claims as exported so they cannot be exported again
   def export
     Dir.mktmpdir do |dir|
-      claim_exporter.export_claims to: dir
-      next if claim_exporter.exported_count.zero?
+      export_all to: dir
+      next if exported_count.zero?
       zip_files from: dir
       persist_zip_file
-      claim_exporter.mark_claims_as_exported
+      mark_all_as_exported
     end
   ensure
     remove_zip_if_exists
@@ -23,13 +27,22 @@ class ExportService
 
   private
 
-  attr_accessor :exported_file, :claim_exporter
+  attr_accessor :exported_file, :claim_exporter, :response_exporter, :exported_count
+
+  def export_all(to:)
+    claim_exporter.export to: to
+    response_exporter.export to: to
+    self.exported_count = claim_exporter.exported_count + response_exporter.exported_count
+  end
+
+  def mark_all_as_exported
+    claim_exporter.mark_claims_as_exported
+    response_exporter.mark_responses_as_exported
+  end
 
   def zip_filename
     @zip_filename ||= File.join(Dir.mktmpdir, "ET_Fees_#{Time.zone.now.strftime('%d%m%y%H%M%S')}.zip")
   end
-
-
 
   def zip_files(from:)
     input_filenames = Dir.glob(File.join(from, '*'))

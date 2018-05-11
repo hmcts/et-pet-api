@@ -9,7 +9,7 @@ class BaseCommand
     self.command_service = command_service
   end
 
-  def apply(root_object)
+  def apply(_root_object)
     raise 'apply is to be implemented in the subclass'
   end
 

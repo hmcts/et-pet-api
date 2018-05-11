@@ -1,4 +1,4 @@
-module ClaimsExport
+module ExportServiceExporters
   class ClaimExporter
     def initialize(claims_to_export: Export.claims.includes(:resource), claim_export_service: ClaimExportService)
       self.claims_to_export = claims_to_export
@@ -6,7 +6,7 @@ module ClaimsExport
       self.exports = []
     end
 
-    def export_claims(to:)
+    def export(to:)
       claims_to_export.each do |claim_export|
         exports << claim_export
         export_files(claim_export.resource, to: to)
@@ -22,7 +22,6 @@ module ClaimsExport
       exports.length
     end
 
-
     private
 
     def export_files(claim, to:)
@@ -36,8 +35,8 @@ module ClaimsExport
 
     def export_file(claim:, to:, prefix:, ext:, type:)
       stored_file = claim_export_service.new(claim).send(:"export_#{type}")
-      primary_claimant = claim.primary_claimant
-      fn = "#{claim.reference}_#{prefix}_#{primary_claimant.first_name.tr(' ', '_')}_#{primary_claimant.last_name}.#{ext}"
+      claimant = claim.primary_claimant
+      fn = "#{claim.reference}_#{prefix}_#{claimant.first_name.tr(' ', '_')}_#{claimant.last_name}.#{ext}"
       stored_file.download_blob_to File.join(to, fn)
     end
 
@@ -50,7 +49,5 @@ module ClaimsExport
     end
 
     attr_accessor :claim_export_service, :claims_to_export, :exports
-    attr_writer
-
   end
 end

@@ -33,7 +33,7 @@ RSpec.describe 'Create Response Request', type: :request do
       end
     end
 
-    shared_context 'setup for any response' do |json_factory:|
+    shared_context 'with setup for any response' do |json_factory:|
       let(:input_factory) { json_factory.call }
       let(:output_files_generated) { [] }
 
@@ -49,17 +49,17 @@ RSpec.describe 'Create Response Request', type: :request do
     end
 
     shared_examples 'any response variation' do
-      it 'should respond with a 201 status' do
+      it 'responda with a 201 status' do
         # Assert - Make sure we get a 201 - to say the commands have been accepted
         expect(response).to have_http_status(:accepted)
       end
 
-      it 'should return the uuid as a reference to what will be created' do
+      it 'returns the uuid as a reference to what will be created' do
         # Assert - Make sure we get the uuid in the response
         expect(json_response).to include status: 'accepted', uuid: input_factory.uuid
       end
 
-      it 'should return the reference in the metadata for the response' do
+      it 'returns the reference in the metadata for the response' do
         # Assert - Make sure we get the reference in the metadata
         expect(json_response).to include meta: a_hash_including('BuildResponse' => a_hash_including(reference: instance_of(String)))
       end
@@ -75,7 +75,7 @@ RSpec.describe 'Create Response Request', type: :request do
     include_context 'with staging folder visibility'
 
     context 'with json for a response to a non existent claim' do
-      include_context 'setup for any response',
+      include_context 'with setup for any response',
         json_factory: -> { FactoryBot.build(:json_build_response_commands) }
       include_examples 'any response variation'
     end

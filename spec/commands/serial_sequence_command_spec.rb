@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe SerialSequenceCommand do
+  subject(:command) { described_class.new(uuid: uuid, data: data, command_service: command_service) }
+
   let(:uuid) { SecureRandom.uuid }
   let(:data) do
     [
@@ -16,7 +18,6 @@ RSpec.describe SerialSequenceCommand do
       }.with_indifferent_access
     ]
   end
-  subject(:command) { described_class.new(uuid: uuid, data: data, command_service: command_service) }
   let(:root_object) { Object.new }
 
   describe '#apply' do
@@ -50,6 +51,7 @@ RSpec.describe SerialSequenceCommand do
       let(:command_service) { class_spy(CommandService) }
       let(:positive_command_instance) { instance_spy(BaseCommand, valid?: true, uuid: 'anythinggoeshere') }
       let(:negative_command_instance) { instance_spy(BaseCommand, valid?: false, uuid: 'anythinggoeshere') }
+
       before do
         allow(command_service).to receive(:dispatch).and_return(negative_command_instance, positive_command_instance)
       end

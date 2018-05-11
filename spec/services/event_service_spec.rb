@@ -9,7 +9,7 @@ RSpec.describe EventService do
       local_handle_spy = handle_spy
       Class.new do
 
-        define_method :handle do | *args |
+        define_method :handle do |*args|
           local_handle_spy.call(*args)
         end
       end
@@ -39,7 +39,7 @@ RSpec.describe EventService do
       local_handle_spy = handle_spy
       Class.new do
 
-        define_method :handle do | *args |
+        define_method :handle do |*args|
           local_handle_spy.call(*args)
         end
       end

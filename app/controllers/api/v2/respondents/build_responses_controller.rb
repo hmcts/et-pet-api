@@ -8,9 +8,9 @@ module Api
           p = build_response_params
           root_object = ::Response.new
           result = CommandService.dispatch command: p[:command],
-            uuid: p[:uuid],
-            data: p[:data].map(&:to_h),
-            root_object: root_object
+                                           uuid: p[:uuid],
+                                           data: p[:data].map(&:to_h),
+                                           root_object: root_object
           root_object.save!
           EventService.publish('ResponseCreated', root_object)
           render locals: { result: result }, status: (result.valid? ? :accepted : :unprocessable_entity)

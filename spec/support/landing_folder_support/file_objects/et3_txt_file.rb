@@ -117,7 +117,7 @@ module EtApi
           end
         end
 
-        def has_footer_section?(errors: [], indent: 1)
+        def has_footer_section?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_section?(section: :footer, errors: errors, indent: indent) do |lines|
             expect(lines[0]).to eql '**Version: Jadu 1.0'
           end
@@ -125,60 +125,60 @@ module EtApi
 
         def has_claimant_for?(claimant, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_claimant_section? errors: errors, indent: indent,
-            name: end_with("#{claimant[:first_name]} #{claimant[:last_name]}")
+                                name: end_with("#{claimant[:first_name]} #{claimant[:last_name]}")
         end
 
         def has_organisation_for?(respondent, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           address = respondent[:address]
           has_organisation_section? errors: errors, indent: indent,
-            name: end_with(respondent[:name]),
-            contact: end_with(respondent[:contact]),
-            address: {
-              building: end_with(address[:building]),
-              street: end_with(address[:street]),
-              locality: end_with(address[:locality]),
-              county: end_with(address[:county]),
-              post_code: end_with(address[:post_code])
-            },
-            address_telephone_number: end_with(respondent[:address_telephone_number]),
-            mobile_number: end_with(respondent[:mobile_number]),
-            contact_preference: end_with(respondent[:contact_preference]),
-            email_address: end_with(respondent[:email_address])
+                                    name: end_with(respondent[:name]),
+                                    contact: end_with(respondent[:contact]),
+                                    address: {
+                                      building: end_with(address[:building]),
+                                      street: end_with(address[:street]),
+                                      locality: end_with(address[:locality]),
+                                      county: end_with(address[:county]),
+                                      post_code: end_with(address[:post_code])
+                                    },
+                                    address_telephone_number: end_with(respondent[:address_telephone_number]),
+                                    mobile_number: end_with(respondent[:mobile_number]),
+                                    contact_preference: end_with(respondent[:contact_preference]),
+                                    email_address: end_with(respondent[:email_address])
         end
 
         def has_representative_for?(rep, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           address = rep[:address]
           has_representative_section? errors: errors, indent: indent,
-            name: end_with(rep[:name]),
-            organisation_name: end_with(rep[:organisation_name]),
-            address: {
-              building: end_with(address[:building]),
-              street: end_with(address[:street]),
-              locality: end_with(address[:locality]),
-              county: end_with(address[:county]),
-              post_code: end_with(address[:post_code])
-            },
-            address_telephone_number: end_with(rep[:address_telephone_number]),
-            email_address: end_with(rep[:email_address]),
-            contact_preference: end_with(rep[:contact_preference]),
-            dx_number: end_with(rep[:dx_number])
+                                      name: end_with(rep[:name]),
+                                      organisation_name: end_with(rep[:organisation_name]),
+                                      address: {
+                                        building: end_with(address[:building]),
+                                        street: end_with(address[:street]),
+                                        locality: end_with(address[:locality]),
+                                        county: end_with(address[:county]),
+                                        post_code: end_with(address[:post_code])
+                                      },
+                                      address_telephone_number: end_with(rep[:address_telephone_number]),
+                                      email_address: end_with(rep[:email_address]),
+                                      contact_preference: end_with(rep[:contact_preference]),
+                                      dx_number: end_with(rep[:dx_number])
         end
 
         def has_no_representative?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_representative_section? errors: errors, indent: indent,
-            name: end_with(': '),
-            organisation_name: end_with(': '),
-            address: {
-              building: end_with(': '),
-              street: end_with(': '),
-              locality: end_with(': '),
-              county: end_with(': '),
-              post_code: end_with(': ')
-            },
-            address_telephone_number: end_with(': '),
-            email_address: end_with(': '),
-            contact_preference: end_with(': '),
-            dx_number: end_with(': ')
+                                      name: end_with(': '),
+                                      organisation_name: end_with(': '),
+                                      address: {
+                                        building: end_with(': '),
+                                        street: end_with(': '),
+                                        locality: end_with(': '),
+                                        county: end_with(': '),
+                                        post_code: end_with(': ')
+                                      },
+                                      address_telephone_number: end_with(': '),
+                                      email_address: end_with(': '),
+                                      contact_preference: end_with(': '),
+                                      dx_number: end_with(': ')
         end
 
         def section_range(match_start:, match_end:, expect_trailing_blank_line: true)
@@ -193,33 +193,33 @@ module EtApi
 
         def header_section
           section_range match_start: 'ET3 - Response to an Employment Tribunal claim',
-            match_end: 'FormVersion: 2'
+                        match_end: 'FormVersion: 2'
         end
 
         def intro_section
           section_range match_start: '## Intro: ',
-            match_end: /\A\*\*Tribunal office: /
+                        match_end: /\A\*\*Tribunal office: /
         end
 
         def claimant_section
           section_range match_start: /\A## Section 1: Claimant's name/,
-            match_end: /\A~1.1 Claimant's name:/
+                        match_end: /\A~1.1 Claimant's name:/
         end
 
         def organisation_section
           section_range match_start: "## Section 2: Your organisation's details",
-            match_end: /\AE-mail address: /
+                        match_end: /\AE-mail address: /
         end
 
         def representative_section
           section_range match_start: "## Section 7: Your representative",
-            match_end: /\ARepresentative's E-mail address: /
+                        match_end: /\ARepresentative's E-mail address: /
         end
 
         def footer_section
           section_range match_start: '**Version: Jadu 1.0',
-            match_end: '**Version: Jadu 1.0',
-            expect_trailing_blank_line: false
+                        match_end: '**Version: Jadu 1.0',
+                        expect_trailing_blank_line: false
         end
 
         private
@@ -248,7 +248,6 @@ module EtApi
           }
         end
 
-
         def representative_matchers
           @representative_matchers ||= {
             name: be_a(String),
@@ -275,7 +274,6 @@ module EtApi
             case_number: be_a(String),
             office_email: be_a(String)
           }
-
         end
 
         attr_accessor :contents

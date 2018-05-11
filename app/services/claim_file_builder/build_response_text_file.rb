@@ -4,7 +4,7 @@ module ClaimFileBuilder
     def self.call(response)
       filename = 'et3_atos_export.txt'
       response.uploaded_files.build filename: filename,
-                                 file: raw_text_file(filename, response: response)
+                                    file: raw_text_file(filename, response: response)
     end
 
     def self.raw_text_file(filename, response:)

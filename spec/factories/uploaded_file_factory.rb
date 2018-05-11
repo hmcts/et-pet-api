@@ -76,7 +76,6 @@ FactoryBot.define do
       end
     end
 
-
     trait :example_data do
       example_pdf
     end

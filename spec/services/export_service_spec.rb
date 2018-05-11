@@ -13,7 +13,6 @@ RSpec.describe ExportService do
       create_list(:response, 2, :with_pdf_file, :with_text_file, :ready_for_export)
     end
 
-
     it 'produces an ExportedFile' do
       expect { service.export }.to change(ExportedFile, :count).by(1)
     end
@@ -79,6 +78,15 @@ RSpec.describe ExportService do
       expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).not_to include(*expected_filenames)
     end
 
+    it 'produces a zip file that contains a txt file for each response' do
+      # Act
+      service.export
+
+      # Assert
+      expected_filenames = responses.map { |c| "#{c.reference}_ET3_.txt" }
+      expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+    end
+
     it 'produces only one zip file when called twice' do
       run_twice = lambda do
         described_class.new.export
@@ -127,10 +135,13 @@ RSpec.describe ExportService do
       end
     end
 
-    context 'with nothing to process' do
-      # This time, the claims are not marked as to be exported
+    context 'with nothing to process', db_clean: true do
+      # This time, the claims and responses are not marked as to be exported
       let!(:claims) do # rubocop:disable RSpec/LetSetup - as I want to overwrite the original
         create_list(:claim, 2, :with_pdf_file)
+      end
+      let!(:responses) do # rubocop:disable RSpec/LetSetup - as I want to overwrite the original
+        create_list(:response, 2, :with_pdf_file, :with_text_file)
       end
 
       it 'does not produce a zip file if there is nothing to process' do

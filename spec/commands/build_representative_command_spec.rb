@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe BuildRepresentativeCommand do
+  subject(:command) { described_class.new(uuid: uuid, data: data) }
+
   let(:uuid) { SecureRandom.uuid }
   let(:data) do
     {
       name: 'Fred Bloggs'
     }
   end
-  subject(:command) { described_class.new(uuid: uuid, data: data) }
-
   let(:root_object) { Response.new }
 
   describe '#apply' do
