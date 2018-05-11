@@ -3,6 +3,7 @@ class CreateResponses < ActiveRecord::Migration[5.2]
     create_table :responses do |t|
       t.references :respondent
       t.references :representative
+      t.datetime :date_of_receipt
       t.string :reference
       t.string :case_number
       t.string :claimants_name

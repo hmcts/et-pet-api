@@ -4,9 +4,9 @@ module ClaimFileBuilder
 
     class_methods do
 
-      def render_to_file(claim:)
+      def render_to_file(object:)
         Tempfile.new.tap do |file|
-          file.write render(claim)
+          file.write render(object)
           file.rewind
         end
       end

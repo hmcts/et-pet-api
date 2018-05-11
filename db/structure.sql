@@ -772,6 +772,71 @@ ALTER SEQUENCE public.respondents_id_seq OWNED BY public.respondents.id;
 
 
 --
+-- Name: response_exports; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.response_exports (
+    id bigint NOT NULL,
+    response_id bigint,
+    in_progress boolean,
+    messages character varying[] DEFAULT '{}'::character varying[],
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: response_exports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.response_exports_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: response_exports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.response_exports_id_seq OWNED BY public.response_exports.id;
+
+
+--
+-- Name: response_uploaded_files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.response_uploaded_files (
+    id bigint NOT NULL,
+    response_id bigint,
+    uploaded_file_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: response_uploaded_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.response_uploaded_files_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: response_uploaded_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.response_uploaded_files_id_seq OWNED BY public.response_uploaded_files.id;
+
+
+--
 -- Name: responses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -779,6 +844,7 @@ CREATE TABLE public.responses (
     id bigint NOT NULL,
     respondent_id bigint,
     representative_id bigint,
+    date_of_receipt timestamp without time zone,
     reference character varying,
     case_number character varying,
     claimants_name character varying,
@@ -1052,6 +1118,20 @@ ALTER TABLE ONLY public.respondents ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: response_exports id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.response_exports ALTER COLUMN id SET DEFAULT nextval('public.response_exports_id_seq'::regclass);
+
+
+--
+-- Name: response_uploaded_files id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.response_uploaded_files ALTER COLUMN id SET DEFAULT nextval('public.response_uploaded_files_id_seq'::regclass);
+
+
+--
 -- Name: responses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1246,6 +1326,22 @@ ALTER TABLE ONLY public.representatives
 
 ALTER TABLE ONLY public.respondents
     ADD CONSTRAINT respondents_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: response_exports response_exports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.response_exports
+    ADD CONSTRAINT response_exports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: response_uploaded_files response_uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.response_uploaded_files
+    ADD CONSTRAINT response_uploaded_files_pkey PRIMARY KEY (id);
 
 
 --
@@ -1463,6 +1559,27 @@ CREATE INDEX index_respondents_on_work_address_id ON public.respondents USING bt
 
 
 --
+-- Name: index_response_exports_on_response_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_response_exports_on_response_id ON public.response_exports USING btree (response_id);
+
+
+--
+-- Name: index_response_uploaded_files_on_response_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_response_uploaded_files_on_response_id ON public.response_uploaded_files USING btree (response_id);
+
+
+--
+-- Name: index_response_uploaded_files_on_uploaded_file_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_response_uploaded_files_on_uploaded_file_id ON public.response_uploaded_files USING btree (uploaded_file_id);
+
+
+--
 -- Name: index_responses_on_representative_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1565,6 +1682,14 @@ ALTER TABLE ONLY public.claim_uploaded_files
 
 
 --
+-- Name: response_uploaded_files fk_rails_caf1d8fe35; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.response_uploaded_files
+    ADD CONSTRAINT fk_rails_caf1d8fe35 FOREIGN KEY (response_id) REFERENCES public.responses(id);
+
+
+--
 -- Name: office_post_codes fk_rails_d276fbe15b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1578,6 +1703,22 @@ ALTER TABLE ONLY public.office_post_codes
 
 ALTER TABLE ONLY public.respondents
     ADD CONSTRAINT fk_rails_d2d3e755fa FOREIGN KEY (work_address_id) REFERENCES public.addresses(id);
+
+
+--
+-- Name: response_uploaded_files fk_rails_e34b7bdec4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.response_uploaded_files
+    ADD CONSTRAINT fk_rails_e34b7bdec4 FOREIGN KEY (uploaded_file_id) REFERENCES public.uploaded_files(id);
+
+
+--
+-- Name: response_exports fk_rails_f763f0e152; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.response_exports
+    ADD CONSTRAINT fk_rails_f763f0e152 FOREIGN KEY (response_id) REFERENCES public.responses(id);
 
 
 --
@@ -1620,6 +1761,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180410081032'),
 ('20180508171227'),
 ('20180509071735'),
-('20180509080448');
+('20180509080448'),
+('20180509204605'),
+('20180510184457');
 
 

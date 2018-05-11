@@ -10,7 +10,7 @@ module ClaimFileBuilder
 
     def self.raw_claimants_text_file(filename, claim:)
       ActionDispatch::Http::UploadedFile.new filename: filename,
-                                             tempfile: render_to_file(claim: claim),
+                                             tempfile: render_to_file(object: claim),
                                              type: 'text/xml'
     end
 

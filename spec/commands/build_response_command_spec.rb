@@ -37,5 +37,13 @@ RSpec.describe BuildResponseCommand do
       expect(command.meta).to include(reference: root_object.reference)
 
     end
+
+    it 'adds todays datetime to the date_of_receipt' do
+      # Act
+      command.apply(root_object)
+
+      # Assert
+      expect(root_object.date_of_receipt).to be_within(1.minute).of(Time.zone.now)
+    end
   end
 end

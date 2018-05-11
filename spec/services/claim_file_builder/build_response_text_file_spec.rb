@@ -1,0 +1,37 @@
+require 'rails_helper'
+
+RSpec.describe ClaimFileBuilder::BuildResponseTextFile do
+  subject(:builder) { described_class }
+  let(:errors) { [] }
+
+  describe '#call' do
+    let(:response) { build(:response, :example_data) }
+
+    it 'stores an ET3 txt file with the correct filename' do
+      # Act
+      builder.call(response)
+
+      # Assert
+      expect(response.uploaded_files).to include an_object_having_attributes filename: 'et3_atos_export.txt',
+        file: be_a_stored_file
+
+    end
+
+    it 'stores an ET3 txt file with the correct structure' do
+      # Act
+      builder.call(response)
+      response.save!
+
+      # Assert
+      uploaded_file = response.uploaded_files.where(filename: 'et3_atos_export.txt').first
+      Dir.mktmpdir do |dir|
+        full_path = File.join(dir, 'et3_atos_export.txt')
+        uploaded_file.download_blob_to(full_path)
+        File.open full_path do |file|
+          et3_file = EtApi::Test::FileObjects::Et3TxtFile.new(file)
+          expect(et3_file).to have_correct_file_structure(errors: errors)
+        end
+      end
+    end
+  end
+end

@@ -56,7 +56,7 @@ module EtApi
 
         def has_intro_section?(errors: [], indent: 1, **matcher_overrides) # rubocop:disable Naming/PredicateName
           matchers = intro_matchers.merge(matcher_overrides)
-          has_section?(section: :into, errors: errors, indent: indent) do |lines|
+          has_section?(section: :intro, errors: errors, indent: indent) do |lines|
             expect(lines[0]).to eql '## Intro: '
             expect(lines[1]).to eql ''
             expect(lines[2]).to start_with('**In the claim of: ').and(matchers[:claimants_name])
@@ -83,7 +83,7 @@ module EtApi
             expect(lines[1]).to eql ""
             expect(lines[2]).to start_with("~2.1 Name of your organisation: ").and(matchers[:name])
             expect(lines[3]).to start_with("Contact name: ").and(matchers[:contact])
-            expect(lines[4]).to eql "~2.2 Address:"
+            expect(lines[4]).to eql "~2.2 Address"
             expect(lines[5]).to start_with("Address 1: ").and(matchers[:address][:building])
             expect(lines[6]).to start_with("Address 2: ").and(matchers[:address][:street])
             expect(lines[7]).to start_with("Address 3: ").and(matchers[:address][:locality])
@@ -113,14 +113,13 @@ module EtApi
             expect(lines[10]).to start_with("~7.5 Representative's Reference: ").and(matchers[:dx_number])
             expect(lines[11]).to start_with("~7.6 How would they prefer us to communicate with them?:").and(matchers[:contact_preference])
             expect(lines[12]).to start_with("Representative's E-mail address: ").and(matchers[:email_address])
-            expect(lines[14]).to eql ""
+            expect(lines[13]).to eql ""
           end
         end
 
         def has_footer_section?(errors: [], indent: 1)
           has_section?(section: :footer, errors: errors, indent: indent) do |lines|
             expect(lines[0]).to eql '**Version: Jadu 1.0'
-            expect(lines[1]).to eql ''
           end
         end
 
@@ -182,13 +181,13 @@ module EtApi
             dx_number: end_with(': ')
         end
 
-        def section_range(match_start:, match_end:)
+        def section_range(match_start:, match_end:, expect_trailing_blank_line: true)
           start_idx = match_start.is_a?(String) ? contents.index(match_start) : contents.index { |l| l =~ match_start }
           return nil if start_idx.nil?
           my_contents = contents[start_idx..-1]
           end_idx = match_end.is_a?(String) ? my_contents.index(match_end) : my_contents.index { |l| l =~ match_end }
           return nil if end_idx.nil?
-          return nil if my_contents[end_idx + 1] != ''
+          return nil if expect_trailing_blank_line && my_contents[end_idx + 1] != ''
           (start_idx..start_idx + end_idx + 1)
         end
 
@@ -213,13 +212,14 @@ module EtApi
         end
 
         def representative_section
-          section_range match_start: "## Section 8: Your representative",
-            match_end: /\A~8.7 Representative's Occupation: /
+          section_range match_start: "## Section 7: Your representative",
+            match_end: /\ARepresentative's E-mail address: /
         end
 
         def footer_section
           section_range match_start: '**Version: Jadu 1.0',
-            match_end: ''
+            match_end: '**Version: Jadu 1.0',
+            expect_trailing_blank_line: false
         end
 
         private
@@ -233,7 +233,7 @@ module EtApi
         def organisation_matchers
           @organisation_matchers ||= {
             name: be_a(String),
-            contact_name: be_a(String),
+            contact: be_a(String),
             address: {
               building: be_a(String),
               street: be_a(String),
@@ -262,6 +262,7 @@ module EtApi
             },
             address_telephone_number: be_a(String),
             mobile_number: be_a(String),
+            contact_preference: be_a(String),
             email_address: be_a(String),
             representative_type: be_a(String),
             dx_number: be_a(String)
