@@ -12,6 +12,7 @@ module Api
             data: p[:data].map(&:to_h),
             root_object: root_object
           root_object.save!
+          EventService.publish('ResponseCreated', root_object)
           render locals: { result: result }, status: (result.valid? ? :accepted : :unprocessable_entity)
         end
 
