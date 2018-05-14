@@ -2,7 +2,3 @@ export_claims_job:
   cron: "*/<%= ENV.fetch('EXPORT_CLAIMS_EVERY', '15') %> * * * *"
   class: "ClaimsExportWorker"
   queue: "export_claims"
-export_responses_job:
-  cron: "*/<%= ENV.fetch('EXPORT_CLAIMS_EVERY', '15') %> * * * *"
-  class: "ResponsesExportWorker"
-  queue: "export_claims"
