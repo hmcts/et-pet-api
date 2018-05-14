@@ -45,5 +45,13 @@ RSpec.describe BuildResponseCommand do
       # Assert
       expect(root_object.date_of_receipt).to be_within(1.minute).of(Time.zone.now)
     end
+
+    it 'adds todays datetime to the meta[submitted_at]' do
+      # Act
+      command.apply(root_object)
+
+      # Assert
+      expect(command.meta[:submitted_at]).to be_within(1.minute).of(Time.zone.now)
+    end
   end
 end

@@ -64,6 +64,11 @@ RSpec.describe 'Create Response Request', type: :request do
         expect(json_response).to include meta: a_hash_including('BuildResponse' => a_hash_including(reference: instance_of(String)))
       end
 
+      it 'returns the submitted_at in the metadata for the response' do
+        # Assert - Make sure we get the reference in the metadata
+        expect(json_response).to include meta: a_hash_including('BuildResponse' => a_hash_including(submitted_at: instance_of(String)))
+      end
+
       it 'creates a valid txt file in the correct place in the landing folder' do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
