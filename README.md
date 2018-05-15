@@ -30,6 +30,10 @@ These are used to produce and test the zip files during exporting of claims
 
 Used to produce PDF's
 
+Note: At the time of writing, this is hanging under OSX - If you are having this issue, please install this version which works
+
+https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10.11-setup.pkg
+
 ### postgres
 
 Both server, client and nescessary headers for development
