@@ -66,7 +66,7 @@ RSpec.describe OfficeService do
       result = service.lookup_by_case_number('1412345/2016')
 
       # Assert
-      expect(result).to be_a(Office).and(have_attributes code: 14)
+      expect(result).to be_a(Office).and(have_attributes(code: 14))
     end
 
     it 'does not find office 76 as it is not in seed data' do

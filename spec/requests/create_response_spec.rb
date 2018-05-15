@@ -36,9 +36,9 @@ RSpec.describe 'Create Response Request', type: :request do
 
     shared_context 'with setup for any response' do |json_factory:|
       let(:input_factory) { json_factory.call }
-      let(:input_response_factory) { input_factory.data.detect {|d| d.command == 'BuildResponse'}.data }
-      let(:input_respondent_factory) { input_factory.data.detect {|d| d.command == 'BuildRespondent'}.data }
-      let(:input_representative_factory) { input_factory.data.detect {|d| d.command == 'BuildRepresentative'}.try(:data) }
+      let(:input_response_factory) { input_factory.data.detect { |d| d.command == 'BuildResponse' }.data }
+      let(:input_respondent_factory) { input_factory.data.detect { |d| d.command == 'BuildRespondent' }.data }
+      let(:input_representative_factory) { input_factory.data.detect { |d| d.command == 'BuildRepresentative' }.try(:data) }
       let(:output_files_generated) { [] }
 
       def perform_action

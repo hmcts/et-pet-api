@@ -15,7 +15,6 @@ module OfficeService
     end
   end
 
-
   # Finds the office given a specific case number
   #
   # @param [String] case_number The case number in the format oonnnnnn/yyyy where 'oo' is the office code

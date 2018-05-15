@@ -126,7 +126,7 @@ module EtApi
           end
         end
 
-        def has_correct_contents_for?(response:, respondent:, representative:, errors: [], indent: 1)
+        def has_correct_contents_for?(response:, respondent:, representative:, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_header_for?(response, errors: errors, indent: indent) &&
             has_intro_for?(response, errors: errors, indent: indent) &&
             has_claimant_for?(response, errors: errors, indent: indent) &&
@@ -135,7 +135,7 @@ module EtApi
             has_footer_section?(errors: errors, indent: indent)
         end
 
-        def has_correct_contents_from_db_for?(response:, errors: [], indent: 1)
+        def has_correct_contents_from_db_for?(response:, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           respondent = response.respondent.as_json(include: :address).symbolize_keys
           representative = response.representative.try(:as_json, include: :address).try(:symbolize_keys)
           respondent[:address_attributes] = respondent.delete(:address).symbolize_keys
@@ -144,17 +144,17 @@ module EtApi
           has_correct_contents_for?(response: response, respondent: respondent, representative: representative, errors: errors, indent: indent)
         end
 
-        def has_header_for?(response, errors: [], indent: 1)
+        def has_header_for?(response, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_header_section? errors: errors, indent: indent,
-            received_at: end_with(Time.zone.now.strftime('%d/%m/%Y')),
-            case_number: end_with(response[:case_number])
+                              received_at: end_with(Time.zone.now.strftime('%d/%m/%Y')),
+                              case_number: end_with(response[:case_number])
         end
 
-        def has_intro_for?(response, errors: [], indent: 1)
+        def has_intro_for?(response, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_intro_section? errors: errors, indent: indent,
-            claimants_name: end_with(": #{response[:claimants_name]}"),
-            case_number: end_with(": #{response[:case_number]}"),
-            office_email: end_with(": #{office_email_for(case_number: response[:case_number])}")
+                             claimants_name: end_with(": #{response[:claimants_name]}"),
+                             case_number: end_with(": #{response[:case_number]}"),
+                             office_email: end_with(": #{office_email_for(case_number: response[:case_number])}")
         end
 
         def has_claimant_for?(response, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
@@ -217,13 +217,19 @@ module EtApi
         end
 
         def section_range(match_start:, match_end:, expect_trailing_blank_line: true)
+          start_idx, end_idx = section_start_end(match_start: match_start, match_end: match_end)
+          return nil if start_idx.nil? || end_idx.nil?
+          return nil if expect_trailing_blank_line && contents[start_idx + end_idx + 1] != ''
+          (start_idx..start_idx + end_idx + 1)
+        end
+
+        def section_start_end(match_start:, match_end:)
           start_idx = match_start.is_a?(String) ? contents.index(match_start) : contents.index { |l| l =~ match_start }
-          return nil if start_idx.nil?
+          return [] if start_idx.nil?
           my_contents = contents[start_idx..-1]
           end_idx = match_end.is_a?(String) ? my_contents.index(match_end) : my_contents.index { |l| l =~ match_end }
-          return nil if end_idx.nil?
-          return nil if expect_trailing_blank_line && my_contents[end_idx + 1] != ''
-          (start_idx..start_idx + end_idx + 1)
+          return [] if end_idx.nil?
+          [start_idx, end_idx]
         end
 
         def header_section

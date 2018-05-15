@@ -13,7 +13,7 @@ RSpec.describe ClaimFileBuilder::BuildResponseTextFile do
 
         # Assert
         expect(response.uploaded_files).to include an_object_having_attributes filename: 'et3_atos_export.txt',
-          file: be_a_stored_file
+                                                                               file: be_a_stored_file
 
       end
 
@@ -54,11 +54,13 @@ RSpec.describe ClaimFileBuilder::BuildResponseTextFile do
 
     context 'with a representative' do
       let(:response) { build(:response, :example_data, :with_representative) }
+
       include_examples 'for any response variation'
     end
 
     context 'without a representative' do
       let(:response) { build(:response, :example_data, :without_representative) }
+
       include_examples 'for any response variation'
     end
   end
