@@ -6,6 +6,7 @@ FactoryBot.define do
 
     trait :example_data do
       name 'Respondent Name'
+      contact 'Respondent Contact Name'
       association :address,
         factory: :address,
         building: '108',
@@ -25,6 +26,8 @@ FactoryBot.define do
         county: 'Greater London',
         post_code: 'SW1H 9ST'
       alt_phone_number '03333 423554'
+      contact_preference 'email'
+      email_address 'john@dodgyco.com'
     end
   end
 end

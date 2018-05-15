@@ -1,10 +1,20 @@
 FactoryBot.define do
   factory :response do
     date_of_receipt { Time.zone.now }
+    case_number '2212345/2016'
+    claimants_name 'Joe Strummer'
     sequence :reference do |n|
       "22#{20000000 + n}00"
     end
     association :respondent
+
+    trait :with_representative do
+      association :representative, :example_data
+    end
+
+    trait :without_representative do
+      representative nil
+    end
 
     trait :with_pdf_file do
       after(:build) do |response, _evaluator|

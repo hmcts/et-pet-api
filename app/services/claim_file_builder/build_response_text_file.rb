@@ -17,10 +17,15 @@ module ClaimFileBuilder
       ApplicationController.render "file_builders/export_response.txt.erb", locals: {
         response: response,
         respondent: response.respondent,
-        representative: response.representative
+        representative: response.representative,
+        office: office_for(response)
       }
     end
 
-    private_class_method :raw_text_file, :render
+    def self.office_for(response, office_service: OfficeService)
+      office_service.lookup_by_case_number(response.case_number)
+    end
+
+    private_class_method :raw_text_file, :render, :office_for
   end
 end

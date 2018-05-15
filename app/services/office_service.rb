@@ -14,4 +14,14 @@ module OfficeService
       Office.default.first
     end
   end
+
+
+  # Finds the office given a specific case number
+  #
+  # @param [String] case_number The case number in the format oonnnnnn/yyyy where 'oo' is the office code
+  #
+  # @return [Office, Nil] If found, the office instance else nil
+  def self.lookup_by_case_number(case_number)
+    Office.where(code: case_number[0..1].to_i).first
+  end
 end

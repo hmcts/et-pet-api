@@ -31,14 +31,27 @@ module EtApi
 end
 FactoryBot.define do
   factory :json_build_response_commands, class: ::EtApi::Test::Json::Document do
-    uuid { SecureRandom.uuid }
-    command 'SerialSequence'
-    data do
-      [
-        build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data)),
-        build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data)),
-        build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, :private_individual))
-      ]
+    trait :with_representative do
+      uuid { SecureRandom.uuid }
+      command 'SerialSequence'
+      data do
+        [
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, :private_individual))
+        ]
+      end
+    end
+
+    trait :without_representative do
+      uuid { SecureRandom.uuid }
+      command 'SerialSequence'
+      data do
+        [
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data))
+        ]
+      end
     end
   end
 
@@ -59,7 +72,7 @@ FactoryBot.define do
   #
 
   factory :json_response_data, class: ::EtApi::Test::Json::Node do
-    case_number '7654321/2017'
+    case_number '1454321/2017'
     claimants_name "Jane Doe"
     agree_with_early_conciliation_details false
     disagree_conciliation_reason "lorem ipsum conciliation"

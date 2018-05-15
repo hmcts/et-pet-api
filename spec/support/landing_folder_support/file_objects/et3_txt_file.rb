@@ -1,8 +1,10 @@
+require_relative '../../helpers/office_helper'
 module EtApi
   module Test
     module FileObjects
       class Et3TxtFile < Base # rubocop:disable Metrics/ClassLength
         include RSpec::Matchers
+        include ::EtApi::Test::OfficeHelper
 
         def initialize(*)
           super
@@ -36,14 +38,15 @@ module EtApi
           false
         end
 
-        def has_header_section?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_header_section?(errors: [], indent: 1, **matcher_overrides) # rubocop:disable Naming/PredicateName
+          matchers = header_matchers.merge(matcher_overrides)
           has_section?(section: :header, errors: errors, indent: indent) do |lines|
             expect(lines[0]).to eql 'ET3 - Response to an Employment Tribunal claim'
             expect(lines[1]).to eql ''
             expect(lines[2]).to eql 'For Office Use'
             expect(lines[3]).to eql ""
-            expect(lines[4]).to start_with "Received at ET: "
-            expect(lines[5]).to start_with "Case Number: "
+            expect(lines[4]).to start_with("Received at ET: ").and(matchers[:received_at])
+            expect(lines[5]).to start_with("Case Number: ").and(matchers[:case_number])
             expect(lines[6]).to eql "Code:"
             expect(lines[7]).to eql "Initials:"
             expect(lines[8]).to eql ""
@@ -110,7 +113,7 @@ module EtApi
             expect(lines[7]).to start_with("Representative's Address 4: ").and(matchers[:address][:county])
             expect(lines[8]).to start_with("Representative's Postcode: ").and(matchers[:address][:post_code])
             expect(lines[9]).to start_with("~7.4 Representative's Phone number: ").and(matchers[:address_telephone_number])
-            expect(lines[10]).to start_with("~7.5 Representative's Reference: ").and(matchers[:dx_number])
+            expect(lines[10]).to start_with("~7.5 Representative's Reference: ").and(matchers[:reference])
             expect(lines[11]).to start_with("~7.6 How would they prefer us to communicate with them?:").and(matchers[:contact_preference])
             expect(lines[12]).to start_with("Representative's E-mail address: ").and(matchers[:email_address])
             expect(lines[13]).to eql ""
@@ -123,13 +126,44 @@ module EtApi
           end
         end
 
-        def has_claimant_for?(claimant, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_correct_contents_for?(response:, respondent:, representative:, errors: [], indent: 1)
+          has_header_for?(response, errors: errors, indent: indent) &&
+            has_intro_for?(response, errors: errors, indent: indent) &&
+            has_claimant_for?(response, errors: errors, indent: indent) &&
+            has_organisation_for?(respondent, errors: errors, indent: indent) &&
+            has_representative_for?(representative, errors: errors, indent: indent) &&
+            has_footer_section?(errors: errors, indent: indent)
+        end
+
+        def has_correct_contents_from_db_for?(response:, errors: [], indent: 1)
+          respondent = response.respondent.as_json(include: :address).symbolize_keys
+          representative = response.representative.try(:as_json, include: :address).try(:symbolize_keys)
+          respondent[:address_attributes] = respondent.delete(:address).symbolize_keys
+          representative[:address_attributes] = representative.delete(:address).symbolize_keys unless representative.nil?
+          response = response.as_json.symbolize_keys
+          has_correct_contents_for?(response: response, respondent: respondent, representative: representative, errors: errors, indent: indent)
+        end
+
+        def has_header_for?(response, errors: [], indent: 1)
+          has_header_section? errors: errors, indent: indent,
+            received_at: end_with(Time.zone.now.strftime('%d/%m/%Y')),
+            case_number: end_with(response[:case_number])
+        end
+
+        def has_intro_for?(response, errors: [], indent: 1)
+          has_intro_section? errors: errors, indent: indent,
+            claimants_name: end_with(": #{response[:claimants_name]}"),
+            case_number: end_with(": #{response[:case_number]}"),
+            office_email: end_with(": #{office_email_for(case_number: response[:case_number])}")
+        end
+
+        def has_claimant_for?(response, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_claimant_section? errors: errors, indent: indent,
-                                name: end_with("#{claimant[:first_name]} #{claimant[:last_name]}")
+                                name: end_with(": #{response[:claimants_name]}")
         end
 
         def has_organisation_for?(respondent, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
-          address = respondent[:address]
+          address = respondent[:address_attributes]
           has_organisation_section? errors: errors, indent: indent,
                                     name: end_with(respondent[:name]),
                                     contact: end_with(respondent[:contact]),
@@ -141,13 +175,14 @@ module EtApi
                                       post_code: end_with(address[:post_code])
                                     },
                                     address_telephone_number: end_with(respondent[:address_telephone_number]),
-                                    mobile_number: end_with(respondent[:mobile_number]),
+                                    mobile_number: end_with(respondent[:alt_phone_number]),
                                     contact_preference: end_with(respondent[:contact_preference]),
                                     email_address: end_with(respondent[:email_address])
         end
 
         def has_representative_for?(rep, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
-          address = rep[:address]
+          return has_no_representative?(errors: errors, indent: indent) if rep.nil?
+          address = rep[:address_attributes]
           has_representative_section? errors: errors, indent: indent,
                                       name: end_with(rep[:name]),
                                       organisation_name: end_with(rep[:organisation_name]),
@@ -161,7 +196,7 @@ module EtApi
                                       address_telephone_number: end_with(rep[:address_telephone_number]),
                                       email_address: end_with(rep[:email_address]),
                                       contact_preference: end_with(rep[:contact_preference]),
-                                      dx_number: end_with(rep[:dx_number])
+                                      reference: end_with(rep[:reference])
         end
 
         def has_no_representative?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
@@ -178,7 +213,7 @@ module EtApi
                                       address_telephone_number: end_with(': '),
                                       email_address: end_with(': '),
                                       contact_preference: end_with(': '),
-                                      dx_number: end_with(': ')
+                                      reference: end_with(': ')
         end
 
         def section_range(match_start:, match_end:, expect_trailing_blank_line: true)
@@ -264,7 +299,14 @@ module EtApi
             contact_preference: be_a(String),
             email_address: be_a(String),
             representative_type: be_a(String),
-            dx_number: be_a(String)
+            reference: be_a(String)
+          }
+        end
+
+        def header_matchers
+          @header_matchers ||= {
+            received_at: be_a(String),
+            case_number: be_a(String)
           }
         end
 
@@ -274,6 +316,10 @@ module EtApi
             case_number: be_a(String),
             office_email: be_a(String)
           }
+        end
+
+        def office_email_for(case_number:)
+          office_for(case_number: case_number).email
         end
 
         attr_accessor :contents

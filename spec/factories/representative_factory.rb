@@ -18,6 +18,8 @@ FactoryBot.define do
       email_address 'solicitor.test@digital.justice.gov.uk'
       representative_type 'Solicitor'
       dx_number 'dx1234567890'
+      reference 'solicitor-reference'
+      contact_preference 'email'
     end
   end
 end
