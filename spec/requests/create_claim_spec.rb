@@ -120,6 +120,11 @@ RSpec.describe 'CreateClaim Request', type: :request do
         end
       end
 
+      it 'has the correct structure in the et1 txt file' do
+        # Assert - look for the correct structure
+        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors), -> { errors.join("\n") }
+      end
+
       it 'has the primary claimant in the et1 txt file' do
         # Assert - look for the correct file in the landing folder - will be async
         claimant = normalize_xml_hash(xml_as_hash.as_json)[:claimants].first
@@ -164,6 +169,15 @@ RSpec.describe 'CreateClaim Request', type: :request do
       it 'states that additional claimants have been sent in the txt file' do
         # Assert - look for the correct file in the landing folder - will be async
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_additional_claimants_sent(errors: errors), -> { errors.join("\n") }
+      end
+
+      it 'stores an ET1a txt file with the correct structure' do
+        expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_correct_file_structure(errors: errors), -> { errors.join("\n") }
+      end
+
+      it 'stores an ET1a txt file with the correct header for the given input data' do
+        claim = normalize_xml_hash(xml_as_hash.as_json)
+        expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_header_for(claim, errors: errors), -> { errors.join("\n") }
       end
 
       it 'stores an ET1a txt file with all of the claimants in the correct format' do

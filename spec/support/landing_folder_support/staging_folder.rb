@@ -59,12 +59,6 @@ module EtApi
         EtApi::Test::FileObjects::Et1aTxtFile.new extract_to_tempfile(filename)
       end
 
-      def tracking_new_files
-        starting_filenames = filenames
-        yield
-        filenames - starting_filenames
-      end
-
       def et3_txt_file(filename)
         EtApi::Test::FileObjects::Et3TxtFile.new extract_to_tempfile(filename)
       end

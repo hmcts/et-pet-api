@@ -32,12 +32,6 @@ module EtApi
         end
       end
 
-      class CollectionNode < Array
-        def to_xml(*args)
-          super
-        end
-      end
-
       class NilNode
         def to_xml(root:, builder:, **_args)
           builder.tag!(root, nil, {})
