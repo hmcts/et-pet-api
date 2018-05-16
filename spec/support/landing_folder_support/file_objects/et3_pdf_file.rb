@@ -83,9 +83,9 @@ representative_type does not go to pdf
             expect(field_values).to include '2.5' => respondent[:contact_preference]
             expect(field_values).to include '2.6 email address' => respondent[:email_address]
             expect(field_values).to include '2.6 fax number' => respondent[:fax_number]
-            expect(field_values).to include '2.7' => respondent[:organisation_employ_gb]
+            expect(field_values).to include '2.7' => respondent[:organisation_employ_gb].to_s
             expect(field_values).to include '2.8' => respondent[:organisation_more_than_one_site] ? 'yes' : 'no'
-            expect(field_values).to include '2.9' => respondent[:employment_at_site_number]
+            expect(field_values).to include '2.9' => respondent[:employment_at_site_number].to_s
           end
         end
 
