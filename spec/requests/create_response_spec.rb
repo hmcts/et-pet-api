@@ -91,6 +91,19 @@ RSpec.describe 'Create Response Request', type: :request do
           errors: errors
         ), -> { errors.join("\n") }
       end
+
+      it 'creates a valid pdf file the data filled in correctly' do
+        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        output_filename_pdf = "#{reference}_ET3_.pdf"
+        expect(staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
+                                                                      response: input_response_factory,
+                                                                      respondent: input_respondent_factory,
+                                                                      representative: input_representative_factory,
+                                                                      errors: errors
+                                                                    ), -> { errors.join("\n") }
+
+      end
     end
 
     include_context 'with staging folder visibility'
