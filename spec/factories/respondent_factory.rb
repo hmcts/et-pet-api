@@ -28,6 +28,10 @@ FactoryBot.define do
       alt_phone_number '03333 423554'
       contact_preference 'email'
       email_address 'john@dodgyco.com'
+      dx_number 'dx1234567890'
+      fax_number '02222 222222'
+      organisation_employ_gb 10
+      employment_at_site_number 5
     end
   end
 end

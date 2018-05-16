@@ -77,7 +77,8 @@ module EtApi
 
       def copy_to_temp_file(file_path)
         tempfile = Tempfile.new
-        File.open(file_path) do |f|
+        tempfile.binmode
+        File.open(file_path, 'rb') do |f|
           loop do
             data = f.read(4096)
             break if data.nil?

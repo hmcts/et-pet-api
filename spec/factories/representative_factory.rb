@@ -20,6 +20,8 @@ FactoryBot.define do
       dx_number 'dx1234567890'
       reference 'solicitor-reference'
       contact_preference 'email'
+      fax_number '02222 222222'
+      disability_information ''
     end
   end
 end

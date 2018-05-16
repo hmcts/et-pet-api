@@ -43,118 +43,154 @@ representative_type does not go to pdf
             has_response_for?(response, errors: errors, indent: indent) &&
             has_contract_claim_for?(response, errors: errors, indent: indent) &&
             has_representative_for?(representative, errors: errors, indent: indent) &&
-            has_disability_for?(representative, errors: errors, indent: indent) &&
-            has_footer_section?(errors: errors, indent: indent)
+            has_disability_for?(representative, errors: errors, indent: indent)
+        end
+
+        def has_correct_contents_from_db_for?(response:, errors: [], indent: 1)
+          respondent = response.respondent.as_json(include: :address).symbolize_keys
+          representative = response.representative.try(:as_json, include: :address).try(:symbolize_keys)
+          respondent[:address_attributes] = respondent.delete(:address).symbolize_keys
+          representative[:address_attributes] = representative.delete(:address).symbolize_keys unless representative.nil?
+          response = response.as_json.symbolize_keys
+          has_correct_contents_for?(response: response, respondent: respondent, representative: representative, errors: errors, indent: indent)
         end
 
         def has_header_for?(response, errors: [], indent: 1)
           validate_fields section: :header, errors: errors, indent: indent do
-            expect(fields['case number'].value).to eql response.case_number
+            expect(field_values).to include 'case number' => response[:case_number]
           end
         end
 
         def has_claimant_for?(response, errors: [], indent: 1)
           validate_fields section: :claimant, errors: errors, indent: indent do
-            expect(fields['1.1'].value).to eql response.claimants_name
+            expect(field_values).to include '1.1' => response[:claimants_name]
           end
         end
 
         def has_respondent_for?(respondent, errors: [], indent: 1)
           address = respondent[:address_attributes]
           validate_fields section: :respondent, errors: errors, indent: indent do
-            expect(fields['2.1'].value).to eql respondent.name
-            expect(fields['2.2'].value).to eql respondent.contact
-            expect(fields['2.3 number or name'].value).to eql address.building
-            expect(fields['2.3 street'].value).to eql address.street
-            expect(fields['2.3 town city'].value).to eql address.locality
-            expect(fields['2.3 town county'].value).to eql address.county
-            expect(fields['2.3 postcode'].value).to eql address.post_code
-            expect(fields['2.3 dx number'].value).to eql respondent.dx_number
-            expect(fields['2.4 phone number'].value).to eql respondent.address_telephone_number
-            expect(fields['2.4 mobile number'].value).to eql respondent.alt_phone_number
-            expect(fields['2.5'].value).to eql respondent.contact_preference
-            expect(fields['2.6 email address'].value).to eql respondent.email_address
-            expect(fields['2.6 fax number'].value).to eql respondent.fax_number
-            expect(fields['2.7'].value).to eql respondent.organisation_employ_gb
-            expect(fields['2.8'].value).to eql respondent.organisation_more_than_one_site ? 'yes' : 'no'
-            expect(fields['2.9'].value).to eql respondent.employment_at_site_number
+            expect(field_values).to include '2.1' => respondent[:name]
+            expect(field_values).to include '2.2' => respondent[:contact]
+            expect(field_values).to include '2.3 number or name' => address[:building]
+            expect(field_values).to include '2.3 street' => address[:street]
+            expect(field_values).to include '2.3 town city' => address[:locality]
+            expect(field_values).to include '2.3 county' => address[:county]
+            expect(field_values).to include '2.3 postcode' => address[:post_code].tr(' ', '')
+            expect(field_values).to include '2.3 dx number' => respondent[:dx_number]
+            expect(field_values).to include '2.4 phone number' => respondent[:address_telephone_number]
+            expect(field_values).to include '2.4 mobile number' => respondent[:alt_phone_number]
+            expect(field_values).to include '2.5' => respondent[:contact_preference]
+            expect(field_values).to include '2.6 email address' => respondent[:email_address]
+            expect(field_values).to include '2.6 fax number' => respondent[:fax_number]
+            expect(field_values).to include '2.7' => respondent[:organisation_employ_gb]
+            expect(field_values).to include '2.8' => respondent[:organisation_more_than_one_site] ? 'yes' : 'no'
+            expect(field_values).to include '2.9' => respondent[:employment_at_site_number]
           end
         end
 
         def has_acas_for?(response, errors: [], indent: 1)
           validate_fields section: :acas, errors: errors, indent: indent do
-            expect(fields['new 3.1'].value).to eql response.agree_with_early_conciliation_details ? 'yes' : 'no'
-            expect(fields['new 3.1 If no, please explain why'].value).to eql response.disagree_conciliation_reason
+            expect(field_values).to include 'new 3.1' => response[:agree_with_early_conciliation_details] ? 'yes' : 'no'
+            expect(field_values).to include 'new 3.1 If no, please explain why' => response[:disagree_conciliation_reason]
           end
         end
 
         def has_employment_details_for?(response, errors: [], indent: 1)
           validate_fields section: :employment, errors: errors, indent: indent do
-            expect(fields['3.1'].value).to eql response.agree_with_employment_dates ? 'yes' : 'no'
-            expect(fields['3.1 employment started'].value).to eql response.employment_start
-            expect(fields['3.1 employment end'].value).to eql response.employment_end
-            expect(fields['3.1 disagree'].value).to eql response.disagree_employment
-            expect(fields['3.2'].value).to eql response.continued_employment ? 'yes' : 'no'
-            expect(fields['3.3'].value).to eql response.agree_with_claimants_description_of_job_or_title ? 'yes' : 'no'
-            expect(fields['3.3 if no'].value).to eql response.disagree_claimants_job_or_title ? 'yes' : 'no'
+            expect(field_values).to include '3.1' => response[:agree_with_employment_dates] ? 'yes' : 'no'
+            expect(field_values).to include '3.1 employment started' => date_for(response[:employment_start])
+            expect(field_values).to include '3.1 employment end' => date_for(response[:employment_end])
+            expect(field_values).to include '3.1 disagree' => response[:disagree_employment]
+            expect(field_values).to include '3.2' => response[:continued_employment] ? 'yes' : 'no'
+            expect(field_values).to include '3.3' => response[:agree_with_claimants_description_of_job_or_title] ? 'yes' : 'no'
+            expect(field_values).to include '3.3 if no' => response[:disagree_claimants_job_or_title] ? 'yes' : 'no'
           end
         end
 
         def has_earnings_for?(response, errors: [], indent: 1)
           validate_fields section: :earnings, errors: errors, indent: indent do
-            expect(fields['4.1'].value).to eql response.agree_with_claimants_hours ? 'yes' : 'no'
-            expect(fields['4.1 if no'].value).to eql response.queried_hours
-            expect(fields['4.2'].value).to eql response.agree_with_earnings_details
-            expect(fields['4.2 pay before tax'].value).to eql response.queried_pay_before_tax
-            expect(fields['4.2 pay before tax tick box'].value).to eql response.queried_pay_before_tax_period.downcase
-            expect(fields['4.2 normal take-home pay'].value).to eql response.queried_take_home_pay
-            expect(fields['4.2 normal take-home pay tick box'].value).to eql response.queried_take_home_pay_period.downcase
-            expect(fields['4.3 tick box'].value).to eql response.agree_with_claimant_notice ? 'yes' : 'no'
-            expect(fields['4.3 if no'].value).to eql response.disagree_claimant_notice_reason
-            expect(fields['4.4 tick box'].value).to eql response.agree_with_claimant_pension_benefits ? 'yes' : 'no'
-            expect(fields['4.4 if no'].value).to eql response.disagree_claimant_pension_benefits_reason
+            expect(field_values).to include '4.1' => response[:agree_with_claimants_hours] ? 'yes' : 'no'
+            expect(field_values).to include '4.1 if no' => decimal_for(response[:queried_hours])
+            expect(field_values).to include '4.2' => response[:agree_with_earnings_details] ? 'yes' : 'no'
+            expect(field_values).to include '4.2 pay before tax' => decimal_for(response[:queried_pay_before_tax])
+            expect(field_values).to include '4.2 pay before tax tick box' => response[:queried_pay_before_tax_period].downcase
+            expect(field_values).to include '4.2 normal take-home pay' => decimal_for(response[:queried_take_home_pay])
+            expect(field_values).to include '4.2 normal take-home pay tick box' => response[:queried_take_home_pay_period].downcase
+            expect(field_values).to include '4.3 tick box' => response[:agree_with_claimant_notice] ? 'yes' : 'no'
+            expect(field_values).to include '4.3 if no' => response[:disagree_claimant_notice_reason]
+            expect(field_values).to include '4.4 tick box' => response[:agree_with_claimant_pension_benefits] ? 'yes' : 'no'
+            expect(field_values).to include '4.4 if no' => response[:disagree_claimant_pension_benefits_reason]
           end
         end
 
         def has_response_for?(response, errors: [], indent: 1)
           validate_fields section: :response, errors: errors, indent: indent do
-            expect(fields['5.1 tick box'].value).to eql response.defend_claim ? 'yes' : 'no'
-            expect(fields['5.1 if yes'].value).to eql response.defend_claim_facts
+            expect(field_values).to include '5.1 tick box' => response[:defend_claim] ? 'yes' : 'no'
+            expect(field_values).to include '5.1 if yes' => response[:defend_claim_facts]
           end
         end
 
         def has_contract_claim_for?(response, errors: [], indent: 1)
           validate_fields section: :contract_claim, errors: errors, indent: indent do
-            expect(fields['6.2 tick box'].value).to eql response.make_employer_contract_claim ? 'yes' : 'Off'
-            expect(fields['6.3'].value).to eql response.claim_information
+            expect(field_values).to include '6.2 tick box' => response[:make_employer_contract_claim] ? 'yes' : 'Off'
+            expect(field_values).to include '6.3' => response[:claim_information]
 
           end
         end
 
         def has_representative_for?(representative, errors: [], indent: 1)
-          address = representative.address_attributes
+          return has_no_representative?(errors: errors, indent: indent) if representative.nil?
+          address = representative[:address_attributes]
           validate_fields section: :representative, errors: errors, indent: indent do
-            expect(fields['7.1'].value).to eql representative.name
-            expect(fields['7.2'].value).to eql representative.organisation_name
-            expect(fields['7.3 number or name'].value).to eql address.building
-            expect(fields['7.3 street'].value).to eql address.street
-            expect(fields['7.3 town city'].value).to eql address.locality
-            expect(fields['7.3 county'].value).to eql address.county
-            expect(fields['7.3 postcode'].value).to eql address.post_code
-            expect(fields['7.4'].value).to eql representative.dx_number
-            expect(fields['7.5 phone number'].value).to eql representative.address_telephone_number
-            expect(fields['7.6'].value).to eql representative.mobile_number
-            expect(fields['7.7'].value).to eql representative.reference
-            expect(fields['7.8 tick box'].value).to eql representative.contact_preference
-            expect(fields['7.9'].value).to eql representative.email_address
-            expect(fields['7.10'].value).to eql representative.fax_number
+            expect(field_values).to include '7.1' => representative[:name]
+            expect(field_values).to include '7.2' => representative[:organisation_name]
+            expect(field_values).to include '7.3 number or name' => address[:building]
+            expect(field_values).to include '7.3 street' => address[:street]
+            expect(field_values).to include '7.3 town city' => address[:locality]
+            expect(field_values).to include '7.3 county' => address[:county]
+            expect(field_values).to include '7.3 postcode' => address[:post_code].tr(' ', '')
+            expect(field_values).to include '7.4' => representative[:dx_number]
+            expect(field_values).to include '7.5 phone number' => representative[:address_telephone_number]
+            expect(field_values).to include '7.6' => representative[:mobile_number]
+            expect(field_values).to include '7.7' => representative[:reference]
+            expect(field_values).to include '7.8 tick box' => representative[:contact_preference]
+            expect(field_values).to include '7.9' => representative[:email_address]
+            expect(field_values).to include '7.10' => representative[:fax_number]
           end
         end
 
-        def has_disablity_for?(representative, errors: [], indent: 1)
+        def has_no_representative?(errors: [], indent: 1)
+          validate_fields section: :representative, errors: errors, indent: indent do
+            expect(field_values).to include '7.1' => ''
+            expect(field_values).to include '7.2' => ''
+            expect(field_values).to include '7.3 number or name' => ''
+            expect(field_values).to include '7.3 street' => ''
+            expect(field_values).to include '7.3 town city' => ''
+            expect(field_values).to include '7.3 county' => ''
+            expect(field_values).to include '7.3 postcode' => ''
+            expect(field_values).to include '7.4' => ''
+            expect(field_values).to include '7.5 phone number' => ''
+            expect(field_values).to include '7.6' => ''
+            expect(field_values).to include '7.7' => ''
+            expect(field_values).to include '7.8 tick box' => ''
+            expect(field_values).to include '7.9' => ''
+            expect(field_values).to include '7.10' => ''
+          end
+        end
+
+        def has_disability_for?(representative, errors: [], indent: 1)
+          return has_no_disability?(errors: errors, indent: indent) if representative.nil?
           validate_fields section: :disability, errors: errors, indent: indent do
-            expect(fields['8.1 tick box'].value).to eql representative.disability ? 'yes' : 'no'
-            expect(fields['8.1 if yes'].value).to eql representative.disability_information
+            expect(field_values).to include '8.1 tick box' => representative[:disability] ? 'yes' : 'no'
+            expect(field_values).to include '8.1 if yes' => representative[:disability_information]
+          end
+        end
+
+        def has_no_disability?(errors: [], indent: 1)
+          validate_fields section: :disability, errors: errors, indent: indent do
+            expect(field_values).to include '8.1 tick box' => 'Off'
+            expect(field_values).to include '8.1 if yes' => ''
           end
         end
 
@@ -162,8 +198,11 @@ representative_type does not go to pdf
 
         attr_accessor :tempfile
 
-        def fields
-          @fields ||= form.fields
+        def field_values
+          @field_values ||= form.fields.inject({}) do |acc, field|
+            acc[field.name] = field.value
+            acc
+          end
         end
 
         def form
@@ -179,6 +218,15 @@ representative_type does not go to pdf
           errors << "Invalid '#{section.to_s.humanize}' section in pdf"
           errors.concat(err.message.lines.map { |l| "#{'  ' * indent}#{l.gsub(/\n\z/, '')}" })
           false
+        end
+
+        def date_for(date)
+          return date.strftime('%d/%m/%Y') if date.is_a?(Date) || date.is_a?(Time) || date.is_a?(DateTime)
+          Time.zone.parse(date).strftime('%d/%m/%Y')
+        end
+
+        def decimal_for(number)
+          number.to_s
         end
 
 

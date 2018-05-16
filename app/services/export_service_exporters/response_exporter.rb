@@ -27,6 +27,7 @@ module ExportServiceExporters
 
     def export_files(response, to:)
       export_file(response: response, to: to, ext: :txt, type: :txt)
+      export_file(response: response, to: to, ext: :pdf, type: :pdf)
     end
 
     def export_file(response:, to:, ext:, type:)
