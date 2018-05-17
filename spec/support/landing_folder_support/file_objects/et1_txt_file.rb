@@ -249,17 +249,17 @@ module EtApi
                                       dx_number: end_with(': ')
         end
 
-        def has_additional_respondents_for?(r, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_additional_respondents_for?(resp, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_additional_respondents_section? errors: errors, indent: indent,
-                                              name: ->(idx) { end_with(r[idx]&.dig(:name).to_s) },
+                                              name: ->(idx) { end_with(resp[idx]&.dig(:name).to_s) },
                                               address: {
-                                                building: ->(idx) { end_with(r[idx]&.dig(:building).to_s) },
-                                                street: ->(idx) { end_with(r[idx]&.dig(:street).to_s) },
-                                                locality: ->(idx) { end_with(r[idx]&.dig(:locality).to_s) },
-                                                county: ->(idx) { end_with(r[idx]&.dig(:county).to_s) },
-                                                post_code: ->(idx) { end_with(r[idx]&.dig(:post_code).to_s) },
+                                                building: ->(idx) { end_with(resp[idx]&.dig(:building).to_s) },
+                                                street: ->(idx) { end_with(resp[idx]&.dig(:street).to_s) },
+                                                locality: ->(idx) { end_with(resp[idx]&.dig(:locality).to_s) },
+                                                county: ->(idx) { end_with(resp[idx]&.dig(:county).to_s) },
+                                                post_code: ->(idx) { end_with(resp[idx]&.dig(:post_code).to_s) }
                                               },
-                                              address_telephone_number: ->(idx) { end_with(r[idx]&.dig(:address_telephone_number).to_s) }
+                                              address_telephone_number: ->(idx) { end_with(resp[idx]&.dig(:address_telephone_number).to_s) }
         end
 
         def has_no_additional_respondents?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
@@ -270,18 +270,17 @@ module EtApi
                                                 street: ->(*) { end_with(': ') },
                                                 locality: ->(*) { end_with(': ') },
                                                 county: ->(*) { end_with(': ') },
-                                                post_code: ->(*) { end_with(': ') },
+                                                post_code: ->(*) { end_with(': ') }
                                               },
                                               address_telephone_number: ->(*) { end_with(': ') }
         end
 
-
-        def has_no_additional_claimants_sent?(errors: [], indent: 1)
+        def has_no_additional_claimants_sent?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_multiple_cases_section? errors: errors, indent: indent,
                                       has_additional_claimants: end_with(': ')
         end
 
-        def has_additional_claimants_sent?(errors: [], indent: 1)
+        def has_additional_claimants_sent?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           has_multiple_cases_section? errors: errors, indent: indent,
                                       has_additional_claimants: end_with('Yes')
         end

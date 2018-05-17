@@ -2,12 +2,11 @@ require 'rails_helper'
 RSpec.describe ClaimExportService do
   subject(:service) { described_class.new(claim) }
 
-  let(:landing_folder) { Rails.root.join('tmp', 'storage', 'app', 'landing_folder') }
   let(:claim) { create(:claim, :with_pdf_file, :with_xml_file, :with_text_file, :with_claimants_text_file, :with_claimants_csv_file, :with_rtf_file) }
 
   describe 'to_be_exported' do
     it 'marks the claim as ready to be exported' do
-      expect { service.to_be_exported }.to change(ClaimExport, :count).by(1)
+      expect { service.to_be_exported }.to change(Export.claims, :count).by(1)
     end
   end
 

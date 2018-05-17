@@ -15,7 +15,7 @@ module EtApi
 
         def initialize(*)
           super
-          self.contents = tempfile.readlines(16).map { |l| l.gsub(/\n\z/, '') }
+          self.contents = tempfile.readlines[0..15].map { |l| l.gsub(/\n\z/, '') }
           cloned_tempfile = tempfile.clone
           cloned_tempfile.rewind
         end
@@ -55,7 +55,7 @@ module EtApi
             expect(lines[6]).to eql "Code:"
             expect(lines[7]).to eql "Initials:"
             expect(lines[8]).to eql ""
-            expect(lines[9]).to start_with("Online Submission Reference: ").and(matchers[:submission_reference])
+            expect(lines[9]).to start_with("Online Submission Reference: ").and(matchers[:reference])
             expect(lines[10]).to eql ""
             expect(lines[11]).to eql "FormVersion: 2"
             expect(lines[12]).to eql ""
@@ -93,6 +93,15 @@ module EtApi
           false
         end
 
+        def has_header_for?(claim, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+          claimant = claim[:claimants].first
+          respondent = claim[:respondents].first
+          has_header_section? errors: errors, indent: indent,
+                              reference: end_with(claim[:reference]),
+                              date_of_receipt: end_with(Date.parse(claim[:date_of_receipt]).strftime('%d/%m/%Y')),
+                              claim_parties: end_with("#{claimant[:first_name]} #{claimant[:last_name]} v #{respondent[:name]}")
+        end
+
         def has_claimants_for?(claimants, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           count = has_claimants_sections? errors: errors, indent: indent,
                                           title: ->(idx) { end_with(claimants[idx][:title]) },
@@ -113,26 +122,27 @@ module EtApi
           true
         end
 
-        def section_range(match_start:, match_end:)
+        def section_range(match_start:, match_end:, additional_lines_after_end: 1)
           start_idx = match_start.is_a?(String) ? contents.index(match_start) : contents.index { |l| l =~ match_start }
           return nil if start_idx.nil?
           my_contents = contents[start_idx..-1]
           end_idx = match_end.is_a?(String) ? my_contents.index(match_end) : my_contents.index { |l| l =~ match_end }
           return nil if end_idx.nil?
           return nil if my_contents[end_idx + 1] != ''
-          (start_idx..start_idx + end_idx + 1)
+          (start_idx..start_idx + end_idx + additional_lines_after_end)
         end
 
         def header_section
-          section_range match_start: 'ET1 - Online Application to an Employment Tribunal',
-                        match_end: 'FormVersion: 2'
+          section_range match_start: 'ET1a - Online Application to an Employment Tribunal',
+                        match_end: /\AThe following claimants are represented by/,
+                        additional_lines_after_end: 2
         end
 
         private
 
         def header_matchers
           @header_matchers ||= {
-            submission_referfence: be_a(String),
+            reference: be_a(String),
             date_of_receipt: be_a(String),
             claim_parties: be_a(String)
           }

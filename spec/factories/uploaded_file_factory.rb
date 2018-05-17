@@ -51,6 +51,31 @@ FactoryBot.define do
       end
     end
 
+    trait :example_response_text do
+      filename 'et3_atos_export.txt'
+      checksum 'ee2714b8b731a8c1e95dffaa33f89728'
+      after(:build) do |uploaded_file, _evaluator|
+        uploaded_file.file.attach(Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et3.txt'), 'text/plain'))
+      end
+    end
+
+    trait :example_response_rtf do
+      filename 'et3_atos_export.rtf'
+      checksum 'ee2714b8b731a8c1e95dffaa33f89728'
+      after(:build) do |uploaded_file, _evaluator|
+        uploaded_file.file.attach(Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf'), 'application/rtf'))
+      end
+    end
+
+    # We do not have an example pdf yet - but the file contents does not really matter as nothing is reading it
+    trait :example_response_pdf do
+      filename 'et3_atos_export.pdf'
+      checksum 'ee2714b8b731a8c1e95dffaa33f89728'
+      after(:build) do |uploaded_file, _evaluator|
+        uploaded_file.file.attach(Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf'))
+      end
+    end
+
     trait :example_data do
       example_pdf
     end

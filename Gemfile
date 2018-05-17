@@ -18,6 +18,9 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Wisper is used as an in process pub/sub to decouple events / commands
+gem 'wisper', '2.0.0'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -54,6 +57,7 @@ group :test do
   gem 'factory_bot', '~> 4.8'
   gem 'aws-sdk-s3', '~> 1.8', '>= 1.8.2'
   gem 'rspec-eventually', '~> 0.2.2'
+  gem 'faker', '~> 1.8', '>= 1.8.7'
 end
 
 group :production do
