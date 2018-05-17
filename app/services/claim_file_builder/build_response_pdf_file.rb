@@ -78,7 +78,7 @@ module ClaimFileBuilder
     end
 
     def apply_acas_pdf_fields(result)
-      result['new 3.1'] = response.agree_with_early_conciliation_details ? 'yes' : 'no'
+      result['new 3.1'] = response.agree_with_early_conciliation_details ? 'Yes' : 'No'
       result['new 3.1 If no, please explain why'] = response.disagree_conciliation_reason
     end
     

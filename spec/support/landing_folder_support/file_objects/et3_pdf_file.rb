@@ -92,7 +92,7 @@ representative_type does not go to pdf
 
         def has_acas_for?(response, errors: [], indent: 1)
           validate_fields section: :acas, errors: errors, indent: indent do
-            expect(field_values).to include 'new 3.1' => response[:agree_with_early_conciliation_details] ? 'yes' : 'no'
+            expect(field_values).to include 'new 3.1' => response[:agree_with_early_conciliation_details] ? 'Yes' : 'No'
             expect(field_values).to include 'new 3.1 If no, please explain why' => response[:disagree_conciliation_reason]
           end
         end
