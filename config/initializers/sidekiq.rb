@@ -5,6 +5,7 @@ default_redis_url = "redis://#{default_redis_host}:#{default_redis_port}/#{defau
 redis_url = ENV.fetch('REDIS_URL', default_redis_url)
 
 Sidekiq.configure_server do |config|
+  puts "Configuring the sidekiq server to use #{redis_url}"
   config.redis = { url: redis_url }
   schedule_file = "config/schedule.yml"
 
