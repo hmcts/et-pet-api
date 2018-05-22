@@ -112,9 +112,9 @@ FactoryBot.define do
     contact_preference 'email'
     email_address 'john@dodgyco.com'
     fax_number ''
-    organisation_employ_gb nil
+    organisation_employ_gb 10
     organisation_more_than_one_site false
-    employment_at_site_number nil
+    employment_at_site_number 5
   end
 
   factory :json_representative_data, class: ::EtApi::Test::Json::Node do

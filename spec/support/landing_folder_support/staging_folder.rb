@@ -63,13 +63,22 @@ module EtApi
         EtApi::Test::FileObjects::Et3TxtFile.new extract_to_tempfile(filename)
       end
 
+      def et3_txt_file(filename)
+        EtApi::Test::FileObjects::Et3TxtFile.new extract_to_tempfile(filename)
+      end
+
+      def et3_pdf_file(filename)
+        EtApi::Test::FileObjects::Et3PdfFile.new extract_to_tempfile(filename)
+      end
+
       private
 
       attr_accessor :list_action, :download_action
 
       def copy_to_temp_file(file_path)
         tempfile = Tempfile.new
-        File.open(file_path) do |f|
+        tempfile.binmode
+        File.open(file_path, 'rb') do |f|
           loop do
             data = f.read(4096)
             break if data.nil?

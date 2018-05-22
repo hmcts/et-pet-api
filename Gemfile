@@ -36,6 +36,9 @@ gem 'et_atos_file_transfer', path: 'vendor/gems/et_atos_file_transfer'
 # Rubyzip used to produce and test zip files
 gem 'rubyzip', '~> 1.2', '>= 1.2.1'
 
+# Pdf forms to test pdf content and also to produce them
+gem 'pdf-forms', '~> 1.1', '>= 1.1.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

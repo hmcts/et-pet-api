@@ -1,3 +1,4 @@
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects
