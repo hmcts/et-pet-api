@@ -44,6 +44,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.7'
   gem 'simplecov', '~> 0.16.1'
+  gem 'dotenv-rails', '~> 2.4'
 end
 
 group :development do
@@ -58,15 +59,16 @@ end
 group :test do
   gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_bot', '~> 4.8'
-  gem 'aws-sdk-s3', '~> 1.8', '>= 1.8.2'
+  gem 'aws-sdk-s3', '~> 1.13'
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 1.8', '>= 1.8.7'
   gem 'webmock', '~> 3.4', '>= 3.4.1'
 end
 
 group :production do
-  gem 'aws-sdk-s3', '~> 1.8', '>= 1.8.2'
+  gem 'aws-sdk-s3', '~> 1.13'
 end
+
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

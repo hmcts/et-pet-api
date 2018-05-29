@@ -273,7 +273,13 @@ EXPORT_CLAIMS_EVERY=5
 
 ```
 
+
 will set it to every 5 minutes
+
+## S3_DIRECT_UPLOAD_BUCKET
+
+In contrast to S3_UPLOAD_BUCKET which is for storing active storage objects, this environment variable points to
+a bucket where mthe direct upload feature can be used in a front end application using the API.
 
 # Development Guidelines
 
