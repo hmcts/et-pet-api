@@ -1,11 +1,13 @@
 class BaseCommand
-  attr_reader :uuid, :data, :meta, :valid
+  attr_reader :uuid, :input_data, :meta, :valid, :async, :output_data
 
-  def initialize(uuid:, data:, command_service: CommandService)
+  def initialize(uuid:, data:, async: true, command_service: CommandService)
     self.uuid = uuid
-    self.data = data
+    self.input_data = data
     self.meta = {}
+    self.output_data = {}
     self.valid = true
+    self.async = async
     self.command_service = command_service
   end
 
@@ -19,6 +21,6 @@ class BaseCommand
 
   private
 
-  attr_writer :uuid, :data, :meta, :valid
+  attr_writer :uuid, :input_data, :meta, :valid, :async, :output_data
   attr_accessor :command_service
 end

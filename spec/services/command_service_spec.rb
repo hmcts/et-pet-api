@@ -15,7 +15,7 @@ RSpec.describe CommandService do
         command_class
       end
 
-      it 'creates a new instance of the command' do
+      it 'creates a new instance of the command with async set to true' do
         # Act - call dispatch
         service.dispatch command: 'Dummy',
                          uuid: uuid,
@@ -23,7 +23,19 @@ RSpec.describe CommandService do
                          root_object: root_object
 
         # Assert - Make sure the command class received new with the correct params
-        expect(command_class).to have_received(:new).with(uuid: uuid, data: data)
+        expect(command_class).to have_received(:new).with(uuid: uuid, data: data, async: true)
+      end
+
+      it 'creates a new instance of the command with async set to false if specified' do
+        # Act - call dispatch
+        service.dispatch command: 'Dummy',
+                         uuid: uuid,
+                         data: data,
+                         root_object: root_object,
+                         async: false
+
+        # Assert - Make sure the command class received new with the correct params
+        expect(command_class).to have_received(:new).with(uuid: uuid, data: data, async: false)
       end
 
       it 'calls apply on the command with the root object passed in' do

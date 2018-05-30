@@ -1,34 +1,6 @@
 require 'faker'
 require 'securerandom'
-module EtApi
-  module Test
-    module Json
-      class Node < OpenStruct
-        def as_json(*)
-          to_h.inject({}) do |acc, (k, v)|
-            acc[k] = normalize(v)
-            acc
-          end
-        end
 
-        private
-
-        def normalize(value)
-          case value
-          when Node then value.as_json
-          when Array then value.map { |i| normalize(i) }
-          else value
-          end
-        end
-      end
-
-      class Document < Node
-
-      end
-    end
-
-  end
-end
 FactoryBot.define do
   factory :json_build_response_commands, class: ::EtApi::Test::Json::Document do
     trait :with_representative do
@@ -152,10 +124,4 @@ FactoryBot.define do
       post_code 'WC2 2BB'
     end
   end
-
-  factory :json_command, class: ::EtApi::Test::Json::Node do
-    command 'DummyCommand'
-    data { EtApi::Test::Json::Node.new }
-  end
-
 end
