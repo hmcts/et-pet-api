@@ -18,5 +18,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 5.2.0"
   s.add_dependency 'pg', '>= 0.18', '< 2.0'
+  s.add_dependency 'activerecord-nulldb-adapter', '~> 0.3.8'
 
 end

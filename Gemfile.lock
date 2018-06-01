@@ -2,6 +2,7 @@ PATH
   remote: vendor/gems/et_acas_api
   specs:
     et_acas_api (0.1.0)
+      activerecord-nulldb-adapter (~> 0.3.8)
       pg (>= 0.18, < 2.0)
       rails (~> 5.2.0)
 
@@ -46,6 +47,8 @@ GEM
       activemodel (= 5.2.0)
       activesupport (= 5.2.0)
       arel (>= 9.0)
+    activerecord-nulldb-adapter (0.3.8)
+      activerecord (>= 2.0.0)
     activestorage (5.2.0)
       actionpack (= 5.2.0)
       activerecord (= 5.2.0)
