@@ -5,6 +5,7 @@ PATH
       activerecord-nulldb-adapter (~> 0.3.8)
       pg (>= 0.18, < 2.0)
       rails (~> 5.2.0)
+      savon (~> 2.12)
 
 PATH
   remote: vendor/gems/fake_acas_server
@@ -58,9 +59,16 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
+    akami (1.3.1)
+      gyoku (>= 0.4.0)
+      nokogiri
     arel (9.0.0)
     builder (3.2.3)
     concurrent-ruby (1.0.5)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
     crass (1.0.4)
     diff-lcs (1.3)
     erubi (1.7.1)
@@ -71,6 +79,12 @@ GEM
       railties (>= 3.0.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    gyoku (1.3.1)
+      builder (>= 2.1.2)
+    hashdiff (0.3.7)
+    httpi (2.4.3)
+      rack
+      socksify
     i18n (1.0.1)
       concurrent-ruby (~> 1.0)
     loofah (2.2.2)
@@ -89,7 +103,9 @@ GEM
     nio4r (2.3.1)
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
+    nori (2.6.0)
     pg (1.0.0)
+    public_suffix (3.0.2)
     rack (2.0.5)
     rack-protection (2.0.1)
       rack
@@ -137,11 +153,21 @@ GEM
       rspec-mocks (~> 3.7.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.1)
+    safe_yaml (1.0.4)
+    savon (2.12.0)
+      akami (~> 1.2)
+      builder (>= 2.1.2)
+      gyoku (~> 1.2)
+      httpi (~> 2.3)
+      nokogiri (>= 1.8.1)
+      nori (~> 2.4)
+      wasabi (~> 3.4)
     sinatra (2.0.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
       rack-protection (= 2.0.1)
       tilt (~> 2.0)
+    socksify (1.7.1)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -154,6 +180,13 @@ GEM
     tilt (2.0.8)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    wasabi (3.5.0)
+      httpi (~> 2.0)
+      nokogiri (>= 1.4.2)
+    webmock (3.4.1)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
@@ -166,6 +199,7 @@ DEPENDENCIES
   factory_bot_rails (~> 4.10)
   fake_acas_server!
   rspec-rails (~> 3.7, >= 3.7.2)
+  webmock (~> 3.4, >= 3.4.1)
 
 BUNDLED WITH
    1.16.1

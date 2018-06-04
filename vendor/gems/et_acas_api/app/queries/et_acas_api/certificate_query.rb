@@ -5,7 +5,8 @@ module EtAcasApi
     end
 
     def apply(root_object)
-
+      response = AcasApiService.new.get_certificate
+      boom!
     end
 
     def status
