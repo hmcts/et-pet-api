@@ -65,14 +65,7 @@ RSpec.describe EtAcasApi::AcasApiService do
       # Act - Call the service
       subject.get_certificate('anyid', user_id: "my user id")
 
-      # Assert - Stage 1 - Calculate the expected digest value which uses nokokiri to canonicalize it correctly
-      doc = Nokogiri::XML(recorded_request.body)
-      node = doc.xpath('//env:Envelope/env:Header/wsse:Security/wsu:Timestamp', doc.collect_namespaces).first
-      digest_value = Base64.encode64(OpenSSL::Digest::SHA1.digest(node.canonicalize(Nokogiri::XML::XML_C14N_EXCLUSIVE_1_0))).strip
-
-      # Assert - Stage 2 - Test the digest value is correct
-      xml = Hash.from_xml(recorded_request.body)
-      expect(xml.dig('Envelope', 'Header', 'Security', 'Signature', 'SignedInfo', 'Reference', 'DigestValue')).to eql digest_value
+      expect(recorded_request.body).to have_valid_digest_for_acas
     end
 
     it 'requests the data with the correct signature value in the header' do
@@ -86,16 +79,9 @@ RSpec.describe EtAcasApi::AcasApiService do
       # Act - Call the service
       subject.get_certificate('anyid', user_id: "my user id")
 
+      expect(recorded_request.body).to have_valid_signature_for_acas
+
       # Assert - Stage 1 - Calculate the expected signature value which uses nokokiri to canonicalize it correctly
-      doc = Nokogiri::XML(recorded_request.body)
-      ns = doc.collect_namespaces
-      ns['xmlns:ds'] = ns.delete('xmlns')
-      signed_info_node = doc.xpath('//env:Envelope/env:Header/wsse:Security/ds:Signature/ds:SignedInfo', ns).first
-      signature_value_node = doc.xpath('//env:Envelope/env:Header/wsse:Security/ds:Signature/ds:SignatureValue', ns).first
-      signature_value = Base64.decode64(signature_value_node.text)
-      #certs.private_key.sign(OpenSSL::Digest::SHA1.new, node.canonicalize(Nokogiri::XML::XML_C14N_EXCLUSIVE_1_0))
-      document = signed_info_node.canonicalize(Nokogiri::XML::XML_C14N_EXCLUSIVE_1_0)
-      expect(our_certificate.public_key.verify(OpenSSL::Digest::SHA1.new, signature_value, document)).to be true
 
     end
   end
