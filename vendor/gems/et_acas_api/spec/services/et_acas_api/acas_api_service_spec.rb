@@ -65,6 +65,7 @@ RSpec.describe EtAcasApi::AcasApiService do
       # Act - Call the service
       subject.get_certificate('anyid', user_id: "my user id")
 
+      # Assert - Validate the digest
       expect(recorded_request.body).to have_valid_digest_for_acas
     end
 
@@ -79,9 +80,9 @@ RSpec.describe EtAcasApi::AcasApiService do
       # Act - Call the service
       subject.get_certificate('anyid', user_id: "my user id")
 
+      # Assert - Validate the signature
       expect(recorded_request.body).to have_valid_signature_for_acas
 
-      # Assert - Stage 1 - Calculate the expected signature value which uses nokokiri to canonicalize it correctly
 
     end
   end
