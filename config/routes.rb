@@ -12,4 +12,6 @@ Rails.application.routes.draw do
     end
   end
   mount EtAtosFileTransfer::Engine, at: '/atos_api'
+
+  get 'ping' => 'health_status/ping#show'
 end
