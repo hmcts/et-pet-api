@@ -23,7 +23,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - bundle exec rspec
-  - "cd vendor/gems/et_acas_api; BUNDLE_GEMFILE=$PWD/Gemfile bundle install; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rspec"
+  - "cd vendor/gems/et_acas_api; BUNDLE_GEMFILE=$PWD/Gemfile bundle install; bundle exec rake db:create db:migrate RAILS_ENV=test; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rspec"
 after_success:
   - bundle exec codeclimate-test-reporter
 after_script:
