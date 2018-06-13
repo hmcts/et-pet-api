@@ -1,6 +1,8 @@
 require 'rails_helper'
 RSpec.describe EtAcasApi::CertificateQuery do
   describe '#valid?' do
-    boom!
+    it 'should do something' do
+      boom!
+    end
   end
 end
