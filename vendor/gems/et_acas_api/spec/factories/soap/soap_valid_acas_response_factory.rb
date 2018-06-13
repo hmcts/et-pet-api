@@ -37,15 +37,11 @@ module EtAcasApi
                   xml['a'].ServiceVersion Base64.encode64(aes_enc.encrypt_from_acas(service_version))
                 end
               end
-
             end
           end
-
         end
         builder.to_xml
-
       end
-
     end
   end
 end

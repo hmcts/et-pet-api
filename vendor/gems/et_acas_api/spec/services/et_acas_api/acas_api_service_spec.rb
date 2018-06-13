@@ -107,6 +107,8 @@ RSpec.describe EtAcasApi::AcasApiService do
       end
     end
 
+
+
     it 'requests the data and sets status to :found with a positive response' do
       # Arrange - Build a stub which responds with the correct body
       response_factory = build(:soap_valid_acas_response, :valid)

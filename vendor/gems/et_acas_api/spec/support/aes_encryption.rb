@@ -13,9 +13,7 @@ module EtAcasApi
 
       def encrypt_from_acas(value)
         encrypt_cipher = build_encrypt_cipher
-        (encrypt_cipher.update(value) + encrypt_cipher.final).tap do |v|
-          v
-        end
+        encrypt_cipher.update(value) + encrypt_cipher.final
       end
 
       def decrypt_from_acas(value)
