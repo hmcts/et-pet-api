@@ -23,7 +23,7 @@ before_script:
   - ./cc-test-reporter before-build
 script:
   - bundle exec rspec
-  - bash -c "cd vendor/gems/et_acas_api && bundle && bundle exec rspec"
+  - bash -c "cd vendor/gems/et_acas_api; bundle install; bundle exec rspec"
 after_success:
   - bundle exec codeclimate-test-reporter
 after_script:
