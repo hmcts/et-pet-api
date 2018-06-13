@@ -64,5 +64,20 @@ FactoryBot.define do
       response_code '100'
       service_version '1.0'
     end
+
+    trait :not_found do
+      valid
+      response_code '200'
+    end
+
+    trait :invalid_certificate_format do
+      valid
+      response_code '201'
+    end
+
+    trait :acas_server_error do
+      valid
+      response_code '500'
+    end
   end
 end

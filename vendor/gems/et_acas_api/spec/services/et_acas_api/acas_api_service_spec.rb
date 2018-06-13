@@ -18,14 +18,14 @@ RSpec.describe EtAcasApi::AcasApiService do
 
   describe '#get_certificate' do
     it 'requests the data from the correct entry in the wsdl' do
-      get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: '', status: 200, headers: { 'Content-Type' => 'application/xml' }
-      subject.get_certificate('anyid', user_id: "my user id")
+      get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' }
+      subject.call('anyid', user_id: "my user id")
       expect(get_certificate_stub).to have_been_requested
     end
 
     it 'requests the data with the correct input parameters' do
-      get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: '', status: 200, headers: { 'Content-Type' => 'application/xml' }
-      subject.get_certificate('anyid', user_id: "my user id")
+      get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' }
+      subject.call('anyid', user_id: "my user id")
       body_matcher = hash_including('env:Envelope' =>
                                         hash_including('env:Body' =>
                                                            hash_including('tns:GetECCertificate' =>
@@ -38,8 +38,8 @@ RSpec.describe EtAcasApi::AcasApiService do
     end
 
     it 'requests the data with the correct security token in the signature in the header' do
-      get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: '', status: 200, headers: { 'Content-Type' => 'application/xml' }
-      subject.get_certificate('anyid', user_id: "my user id")
+      get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' }
+      subject.call('anyid', user_id: "my user id")
       our_base64_public_key = Base64.encode64(OpenSSL::X509::Certificate.new(File.read(config[:rsa_certificate_path])).to_der).tr("\n", '')
       body_matcher = hash_including('env:Envelope' =>
                                         hash_including(
@@ -56,13 +56,13 @@ RSpec.describe EtAcasApi::AcasApiService do
     it 'requests the data with the correct digest value in the signature in the header' do
       # Arrange - Build a stub which will record the request for later testing
       recorded_request = nil
-      get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return do |r|
+      stub_request(:post, example_get_certificate_url).to_return do |r|
         recorded_request = r
-        { body: '', status: 200, headers: { 'Content-Type' => 'application/xml' } }
+        { body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' } }
       end
 
       # Act - Call the service
-      subject.get_certificate('anyid', user_id: "my user id")
+      subject.call('anyid', user_id: "my user id")
 
       # Assert - Validate the digest
       expect(recorded_request.body).to have_valid_digest_for_acas
@@ -73,11 +73,11 @@ RSpec.describe EtAcasApi::AcasApiService do
       recorded_request = nil
       get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return do |r|
         recorded_request = r
-        { body: '', status: 200, headers: { 'Content-Type' => 'application/xml' } }
+        { body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' } }
       end
 
       # Act - Call the service
-      subject.get_certificate('anyid', user_id: "my user id")
+      subject.call('anyid', user_id: "my user id")
 
       # Assert - Validate the signature
       expect(recorded_request.body).to have_valid_signature_for_acas
@@ -91,7 +91,8 @@ RSpec.describe EtAcasApi::AcasApiService do
         body: response_factory.to_xml
 
       # Act - Call the service
-      result = subject.get_certificate('anyid', user_id: "my user id")
+      subject.call('anyid', user_id: "my user id")
+      result = subject.certificate
 
       # Assert - Validate the signature
       aggregate_failures 'Validate all non file attributes are correct' do
@@ -105,5 +106,74 @@ RSpec.describe EtAcasApi::AcasApiService do
         expect(result.certificate_base64).to eql Base64.encode64(File.read(response_factory.certificate_file))
       end
     end
+
+    it 'requests the data and sets status to :found with a positive response' do
+      # Arrange - Build a stub which responds with the correct body
+      response_factory = build(:soap_valid_acas_response, :valid)
+      stub_request(:post, example_get_certificate_url).to_return status: 200,
+        headers: { 'Content-Type' => 'application/xml' },
+        body: response_factory.to_xml
+
+      # Act - Call the service
+      subject.call('anyid', user_id: "my user id")
+      result = subject.certificate
+
+      # Assert - Validate the signature
+      expect(subject.status).to be :found
+    end
+
+    it 'requests the data and handles a not found response' do
+      # Arrange - Build a stub which responds with the correct body
+      response_factory = build(:soap_valid_acas_response, :not_found)
+      stub_request(:post, example_get_certificate_url).to_return status: 200,
+        headers: { 'Content-Type' => 'application/xml' },
+        body: response_factory.to_xml
+
+      # Act - Call the service
+      subject.call('anyid', user_id: "my user id")
+
+      # Assert - Validate that the status is correct and the certificate is nil
+      aggregate_failures 'Validate status and certificate' do
+        expect(subject.status).to be :not_found
+        expect(subject.certificate).to be_nil
+      end
+    end
+
+    it 'requests the data and handles an invalid certificate response' do
+      # Arrange - Build a stub which responds with the correct body
+      response_factory = build(:soap_valid_acas_response, :invalid_certificate_format)
+      stub_request(:post, example_get_certificate_url).to_return status: 200,
+        headers: { 'Content-Type' => 'application/xml' },
+        body: response_factory.to_xml
+
+      # Act - Call the service
+      subject.call('anyid', user_id: "my user id")
+
+      # Assert - Validate that the status is correct and the certificate is nil
+      aggregate_failures 'Validate status and certificate' do
+        expect(subject.status).to be :invalid_certificate_format
+        expect(subject.certificate).to be_nil
+      end
+    end
+
+    it 'requests the data and handles an acas server error response' do
+      # Arrange - Build a stub which responds with the correct body
+      response_factory = build(:soap_valid_acas_response, :acas_server_error)
+      stub_request(:post, example_get_certificate_url).to_return status: 200,
+        headers: { 'Content-Type' => 'application/xml' },
+        body: response_factory.to_xml
+
+      # Act - Call the service
+      subject.call('anyid', user_id: "my user id")
+
+      # Assert - Validate that the status is correct and the certificate is nil
+      aggregate_failures 'Validate status and certificate' do
+        expect(subject.status).to be :acas_server_error
+        expect(subject.certificate).to be_nil
+      end
+    end
+
+
+
   end
 end

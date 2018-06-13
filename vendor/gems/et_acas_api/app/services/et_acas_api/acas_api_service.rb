@@ -4,7 +4,9 @@ require 'openssl'
 require 'et_acas_api/soap_signature'
 module EtAcasApi
   class AcasApiService
-    def initialize(wsdl_url:, current_time: Time.zone.now, acas_rsa_certificate_path:, rsa_certificate_path:, rsa_private_key_path: )
+    attr_reader :certificate, :status
+
+    def initialize(wsdl_url:, current_time: Time.zone.now, acas_rsa_certificate_path:, rsa_certificate_path:, rsa_private_key_path:)
       self.wsdl_url = wsdl_url
       self.current_time = current_time
       self.acas_rsa_certificate = OpenSSL::X509::Certificate.new File.read(acas_rsa_certificate_path)
@@ -12,7 +14,7 @@ module EtAcasApi
       self.rsa_private_key = OpenSSL::PKey::RSA.new(File.read(rsa_private_key_path))
     end
 
-    def get_certificate(id, user_id:)
+    def call(id, user_id:)
       response = client.call(:get_ec_certificate, message: {
         'ECCertificateNumber' => encode_encrypt(id),
         'UserId' => encode_encrypt(user_id),
@@ -20,13 +22,28 @@ module EtAcasApi
       })
       raise "Error in response from ACAS" unless response.success?
       self.response_data = response.body.dig(:get_ec_certificate_response, :get_ec_certificate_result)
+      set_status
       build
     end
 
     private
 
+    def set_status
+      self.status = case decoded(:response_code)
+                    when '200' then
+                      :not_found
+                    when '201' then
+                      :invalid_certificate_format
+                    when '500' then
+                      :acas_server_error
+                    else
+                      :found
+                    end
+    end
+
     def build
-      Certificate.new(mapped_data)
+      return unless status == :found
+      self.certificate = Certificate.new(mapped_data)
     end
 
     def mapped_data
@@ -66,10 +83,10 @@ module EtAcasApi
 
     def client
       @client ||= Savon.client wsdl: wsdl_url,
-                               wsse_timestamp: true,
-                               wsse_signature:
-                                   SoapSignature.new(
-                                       Akami::WSSE::Certs.new(cert_string: rsa_certificate, private_key_string: rsa_private_key))
+        wsse_timestamp: true,
+        wsse_signature:
+          SoapSignature.new(
+            Akami::WSSE::Certs.new(cert_string: rsa_certificate, private_key_string: rsa_private_key))
 
     end
 
@@ -90,5 +107,6 @@ module EtAcasApi
     end
 
     attr_accessor :wsdl_url, :current_time, :acas_rsa_certificate, :rsa_certificate, :rsa_private_key, :response_data
+    attr_writer :certificate, :status
   end
 end
