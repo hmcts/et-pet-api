@@ -82,5 +82,28 @@ RSpec.describe EtAcasApi::AcasApiService do
       # Assert - Validate the signature
       expect(recorded_request.body).to have_valid_signature_for_acas
     end
+
+    it 'requests the data and handles a positive response' do
+      # Arrange - Build a stub which responds with the correct body
+      response_factory = build(:soap_valid_acas_response, :valid)
+      stub_request(:post, example_get_certificate_url).to_return status: 200,
+        headers: { 'Content-Type' => 'application/xml' },
+        body: response_factory.to_xml
+
+      # Act - Call the service
+      result = subject.get_certificate('anyid', user_id: "my user id")
+
+      # Assert - Validate the signature
+      aggregate_failures 'Validate all non file attributes are correct' do
+        expect(result.claimant_name).to eql response_factory.claimant_name
+        expect(result.date_of_issue).to eql response_factory.date_of_issue
+        expect(result.date_of_receipt).to eql response_factory.date_of_receipt
+        expect(result.certificate_number).to eql response_factory.certificate_number
+        expect(result.message).to eql response_factory.message
+        expect(result.method_of_issue).to eql response_factory.method_of_issue
+        expect(result.respondent_name).to eql response_factory.respondent_name
+        expect(result.certificate_base64).to eql Base64.encode64(File.read(response_factory.certificate_file))
+      end
+    end
   end
 end

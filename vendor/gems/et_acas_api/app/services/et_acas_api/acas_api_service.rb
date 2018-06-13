@@ -13,15 +13,40 @@ module EtAcasApi
     end
 
     def get_certificate(id, user_id:)
-      client.call(:get_ec_certificate, message: {
+      response = client.call(:get_ec_certificate, message: {
         'ECCertificateNumber' => encode_encrypt(id),
         'UserId' => encode_encrypt(user_id),
         'CurrentDateTime' => encode_encrypt(current_date_time)
       })
-      tmp = 1
+      raise "Error in response from ACAS" unless response.success?
+      self.response_data = response.body.dig(:get_ec_certificate_response, :get_ec_certificate_result)
+      build
     end
 
     private
+
+    def build
+      Certificate.new(mapped_data)
+    end
+
+    def mapped_data
+      {
+        claimant_name: decoded(:claimant_name),
+        respondent_name: decoded(:respondent_name),
+        date_of_issue: decoded(:date_of_issue),
+        date_of_receipt: decoded(:date_of_receipt),
+        certificate_number: decoded(:ec_certificate_number),
+        message: decoded(:message),
+        method_of_issue: decoded(:method_of_issue),
+        certificate_base64: decoded(:certificate)
+      }
+    end
+
+    def decoded(attr)
+      aes = Base64.decode64 response_data[attr]
+      decipher = aes_decipher
+      decipher.update(aes) + decipher.final
+    end
 
     def encode_encrypt(value)
       encode(encrypt(value))
@@ -48,6 +73,22 @@ module EtAcasApi
 
     end
 
-    attr_accessor :wsdl_url, :current_time, :acas_rsa_certificate, :rsa_certificate, :rsa_private_key
+    def aes_decipher
+      OpenSSL::Cipher::AES256.new(:CBC).tap do |c|
+        c.decrypt
+        c.key = response_key
+        c.iv = response_iv
+      end
+    end
+
+    def response_key
+      @response_key ||= rsa_private_key.private_decrypt(Base64.decode64(response_data[:key]), OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
+    end
+
+    def response_iv
+      @response_iv ||= rsa_private_key.private_decrypt(Base64.decode64(response_data[:iv]), OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
+    end
+
+    attr_accessor :wsdl_url, :current_time, :acas_rsa_certificate, :rsa_certificate, :rsa_private_key, :response_data
   end
 end

@@ -12,7 +12,7 @@ module EtAcasApi
 
       end
       def encrypt_from_acas(value)
-        rsa_certificate.public_key.public_encrypt(value)
+        rsa_certificate.public_key.public_encrypt(value, OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
       end
 
       private
