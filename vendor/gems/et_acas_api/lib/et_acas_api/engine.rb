@@ -1,3 +1,4 @@
+require 'jbuilder'
 module EtAcasApi
   class Engine < ::Rails::Engine
     isolate_namespace EtAcasApi

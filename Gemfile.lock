@@ -3,6 +3,7 @@ PATH
   specs:
     et_acas_api (0.1.0)
       activerecord-nulldb-adapter (~> 0.3.8)
+      jbuilder (~> 2.5)
       pg (>= 0.18, < 2.0)
       rails (~> 5.2.0)
       savon (~> 2.12)

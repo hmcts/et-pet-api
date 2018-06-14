@@ -12,13 +12,21 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
   let(:json_response) { JSON.parse(response.body).with_indifferent_access }
   let(:x509_private_key) { boom! }
   let(:x509_public_key) { boom! }
+
+  # Fake External ACAS - note the example_get_certificate_url must match what is specified in the wsdl.txt file
+  let(:wsdl_content) { File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'wsdl.txt'), __dir__)) }
+  let(:example_get_certificate_url) { "https://localhost/Lookup/ECService.svc" }
+
   before do
-    #mock_wsdl_endpoint
+    stub_request(:get, Rails.configuration.et_acas_api.wsdl_url).to_return body: wsdl_content, status: 200, headers: { 'Content-Type' => 'application/xml' }
   end
 
   describe "GET /et_acas_api_certificate_request_specs" do
 
     context 'with found response' do
+      before do
+        stub_request(:post, example_get_certificate_url).to_return body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' }
+      end
       it 'provides the correct encrypted parameters to the acas service' do
         get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
         expect(mock_endpoint).to have_been_called.with(something: :need_to_work_out)
