@@ -7,5 +7,6 @@ module EtAcasApi
       g.test_framework :rspec
       g.fixture_replacement :factory_bot, :dir => 'spec/factories'
     end
+    config.et_acas_api = ::Rails::Application::Configuration::Custom.new
   end
 end

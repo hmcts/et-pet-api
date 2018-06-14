@@ -4,9 +4,14 @@ require 'openssl'
 require 'et_acas_api/soap_signature'
 module EtAcasApi
   class AcasApiService
-    attr_reader :certificate, :status
+    attr_reader :status
 
-    def initialize(wsdl_url:, current_time: Time.zone.now, acas_rsa_certificate_path:, rsa_certificate_path:, rsa_private_key_path:)
+    def initialize(wsdl_url: Rails.configuration.et_acas_api.wsdl_url,
+      current_time: Time.zone.now,
+      acas_rsa_certificate_path: Rails.configuration.et_acas_api.acas_rsa_certificate_path,
+      rsa_certificate_path: Rails.configuration.et_acas_api.rsa_certificate_path,
+      rsa_private_key_path: Rails.configuration.et_acas_api.rsa_private_key_path)
+
       self.wsdl_url = wsdl_url
       self.current_time = current_time
       self.acas_rsa_certificate = OpenSSL::X509::Certificate.new File.read(acas_rsa_certificate_path)
@@ -14,7 +19,7 @@ module EtAcasApi
       self.rsa_private_key = OpenSSL::PKey::RSA.new(File.read(rsa_private_key_path))
     end
 
-    def call(id, user_id:)
+    def call(id, user_id:, into:)
       response = client.call(:get_ec_certificate, message: {
         'ECCertificateNumber' => encode_encrypt(id),
         'UserId' => encode_encrypt(user_id),
@@ -23,7 +28,7 @@ module EtAcasApi
       raise "Error in response from ACAS" unless response.success?
       self.response_data = response.body.dig(:get_ec_certificate_response, :get_ec_certificate_result)
       set_status
-      build
+      build(certificate: into)
     end
 
     private
@@ -41,9 +46,9 @@ module EtAcasApi
                     end
     end
 
-    def build
+    def build(certificate:)
       return unless status == :found
-      self.certificate = Certificate.new(mapped_data)
+      certificate.attributes = mapped_data
     end
 
     def mapped_data
@@ -107,6 +112,6 @@ module EtAcasApi
     end
 
     attr_accessor :wsdl_url, :current_time, :acas_rsa_certificate, :rsa_certificate, :rsa_private_key, :response_data
-    attr_writer :certificate, :status
+    attr_writer :status
   end
 end

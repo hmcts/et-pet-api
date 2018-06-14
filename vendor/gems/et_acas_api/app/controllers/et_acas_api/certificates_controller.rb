@@ -1,7 +1,7 @@
 module EtAcasApi
   class CertificatesController < ::EtAcasApi::ApplicationController
     def show
-      result = QueryService.dispatch(query: 'Certificate', root_object: ::EtAcasApi::Certificate.new, id: params[:id])
+      result = QueryService.dispatch(query: 'Certificate', root_object: ::EtAcasApi::Certificate.new, id: params[:id], user_id: request.headers['EtUserId'])
       case result.status
       when :found then
         render locals: { result: result }

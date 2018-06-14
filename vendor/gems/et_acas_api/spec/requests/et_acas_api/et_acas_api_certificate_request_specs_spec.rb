@@ -4,7 +4,8 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
   let(:default_headers) do
     {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'EtUserId': 'my_user'
     }
   end
   let(:errors) { [] }
