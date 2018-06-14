@@ -5,11 +5,13 @@ module EtAcasApi
       result = QueryService.dispatch(query: 'Certificate', root_object: certificate, id: params[:id], user_id: request.headers['EtUserId'])
       case result.status
       when :found then
-        render locals: { result: result, root_object: certificate }
+        render locals: { result: result, certificate: certificate }
       when :not_found then
         render :not_found, locals: { result: result }, status: :not_found
-      when :invalid then
+      when :invalid_certificate_format then
         render :invalid, locals: { result: result }, status: :unprocessable_entity
+      when :acas_server_error
+        render :invalid, locals: { result: result }, status: :internal_server_error
       end
     end
   end

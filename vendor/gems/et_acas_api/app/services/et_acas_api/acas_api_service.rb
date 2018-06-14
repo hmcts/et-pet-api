@@ -4,19 +4,22 @@ require 'openssl'
 require 'et_acas_api/soap_signature'
 module EtAcasApi
   class AcasApiService
-    attr_reader :status
+    attr_reader :status, :errors
 
     def initialize(wsdl_url: Rails.configuration.et_acas_api.wsdl_url,
       current_time: Time.zone.now,
       acas_rsa_certificate_path: Rails.configuration.et_acas_api.acas_rsa_certificate_path,
       rsa_certificate_path: Rails.configuration.et_acas_api.rsa_certificate_path,
-      rsa_private_key_path: Rails.configuration.et_acas_api.rsa_private_key_path)
+      rsa_private_key_path: Rails.configuration.et_acas_api.rsa_private_key_path,
+      logger: Rails.logger)
 
       self.wsdl_url = wsdl_url
       self.current_time = current_time
       self.acas_rsa_certificate = OpenSSL::X509::Certificate.new File.read(acas_rsa_certificate_path)
       self.rsa_certificate = OpenSSL::X509::Certificate.new File.read(rsa_certificate_path)
       self.rsa_private_key = OpenSSL::PKey::RSA.new(File.read(rsa_private_key_path))
+      self.logger = logger
+      self.errors = {}
     end
 
     def call(id, user_id:, into:)
@@ -28,6 +31,8 @@ module EtAcasApi
       raise "Error in response from ACAS" unless response.success?
       self.response_data = response.body.dig(:get_ec_certificate_response, :get_ec_certificate_result)
       set_status
+      add_errors
+      log_errors(id: id)
       build(certificate: into)
     end
 
@@ -44,6 +49,23 @@ module EtAcasApi
                     else
                       :found
                     end
+    end
+
+    def add_errors
+      if status == :invalid_certificate_format
+        errors[:id] ||= []
+        errors[:id] << 'Invalid certificate format'
+      end
+      if status == :acas_server_error
+        errors[:base] ||= []
+        errors[:base] << 'An error occured in the ACAS service'
+      end
+    end
+
+    def log_errors(id:)
+      if status == :acas_server_error
+        logger.warn "An error occured in the ACAS server when trying to find certificate '#{id}' - the error reported was '#{decoded(:message)}'"
+      end
     end
 
     def build(certificate:)
@@ -111,7 +133,7 @@ module EtAcasApi
       @response_iv ||= rsa_private_key.private_decrypt(Base64.decode64(response_data[:iv]), OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
     end
 
-    attr_accessor :wsdl_url, :current_time, :acas_rsa_certificate, :rsa_certificate, :rsa_private_key, :response_data
-    attr_writer :status
+    attr_accessor :wsdl_url, :current_time, :acas_rsa_certificate, :rsa_certificate, :rsa_private_key, :response_data, :logger
+    attr_writer :status, :errors
   end
 end

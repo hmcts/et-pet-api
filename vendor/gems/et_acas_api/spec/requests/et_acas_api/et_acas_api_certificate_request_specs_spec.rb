@@ -22,23 +22,57 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
   end
 
   describe "GET /et_acas_api_certificate_request_specs" do
+    recorded_request = nil
+    before do
+      recorded_request = nil
+      stub_request(:post, example_get_certificate_url).to_return do |r|
+        recorded_request = r
+        { body: response_factory.to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' } }
+      end
+    end
 
     context 'with found response' do
-      before do
-        stub_request(:post, example_get_certificate_url).to_return body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' }
-      end
-      it 'provides the correct encrypted parameters to the acas service' do
+      let(:response_factory) { build(:soap_valid_acas_response, :valid) }
+      it 'provides the correct encrypted parameters - apart from date - to the acas service' do
         get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
-        expect(mock_endpoint).to have_been_called.with(something: :need_to_work_out)
+        expect(recorded_request.body).to have_valid_encrypted_parameters_for_acas(
+          ECCertificateNumber: 'R000000/00/14',
+          UserId: 'my_user'
+        )
+      end
+
+      it 'provides the correct date - to the acas service' do
+        get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
+        expect(recorded_request.body).to have_valid_current_date_time_for_acas
+      end
+
+      it 'provides the correct signature for the acas service' do
+        get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
+        expect(recorded_request.body).to have_valid_signature_for_acas
       end
 
       it 'decrypts and returns the response' do
         get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
-        expect(json_response).to include(data: a_hash_including(something: :need_to_work_out))
+        expect(json_response[:data].symbolize_keys).to include(
+          claimant_name: response_factory.claimant_name,
+          respondent_name: response_factory.respondent_name,
+          certificate_number: response_factory.certificate_number,
+          message: response_factory.message,
+          method_of_issue: response_factory.method_of_issue,
+          date_of_issue: response_factory.date_of_issue.iso8601(3),
+          date_of_receipt: response_factory.date_of_receipt.iso8601(3)
+        )
+      end
+
+      it 'returns a status of found' do
+        get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
+        expect(json_response).to include(status: 'found')
       end
     end
 
     context 'with not found response' do
+      let(:response_factory) { build(:soap_valid_acas_response, :not_found) }
+
       it 'decrypts and returns the response as a 404' do
         get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
         expect(response).to have_http_status(404)
@@ -46,6 +80,7 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
     end
 
     context 'with invalid certificate response' do
+      let(:response_factory) { build(:soap_valid_acas_response, :invalid_certificate_format) }
       it 'decrypts and returns the response as a 422' do
         get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
         expect(response).to have_http_status(422)
@@ -53,11 +88,12 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
 
       it 'decrypts and returns the response with a correct error response' do
         get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
-        expect(json_response).to errors: a_collection_including(a_hash_including(id: a_hash_including(message: 'Invalid according to acas')))
+        expect(json_response[:errors].symbolize_keys).to include(id: a_collection_including('Invalid certificate format'))
       end
     end
 
     context 'with internal server error response' do
+      let(:response_factory) { build(:soap_valid_acas_response, :acas_server_error) }
       it 'decrypts and returns the response as a 500' do
         get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
         expect(response).to have_http_status(500)
@@ -65,12 +101,13 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
 
       it 'decrypts and returns the response with a correct error response' do
         get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
-        expect(json_response).to errors: a_collection_including(a_hash_including(message: 'Something went badly wrong'))
+        expect(json_response[:errors].symbolize_keys).to include(base: a_collection_including('An error occured in the ACAS service'))
       end
 
       it 'decrypts and logs the error accordingly' do
+        logger = Rails.logger
+        expect(logger).to receive(:warn).with("An error occured in the ACAS server when trying to find certificate 'R000000/00/14' - the error reported was '#{response_factory.message}'").and_call_original
         get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
-        expect(logger).to have_been_called_with(:something_to_be_decided)
       end
     end
 

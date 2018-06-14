@@ -18,6 +18,10 @@ module EtAcasApi
       status == :found
     end
 
+    def errors
+      acas_api_service.errors
+    end
+
     private
 
     attr_accessor :acas_api_service, :user_id, :id

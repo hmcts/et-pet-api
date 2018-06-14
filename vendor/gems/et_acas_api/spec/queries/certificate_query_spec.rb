@@ -62,7 +62,7 @@ RSpec.describe EtAcasApi::CertificateQuery do
     end
   end
 
-  describe 'apply' do
+  describe '#apply' do
     it 'request that the underlying service populates the root object (certificate) when found' do
       # Arrange - Setup a certificate
       certificate = instance_double('EtAcasApi::Certificate')
@@ -72,6 +72,19 @@ RSpec.describe EtAcasApi::CertificateQuery do
 
       # Assert - Ensure the service was called
       expect(fake_acas_api_service).to have_received(:call).with('anything', user_id: 'my_user', into: certificate)
+    end
+  end
+
+  describe '#errors' do
+    it  'should mirror what the underlying api service says' do
+      # Arrange - Setup the fake acas api service to respond accordingly
+      expect(fake_acas_api_service).to receive(:errors).and_return(id: ['Some error message'])
+
+      # Act
+      result = query.errors
+
+      # Assert
+      expect(result).to eql(id: ['Some error message'])
     end
   end
 end

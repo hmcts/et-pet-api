@@ -1,8 +1,8 @@
 require 'rails_helper'
 RSpec.describe EtAcasApi::AcasApiService do
-  subject(:api) { described_class.new }
+  subject(:api) { described_class.new(logger: logger) }
   let(:certificate) { EtAcasApi::Certificate.new }
-
+  let(:logger) { instance_spy('ActiveSupport::Logger') }
   let(:rsa_certificate_path) { Rails.configuration.et_acas_api.rsa_certificate_path }
   # Common Setup - A fake wsdl response to provide a fake url for this service
   let(:example_get_certificate_url) { "https://localhost/Lookup/ECService.svc" }
@@ -81,7 +81,7 @@ RSpec.describe EtAcasApi::AcasApiService do
     it 'requests the data with the correct signature value in the header' do
       # Arrange - Build a stub which will record the request for later testing
       recorded_request = nil
-      get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return do |r|
+      stub_request(:post, example_get_certificate_url).to_return do |r|
         recorded_request = r
         { body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' } }
       end
@@ -161,6 +161,7 @@ certificate
       # Assert - Validate that the status is correct and the certificate is nil
       aggregate_failures 'Validate status and certificate' do
         expect(subject.status).to be :invalid_certificate_format
+        expect(subject.errors).to include id: a_collection_including('Invalid certificate format')
       end
     end
 
@@ -177,7 +178,22 @@ certificate
       # Assert - Validate that the status is correct and the certificate is nil
       aggregate_failures 'Validate status and certificate' do
         expect(subject.status).to be :acas_server_error
+        expect(subject.errors).to include base: a_collection_including('An error occured in the ACAS service')
       end
+    end
+
+    it 'requests the data and logs an acas server error response' do
+      # Arrange - Build a stub which responds with the correct body
+      response_factory = build(:soap_valid_acas_response, :acas_server_error)
+      stub_request(:post, example_get_certificate_url).to_return status: 200,
+        headers: { 'Content-Type' => 'application/xml' },
+        body: response_factory.to_xml
+
+      # Act - Call the service
+      subject.call('anyid', user_id: "my user id", into: certificate)
+
+      # Assert - Validate that the status is correct and the certificate is nil
+      expect(logger).to have_received(:warn).with("An error occured in the ACAS server when trying to find certificate 'anyid' - the error reported was '#{response_factory.message}'")
     end
 
 

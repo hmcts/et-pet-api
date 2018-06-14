@@ -74,6 +74,7 @@ FactoryBot.define do
     trait :acas_server_error do
       valid
       response_code '500'
+      message 'An ACAS error message'
     end
   end
 end
