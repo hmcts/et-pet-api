@@ -61,6 +61,7 @@ group :test do
   gem 'aws-sdk-s3', '~> 1.8', '>= 1.8.2'
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 1.8', '>= 1.8.7'
+  gem 'webmock', '~> 3.4', '>= 3.4.1'
 end
 
 group :production do
@@ -71,3 +72,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
+gem 'et_fake_acas_server', path: 'vendor/gems/et_fake_acas_server'
