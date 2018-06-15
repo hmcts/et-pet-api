@@ -127,5 +127,27 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
         expect(a_request(:get, Rails.configuration.et_acas_api.wsdl_url)).not_to have_been_made
       end
     end
+
+    context 'with timeout from server' do
+      before do
+        stub_request(:get, Rails.configuration.et_acas_api.wsdl_url).to_timeout
+      end
+
+      it 'returns an error 500' do
+        get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
+        expect(response).to have_http_status(500)
+      end
+
+      it 'returns the response with a correct error response' do
+        get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
+        expect(json_response[:errors].symbolize_keys).to include(base: a_collection_including('An error occured connecting to the ACAS service'))
+      end
+
+      it 'logs the error accordingly' do
+        logger = Rails.logger
+        expect(logger).to receive(:warn).with("An error occured connecting to the ACAS server when trying to find certificate 'R000000/00/14' - the error reported was 'execution expired'").and_call_original
+        get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
+      end
+    end
   end
 end

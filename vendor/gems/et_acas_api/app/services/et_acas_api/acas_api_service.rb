@@ -34,9 +34,18 @@ module EtAcasApi
       add_errors
       log_errors(id: id)
       build(certificate: into)
+    rescue Net::OpenTimeout => ex
+      set_error_status_for(ex, id: id)
     end
 
     private
+
+    def set_error_status_for(ex, id:)
+      self.status = :acas_server_error
+      errors[:base] ||= []
+      errors[:base] << 'An error occured connecting to the ACAS service'
+      logger.warn "An error occured connecting to the ACAS server when trying to find certificate '#{id}' - the error reported was '#{ex.message}'"
+    end
 
     def set_status
       self.status = case decoded(:response_code)

@@ -196,6 +196,31 @@ certificate
       expect(logger).to have_received(:warn).with("An error occured in the ACAS server when trying to find certificate 'anyid' - the error reported was '#{response_factory.message}'")
     end
 
+    it 'requests the data and handles a timeout response' do
+      # Arrange - Build a stub which responds with a timeout for the wsdl request
+      stub_request(:get, Rails.configuration.et_acas_api.wsdl_url).to_timeout
+
+      # Act - Call the service
+      subject.call('anyid', user_id: "my user id", into: certificate)
+
+      # Assert - Validate that the status is correct and the certificate is nil
+      aggregate_failures 'Validate status and certificate' do
+        expect(subject.status).to be :acas_server_error
+        expect(subject.errors).to include base: a_collection_including('An error occured connecting to the ACAS service')
+      end
+    end
+
+    it 'requests the data and logs a timeout response' do
+      # Arrange - Build a stub which responds with a timeout for the wsdl request
+      stub_request(:get, Rails.configuration.et_acas_api.wsdl_url).to_timeout
+
+      # Act - Call the service
+      subject.call('anyid', user_id: "my user id", into: certificate)
+
+      # Assert - Validate that the status is correct and the certificate is nil
+      expect(logger).to have_received(:warn).with("An error occured connecting to the ACAS server when trying to find certificate 'anyid' - the error reported was 'execution expired'")
+    end
+
 
 
   end
