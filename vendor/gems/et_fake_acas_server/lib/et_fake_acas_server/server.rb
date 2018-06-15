@@ -1,6 +1,9 @@
 require 'sinatra/base'
 require 'et_fake_acas_server/forms/certificate_lookup_form'
 require 'et_fake_acas_server/xml_builders/found_xml_builder'
+require 'et_fake_acas_server/xml_builders/no_match_xml_builder'
+require 'et_fake_acas_server/xml_builders/internal_error_xml_builder'
+require 'et_fake_acas_server/xml_builders/invalid_certificate_format_xml_builder'
 require 'active_support/core_ext/numeric/time'
 module EtFakeAcasServer
   class Server < Sinatra::Base
@@ -14,11 +17,11 @@ module EtFakeAcasServer
       form.validate
       case form.certificate_number
       when /\A(R|NE|MU)000200/ then
-        erb :no_match
+        xml_builder_for_no_match(form).to_xml
       when /\A(R|NE|MU)000201/ then
-        erb :invalid_certificate_format
+        xml_builder_for_invalid_certificate_format(form).to_xml
       when /\A(R|NE|MU)000500/ then
-        erb :internal_error
+        xml_builder_for_internal_error(form).to_xml
       else
         xml_builder_for_found(form).to_xml
       end
@@ -36,6 +39,18 @@ module EtFakeAcasServer
                             method_of_issue: 'Email',
                             certificate_file: File.absolute_path(File.join('..', 'pdfs', '76 EC (C) Certificate R000080.pdf'), __dir__)
       FoundXmlBuilder.new(form, rsa_et_certificate_path: File.absolute_path(File.join('..', '..', 'temp_x509', 'et', 'publickey.cer'), __dir__)).builder(data)
+    end
+
+    def xml_builder_for_no_match(form)
+      NoMatchXmlBuilder.new(form, rsa_et_certificate_path: File.absolute_path(File.join('..', '..', 'temp_x509', 'et', 'publickey.cer'), __dir__)).builder
+    end
+
+    def xml_builder_for_internal_error(form)
+      InternalErrorXmlBuilder.new(form, rsa_et_certificate_path: File.absolute_path(File.join('..', '..', 'temp_x509', 'et', 'publickey.cer'), __dir__)).builder
+    end
+
+    def xml_builder_for_invalid_certificate_format(form)
+      InvalidCertificateFormatXmlBuilder.new(form, rsa_et_certificate_path: File.absolute_path(File.join('..', '..', 'temp_x509', 'et', 'publickey.cer'), __dir__)).builder
     end
   end
 end

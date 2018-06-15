@@ -51,4 +51,11 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # These settings for acas api will be modified once we know exactly what we are doing with them.
+  # for now, we are using the test environment settings otherwise the app wont boot.
+  config.et_acas_api.acas_rsa_certificate_path = File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__)
+  config.et_acas_api.rsa_certificate_path = File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__)
+  config.et_acas_api.rsa_private_key_path = File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__)
+  config.et_acas_api.wsdl_url = 'http://fakeservice.com:3200/wsdl'
 end

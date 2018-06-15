@@ -16,7 +16,7 @@ RSpec.describe 'GetAcasCertificate Request', type: :request do
     end
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
 
-    it 'appears to be delegating to the et_acas_api gem correctly' do
+    it 'handles founds response' do
       get '/et_acas_api/certificates/R000100/00/14', headers: default_headers
       expect(json_response[:data].symbolize_keys).to include(
                                                        claimant_name: 'Claimant Name',
@@ -27,6 +27,21 @@ RSpec.describe 'GetAcasCertificate Request', type: :request do
                                                        date_of_issue: "2017-12-01T12:00:00.000Z",
                                                        date_of_receipt: "2017-01-01T12:00:00.000Z"
                                                      )
+    end
+
+    it 'handles no match response' do
+      get '/et_acas_api/certificates/R000200/00/14', headers: default_headers
+      expect(json_response).to include(status: 'not_found')
+    end
+
+    it 'handles invalid certificate response' do
+      get '/et_acas_api/certificates/R000201/00/14', headers: default_headers
+      expect(json_response).to include(status: 'invalid_certificate_format')
+    end
+
+    it 'handles internal error response' do
+      get '/et_acas_api/certificates/R000500/00/14', headers: default_headers
+      expect(json_response).to include(status: 'acas_server_error')
     end
   end
 end
