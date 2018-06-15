@@ -15,6 +15,5 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 gem 'rspec-rails', '~> 3.7', '>= 3.7.2'
 gem 'factory_bot_rails', '~> 4.10'
-gem 'fake_acas_server', path: 'vendor/gems/fake_acas_server'
 gem 'webmock', '~> 3.4', '>= 3.4.1'
 
