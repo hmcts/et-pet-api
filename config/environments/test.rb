@@ -44,4 +44,10 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  #
+  config.et_acas_api.acas_rsa_certificate_path = File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__)
+  config.et_acas_api.rsa_certificate_path = File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__)
+  config.et_acas_api.rsa_private_key_path = File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__)
+  config.et_acas_api.wsdl_url = 'http://mydomain.com/my.wsdl'
+
 end
