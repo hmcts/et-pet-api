@@ -8,10 +8,7 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
       'EtUserId': 'my_user'
     }
   end
-  let(:errors) { [] }
   let(:json_response) { JSON.parse(response.body).with_indifferent_access }
-  let(:x509_private_key) { boom! }
-  let(:x509_public_key) { boom! }
 
   # Fake External ACAS - note the example_get_certificate_url must match what is specified in the wsdl.txt file
   let(:wsdl_content) { File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'wsdl.txt'), __dir__)) }
