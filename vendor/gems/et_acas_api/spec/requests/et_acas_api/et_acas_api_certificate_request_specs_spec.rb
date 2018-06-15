@@ -119,12 +119,12 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
 
       it 'returns error information when invalid id is provided' do
         get '/et_acas_api/certificates/ZZ123456/16/20', headers: default_headers
-        expect(json_response).to incude errors: a_collection_including(a_hash_including(id: a_hash_including(message: 'Invalid according to us')))
+        expect(json_response[:errors].symbolize_keys).to include id: a_collection_including('Invalid certificate format')
       end
 
       it 'does not request certificate from acas when an invalid id is provided' do
         get '/et_acas_api/certificates/ZZ123456/16/20', headers: default_headers
-        expect(mock_endpoint).not_to have_been_called
+        expect(a_request(:get, Rails.configuration.et_acas_api.wsdl_url)).not_to have_been_made
       end
     end
   end

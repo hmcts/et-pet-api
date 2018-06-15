@@ -1,60 +1,30 @@
 require 'rails_helper'
 RSpec.describe EtAcasApi::CertificateQuery do
-  subject(:query) { described_class.new(id: 'anything', user_id: 'my_user', acas_api_service: fake_acas_api_service) }
-  let(:fake_acas_api_service) { instance_spy('EtAcasApi::AcasApiService') }
+  subject(:query) { described_class.new(id: certificate_number, user_id: 'my_user', acas_api_service: fake_acas_api_service) }
+  let(:certificate_number) { 'R123456/14/01' }
+  let(:fake_acas_api_service) { instance_spy('EtAcasApi::AcasApiService', errors: {}) }
   describe '#valid?' do
-    it 'should be true when the api service status is :found' do
-      # Arrange - Setup the fake acas api service to respond accordingly
-      expect(fake_acas_api_service).to receive(:status).and_return(:found)
+    context 'with invalid certificate number' do
+      let(:certificate_number) { 'S123456/14/01' }
+      it 'should be false when the format of the id (certificate number) is invalid' do
+        # Act
+        result = query.valid?
 
-      # Act
-      result = query.valid?
-
-      # Assert
-      expect(result).to be true
-    end
-
-    it 'should be false when the api service status is :not_found' do
-      # Arrange - Setup the fake acas api service to respond accordingly
-      expect(fake_acas_api_service).to receive(:status).and_return(:not_found)
-
-      # Act
-      result = query.valid?
-
-      # Assert
-      expect(result).to be false
-    end
-
-    it 'should be false when the api service status is :invalid_certificate_format' do
-      # Arrange - Setup the fake acas api service to respond accordingly
-      expect(fake_acas_api_service).to receive(:status).and_return(:invalid_certificate_format)
-
-      # Act
-      result = query.valid?
-
-      # Assert
-      expect(result).to be false
-    end
-
-    it 'should be false when the api service status is :acas_server_error' do
-      # Arrange - Setup the fake acas api service to respond accordingly
-      expect(fake_acas_api_service).to receive(:status).and_return(:acas_server_error)
-
-      # Act
-      result = query.valid?
-
-      # Assert
-      expect(result).to be false
+        # Assert
+        expect(result).to be false
+      end
     end
 
   end
 
   describe '#status' do
     it 'should mirror what the underlying api service says' do
-      # Arrange - Setup the fake acas api service to respond accordingly
-      expect(fake_acas_api_service).to receive(:status).and_return(:my_value)
+      # Arrange - Setup the fake acas api service to respond accordingly and create a certificate
+      expect(fake_acas_api_service).to receive(:status).at_least(:once).and_return(:my_value)
+      certificate = instance_double('EtAcasApi::Certificate')
 
       # Act
+      query.apply(certificate)
       result = query.status
 
       # Assert
@@ -71,16 +41,36 @@ RSpec.describe EtAcasApi::CertificateQuery do
       query.apply(certificate)
 
       # Assert - Ensure the service was called
-      expect(fake_acas_api_service).to have_received(:call).with('anything', user_id: 'my_user', into: certificate)
+      expect(fake_acas_api_service).to have_received(:call).with(certificate_number, user_id: 'my_user', into: certificate)
+    end
+
+    context 'with invalid certificate number' do
+      let(:certificate_number) { 'S123456/14/00' }
+      it 'sets status without calling the service' do
+        # Arrange - Setup a certificate
+        certificate = instance_double('EtAcasApi::Certificate')
+
+        # Act
+        query.apply(certificate)
+
+        # Assert - Ensure the service was not called, the status is set and the errors contain the correct error
+        aggregate_failures 'service not called and status set' do
+          expect(fake_acas_api_service).not_to have_received(:call)
+          expect(query.status).to be :invalid_certificate_format
+          expect(query.errors).to include id: a_collection_including('Invalid certificate format')
+        end
+      end
     end
   end
 
   describe '#errors' do
     it  'should mirror what the underlying api service says' do
-      # Arrange - Setup the fake acas api service to respond accordingly
-      expect(fake_acas_api_service).to receive(:errors).and_return(id: ['Some error message'])
+      # Arrange - Setup the fake acas api service to respond accordingly and create a certificate
+      expect(fake_acas_api_service).to receive(:errors).at_least(:once).and_return(id: ['Some error message'])
+      certificate = instance_double('EtAcasApi::Certificate')
 
       # Act
+      query.apply(certificate)
       result = query.errors
 
       # Assert
