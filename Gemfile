@@ -72,4 +72,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
-gem 'et_fake_acas_server', path: 'vendor/gems/et_fake_acas_server'
+gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_akas_server.git', ref: 'b20d056e0825b9ea6302af79330d905cc13c215e'
