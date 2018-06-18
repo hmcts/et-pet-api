@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/ministryofjustice/et_fake_akas_server.git
+  remote: https://github.com/ministryofjustice/et_fake_acas_server.git
   revision: b20d056e0825b9ea6302af79330d905cc13c215e
   ref: b20d056e0825b9ea6302af79330d905cc13c215e
   specs:
