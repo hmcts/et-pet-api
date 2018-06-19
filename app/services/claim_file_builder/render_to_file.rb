@@ -12,7 +12,7 @@ module ClaimFileBuilder
       end
 
       def with_windows_lf(string)
-        string.gsub(/\n/, "\r\n")
+        string.encode(crlf_newline: true)
       end
     end
   end
