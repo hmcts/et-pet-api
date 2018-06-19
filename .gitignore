@@ -12,6 +12,10 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+/vendor/gems/et_acas_api/spec/dummy/log/*
+/vendor/gems/et_acas_api/spec/dummy/tmp/*
+!/vendor/gems/et_acas_api/spec/dummy/log/.keep
+!/vendor/gems/et_acas_api/spec/dummy/tmp/.keep
 
 .byebug_history
 .idea
@@ -19,3 +23,4 @@
 /config/master.key
 .editorconfig
 **/.DS_Store
+

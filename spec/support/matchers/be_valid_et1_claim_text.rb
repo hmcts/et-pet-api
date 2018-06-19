@@ -13,7 +13,7 @@ module EtApi
       end
 
       def matches?(actual)
-        actual_lines = actual.lines.map { |l| l. gsub(/\n\z/, '') }
+        actual_lines = actual.lines("\r\n").map { |l| l. gsub(/\r\n\z/, '') }
         aggregate_failures 'Match content against a standard ET1 Claim Text File' do
           expect(actual_lines[0]).to eql 'ET1 - Online Application to an Employment Tribunal'
           expect(actual_lines[1]).to eql ''

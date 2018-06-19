@@ -16,7 +16,7 @@ module EtApi
 
         def initialize(*)
           super
-          self.contents = tempfile.readlines[0..15].map { |l| l.gsub(/\n\z/, '') }
+          self.contents = tempfile.readlines("\r\n")[0..15].map { |l| l.gsub(/\r\n\z/, '') }
           cloned_tempfile = tempfile.clone
           cloned_tempfile.rewind
         end
@@ -168,9 +168,9 @@ module EtApi
         def find_claimant_start
           self.captured = []
           loop do
-            line = tempfile.readline
+            line = tempfile.readline("\r\n")
             if line.start_with?('## Section et1a: claim')
-              captured << line.gsub(/\n\z/, '')
+              captured << line.gsub(/\r\n\z/, '')
               break
             end
           end
@@ -181,12 +181,12 @@ module EtApi
 
         def find_claimant_end
           loop do
-            line = tempfile.readline
-            captured << line.gsub(/\n\z/, '')
+            line = tempfile.readline("\r\n")
+            captured << line.gsub(/\r\n\z/, '')
             next unless line.start_with?('Postcode: ')
-            captured << tempfile.readline.gsub(/\n\z/, '')
-            captured << tempfile.readline.gsub(/\n\z/, '')
-            captured << tempfile.readline.gsub(/\n\z/, '')
+            captured << tempfile.readline.gsub(/\r\n\z/, '')
+            captured << tempfile.readline.gsub(/\r\n\z/, '')
+            captured << tempfile.readline.gsub(/\r\n\z/, '')
             break
           end
           true
