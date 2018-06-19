@@ -7,7 +7,7 @@ module EtApi
 
         def initialize(*)
           super
-          self.contents = tempfile.readlines.map { |l| l.gsub(/\n\z/, '') }
+          self.contents = tempfile.readlines("\r\n").map { |l| l.gsub(/\r\n\z/, '') }
         end
 
         def has_correct_file_structure?(errors: []) # rubocop:disable Naming/PredicateName
