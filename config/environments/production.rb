@@ -79,5 +79,5 @@ Rails.application.configure do
   config.et_acas_api.acas_rsa_certificate_path = ENV.fetch('RSA_ACAS_PUBLIC_CERTIFICATE', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__))
   config.et_acas_api.rsa_certificate_path = ENV.fetch('RSA_ET_PUBLIC_CERTIFICATE', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__))
   config.et_acas_api.rsa_private_key_path = ENV.fetch('RSA_ET_PRIVATE_KEY', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__))
-  config.et_acas_api.wsdl_url = Rails.root.join('config', 'acas', 'production', 'wsdl.txt')
+  config.et_acas_api.wsdl_url = ENV.fetch('ACAS_WSDL_URL', Rails.root.join('config', 'acas', 'production', 'wsdl.txt'))
 end
