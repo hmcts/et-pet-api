@@ -143,5 +143,24 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
         get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
       end
     end
+
+    context 'with missing EtUserId header' do
+      let(:default_headers) do
+        {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+      end
+
+      it 'returns an error 400' do
+        get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
+        expect(response).to have_http_status(400)
+      end
+
+      it 'returns a correct error response' do
+        get '/et_acas_api/certificates/R000000/00/14', headers: default_headers
+        expect(json_response[:errors].symbolize_keys).to include(user_id: a_collection_including('Missing user id'))
+      end
+    end
   end
 end

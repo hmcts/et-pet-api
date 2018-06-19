@@ -17,6 +17,7 @@ module EtAcasApi
     end
 
     def valid?
+      validate_user_id
       validate_id
       errors.empty?
     end
@@ -36,6 +37,13 @@ module EtAcasApi
       errors[:id] ||= []
       errors[:id] << 'Invalid certificate format'
       self.status = :invalid_certificate_format
+    end
+
+    def validate_user_id
+      return unless user_id.nil?
+      errors[:user_id] ||= []
+      errors[:user_id] << "Missing user id"
+      self.status = :invalid_user_id
     end
 
     attr_accessor :acas_api_service, :user_id, :id

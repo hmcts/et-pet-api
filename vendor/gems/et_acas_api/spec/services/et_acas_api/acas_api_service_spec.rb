@@ -216,9 +216,5 @@ certificate
       # Assert - Validate that the status is correct and the certificate is nil
       expect(logger).to have_received(:warn).with("An error occured connecting to the ACAS server when trying to find certificate 'anyid' - the error reported was 'execution expired'")
     end
-
-
-
   end
-
 end
