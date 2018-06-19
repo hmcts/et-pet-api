@@ -4,12 +4,8 @@ RSpec.describe EtAcasApi::AcasApiService do
   let(:certificate) { EtAcasApi::Certificate.new }
   let(:logger) { instance_spy('ActiveSupport::Logger') }
   let(:rsa_certificate_path) { Rails.configuration.et_acas_api.rsa_certificate_path }
-  # Common Setup - A fake wsdl response to provide a fake url for this service
+  # Common Setup - The url to the service which should match that in spec/acas_interface_support/wsdl.txt
   let(:example_get_certificate_url) { "https://localhost/Lookup/ECService.svc" }
-  let(:wsdl_content) { File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'wsdl.txt'), __dir__)) }
-  before do
-    stub_request(:get, Rails.configuration.et_acas_api.wsdl_url).to_return body: wsdl_content, status: 200, headers: { 'Content-Type' => 'application/xml' }
-  end
 
   describe '#get_certificate' do
     it 'requests the data from the correct entry in the wsdl' do
@@ -197,8 +193,8 @@ certificate
     end
 
     it 'requests the data and handles a timeout response' do
-      # Arrange - Build a stub which responds with a timeout for the wsdl request
-      stub_request(:get, Rails.configuration.et_acas_api.wsdl_url).to_timeout
+      # Arrange - Build a stub which responds with a timeout for the service request
+      stub_request(:post, example_get_certificate_url).to_timeout
 
       # Act - Call the service
       subject.call('anyid', user_id: "my user id", into: certificate)
@@ -211,8 +207,8 @@ certificate
     end
 
     it 'requests the data and logs a timeout response' do
-      # Arrange - Build a stub which responds with a timeout for the wsdl request
-      stub_request(:get, Rails.configuration.et_acas_api.wsdl_url).to_timeout
+      # Arrange - Build a stub which responds with a timeout for the service request
+      stub_request(:post, example_get_certificate_url).to_timeout
 
       # Act - Call the service
       subject.call('anyid', user_id: "my user id", into: certificate)

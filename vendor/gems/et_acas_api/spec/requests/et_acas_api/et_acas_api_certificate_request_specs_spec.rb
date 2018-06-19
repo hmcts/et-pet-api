@@ -11,12 +11,9 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
   let(:json_response) { JSON.parse(response.body).with_indifferent_access }
 
   # Fake External ACAS - note the example_get_certificate_url must match what is specified in the wsdl.txt file
-  let(:wsdl_content) { File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'wsdl.txt'), __dir__)) }
+  # which is in spec/acas_interface_support/wsdl.txt
   let(:example_get_certificate_url) { "https://localhost/Lookup/ECService.svc" }
 
-  before do
-    stub_request(:get, Rails.configuration.et_acas_api.wsdl_url).to_return body: wsdl_content, status: 200, headers: { 'Content-Type' => 'application/xml' }
-  end
 
   describe "GET /et_acas_api_certificate_request_specs" do
     recorded_request = nil
@@ -121,13 +118,13 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
 
       it 'does not request certificate from acas when an invalid id is provided' do
         get '/et_acas_api/certificates/ZZ123456/16/20', headers: default_headers
-        expect(a_request(:get, Rails.configuration.et_acas_api.wsdl_url)).not_to have_been_made
+        expect(a_request(:post, example_get_certificate_url)).not_to have_been_made
       end
     end
 
     context 'with timeout from server' do
       before do
-        stub_request(:get, Rails.configuration.et_acas_api.wsdl_url).to_timeout
+        stub_request(:post, example_get_certificate_url).to_timeout
       end
 
       it 'returns an error 500' do
