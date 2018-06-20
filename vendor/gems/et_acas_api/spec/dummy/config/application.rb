@@ -30,9 +30,9 @@ module Dummy
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-    config.et_acas_api.acas_rsa_certificate_path = File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__)
-    config.et_acas_api.rsa_certificate_path = File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__)
-    config.et_acas_api.rsa_private_key_path = File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__)
+    config.et_acas_api.acas_rsa_certificate = File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__))
+    config.et_acas_api.rsa_certificate = File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__))
+    config.et_acas_api.rsa_private_key = File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__))
     config.et_acas_api.wsdl_url = File.absolute_path(File.join('..', '..', 'acas_interface_support', 'wsdl.txt'), __dir__)
 
   end

@@ -74,10 +74,26 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # These settings for acas api will be modified once we know exactly what we are doing with them.
-  # for now, we are using the test environment settings otherwise the app wont boot.
-  config.et_acas_api.acas_rsa_certificate_path = ENV.fetch('RSA_ACAS_PUBLIC_CERTIFICATE', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__))
-  config.et_acas_api.rsa_certificate_path = ENV.fetch('RSA_ET_PUBLIC_CERTIFICATE', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__))
-  config.et_acas_api.rsa_private_key_path = ENV.fetch('RSA_ET_PRIVATE_KEY', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__))
+  # These settings for acas api are a work in progress working alongside the devops team.
+  # For now, they will default to the test environment settings if not specified otherwise the app wont boot.
+  # Once the environment variables are in place in the deployment, these defaults can be removed.
+  # @TODO Check the status of this
+  if ENV.key?('RSA_ACAS_PUBLIC_CERTIFICATE_BASE64')
+    config.et_acas_api.acas_rsa_certificate = Base64.decode64(ENV['RSA_ACAS_PUBLIC_CERTIFICATE_BASE64'])
+  else
+    config.et_acas_api.acas_rsa_certificate = File.read(ENV.fetch('RSA_ACAS_PUBLIC_CERTIFICATE', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__)))
+  end
+
+  if ENV.key?('RSA_ET_PUBLIC_CERTIFICATE_BASE64')
+      config.et_acas_api.rsa_certificate = Base64.decode64(ENV.fetch('RSA_ET_PUBLIC_CERTIFICATE_BASE64'))
+    else
+      config.et_acas_api.rsa_certificate = File.read(ENV.fetch('RSA_ET_PUBLIC_CERTIFICATE', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__)))
+  end
+
+  if ENV.key?('RSA_ET_PRIVATE_KEY_BASE64')
+      config.et_acas_api.rsa_private_key = Base64.decode64(ENV.fetch('RSA_ET_PRIVATE_KEY_BASE64'))
+    else
+      config.et_acas_api.rsa_private_key = File.read(ENV.fetch('RSA_ET_PRIVATE_KEY', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__)))
+  end
   config.et_acas_api.wsdl_url = ENV.fetch('ACAS_WSDL_URL', Rails.root.join('config', 'acas', 'production', 'wsdl.txt'))
 end
