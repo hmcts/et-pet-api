@@ -50,22 +50,6 @@ FactoryBot.define do
     end
   end
 
-  #   "case_number": "7654321/2017",
-  #   "name": "dodgy_co",
-  #   "contact": "John Smith",
-  #   "building_name": "the_shard",
-  #   "street_name": "downing_street",
-  #   "town": "westminster",
-  #   "county": "",
-  #   "postcode": "wc1 1aa",
-  #   "dx_number": "",
-  #   "contact_number": "",
-  #   "mobile_number": "",
-  #   "contact_preference": "email",
-  #   "email_address": "john@dodgyco.com",
-  #   "fax_number": "",
-  #
-
   factory :json_response_data, class: ::EtApi::Test::Json::Node do
     trait :minimal do
       case_number '1454321/2017'
