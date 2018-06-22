@@ -46,5 +46,11 @@ RSpec.describe ClaimFileBuilder::BuildResponsePdfFile do
 
       include_examples 'for any response variation'
     end
+
+    context 'with an attached rtf file' do
+      let(:response) { build(:response, :example_data, :with_input_rtf_file) }
+
+      include_examples 'for any response variation'
+    end
   end
 end

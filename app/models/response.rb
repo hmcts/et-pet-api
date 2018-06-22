@@ -13,6 +13,10 @@ class Response < ApplicationRecord
     end
   end
 
+  def has_additional_information_rtf_file?
+    ai_file.present?
+  end
+
   private
 
   def update_or_remove_ai_file(value, existing)

@@ -48,4 +48,22 @@ RSpec.describe Response, type: :model do
       end
     end
   end
+
+  describe '#has_additional_information_rtf_file?' do
+    context 'with an attached file' do
+      subject(:response) { build(:response, :example_data, :with_input_rtf_file) }
+
+      it 'returns true' do
+        expect(response.has_additional_information_rtf_file?).to be true
+      end
+    end
+
+    context 'with no attached file' do
+      subject(:response) { build(:response, :example_data) }
+
+      it 'returns false' do
+        expect(response.has_additional_information_rtf_file?).to be false
+      end
+    end
+  end
 end
