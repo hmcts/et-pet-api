@@ -56,7 +56,6 @@ class DirectUploadIntoCollectionService
     object.copy_from(bucket: direct_upload_bucket, key: value)
   end
 
-
   def direct_upload_bucket
     @direct_upload_bucket ||= Rails.configuration.s3_direct_upload_bucket
   end
@@ -64,5 +63,4 @@ class DirectUploadIntoCollectionService
   def s3_client
     @s3_client ||= ActiveStorage::Blob.service.client.client
   end
-
 end

@@ -5,10 +5,11 @@ class Response < ApplicationRecord
   has_many :uploaded_files, through: :response_uploaded_files
 
   def additional_information_key=(value)
-    DirectUploadIntoCollectionService.new(collection: uploaded_files, filename: 'additional_information.rtf').import(value)
+    service = DirectUploadIntoCollectionService.new(collection: uploaded_files, filename: 'additional_information.rtf')
+    service.import(value)
   end
 
-  def has_additional_information_rtf_file?
+  def additional_information_rtf_file?
     ai_file.present?
   end
 
