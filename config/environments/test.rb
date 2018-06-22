@@ -29,8 +29,8 @@ Rails.application.configure do
   config.action_controller.allow_forgery_protection = false
   config.action_controller.default_url_options = { host: 'example.com' }
 
-  # Store uploaded files on the local file system in a temporary directory
-  config.active_storage.service = :test
+  # As we do some s3 specific stuff, we have to use an s3 server for testing (local server called minio)
+  config.active_storage.service = :amazon
 
   config.action_mailer.perform_caching = false
 

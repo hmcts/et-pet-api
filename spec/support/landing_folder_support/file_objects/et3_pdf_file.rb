@@ -3,30 +3,6 @@ require_relative '../../helpers/office_helper'
 module EtApi
   module Test
     module FileObjects
-      # Represents the ET3 PDF file and provides assistance in validating its contents
-=begin
-  ["case number", "date_received", "RTF", "1.1", "2.3 postcode", "2.1", "2.2",
-  "2.3 number or name", "2.3 street", "2.3 town city", "2.3 county",
-  "2.3 dx number", "2.4 phone number", "2.4 mobile number", "2.5", "2.6 email address", "2.6 fax number",
-  "2.7", "2.8", "2.9",
-  "3.1", "3.1 employment started", "3.1 employment end", "3.1 disagree",
-  "3.2", "3.3", "3.3 if no",
-  "4.1", "4.1 if no", "4.2", "4.2 pay before tax", "4.2 pay before tax tick box", "4.2 normal take-home pay", "4.2 normal take-home pay tick box", "4.3 tick box", "4.3 if no", "4.4 tick box", "4.4 if no",
-  "5.1 tick box", "5.1 if yes",
-  "6.2 tick box", "6.3", "7.3 postcode",
-  "7.1", "7.2", "7.3 number or name", "7.3 street", "7.3 town city", "7.3 county", "7.4", "7.5 phone number", "7.6", "7.7", "7.8 tick box", "7.9", "7.10",
-  "8.1 tick box", "8.1 if yes", "8.1 please re-read", "additional space for notes", "new 3.1", "new 3.1 If no, please explain why"]
-=end
-=begin
- mappings:
-
-  3.2 => 4.2 (yes, no)
-  3.3 => 4.3 (yes, no)
-
-email_receipt does not go to pdf
-representative_type does not go to pdf
-
-=end
       class Et3PdfFile < Base # rubocop:disable Metrics/ClassLength
         include RSpec::Matchers
 

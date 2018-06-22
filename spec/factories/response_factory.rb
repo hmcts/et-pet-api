@@ -48,6 +48,18 @@ FactoryBot.define do
       end
     end
 
+    trait :with_input_rtf_file do
+      after(:build) do |response, _evaluator|
+        response.uploaded_files << build(:uploaded_file, :example_response_input_rtf)
+      end
+    end
+
+    trait :with_wrong_input_rtf_file do
+      after(:build) do |response, _evaluator|
+        response.uploaded_files << build(:uploaded_file, :example_response_wrong_input_rtf)
+      end
+    end
+
     trait :ready_for_export do
       # Ready for export MUST be in the database and files stored - so we dont do build here
       after(:create) do |response, _evaluator|

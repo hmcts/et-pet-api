@@ -4,7 +4,7 @@ RSpec.describe CreateSignedS3FormDataCommand do
   subject(:command) { described_class.new(uuid: uuid, data: data, async: false) }
 
   let(:uuid) { SecureRandom.uuid }
-  let(:data) { { anything: :goes} }
+  let(:data) { { anything: :goes } }
   let(:root_object) { {} }
 
   describe '#apply' do

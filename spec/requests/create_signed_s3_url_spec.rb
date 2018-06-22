@@ -22,19 +22,13 @@ RSpec.describe 'Create signed S3 url request', type: :request do
       post '/api/v2/s3/create_signed_url', params: json_data, headers: default_headers
 
       # Assert - Make sure the data is in the response
-      expect(json_response).to include data: a_hash_including(fields: {
-        key: "direct_uploads/#{json_factory.data[:key]}",
-        acl: instance_of(String),
-        success_action_redirect: a_string_ending_with('successful_upload.html'),
-        'X-Amz-Algorithm': 'AWS4-HMAC-SHA256',
-        'X-Amz-Credential': a_string_matching(/\A[^\/]*\/\d{8}\/s3\/aws4_request\z/),
-        'X-Amz-Date': a_string_matching(/\A\d{8}T\d{6}Z\z/),
-        'x-amz-meta-uuid': instance_of(String),
-        'x-amz-server-side-encryption': 'AES256',
-        'x-amz-meta-tag': '',
-        Policy: instance_of(String),
-        'X-Amz-Signature': instance_of(String)
-      })
+      expect(json_response.dig(:data, :fields).symbolize_keys).to include key: starting_with("direct_uploads/"),
+                                                                          'x-amz-algorithm': 'AWS4-HMAC-SHA256',
+                                                                          'x-amz-credential': a_string_matching(%r{\A[^\/]*\/\d{8}\/us-east-1\/s3\/aws4_request\z}),
+                                                                          'x-amz-date': match_regex(/\A\d{8}T\d{6}Z\z/),
+                                                                          policy: instance_of(String),
+                                                                          'x-amz-signature': instance_of(String)
+
     end
 
     it 'provides a response with the post url in it' do

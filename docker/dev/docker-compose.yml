@@ -5,6 +5,7 @@ services:
       context: .
     links:
       - db
+      - minio
     environment:
       RAILS_ENV:
       DB_HOST: db
@@ -35,15 +36,20 @@ services:
       - ${REDIS_PORT:-0}:6379
     networks:
       - api
-  s3_mock:
-    image: scality/s3server
-    networks:
-      api:
-        aliases:
-          - "s3.docker.test"
+  minio:
+    image: minio/minio
+    volumes:
+      - minio_data:/export
     ports:
-      - "${S3_PORT:-0}:8000"
+      - ${S3_PORT:-0}:9000
+    environment:
+      MINIO_ACCESS_KEY: accessKey1
+      MINIO_SECRET_KEY: verySecretKey1
+    command: server minio_data
+
+
 volumes:
   rubygems_cache:
+  minio_data:
 networks:
   api:
