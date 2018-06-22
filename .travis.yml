@@ -14,6 +14,8 @@ env:
   global:
     - ENABLE_COVERAGE=true
     - DB_USERNAME=postgres
+    - DB_PORT=5433
+    - S3_PORT=9000
     - CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
 before_install:
   - sudo rm /usr/local/bin/docker-compose
@@ -23,10 +25,9 @@ before_install:
   - "curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter"
   - sudo apt-get install pdftk
 before_script:
-  - S3_PORT=9000 DB_PORT=5433 ./bin/dev/docker-support-services up -d
+  - ./bin/dev/docker-support-services up -d
   - ./bin/wait-for-it.sh localhost:9000
   - ./bin/wait-for-it.sh localhost:5433
-  - export DB_PORT=5433
   - bundle install && bundle exec rails db:create db:migrate RAILS_ENV=test
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
