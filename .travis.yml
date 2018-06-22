@@ -7,19 +7,25 @@ cache:
 services:
   - postgresql
 addons:
-  postgresql: '9.5'
+  apt:
+    packages:
+      - docker-ce
 env:
   global:
     - ENABLE_COVERAGE=true
     - DB_USERNAME=postgres
     - CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
 before_install:
-  - wget https://dl.minio.io/server/minio/release/linux-amd64/minio
-  - chmod +x minio
-  - ./minio server /data
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-Linux-x86_64 > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
   - "curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter"
   - sudo apt-get install pdftk
 before_script:
+  - S3_PORT=9000 DB_PORT=5432 ./bin/dev/docker-support-services up -d
+  - ./bin/wait-for-it.sh localhost:9000
+  - ./bin/wait-for-it.sh localhost:5432
   - bundle install && bundle exec rails db:create db:migrate RAILS_ENV=test
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
