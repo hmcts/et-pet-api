@@ -5,7 +5,7 @@ cache:
   directories:
       - tmp/parallel_runtime_log
 services:
-  - postgresql
+  - docker
 addons:
   apt:
     packages:
