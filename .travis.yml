@@ -5,11 +5,12 @@ cache:
   directories:
       - tmp/parallel_runtime_log
 services:
-  - docker
+  - postgresql
 addons:
   apt:
     packages:
       - docker-ce
+      - postgresql: '9.5'
 env:
   global:
     - ENABLE_COVERAGE=true
@@ -23,9 +24,8 @@ before_install:
   - "curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter"
   - sudo apt-get install pdftk
 before_script:
-  - S3_PORT=9000 DB_PORT=5432 ./bin/dev/docker-support-services up -d
+  - S3_PORT=9000 ./bin/dev/docker-support-services up -d
   - ./bin/wait-for-it.sh localhost:9000
-  - ./bin/wait-for-it.sh localhost:5432
   - bundle install && bundle exec rails db:create db:migrate RAILS_ENV=test
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
