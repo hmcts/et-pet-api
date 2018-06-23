@@ -117,6 +117,14 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any response variation'
     end
 
+    context 'with json for a response (minimum data) with representative (minimum data) to a non existent claim' do
+      include_context 'with setup for any response',
+        json_factory: -> {
+          FactoryBot.build(:json_build_response_commands, :with_representative_minimal)
+        }
+      include_examples 'any response variation'
+    end
+
     context 'with json for a response without representative to a non existent claim' do
       include_context 'with setup for any response',
         json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) }

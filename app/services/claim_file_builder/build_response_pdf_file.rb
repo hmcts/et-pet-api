@@ -84,8 +84,8 @@ module ClaimFileBuilder
     
     def apply_employment_details_pdf_fields(result)
       result['3.1'] = response.agree_with_employment_dates ? 'yes' : 'no'
-      result['3.1 employment started'] = response.employment_start.strftime('%d/%m/%Y')
-      result['3.1 employment end'] = response.employment_end.strftime('%d/%m/%Y')
+      result['3.1 employment started'] = response.employment_start.try(:strftime, '%d/%m/%Y')
+      result['3.1 employment end'] = response.employment_end.try(:strftime, '%d/%m/%Y')
       result['3.1 disagree'] = response.disagree_employment
       result['3.2'] = response.continued_employment ? 'yes' : 'no'
       result['3.3'] = response.agree_with_claimants_description_of_job_or_title ? 'yes' : 'no'
@@ -97,9 +97,9 @@ module ClaimFileBuilder
       result['4.1 if no'] = response.queried_hours
       result['4.2'] = response.agree_with_earnings_details ? 'yes' : 'no'
       result['4.2 pay before tax'] = response.queried_pay_before_tax
-      result['4.2 pay before tax tick box'] = response.queried_pay_before_tax_period.downcase
+      result['4.2 pay before tax tick box'] = response.queried_pay_before_tax_period.try(:downcase)
       result['4.2 normal take-home pay'] = response.queried_take_home_pay
-      result['4.2 normal take-home pay tick box'] = response.queried_take_home_pay_period.downcase
+      result['4.2 normal take-home pay tick box'] = response.queried_take_home_pay_period.try(:downcase)
       result['4.3 tick box'] = response.agree_with_claimant_notice ? 'yes' : 'no'
       result['4.3 if no'] = response.disagree_claimant_notice_reason
       result['4.4 tick box'] = response.agree_with_claimant_pension_benefits ? 'yes' : 'no'
@@ -122,11 +122,11 @@ module ClaimFileBuilder
       address = representative.address
       result['7.1'] = representative.name
       result['7.2'] = representative.organisation_name
-      result['7.3 number or name'] = address.building
-      result['7.3 street'] = address.street
-      result['7.3 town city'] = address.locality
-      result['7.3 county'] = address.county
-      result['7.3 postcode'] = address.post_code.tr(' ', '')
+      result['7.3 number or name'] = address.try(:building)
+      result['7.3 street'] = address.try(:street)
+      result['7.3 town city'] = address.try(:locality)
+      result['7.3 county'] = address.try(:county)
+      result['7.3 postcode'] = address.try(:post_code).try(:tr, ' ', '')
       result['7.4'] = representative.dx_number
       result['7.5 phone number'] = representative.address_telephone_number
       result['7.6'] = representative.mobile_number
