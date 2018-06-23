@@ -229,8 +229,6 @@ representative_type does not go to pdf
         def decimal_for(number)
           number.to_s
         end
-
-
       end
     end
   end

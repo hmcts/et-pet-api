@@ -21,7 +21,7 @@ module ClaimFileBuilder
 
     attr_accessor :response, :template_path
 
-    def raw_pdf_file(filename, response:)
+    def raw_pdf_file(filename)
       ActionDispatch::Http::UploadedFile.new filename: filename,
                                              tempfile: render_to_file,
                                              type: 'application/pdf'
@@ -55,7 +55,7 @@ module ClaimFileBuilder
     def apply_claimant_pdf_fields(result)
       result['1.1'] = response.claimants_name
     end
-    
+
     def apply_respondent_pdf_fields(result)
       respondent = response.respondent
       address = respondent.address
