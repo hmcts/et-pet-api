@@ -8,9 +8,21 @@ FactoryBot.define do
       command 'SerialSequence'
       data do
         [
-          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data)),
-          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data, :full)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, :full)),
           build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, :private_individual))
+        ]
+      end
+    end
+
+    trait :with_representative_minimal do
+      uuid { SecureRandom.uuid }
+      command 'SerialSequence'
+      data do
+        [
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data, :minimal)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, :minimal)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, :minimal))
         ]
       end
     end
@@ -20,8 +32,8 @@ FactoryBot.define do
       command 'SerialSequence'
       data do
         [
-          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data)),
-          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data))
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data, :full)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, :full))
         ]
       end
     end
@@ -44,53 +56,75 @@ FactoryBot.define do
   #
 
   factory :json_response_data, class: ::EtApi::Test::Json::Node do
-    case_number '1454321/2017'
-    claimants_name "Jane Doe"
-    agree_with_early_conciliation_details false
-    disagree_conciliation_reason "lorem ipsum conciliation"
-    agree_with_employment_dates false
-    employment_start "2017-01-01"
-    employment_end "2017-12-31"
-    disagree_employment "lorem ipsum employment"
-    continued_employment true
-    agree_with_claimants_description_of_job_or_title false
-    disagree_claimants_job_or_title "lorem ipsum job title"
-    agree_with_claimants_hours false
-    queried_hours 32.0
-    agree_with_earnings_details false
-    queried_pay_before_tax 1000.0
-    queried_pay_before_tax_period "Monthly"
-    queried_take_home_pay 900.0
-    queried_take_home_pay_period "Monthly"
-    agree_with_claimant_notice false
-    disagree_claimant_notice_reason "lorem ipsum notice reason"
-    agree_with_claimant_pension_benefits false
-    disagree_claimant_pension_benefits_reason "lorem ipsum claimant pension"
-    defend_claim true
-    defend_claim_facts "lorem ipsum defence"
+    trait :minimal do
+      case_number '1454321/2017'
+      agree_with_employment_dates false
+      defend_claim true
+    end
 
-    make_employer_contract_claim true
-    claim_information "lorem ipsum info"
-    email_receipt "email@recei.pt"
+    trait :full do
+      minimal
+      claimants_name "Jane Doe"
+      agree_with_early_conciliation_details false
+      disagree_conciliation_reason "lorem ipsum conciliation"
+      employment_start "2017-01-01"
+      employment_end "2017-12-31"
+      disagree_employment "lorem ipsum employment"
+      continued_employment true
+      agree_with_claimants_description_of_job_or_title false
+      disagree_claimants_job_or_title "lorem ipsum job title"
+      agree_with_claimants_hours false
+      queried_hours 32.0
+      agree_with_earnings_details false
+      queried_pay_before_tax 1000.0
+      queried_pay_before_tax_period "Monthly"
+      queried_take_home_pay 900.0
+      queried_take_home_pay_period "Monthly"
+      agree_with_claimant_notice false
+      disagree_claimant_notice_reason "lorem ipsum notice reason"
+      agree_with_claimant_pension_benefits false
+      disagree_claimant_pension_benefits_reason "lorem ipsum claimant pension"
+      defend_claim_facts "lorem ipsum defence"
+
+      make_employer_contract_claim true
+      claim_information "lorem ipsum info"
+      email_receipt "email@recei.pt"
+    end
+
   end
 
   factory :json_respondent_data, class: ::EtApi::Test::Json::Node do
-    name 'dodgy_co'
-    contact 'John Smith'
-    association :address_attributes, :the_shard, factory: :json_address_data
-    dx_number ""
-    address_telephone_number ''
-    alt_phone_number ''
-    contact_preference 'email'
-    email_address 'john@dodgyco.com'
-    fax_number ''
-    organisation_employ_gb 10
-    organisation_more_than_one_site false
-    employment_at_site_number 5
+    trait :minimal do
+      name 'dodgy_co'
+      association :address_attributes, :the_shard, factory: :json_address_data
+      organisation_more_than_one_site false
+    end
+    trait :full do
+      minimal
+      contact 'John Smith'
+      dx_number ""
+      address_telephone_number ''
+      alt_phone_number ''
+      contact_preference 'email'
+      email_address 'john@dodgyco.com'
+      fax_number ''
+      organisation_employ_gb 10
+      employment_at_site_number 5
+    end
   end
 
   factory :json_representative_data, class: ::EtApi::Test::Json::Node do
+    trait :minimal do
+
+    end
+
+    trait :full do
+      minimal
+      private_individual
+    end
+
     trait :private_individual do
+      minimal
       name 'Jane Doe'
       organisation_name 'repco ltd'
       association :address_attributes, :rep_address, factory: :json_address_data

@@ -97,11 +97,11 @@ RSpec.describe 'Create Response Request', type: :request do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         output_filename_pdf = "#{reference}_ET3_.pdf"
         expect(staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
-                                                                      response: input_response_factory,
-                                                                      respondent: input_respondent_factory,
-                                                                      representative: input_representative_factory,
-                                                                      errors: errors
-                                                                    ), -> { errors.join("\n") }
+          response: input_response_factory,
+          respondent: input_respondent_factory,
+          representative: input_representative_factory,
+          errors: errors
+        ), -> { errors.join("\n") }
 
       end
     end
@@ -114,6 +114,12 @@ RSpec.describe 'Create Response Request', type: :request do
     context 'with json for a response with representative to a non existent claim' do
       include_context 'with setup for any response',
         json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) }
+      include_examples 'any response variation'
+    end
+
+    context 'with json for a response (minimum data) with representative (minimum data) to a non existent claim' do
+      include_context 'with setup for any response',
+        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) }
       include_examples 'any response variation'
     end
 

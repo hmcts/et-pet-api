@@ -167,7 +167,7 @@ module EtApi
           address = respondent[:address_attributes]
           has_organisation_section? errors: errors, indent: indent,
                                     name: end_with(respondent[:name]),
-                                    contact: end_with(respondent[:contact]),
+                                    contact: end_with(respondent[:contact] || ''),
                                     address: {
                                       building: end_with(address[:building]),
                                       street: end_with(address[:street]),
@@ -175,29 +175,29 @@ module EtApi
                                       county: end_with(address[:county]),
                                       post_code: end_with(address[:post_code])
                                     },
-                                    address_telephone_number: end_with(respondent[:address_telephone_number]),
-                                    mobile_number: end_with(respondent[:alt_phone_number]),
-                                    contact_preference: end_with(respondent[:contact_preference]),
-                                    email_address: end_with(respondent[:email_address])
+                                    address_telephone_number: end_with(respondent[:address_telephone_number] || ''),
+                                    mobile_number: end_with(respondent[:alt_phone_number] || ''),
+                                    contact_preference: end_with(respondent[:contact_preference] || ''),
+                                    email_address: end_with(respondent[:email_address] || '')
         end
 
         def has_representative_for?(rep, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           return has_no_representative?(errors: errors, indent: indent) if rep.nil?
           address = rep[:address_attributes]
           has_representative_section? errors: errors, indent: indent,
-                                      name: end_with(rep[:name]),
-                                      organisation_name: end_with(rep[:organisation_name]),
+                                      name: end_with(rep[:name] || ''),
+                                      organisation_name: end_with(rep[:organisation_name] || ''),
                                       address: {
-                                        building: end_with(address[:building]),
-                                        street: end_with(address[:street]),
-                                        locality: end_with(address[:locality]),
-                                        county: end_with(address[:county]),
-                                        post_code: end_with(address[:post_code])
+                                        building: end_with(address.try(:[], :building) || ''),
+                                        street: end_with(address.try(:[], :street) || ''),
+                                        locality: end_with(address.try(:[], :locality) || ''),
+                                        county: end_with(address.try(:[], :county) || ''),
+                                        post_code: end_with(address.try(:[], :post_code) || '')
                                       },
-                                      address_telephone_number: end_with(rep[:address_telephone_number]),
-                                      email_address: end_with(rep[:email_address]),
-                                      contact_preference: end_with(rep[:contact_preference]),
-                                      reference: end_with(rep[:reference])
+                                      address_telephone_number: end_with(rep[:address_telephone_number] || ''),
+                                      email_address: end_with(rep[:email_address] || ''),
+                                      contact_preference: end_with(rep[:contact_preference] || ''),
+                                      reference: end_with(rep[:reference] || '')
         end
 
         def has_no_representative?(errors: [], indent: 1) # rubocop:disable Naming/PredicateName
