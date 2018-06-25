@@ -23,7 +23,7 @@ class EventService
       if !async && in_process
         handler_for(handler).handle(*args) unless ignore_events
       elsif async && !in_process
-        EventWorker.perform_async(handler, *args)
+        EventWorker.perform_async(handler, *args) unless ignore_events
       else
         raise 'Events can only handle sync in process or async out of process right now'
       end
