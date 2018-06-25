@@ -1,32 +1,31 @@
 version: '3'
 services:
-  dev:
-    build:
-      context: .
-    links:
-      - db
-    environment:
-      RAILS_ENV:
-      DB_HOST: db
-      DB_USERNAME: postgres
-      BUNDLE_WITHOUT: production
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      REDIS_DATABASE: 1
-    volumes:
-      - ../..:/app
-      - rubygems_cache:/usr/local/bundle
-    ports:
-      - ${PORT:-0}:8080
-
   db:
     image: postgres:9.3.5
     ports:
       - '${DB_PORT:-0}:5432'
+    networks:
+      - api
   redis:
     image: redis
     ports:
       - ${REDIS_PORT:-0}:6379
+    networks:
+      - api
+  minio:
+    image: minio/minio
+    volumes:
+      - minio_data:/export
+    ports:
+      - ${S3_PORT:-0}:9000
+    environment:
+      MINIO_ACCESS_KEY: accessKey1
+      MINIO_SECRET_KEY: verySecretKey1
+    command: server minio_data
+
 
 volumes:
   rubygems_cache:
+  minio_data:
+networks:
+  api:

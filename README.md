@@ -42,6 +42,14 @@ Both server, client and nescessary headers for development
 
 Used for background jobs - not entirely nescessary depending on what you are working on
 
+### minio
+
+We use amazon S3 wired up to active storage, which you would normally use a test adapter for, however we also have
+some code that copies from one S3 bucket to another which cannot use active storage - so instead, we just use an S3
+server (I chose minio as it has been the most reliable and most feature rich).  See its github page for more
+details (https://github.com/minio/minio) - you can install it on OSX and linux - or you can use docker (note that it
+is integrated into ./bin/dev/docker-support-services
+
 ## Developing And Testing Using Docker
 
 ### Initial Setup (Run once)
@@ -273,7 +281,13 @@ EXPORT_CLAIMS_EVERY=5
 
 ```
 
+
 will set it to every 5 minutes
+
+## S3_DIRECT_UPLOAD_BUCKET
+
+In contrast to S3_UPLOAD_BUCKET which is for storing active storage objects, this environment variable points to
+a bucket where mthe direct upload feature can be used in a front end application using the API.
 
 # Development Guidelines
 

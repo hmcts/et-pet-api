@@ -24,10 +24,10 @@ RSpec.describe UploadedFile, type: :model do
         ActiveStorage::Current.host = old_value
       end
     end
-    it 'returns a local url as we are in test mode' do
+    it 'returns a minio server url as we are in test mode' do
       uploaded_file.file = fixture_file
 
-      expect(uploaded_file.url).to match(%r{\Ahttp:\/\/example.com\/rails\/active_storage\/disk\/.*et1_first_last\.pdf\z})
+      expect(uploaded_file.url).to start_with(ActiveStorage::Blob.service.bucket.url)
     end
   end
 

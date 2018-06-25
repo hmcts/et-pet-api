@@ -30,5 +30,6 @@ module EtApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+    config.s3_direct_upload_bucket = ENV.fetch('S3_DIRECT_UPLOAD_BUCKET', 'defaultbucket')
   end
 end

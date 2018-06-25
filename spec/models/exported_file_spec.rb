@@ -25,10 +25,10 @@ RSpec.describe ExportedFile, type: :model do
       end
     end
 
-    it 'returns a local url as we are in test mode' do
+    it 'returns a minio test server url as we are in test mode' do
       exported_file.file = fixture_file
 
-      expect(exported_file.url).to match(%r{\Ahttp:\/\/example.com\/rails\/active_storage\/disk\/.*et1_first_last\.pdf\z})
+      expect(exported_file.url).to start_with(ActiveStorage::Blob.service.bucket.url)
     end
   end
 

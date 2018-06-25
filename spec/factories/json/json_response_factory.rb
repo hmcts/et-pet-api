@@ -37,25 +37,23 @@ FactoryBot.define do
         ]
       end
     end
+
+    trait :with_rtf do
+      uuid { SecureRandom.uuid }
+      command 'SerialSequence'
+      data do
+        [
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data, :full, :with_rtf)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, :full))
+        ]
+      end
+    end
   end
 
-  #   "case_number": "7654321/2017",
-  #   "name": "dodgy_co",
-  #   "contact": "John Smith",
-  #   "building_name": "the_shard",
-  #   "street_name": "downing_street",
-  #   "town": "westminster",
-  #   "county": "",
-  #   "postcode": "wc1 1aa",
-  #   "dx_number": "",
-  #   "contact_number": "",
-  #   "mobile_number": "",
-  #   "contact_preference": "email",
-  #   "email_address": "john@dodgyco.com",
-  #   "fax_number": "",
-  #
-
   factory :json_response_data, class: ::EtApi::Test::Json::Node do
+    transient do
+      rtf_file_path nil
+    end
     trait :minimal do
       case_number '1454321/2017'
       agree_with_employment_dates false
@@ -90,7 +88,26 @@ FactoryBot.define do
       claim_information "lorem ipsum info"
       email_receipt "email@recei.pt"
     end
+    additional_information_key do
+      next if rtf_file_path.nil?
+      config = {
+        region: ENV.fetch('AWS_REGION', 'us-east-1'),
+        access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID', 'accessKey1'),
+        secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY', 'verySecretKey1'),
+        endpoint: ENV.fetch('AWS_ENDPOINT', 'http://localhost:9000/'),
+        force_path_style: ENV.fetch('AWS_S3_FORCE_PATH_STYLE', 'true') == 'true'
+      }
+      s3 = Aws::S3::Client.new(config)
 
+      bucket = Aws::S3::Bucket.new(client: s3, name: Rails.configuration.s3_direct_upload_bucket)
+      obj = bucket.object(SecureRandom.uuid)
+      obj.put(body: File.read(rtf_file_path), content_type: 'application/rtf')
+      obj.key
+    end
+
+    trait :with_rtf do
+      rtf_file_path { Rails.root.join('spec', 'fixtures', 'example.rtf') }
+    end
   end
 
   factory :json_respondent_data, class: ::EtApi::Test::Json::Node do

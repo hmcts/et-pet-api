@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       namespace :respondents do
         post "build_response" => 'build_responses#create'
       end
+      namespace :s3 do
+        post 'create_signed_url' => 'signed_urls#create'
+      end
     end
   end
   mount EtAtosFileTransfer::Engine, at: '/atos_api'

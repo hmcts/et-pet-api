@@ -128,5 +128,24 @@ RSpec.describe 'Create Response Request', type: :request do
         json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) }
       include_examples 'any response variation'
     end
+
+    context 'with json for a response with an rtf upload' do
+      rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
+      include_context 'with setup for any response',
+        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) }
+      include_examples 'any response variation'
+
+      it 'includes the rtf file in the staging folder' do
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        company_name_underscored = input_respondent_factory.name.split(/\W/).join('_')
+        output_filename_rtf = "#{reference}_ET3_Attachment_#{company_name_underscored}.rtf"
+        Dir.mktmpdir do |dir|
+          full_path = File.join(dir, output_filename_rtf)
+          staging_folder.extract(output_filename_rtf, to: full_path)
+          expect(full_path).to be_a_file_copy_of(rtf_file_path)
+        end
+      end
+      it 'marks the pdf as having an rtf file attached'
+    end
   end
 end

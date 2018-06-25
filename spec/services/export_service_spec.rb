@@ -10,7 +10,7 @@ RSpec.describe ExportService do
     end
 
     let!(:responses) do
-      create_list(:response, 2, :with_pdf_file, :with_text_file, :ready_for_export)
+      create_list(:response, 2, :with_pdf_file, :with_text_file, :with_rtf_file, :ready_for_export)
     end
 
     it 'produces an ExportedFile' do
@@ -84,6 +84,18 @@ RSpec.describe ExportService do
 
       # Assert
       expected_filenames = responses.map { |c| "#{c.reference}_ET3_.txt" }
+      expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
+    end
+
+    it 'produces a zip file that contains an rtf file for each response' do
+      # Act
+      service.export
+
+      # Assert
+      expected_filenames = responses.map do |r|
+        company_name_underscored = r.respondent.name.split(/\W/).join('_')
+        "#{r.reference}_ET3_Attachment_#{company_name_underscored}.rtf"
+      end
       expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
     end
 

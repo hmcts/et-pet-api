@@ -50,6 +50,7 @@ module ClaimFileBuilder
 
     def apply_header_pdf_fields(result)
       result['case number'] = response.case_number
+      result['RTF'] = response.additional_information_rtf_file? ? 'Additional RTF' : ''
     end
 
     def apply_claimant_pdf_fields(result)
