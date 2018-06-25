@@ -163,7 +163,7 @@ module ClaimFileBuilder
     end
 
     def apply_no_disability_pdf_fields(result)
-      result['8.1 tick box'] = 'Off'
+      result['8.1 tick box'] = 'no'
       result['8.1 if yes'] = ''
     end
   end

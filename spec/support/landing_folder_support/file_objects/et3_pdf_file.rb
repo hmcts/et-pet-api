@@ -167,7 +167,7 @@ module EtApi
 
         def has_no_disability?(errors: [], indent: 1)
           validate_fields section: :disability, errors: errors, indent: indent do
-            expect(field_values).to include '8.1 tick box' => 'Off'
+            expect(field_values).to include '8.1 tick box' => 'no'
             expect(field_values).to include '8.1 if yes' => ''
           end
         end

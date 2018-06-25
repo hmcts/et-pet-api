@@ -16,7 +16,7 @@ RSpec.describe EventService do
     end
 
     before do
-      service.subscribe('my_special_event', dummy_event_handler)
+      service.subscribe('my_special_event', dummy_event_handler, async: false)
     end
 
     after do
@@ -46,7 +46,7 @@ RSpec.describe EventService do
     end
 
     before do
-      service.subscribe('my_special_event', dummy_event_handler)
+      service.subscribe('my_special_event', dummy_event_handler, async: false)
     end
 
     after do

@@ -47,6 +47,13 @@ RSpec.describe 'Create Response Request', type: :request do
         end
       end
 
+      around do |example|
+        old = use_transactional_tests
+        self.use_transactional_tests = false
+        example.run
+        self.use_transactional_tests = old
+      end
+
       def perform_action
         json_data = input_factory.to_json
         post '/api/v2/respondents/build_response', params: json_data, headers: default_headers
@@ -109,7 +116,7 @@ RSpec.describe 'Create Response Request', type: :request do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         output_filename_pdf = "#{reference}_ET3_.pdf"
-        expect {staging_folder.et3_pdf_file(output_filename_pdf)}.to eventually have_correct_contents_for(
+        expect(staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
                                                                       response: input_response_factory,
                                                                       respondent: input_respondent_factory,
                                                                       representative: input_representative_factory,
