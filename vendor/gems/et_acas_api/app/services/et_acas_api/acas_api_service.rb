@@ -7,17 +7,17 @@ module EtAcasApi
     attr_reader :status, :errors
 
     def initialize(wsdl_url: Rails.configuration.et_acas_api.wsdl_url,
-      current_time: Time.zone.now,
-      acas_rsa_certificate_path: Rails.configuration.et_acas_api.acas_rsa_certificate_path,
-      rsa_certificate_path: Rails.configuration.et_acas_api.rsa_certificate_path,
-      rsa_private_key_path: Rails.configuration.et_acas_api.rsa_private_key_path,
-      logger: Rails.logger)
+                   current_time: Time.zone.now,
+                   acas_rsa_certificate_contents: Rails.configuration.et_acas_api.acas_rsa_certificate,
+                   rsa_certificate_contents: Rails.configuration.et_acas_api.rsa_certificate,
+                   rsa_private_key_contents: Rails.configuration.et_acas_api.rsa_private_key,
+                   logger: Rails.logger)
 
       self.wsdl_url = wsdl_url
       self.current_time = current_time
-      self.acas_rsa_certificate = OpenSSL::X509::Certificate.new File.read(acas_rsa_certificate_path)
-      self.rsa_certificate = OpenSSL::X509::Certificate.new File.read(rsa_certificate_path)
-      self.rsa_private_key = OpenSSL::PKey::RSA.new(File.read(rsa_private_key_path))
+      self.acas_rsa_certificate = OpenSSL::X509::Certificate.new acas_rsa_certificate_contents
+      self.rsa_certificate = OpenSSL::X509::Certificate.new rsa_certificate_contents
+      self.rsa_private_key = OpenSSL::PKey::RSA.new(rsa_private_key_contents)
       self.logger = logger
       self.errors = {}
     end

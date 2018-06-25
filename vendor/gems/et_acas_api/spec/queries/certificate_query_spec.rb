@@ -1,6 +1,7 @@
 require 'rails_helper'
 RSpec.describe EtAcasApi::CertificateQuery do
-  subject(:query) { described_class.new(id: certificate_number, user_id: 'my_user', acas_api_service: fake_acas_api_service) }
+  let(:user_id) { 'my_user' }
+  subject(:query) { described_class.new(id: certificate_number, user_id: user_id, acas_api_service: fake_acas_api_service) }
   let(:certificate_number) { 'R123456/14/01' }
   let(:fake_acas_api_service) { instance_spy('EtAcasApi::AcasApiService', errors: {}) }
   describe '#valid?' do
@@ -58,6 +59,24 @@ RSpec.describe EtAcasApi::CertificateQuery do
           expect(fake_acas_api_service).not_to have_received(:call)
           expect(query.status).to be :invalid_certificate_format
           expect(query.errors).to include id: a_collection_including('Invalid certificate format')
+        end
+      end
+    end
+
+    context 'with nil user_id' do
+      let(:user_id) { nil }
+      it 'sets status without calling the service' do
+        # Arrange - Setup a certificate
+        certificate = instance_double('EtAcasApi::Certificate')
+
+        # Act
+        query.apply(certificate)
+
+        # Assert - Ensure the service was not called, the status is set and the errors contain the correct error
+        aggregate_failures 'service not called and status set' do
+          expect(fake_acas_api_service).not_to have_received(:call)
+          expect(query.status).to be :invalid_user_id
+          expect(query.errors).to include user_id: a_collection_including('Missing user id')
         end
       end
     end

@@ -12,6 +12,8 @@ module EtAcasApi
         render :invalid, locals: { result: result }, status: :unprocessable_entity
       when :acas_server_error
         render :invalid, locals: { result: result }, status: :internal_server_error
+      when :invalid_user_id
+        render :invalid, locals: { result: result }, status: :bad_request
       end
     end
   end

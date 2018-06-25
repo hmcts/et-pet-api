@@ -3,7 +3,7 @@ RSpec.describe EtAcasApi::AcasApiService do
   subject(:api) { described_class.new(logger: logger) }
   let(:certificate) { EtAcasApi::Certificate.new }
   let(:logger) { instance_spy('ActiveSupport::Logger') }
-  let(:rsa_certificate_path) { Rails.configuration.et_acas_api.rsa_certificate_path }
+  let(:rsa_certificate_contents) { Rails.configuration.et_acas_api.rsa_certificate }
   # Common Setup - The url to the service which should match that in spec/acas_interface_support/wsdl.txt
   let(:example_get_certificate_url) { "https://localhost/Lookup/ECService.svc" }
 
@@ -46,7 +46,7 @@ RSpec.describe EtAcasApi::AcasApiService do
     it 'requests the data with the correct security token in the signature in the header' do
       get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' }
       subject.call('anyid', user_id: "my user id", into: certificate)
-      our_base64_public_key = Base64.encode64(OpenSSL::X509::Certificate.new(File.read(rsa_certificate_path)).to_der).tr("\n", '')
+      our_base64_public_key = Base64.encode64(OpenSSL::X509::Certificate.new(rsa_certificate_contents).to_der).tr("\n", '')
       body_matcher = hash_including('env:Envelope' =>
                                         hash_including(
                                             'env:Header' =>
@@ -216,9 +216,5 @@ certificate
       # Assert - Validate that the status is correct and the certificate is nil
       expect(logger).to have_received(:warn).with("An error occured connecting to the ACAS server when trying to find certificate 'anyid' - the error reported was 'execution expired'")
     end
-
-
-
   end
-
 end
