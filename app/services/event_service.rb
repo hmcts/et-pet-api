@@ -20,7 +20,13 @@ class EventService
 
   def subscribe(event, handler, async: true, in_process: true)
     handler_proc = lambda do |*args|
-      handler_for(handler).handle(*args) unless ignore_events
+      if !async && in_process
+        handler_for(handler).handle(*args) unless ignore_events
+      elsif async && !in_process
+        EventWorker.perform_async(handler, *args)
+      else
+        raise 'Events can only handle sync in process or async out of process right now'
+      end
     end
     publisher.on(event, &handler_proc)
     register_handler_proc(event, handler, handler_proc)

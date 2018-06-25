@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-
+require 'sidekiq/testing'
 RSpec.describe 'Create Response Request', type: :request do
   describe 'POST /api/v2/respondents/build_response' do
     let(:default_headers) do
@@ -41,16 +41,29 @@ RSpec.describe 'Create Response Request', type: :request do
       let(:input_representative_factory) { input_factory.data.detect { |d| d.command == 'BuildRepresentative' }.try(:data) }
       let(:output_files_generated) { [] }
 
+      around do |example|
+        Sidekiq::Testing.fake! do
+          example.run
+        end
+      end
+
       def perform_action
         json_data = input_factory.to_json
         post '/api/v2/respondents/build_response', params: json_data, headers: default_headers
       end
 
+      def run_background_jobs
+        EventWorker.drain
+      end
+
       before do
         perform_action
+        run_background_jobs
+        sleep 0.1
         force_export_now
       end
     end
+
 
     shared_examples 'any response variation' do
       it 'responda with a 201 status' do
@@ -77,14 +90,14 @@ RSpec.describe 'Create Response Request', type: :request do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         output_filename_txt = "#{reference}_ET3_.txt"
-        expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors)
+        expect {staging_folder.et3_txt_file(output_filename_txt)}.to eventually have_correct_file_structure(errors: errors)
       end
 
       it 'creates a valid txt file with correct header data' do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         output_filename_txt = "#{reference}_ET3_.txt"
-        expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_contents_for(
+        expect {staging_folder.et3_txt_file(output_filename_txt)}.to eventually have_correct_contents_for(
           response: input_response_factory,
           respondent: input_respondent_factory,
           representative: input_representative_factory,
@@ -96,12 +109,12 @@ RSpec.describe 'Create Response Request', type: :request do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         output_filename_pdf = "#{reference}_ET3_.pdf"
-        expect(staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
-          response: input_response_factory,
-          respondent: input_respondent_factory,
-          representative: input_representative_factory,
-          errors: errors
-        ), -> { errors.join("\n") }
+        expect {staging_folder.et3_pdf_file(output_filename_pdf)}.to eventually have_correct_contents_for(
+                                                                      response: input_response_factory,
+                                                                      respondent: input_respondent_factory,
+                                                                      representative: input_representative_factory,
+                                                                      errors: errors
+                                                                    ), -> { errors.join("\n") }
 
       end
     end
