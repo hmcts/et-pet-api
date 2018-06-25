@@ -51,6 +51,9 @@ FactoryBot.define do
   end
 
   factory :json_response_data, class: ::EtApi::Test::Json::Node do
+    transient do
+      rtf_file_path nil
+    end
     trait :minimal do
       case_number '1454321/2017'
       agree_with_employment_dates false
