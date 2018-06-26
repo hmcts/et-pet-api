@@ -41,7 +41,6 @@ RSpec.describe 'Create Response Request', type: :request do
       let(:input_representative_factory) { input_factory.data.detect { |d| d.command == 'BuildRepresentative' }.try(:data) }
       let(:output_files_generated) { [] }
 
-
       def perform_action
         json_data = input_factory.to_json
         post '/api/v2/respondents/build_response', params: json_data, headers: default_headers

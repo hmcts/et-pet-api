@@ -57,7 +57,7 @@ RSpec.describe ClaimFileBuilder::BuildResponsePdfFile do
       let(:response) { build(:response, :example_data) }
 
       context 'with data created in db' do
-        it 'should be available at the location provided' do
+        it 'is available at the location provided' do
           # Arrange - Create a pre allocation
           response.save
           blob = ActiveStorage::Blob.new(filename: 'et3_atos_export.pdf', byte_size: 0, checksum: 0)

@@ -1,7 +1,7 @@
 require 'rails_helper'
 RSpec.describe UploadedFileAllocatorService do
-  let(:response) { build(:response) }
   subject(:service) { described_class.new }
+  let(:response) { build(:response) }
 
   describe '#allocate' do
     it 'allocates a file to the collection with an empty blob' do
