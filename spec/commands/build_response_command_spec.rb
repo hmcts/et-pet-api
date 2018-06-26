@@ -53,5 +53,13 @@ RSpec.describe BuildResponseCommand do
       # Assert
       expect(command.meta[:submitted_at]).to be_within(1.minute).of(Time.zone.now)
     end
+
+    it 'adds the office data to the meta[address]' do
+      # Act
+      command.apply(root_object)
+
+      # Assert
+      expect(command.meta).to include(office_address: 'Victory House, 30-34 Kingsway, London WC2B 6EX')
+    end
   end
 end

@@ -71,7 +71,6 @@ RSpec.describe 'Create Response Request', type: :request do
       end
     end
 
-
     shared_examples 'any response variation' do
       it 'responda with a 201 status' do
         # Assert - Make sure we get a 201 - to say the commands have been accepted
@@ -93,18 +92,25 @@ RSpec.describe 'Create Response Request', type: :request do
         expect(json_response).to include meta: a_hash_including('BuildResponse' => a_hash_including(submitted_at: instance_of(String)))
       end
 
+      it 'returns the office address in the metadata for the response' do
+        # Assert - Make sure we get the reference in the metadata
+        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
+          office_address: 'Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR'
+        )
+      end
+
       it 'creates a valid txt file in the correct place in the landing folder' do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         output_filename_txt = "#{reference}_ET3_.txt"
-        expect {staging_folder.et3_txt_file(output_filename_txt)}.to eventually have_correct_file_structure(errors: errors)
+        expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors)
       end
 
       it 'creates a valid txt file with correct header data' do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         output_filename_txt = "#{reference}_ET3_.txt"
-        expect {staging_folder.et3_txt_file(output_filename_txt)}.to eventually have_correct_contents_for(
+        expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_contents_for(
           response: input_response_factory,
           respondent: input_respondent_factory,
           representative: input_representative_factory,
@@ -117,12 +123,11 @@ RSpec.describe 'Create Response Request', type: :request do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         output_filename_pdf = "#{reference}_ET3_.pdf"
         expect(staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
-                                                                      response: input_response_factory,
-                                                                      respondent: input_respondent_factory,
-                                                                      representative: input_representative_factory,
-                                                                      errors: errors
-                                                                    ), -> { errors.join("\n") }
-
+          response: input_response_factory,
+          respondent: input_respondent_factory,
+          representative: input_representative_factory,
+          errors: errors
+        ), -> { errors.join("\n") }
       end
     end
 
