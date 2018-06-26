@@ -66,4 +66,11 @@ RSpec.describe Response, type: :model do
       end
     end
   end
+
+  describe '#office' do
+    subject(:response) { build(:response) }
+    it 'returns the correct office with the code matching the first 2 chars of the reference' do
+      expect(response.office).to be_a(Office).and(have_attributes(code: 22))
+    end
+  end
 end

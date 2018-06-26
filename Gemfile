@@ -65,6 +65,7 @@ group :test do
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 1.8', '>= 1.8.7'
   gem 'webmock', '~> 3.4', '>= 3.4.1'
+  gem 'httparty', '~> 0.16.2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

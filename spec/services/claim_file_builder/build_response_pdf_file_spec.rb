@@ -52,5 +52,25 @@ RSpec.describe ClaimFileBuilder::BuildResponsePdfFile do
 
       include_examples 'for any response variation'
     end
+
+    context 'with a pre allocated s3 key to allow for providing the url before the file is uploaded' do
+      let(:response) { build(:response, :example_data) }
+
+      context 'with data created in db' do
+        it 'should be available at the location provided' do
+          # Arrange - Create a pre allocation
+          response.save
+          blob = ActiveStorage::Blob.new(filename: 'et3_atos_export.pdf', byte_size: 0, checksum: 0)
+          original_url = blob.service_url(expires_in: 1.hour)
+          PreAllocatedFileKey.create(allocated_to: response, key: blob.key, filename: 'et3_atos_export.pdf')
+
+          # Act
+          builder.call(response)
+          response.save!
+
+          expect(HTTParty.get(original_url).code).to be 200
+        end
+      end
+    end
   end
 end
