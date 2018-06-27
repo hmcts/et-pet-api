@@ -19,9 +19,7 @@ class EventService
   end
 
   def subscribe(event, handler, async: true, in_process: true)
-    handler_proc = lambda do |*args|
-      handler_for(handler).handle(*args) unless ignore_events
-    end
+    handler_proc = handler_proc_for(async, handler, in_process)
     publisher.on(event, &handler_proc)
     register_handler_proc(event, handler, handler_proc)
     self
@@ -41,6 +39,28 @@ class EventService
 
   private
 
+  def handler_proc_for(async, handler, in_process)
+    if !async && in_process
+      handler_proc_for_sync(handler)
+    elsif async && !in_process
+      handler_proc_for_async(handler)
+    else
+      raise 'Events can only handle sync in process or async out of process right now'
+    end
+  end
+
+  def handler_proc_for_sync(handler)
+    lambda do |*args|
+      handler_instance_for(handler).handle(*args) unless ignore_events
+    end
+  end
+
+  def handler_proc_for_async(handler)
+    lambda do |*args|
+      EventWorker.perform_async(handler, *args) unless ignore_events
+    end
+  end
+
   def initialize(*)
     super
     self.handlers = {}
@@ -53,7 +73,7 @@ class EventService
     handler_procs[event][handler] << handler_proc
   end
 
-  def handler_for(klass)
+  def handler_instance_for(klass)
     handlers[klass] ||= klass.new
   end
 

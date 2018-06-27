@@ -14,17 +14,25 @@ module ClaimFileBuilder
     def call
       filename = 'et3_atos_export.pdf'
       response.uploaded_files.build filename: filename,
-                                    file: raw_pdf_file(filename)
+                                    file: blob_for_pdf_file(filename)
     end
 
     private
 
     attr_accessor :response, :template_path
 
-    def raw_pdf_file(filename)
-      ActionDispatch::Http::UploadedFile.new filename: filename,
-                                             tempfile: render_to_file,
-                                             type: 'application/pdf'
+    def blob_for_pdf_file(filename)
+      ActiveStorage::Blob.new.tap do |blob|
+        blob.filename = filename
+        blob.content_type = 'application/pdf'
+        blob.metadata = nil
+        blob.key = pre_allocated_key
+        blob.upload render_to_file
+      end
+    end
+
+    def pre_allocated_key
+      response.pre_allocated_file_keys.where(filename: 'et3_atos_export.pdf').first.try(:key)
     end
 
     def render_to_file
@@ -82,7 +90,7 @@ module ClaimFileBuilder
       result['new 3.1'] = response.agree_with_early_conciliation_details ? 'Yes' : 'No'
       result['new 3.1 If no, please explain why'] = response.disagree_conciliation_reason
     end
-    
+
     def apply_employment_details_pdf_fields(result)
       result['3.1'] = response.agree_with_employment_dates ? 'yes' : 'no'
       result['3.1 employment started'] = response.employment_start.try(:strftime, '%d/%m/%Y')
@@ -92,7 +100,7 @@ module ClaimFileBuilder
       result['3.3'] = response.agree_with_claimants_description_of_job_or_title ? 'yes' : 'no'
       result['3.3 if no'] = response.disagree_claimants_job_or_title ? 'yes' : 'no'
     end
-    
+
     def apply_earnings_pdf_fields(result)
       result['4.1'] = response.agree_with_claimants_hours ? 'yes' : 'no'
       result['4.1 if no'] = response.queried_hours
@@ -111,12 +119,12 @@ module ClaimFileBuilder
       result['5.1 tick box'] = response.defend_claim ? 'yes' : 'no'
       result['5.1 if yes'] = response.defend_claim_facts
     end
-    
+
     def apply_contract_claim_pdf_fields(result)
       result['6.2 tick box'] = response.make_employer_contract_claim ? 'yes' : 'Off'
       result['6.3'] = response.claim_information
     end
-    
+
     def apply_representative_pdf_fields(result)
       representative = response.representative
       return apply_no_representative(result) if representative.nil?
@@ -153,7 +161,7 @@ module ClaimFileBuilder
       result['7.9'] = ''
       result['7.10'] = ''
     end
-    
+
     def apply_disability_pdf_fields(result)
       representative = response.representative
       return apply_no_disability_pdf_fields(result) if representative.nil?
@@ -163,7 +171,7 @@ module ClaimFileBuilder
     end
 
     def apply_no_disability_pdf_fields(result)
-      result['8.1 tick box'] = 'Off'
+      result['8.1 tick box'] = 'no'
       result['8.1 if yes'] = ''
     end
   end

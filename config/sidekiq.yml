@@ -6,6 +6,7 @@ staging:
 production:
   :concurrency: 20
 :queues:
+  - events
   - export_claims
   - default
   - low
