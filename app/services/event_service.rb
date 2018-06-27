@@ -40,19 +40,25 @@ class EventService
   private
 
   def handler_proc_for(async, handler, in_process)
-    lambda do |*args|
-      next handle_sync(handler, args) if !async && in_process
-      next handle_with_worker(args, handler) if async && !in_process
+    if !async && in_process
+      handler_proc_for_sync(handler)
+    elsif async && !in_process
+      handler_proc_for_async(handler)
+    else
       raise 'Events can only handle sync in process or async out of process right now'
     end
   end
 
-  def handle_sync(handler, args)
-    handler_instance_for(handler).handle(*args) unless ignore_events
+  def handler_proc_for_sync(handler)
+    lambda do |*args|
+      handler_instance_for(handler).handle(*args) unless ignore_events
+    end
   end
 
-  def handle_with_worker(args, handler)
-    EventWorker.perform_async(handler, *args) unless ignore_events
+  def handler_proc_for_async(handler)
+    lambda do |*args|
+      EventWorker.perform_async(handler, *args) unless ignore_events
+    end
   end
 
   def initialize(*)
