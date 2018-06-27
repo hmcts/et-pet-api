@@ -56,6 +56,11 @@ module ClaimFileBuilder
       result
     end
 
+    def tri_state_value_for(value, yes: 'yes', no: 'no', off: 'Off')
+      return off if value.nil?
+      value ? yes : no
+    end
+
     def apply_header_pdf_fields(result)
       result['case number'] = response.case_number
       result['RTF'] = response.additional_information_rtf_file? ? 'Additional RTF' : ''
@@ -78,7 +83,7 @@ module ClaimFileBuilder
       result['2.3 dx number'] = respondent.dx_number
       result['2.4 phone number'] = respondent.address_telephone_number
       result['2.4 mobile number'] = respondent.alt_phone_number
-      result['2.5'] = respondent.contact_preference
+      result['2.5'] = respondent.contact_preference || 'Off'
       result['2.6 email address'] = respondent.email_address
       result['2.6 fax number'] = respondent.fax_number
       result['2.7'] = respondent.organisation_employ_gb
@@ -97,21 +102,21 @@ module ClaimFileBuilder
       result['3.1 employment end'] = response.employment_end.try(:strftime, '%d/%m/%Y')
       result['3.1 disagree'] = response.disagree_employment
       result['3.2'] = response.continued_employment ? 'yes' : 'no'
-      result['3.3'] = response.agree_with_claimants_description_of_job_or_title ? 'yes' : 'no'
+      result['3.3'] = tri_state_value_for(response.agree_with_claimants_description_of_job_or_title)
       result['3.3 if no'] = response.disagree_claimants_job_or_title ? 'yes' : 'no'
     end
 
     def apply_earnings_pdf_fields(result)
-      result['4.1'] = response.agree_with_claimants_hours ? 'yes' : 'no'
+      result['4.1'] = tri_state_value_for(response.agree_with_claimants_hours)
       result['4.1 if no'] = response.queried_hours
-      result['4.2'] = response.agree_with_earnings_details ? 'yes' : 'no'
+      result['4.2'] = tri_state_value_for(response.agree_with_earnings_details)
       result['4.2 pay before tax'] = response.queried_pay_before_tax
-      result['4.2 pay before tax tick box'] = response.queried_pay_before_tax_period.try(:downcase)
+      result['4.2 pay before tax tick box'] = response.queried_pay_before_tax_period.try(:downcase) || 'Off'
       result['4.2 normal take-home pay'] = response.queried_take_home_pay
-      result['4.2 normal take-home pay tick box'] = response.queried_take_home_pay_period.try(:downcase)
-      result['4.3 tick box'] = response.agree_with_claimant_notice ? 'yes' : 'no'
+      result['4.2 normal take-home pay tick box'] = response.queried_take_home_pay_period.try(:downcase) || 'Off'
+      result['4.3 tick box'] = tri_state_value_for(response.agree_with_claimant_notice)
       result['4.3 if no'] = response.disagree_claimant_notice_reason
-      result['4.4 tick box'] = response.agree_with_claimant_pension_benefits ? 'yes' : 'no'
+      result['4.4 tick box'] = tri_state_value_for(response.agree_with_claimant_pension_benefits)
       result['4.4 if no'] = response.disagree_claimant_pension_benefits_reason
     end
 
@@ -140,7 +145,7 @@ module ClaimFileBuilder
       result['7.5 phone number'] = representative.address_telephone_number
       result['7.6'] = representative.mobile_number
       result['7.7'] = representative.reference
-      result['7.8 tick box'] = representative.contact_preference
+      result['7.8 tick box'] = representative.contact_preference || 'Off'
       result['7.9'] = representative.email_address
       result['7.10'] = representative.fax_number
     end
@@ -157,7 +162,7 @@ module ClaimFileBuilder
       result['7.5 phone number'] = ''
       result['7.6'] = ''
       result['7.7'] = ''
-      result['7.8 tick box'] = ''
+      result['7.8 tick box'] = 'Off'
       result['7.9'] = ''
       result['7.10'] = ''
     end
@@ -166,12 +171,12 @@ module ClaimFileBuilder
       representative = response.representative
       return apply_no_disability_pdf_fields(result) if representative.nil?
       return if representative.nil?
-      result['8.1 tick box'] = representative.disability ? 'yes' : 'no'
+      result['8.1 tick box'] = tri_state_value_for(representative.disability)
       result['8.1 if yes'] = representative.disability_information
     end
 
     def apply_no_disability_pdf_fields(result)
-      result['8.1 tick box'] = 'no'
+      result['8.1 tick box'] = 'Off'
       result['8.1 if yes'] = ''
     end
   end

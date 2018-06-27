@@ -14,8 +14,15 @@ FactoryBot.define do
     queried_hours 30
     disagree_claimant_notice_reason ''
     disagree_claimant_pension_benefits_reason ''
+    defend_claim false
     defend_claim_facts ''
     claim_information ''
+    agree_with_employment_dates true
+    agree_with_claimants_description_of_job_or_title true
+    agree_with_claimants_hours true
+    agree_with_earnings_details true
+    agree_with_claimant_notice true
+    agree_with_claimant_pension_benefits true
 
     sequence :reference do |n|
       "22#{20000000 + n}00"
