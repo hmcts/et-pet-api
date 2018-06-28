@@ -18,6 +18,10 @@ RSpec.describe 'Create Response Request', type: :request do
         ClaimsExportWorker.new.perform
       end
 
+      def formatted_name_for_filename(text)
+        text.split(/\W/).join('_')
+      end
+
       let(:staging_folder) do
         session = create_session(app)
         actions = {
@@ -127,14 +131,16 @@ RSpec.describe 'Create Response Request', type: :request do
       it 'creates a valid txt file in the correct place in the landing folder' do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        output_filename_txt = "#{reference}_ET3_.txt"
+        respondent_name = input_respondent_factory.name
+        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
         expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors)
       end
 
       it 'creates a valid txt file with correct header data' do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        output_filename_txt = "#{reference}_ET3_.txt"
+        respondent_name = input_respondent_factory.name
+        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
         expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_contents_for(
           response: input_response_factory,
           respondent: input_respondent_factory,
@@ -146,7 +152,8 @@ RSpec.describe 'Create Response Request', type: :request do
       it 'creates a valid pdf file the data filled in correctly' do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        output_filename_pdf = "#{reference}_ET3_.pdf"
+        respondent_name = input_respondent_factory.name
+        output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
         expect(staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
           response: input_response_factory,
           respondent: input_respondent_factory,
@@ -199,8 +206,8 @@ RSpec.describe 'Create Response Request', type: :request do
 
       it 'includes the rtf file in the staging folder' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        company_name_underscored = input_respondent_factory.name.split(/\W/).join('_')
-        output_filename_rtf = "#{reference}_ET3_Attachment_#{company_name_underscored}.rtf"
+        respondent_name = input_respondent_factory.name
+        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name}.rtf"
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, output_filename_rtf)
           staging_folder.extract(output_filename_rtf, to: full_path)

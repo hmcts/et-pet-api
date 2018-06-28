@@ -33,7 +33,8 @@ module ExportServiceExporters
 
     def export_file(response:, to:, ext:, type:)
       stored_file = response_export_service.new(response).send(:"export_#{type}")
-      fn = "#{response.reference}_ET3_.#{ext}"
+      company_name_underscored = response.respondent.name.split(/\W/).join('_')
+      fn = "#{response.reference}_ET3_#{company_name_underscored}.#{ext}"
       stored_file.download_blob_to File.join(to, fn)
     end
 
