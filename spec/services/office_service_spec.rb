@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'csv'
 RSpec.describe OfficeService do
   subject(:service) { described_class }
 

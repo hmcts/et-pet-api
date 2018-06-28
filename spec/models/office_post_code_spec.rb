@@ -6,14 +6,14 @@ RSpec.describe OfficePostCode, type: :model do
   describe '#office' do
     it 'returns the correct office' do
       # Arrange
-      # In the seed data, BA1 is present against office code 14
-      office_post_code = OfficePostCode.where(postcode: 'BA1').first
+      # In the seed data, CW1 is present against office code 13
+      office_post_code = OfficePostCode.where(postcode: 'CW1').first
 
       # Act
       result = office_post_code.office
 
       # Assert
-      expect(result).to be_a(Office).and(have_attributes(code: 14))
+      expect(result).to be_a(Office).and(have_attributes(code: 13))
     end
   end
 
@@ -36,18 +36,18 @@ RSpec.describe OfficePostCode, type: :model do
 
     it 'returns the correct office post code with a full post code whose first section ends in 1 but list has 1 and 10 entries e.g. BA1 - BA10' do
       # Arrange
-      office_post_code = OfficePostCode.with_partial_match('BA1 9ZT').first
+      office_post_code = OfficePostCode.with_partial_match('CW1 9ZT').first
 
-      # Assert - according to the seed data, the best match is BA1
-      expect(office_post_code).to have_attributes(postcode: 'BA1')
+      # Assert - according to the seed data, the best match is CW1
+      expect(office_post_code).to have_attributes(postcode: 'CW1')
     end
 
     it 'returns the correct office post code with a full post code whose first section ends in 10 but list has 1 and 10 entries e.g. BA1 - BA10' do
       # Arrange
-      office_post_code = OfficePostCode.with_partial_match('BA10 9QA').first
+      office_post_code = OfficePostCode.with_partial_match('CW11 9QA').first
 
-      # Assert - according to the seed data, the best match is BA10
-      expect(office_post_code).to have_attributes(postcode: 'BA10')
+      # Assert - according to the seed data, the best match is CW11
+      expect(office_post_code).to have_attributes(postcode: 'CW11')
     end
 
     it 'returns the correct office post code with a full post code whose first section does not exist but a shorter version does' do
