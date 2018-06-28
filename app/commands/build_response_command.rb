@@ -10,6 +10,7 @@ class BuildResponseCommand < BaseCommand
     allocate_pdf_file(root_object)
     meta.merge! submitted_at: root_object.date_of_receipt, reference: root_object.reference,
                 office_address: root_object.office.address,
+                office_phone_number: root_object.office.telephone,
                 pdf_url: allocator_service.allocated_url
   end
 
