@@ -83,7 +83,10 @@ RSpec.describe ExportService do
       service.export
 
       # Assert
-      expected_filenames = responses.map { |c| "#{c.reference}_ET3_.txt" }
+      expected_filenames = responses.map do |r|
+        company_name_underscored = r.respondent.name.parameterize(separator: '_', preserve_case: true)
+        "#{r.reference}_ET3_#{company_name_underscored}.txt"
+      end
       expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
     end
 
@@ -93,7 +96,7 @@ RSpec.describe ExportService do
 
       # Assert
       expected_filenames = responses.map do |r|
-        company_name_underscored = r.respondent.name.split(/\W/).join('_')
+        company_name_underscored = r.respondent.name.parameterize(separator: '_', preserve_case: true)
         "#{r.reference}_ET3_Attachment_#{company_name_underscored}.rtf"
       end
       expect(EtApi::Test::StoredZipFile.file_names(zip: ExportedFile.last)).to include(*expected_filenames)
