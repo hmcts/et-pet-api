@@ -61,5 +61,13 @@ RSpec.describe BuildResponseCommand do
       # Assert
       expect(command.meta).to include(office_address: 'Victory House, 30-34 Kingsway, London WC2B 6EX')
     end
+
+    it 'adds the office phone number to the meta[office_phone_number]' do
+      # Act
+      command.apply(root_object)
+
+      # Assert
+      expect(command.meta).to include(office_phone_number: '020 7273 8603')
+    end
   end
 end

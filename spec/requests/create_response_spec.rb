@@ -114,6 +114,13 @@ RSpec.describe 'Create Response Request', type: :request do
         )
       end
 
+      it 'returns the office phone number in the metadata for the response', background_jobs: :disable do
+        # Assert - Make sure we get the reference in the metadata
+        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
+          office_phone_number: '0117 929 8261'
+        )
+      end
+
       it 'returns the expected pdf url which will return 404 when fetched before background jobs run', background_jobs: :disable do
         # Assert - Make sure we get the pdf url in the metadata and it returns a 404 when accessed
         url = json_response.dig(:meta, 'BuildResponse', 'pdf_url')
