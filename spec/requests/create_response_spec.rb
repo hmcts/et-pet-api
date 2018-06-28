@@ -19,7 +19,7 @@ RSpec.describe 'Create Response Request', type: :request do
       end
 
       def formatted_name_for_filename(text)
-        text.split(/\W/).join('_')
+        text.parameterize(separator: '_', preserve_case: true)
       end
 
       let(:staging_folder) do
