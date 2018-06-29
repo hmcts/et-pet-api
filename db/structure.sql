@@ -658,8 +658,6 @@ CREATE TABLE public.offices (
     address character varying,
     telephone character varying,
     email character varying,
-    tribunal_type character varying,
-    is_processing_office boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -1750,6 +1748,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180509204605'),
 ('20180511160146'),
 ('20180511165627'),
-('20180626154920');
+('20180626154920'),
+('20180628143738');
 
 
