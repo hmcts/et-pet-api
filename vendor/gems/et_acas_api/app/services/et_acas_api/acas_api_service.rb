@@ -24,9 +24,11 @@ module EtAcasApi
 
     def call(id, user_id:, into:)
       response = client.call(:get_ec_certificate, message: {
-        'ECCertificateNumber' => encode_encrypt(id),
-        'UserId' => encode_encrypt(user_id),
-        'CurrentDateTime' => encode_encrypt(current_date_time)
+        'request' => {
+          'ins0:ECCertificateNumber' => encode_encrypt(id),
+          'ins0:UserId' => encode_encrypt(user_id),
+          'ins0:CurrentDateTime' => encode_encrypt(current_date_time)
+        }
       })
       raise "Error in response from ACAS" unless response.success?
       self.response_data = response.body.dig(:get_ec_certificate_response, :get_ec_certificate_result)
