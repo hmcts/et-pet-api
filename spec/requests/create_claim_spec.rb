@@ -47,12 +47,12 @@ RSpec.describe 'CreateClaim Request', type: :request do
                                        password: Rails.configuration.et_atos_api.password
       end
 
-      let(:output_filename_pdf) { "#{xml_as_hash.fee_group_reference}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.pdf" }
-      let(:output_filename_txt) { "#{xml_as_hash.fee_group_reference}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.txt" }
-      let(:output_filename_xml) { "#{xml_as_hash.fee_group_reference}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.xml" }
-      let(:output_filename_rtf) { "#{xml_as_hash.fee_group_reference}_ET1_Attachment_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.rtf" }
-      let(:output_filename_additional_claimants_txt) { "#{xml_as_hash.fee_group_reference}_ET1a_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.txt" }
-      let(:output_filename_additional_claimants_csv) { "#{xml_as_hash.fee_group_reference}_ET1a_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.csv" }
+      let(:output_filename_pdf) { "#{json_response['feeGroupReference']}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.pdf" }
+      let(:output_filename_txt) { "#{json_response['feeGroupReference']}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.txt" }
+      let(:output_filename_xml) { "#{json_response['feeGroupReference']}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.xml" }
+      let(:output_filename_rtf) { "#{json_response['feeGroupReference']}_ET1_Attachment_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.rtf" }
+      let(:output_filename_additional_claimants_txt) { "#{json_response['feeGroupReference']}_ET1a_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.txt" }
+      let(:output_filename_additional_claimants_csv) { "#{json_response['feeGroupReference']}_ET1a_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.csv" }
 
       before do
         perform_action
@@ -130,6 +130,13 @@ RSpec.describe 'CreateClaim Request', type: :request do
         # Assert - look for the correct file in the landing folder - will be async
         respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
+      end
+    end
+
+    shared_examples 'a claim with provided reference number' do
+      it 'returns a reference number which matches the one provided if one was provided' do
+        # Assert - make sure we get status of ok
+        expect(json_response).to include feeGroupReference: xml_as_hash.fee_group_reference
       end
     end
 
@@ -219,10 +226,20 @@ RSpec.describe 'CreateClaim Request', type: :request do
       end
     end
 
+    context 'with xml for single claimant and respondent, no representatives and no reference number' do
+      include_context 'with setup for claims',
+        xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 0, fee_group_reference: nil) }
+      include_examples 'any claim variation'
+      include_examples 'a claim with single claimant'
+      include_examples 'a claim with single respondent'
+      include_examples 'a claim with no representatives'
+    end
+
     context 'with xml for single claimant and respondent but no representatives' do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with no representatives'
@@ -232,6 +249,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 5, number_of_respondents: 1, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with no representatives'
@@ -241,6 +259,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 1, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with no representatives'
@@ -251,6 +270,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with a representative'
@@ -260,6 +280,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 5, number_of_respondents: 1, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with a representative'
@@ -269,6 +290,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 1, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with a representative'
@@ -279,6 +301,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 3, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with no representatives'
@@ -288,6 +311,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 5, number_of_respondents: 3, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with no representatives'
@@ -297,6 +321,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 3, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with no representatives'
@@ -307,6 +332,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 3, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with a representative'
@@ -316,6 +342,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 5, number_of_respondents: 3, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with a representative'
@@ -325,6 +352,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 3, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with a representative'
@@ -337,6 +365,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       let(:input_rtf_file) { input_files[xml_as_hash.files.find { |f| f.filename.end_with?('.rtf') }.filename] }
 
       include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with a representative'
