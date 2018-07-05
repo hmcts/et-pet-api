@@ -8,7 +8,7 @@ RSpec::Matchers.define :have_valid_current_date_time_for_acas do |expected|
 
     encrypted = Base64.decode64(Hash.from_xml(actual).dig('Envelope', 'Body', 'GetECCertificate', 'request', 'CurrentDateTime'))
     decrypted = private_key.private_decrypt(encrypted, OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
-    actual_date = Time.zone.parse(decrypted)
+    actual_date = Time.parse(decrypted)
     sub_matcher.matches?(actual_date)
   end
 
