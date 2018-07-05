@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'savon', '~> 2.12'
   # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
   s.add_dependency 'jbuilder', '~> 2.5'
+  s.add_dependency 'ruby-mcrypt', '~> 0.2'
 end

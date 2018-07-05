@@ -12,7 +12,7 @@ RUN curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
         echo 'deb https://deb.nodesource.com/node jessie main' > /etc/apt/sources.list.d/nodesource.list
 
 # install runit, nodejs and pdftk
-RUN apt-get update && apt-get install -y runit nodejs pdftk unzip zip && \
+RUN apt-get update && apt-get install -y runit nodejs pdftk unzip zip mcrypt libmcrypt-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && rm -fr *Release* *Sources* *Packages* && \
     truncate -s 0 /var/log/*log
