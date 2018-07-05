@@ -2,16 +2,17 @@ require 'savon'
 require 'base64'
 require 'openssl'
 require 'et_acas_api/soap_signature'
+require 'mcrypt'
 module EtAcasApi
   class AcasApiService
     attr_reader :status, :errors
 
     def initialize(wsdl_url: Rails.configuration.et_acas_api.wsdl_url,
-                   current_time: Time.zone.now,
-                   acas_rsa_certificate_contents: Rails.configuration.et_acas_api.acas_rsa_certificate,
-                   rsa_certificate_contents: Rails.configuration.et_acas_api.rsa_certificate,
-                   rsa_private_key_contents: Rails.configuration.et_acas_api.rsa_private_key,
-                   logger: Rails.logger)
+      current_time: Time.now,
+      acas_rsa_certificate_contents: Rails.configuration.et_acas_api.acas_rsa_certificate,
+      rsa_certificate_contents: Rails.configuration.et_acas_api.rsa_certificate,
+      rsa_private_key_contents: Rails.configuration.et_acas_api.rsa_private_key,
+      logger: Rails.logger)
 
       self.wsdl_url = wsdl_url
       self.current_time = current_time
@@ -24,9 +25,11 @@ module EtAcasApi
 
     def call(id, user_id:, into:)
       response = client.call(:get_ec_certificate, message: {
-        'ECCertificateNumber' => encode_encrypt(id),
-        'UserId' => encode_encrypt(user_id),
-        'CurrentDateTime' => encode_encrypt(current_date_time)
+        'request' => {
+          'ins0:CurrentDateTime' => encode_encrypt(current_date_time),
+          'ins0:ECCertificateNumber' => encode_encrypt(id),
+          'ins0:UserId' => encode_encrypt(user_id)
+        }
       })
       raise "Error in response from ACAS" unless response.success?
       self.response_data = response.body.dig(:get_ec_certificate_response, :get_ec_certificate_result)
@@ -96,9 +99,8 @@ module EtAcasApi
     end
 
     def decoded(attr)
-      aes = Base64.decode64 response_data[attr]
-      decipher = aes_decipher
-      decipher.update(aes) + decipher.final
+      aes = Base64.decode64(response_data[attr])
+      aes_decipher.decrypt(aes)
     end
 
     def encode_encrypt(value)
@@ -127,22 +129,21 @@ module EtAcasApi
     end
 
     def aes_decipher
-      OpenSSL::Cipher::AES256.new(:CBC).tap do |c|
-        c.decrypt
-        c.key = response_key
-        c.iv = response_iv
-      end
+      @aes_decipher ||= Mcrypt.new(:rijndael_256, :cbc, response_key, response_iv, :pkcs7)
     end
 
     def response_key
-      @response_key ||= rsa_private_key.private_decrypt(Base64.decode64(response_data[:key]), OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
+      @response_key ||= Base64.decode64 \
+        rsa_private_key.private_decrypt(Base64.decode64(response_data[:key]), OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
     end
 
     def response_iv
-      @response_iv ||= rsa_private_key.private_decrypt(Base64.decode64(response_data[:iv]), OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
+      @response_iv ||= Base64.decode64 \
+        rsa_private_key.private_decrypt(Base64.decode64(response_data[:iv]), OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
     end
 
-    attr_accessor :wsdl_url, :current_time, :acas_rsa_certificate, :rsa_certificate, :rsa_private_key, :response_data, :logger
+    attr_accessor :wsdl_url, :current_time, :acas_rsa_certificate,
+      :rsa_certificate, :rsa_private_key, :response_data, :logger
     attr_writer :status, :errors
   end
 end

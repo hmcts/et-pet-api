@@ -6,6 +6,7 @@ PATH
       jbuilder (~> 2.5)
       pg (>= 0.18, < 2.0)
       rails (~> 5.2.0)
+      ruby-mcrypt (~> 0.2)
       savon (~> 2.12)
 
 GEM
@@ -149,6 +150,7 @@ GEM
       rspec-mocks (~> 3.7.0)
       rspec-support (~> 3.7.0)
     rspec-support (3.7.1)
+    ruby-mcrypt (0.2.0)
     safe_yaml (1.0.4)
     savon (2.12.0)
       akami (~> 1.2)

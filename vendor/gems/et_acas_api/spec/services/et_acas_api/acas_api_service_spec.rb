@@ -18,12 +18,15 @@ RSpec.describe EtAcasApi::AcasApiService do
       get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' }
       subject.call('anyid', user_id: "my user id", into: certificate)
       body_matcher = hash_including('env:Envelope' =>
-                                        hash_including('env:Body' =>
-                                                           hash_including('tns:GetECCertificate' =>
-                                                                              hash_including(
-                                                                                  'tns:ECCertificateNumber' => equals_encrypted_param_for_acas('anyid'),
-                                                                                  'tns:UserId' => equals_encrypted_param_for_acas('my user id')
-                                                                              ))))
+                                      hash_including('env:Body' =>
+                                                       hash_including('tns:GetECCertificate' =>
+                                                                        hash_including(
+                                                                          'tns:request' =>
+                                                                            hash_including(
+                                                                              'ins0:ECCertificateNumber' => equals_encrypted_param_for_acas('anyid'),
+                                                                              'ins0:UserId' => equals_encrypted_param_for_acas('my user id')
+                                                                            )
+                                                                        ))))
       expect(get_certificate_stub.with(body: body_matcher)).to have_been_requested
     end
 
@@ -48,14 +51,14 @@ RSpec.describe EtAcasApi::AcasApiService do
       subject.call('anyid', user_id: "my user id", into: certificate)
       our_base64_public_key = Base64.encode64(OpenSSL::X509::Certificate.new(rsa_certificate_contents).to_der).tr("\n", '')
       body_matcher = hash_including('env:Envelope' =>
-                                        hash_including(
-                                            'env:Header' =>
-                                                hash_including(
-                                                    'wsse:Security' => hash_including(
-                                                        'wsse:BinarySecurityToken' => our_base64_public_key
-                                                    )
-                                                )
-                                        ))
+                                      hash_including(
+                                        'env:Header' =>
+                                          hash_including(
+                                            'wsse:Security' => hash_including(
+                                              'wsse:BinarySecurityToken' => our_base64_public_key
+                                            )
+                                          )
+                                      ))
       expect(get_certificate_stub.with(body: body_matcher)).to have_been_requested
     end
 
@@ -93,8 +96,8 @@ RSpec.describe EtAcasApi::AcasApiService do
       # Arrange - Build a stub which responds with the correct body
       response_factory = build(:soap_valid_acas_response, :valid)
       stub_request(:post, example_get_certificate_url).to_return status: 200,
-        headers: { 'Content-Type' => 'application/xml' },
-        body: response_factory.to_xml
+                                                                 headers: { 'Content-Type' => 'application/xml' },
+                                                                 body: response_factory.to_xml
 
       # Act - Call the service
       subject.call('anyid', user_id: "my user id", into: certificate)
@@ -113,17 +116,16 @@ RSpec.describe EtAcasApi::AcasApiService do
     end
 
 
-
     it 'requests the data and sets status to :found with a positive response' do
       # Arrange - Build a stub which responds with the correct body
       response_factory = build(:soap_valid_acas_response, :valid)
       stub_request(:post, example_get_certificate_url).to_return status: 200,
-        headers: { 'Content-Type' => 'application/xml' },
-        body: response_factory.to_xml
+                                                                 headers: { 'Content-Type' => 'application/xml' },
+                                                                 body: response_factory.to_xml
 
       # Act - Call the service
       subject.call('anyid', user_id: "my user id", into: certificate)
-certificate
+      certificate
       # Assert - Validate the signature
       expect(subject.status).to be :found
     end
@@ -132,8 +134,8 @@ certificate
       # Arrange - Build a stub which responds with the correct body
       response_factory = build(:soap_valid_acas_response, :not_found)
       stub_request(:post, example_get_certificate_url).to_return status: 200,
-        headers: { 'Content-Type' => 'application/xml' },
-        body: response_factory.to_xml
+                                                                 headers: { 'Content-Type' => 'application/xml' },
+                                                                 body: response_factory.to_xml
 
       # Act - Call the service
       subject.call('anyid', user_id: "my user id", into: certificate)
@@ -148,8 +150,8 @@ certificate
       # Arrange - Build a stub which responds with the correct body
       response_factory = build(:soap_valid_acas_response, :invalid_certificate_format)
       stub_request(:post, example_get_certificate_url).to_return status: 200,
-        headers: { 'Content-Type' => 'application/xml' },
-        body: response_factory.to_xml
+                                                                 headers: { 'Content-Type' => 'application/xml' },
+                                                                 body: response_factory.to_xml
 
       # Act - Call the service
       subject.call('anyid', user_id: "my user id", into: certificate)
@@ -165,8 +167,8 @@ certificate
       # Arrange - Build a stub which responds with the correct body
       response_factory = build(:soap_valid_acas_response, :acas_server_error)
       stub_request(:post, example_get_certificate_url).to_return status: 200,
-        headers: { 'Content-Type' => 'application/xml' },
-        body: response_factory.to_xml
+                                                                 headers: { 'Content-Type' => 'application/xml' },
+                                                                 body: response_factory.to_xml
 
       # Act - Call the service
       subject.call('anyid', user_id: "my user id", into: certificate)
@@ -182,8 +184,8 @@ certificate
       # Arrange - Build a stub which responds with the correct body
       response_factory = build(:soap_valid_acas_response, :acas_server_error)
       stub_request(:post, example_get_certificate_url).to_return status: 200,
-        headers: { 'Content-Type' => 'application/xml' },
-        body: response_factory.to_xml
+                                                                 headers: { 'Content-Type' => 'application/xml' },
+                                                                 body: response_factory.to_xml
 
       # Act - Call the service
       subject.call('anyid', user_id: "my user id", into: certificate)

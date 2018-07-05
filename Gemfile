@@ -17,7 +17,6 @@ gem 'puma', '~> 3.7'
 gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-
 # Wisper is used as an in process pub/sub to decouple events / commands
 gem 'wisper', '2.0.0'
 
@@ -72,6 +71,6 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
-gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'ec84d28c46290f2ed42b619621b1fd242c72b204'
+gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'e81e7dfb24c23133c671631f193d3986fabbf132'
 
 gem 'sidekiq_ar_middleware', path: 'vendor/gems/sidekiq_ar_middleware'

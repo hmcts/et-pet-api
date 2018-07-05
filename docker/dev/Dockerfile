@@ -8,7 +8,9 @@ RUN apt-get update && apt-get install -y \
     npm \
     wget \
     zip \
-    net-tools
+    net-tools \
+    libmcrypt-dev \
+    mcrypt
 RUN bash -c "wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip && unzip ngrok-stable-linux-amd64.zip -d /bin/"
 RUN gem install bundler foreman
 RUN mkdir -p /app
