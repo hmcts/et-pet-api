@@ -54,7 +54,8 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
           message: response_factory.message,
           method_of_issue: response_factory.method_of_issue,
           date_of_issue: response_factory.date_of_issue.iso8601(3),
-          date_of_receipt: response_factory.date_of_receipt.iso8601(3)
+          date_of_receipt: response_factory.date_of_receipt.iso8601(3),
+          certificate_base64: Base64.encode64(File.read(response_factory.certificate_file))
         )
       end
 
