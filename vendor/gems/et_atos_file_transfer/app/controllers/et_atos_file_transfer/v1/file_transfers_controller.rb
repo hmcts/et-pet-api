@@ -14,6 +14,18 @@ module EtAtosFileTransfer
         send_file temp_file, filename: file.filename
       end
 
+      def delete
+        filename = params.require(:filename)
+        file = EtAtosFileTransfer::ExportedFile.find_by(filename: filename)
+        return not_found if file.nil?
+        file.destroy
+        head :no_content
+      end
+
+      def upload
+        head :ok
+      end
+
       private
 
       def not_found

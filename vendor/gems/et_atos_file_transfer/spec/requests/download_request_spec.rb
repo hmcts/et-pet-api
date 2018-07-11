@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.describe 'Download an atos zip file' do
+RSpec.describe 'Download an atos zip file', type: :request do
   it 'downloads a file' do
     # Arrange - Setup a zip file for downloading
     file_path = File.absolute_path(File.join('..', 'fixtures', 'example_zip_file.zip') ,__dir__)
