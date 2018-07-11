@@ -22,19 +22,12 @@ RSpec.describe 'Create Response Request', type: :request do
         text.parameterize(separator: '_', preserve_case: true)
       end
 
+      before do
+        stub_request(:any, /mocked_atos_server\.com/).to_rack(EtAtosFileTransfer::Engine)
+      end
+
       let(:staging_folder) do
-        session = create_session(app)
-        actions = {
-          list_action: lambda {
-            session.get '/atos_api/v1/filetransfer/list'
-            session.response.body
-          },
-          download_action: lambda { |zip_file|
-            session.get "/atos_api/v1/filetransfer/download/#{zip_file}"
-            session.response
-          }
-        }
-        EtApi::Test::StagingFolder.new actions
+        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com'
       end
     end
 

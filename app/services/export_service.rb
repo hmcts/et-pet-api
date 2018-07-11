@@ -3,7 +3,7 @@ require 'zip'
 # Exports all claims that have been marked for needing export
 class ExportService
 
-  def initialize(exported_file: ExportedFile,
+  def initialize(exported_file: EtAtosFileTransfer::ExportedFile,
     claim_exporter: ::ExportServiceExporters::ClaimExporter,
     response_exporter: ::ExportServiceExporters::ResponseExporter)
     self.claim_exporter = claim_exporter.new

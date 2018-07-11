@@ -1,13 +1,13 @@
 module EtApi
   module Test
     class StagingFolder
-      def initialize(list_action:, download_action:)
-        self.list_action = list_action
-        self.download_action = download_action
+      def initialize(url:)
+        self.base_url = url
       end
 
       def filenames
-        list_action.call.lines.map { |line| CGI.unescape(line.strip) }
+        resp = HTTParty.get("#{base_url}/v1/filetransfer/list")
+        resp.body.lines.map { |line| CGI.unescape(line.strip) }
       end
 
       def all_unzipped_filenames
@@ -23,8 +23,7 @@ module EtApi
       def download(zip_file, to:)
         File.open(to, 'w+') do |file|
           file.binmode
-          io = download_action.call(zip_file)
-          io.each do |chunk|
+          HTTParty.get("#{base_url}/v1/filetransfer/download/#{zip_file}") do |chunk|
             file.write(chunk)
           end
           file.rewind
@@ -69,7 +68,7 @@ module EtApi
 
       private
 
-      attr_accessor :list_action, :download_action
+      attr_accessor :base_url
 
       def copy_to_temp_file(file_path)
         tempfile = Tempfile.new
