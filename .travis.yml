@@ -10,6 +10,7 @@ addons:
   apt:
     packages:
       - docker-ce
+  postgresql: '9.3.5'
 env:
   global:
     - ENABLE_COVERAGE=true

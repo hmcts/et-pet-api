@@ -9,4 +9,5 @@ json.data do
   json.date_of_receipt certificate.date_of_receipt
   json.message certificate.message
   json.method_of_issue certificate.method_of_issue
+  json.certificate_base64 certificate.certificate_base64
 end
