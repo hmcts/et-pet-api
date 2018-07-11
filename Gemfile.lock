@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/ministryofjustice/et_atos_file_transfer.git
+  revision: 41dbae97246ed5e84e0013d3543c86a1e605f2cd
+  ref: 41dbae97246ed5e84e0013d3543c86a1e605f2cd
+  specs:
+    et_atos_file_transfer (0.1.0)
+      rails (~> 5.2)
+
+GIT
   remote: https://github.com/ministryofjustice/et_fake_acas_server.git
   revision: e81e7dfb24c23133c671631f193d3986fabbf132
   ref: e81e7dfb24c23133c671631f193d3986fabbf132
@@ -19,12 +27,6 @@ PATH
       rails (~> 5.2.0)
       ruby-mcrypt (~> 0.2)
       savon (~> 2.12)
-
-PATH
-  remote: vendor/gems/et_atos_file_transfer
-  specs:
-    et_atos_file_transfer (0.1.0)
-      rails (~> 5.2)
 
 PATH
   remote: vendor/gems/sidekiq_ar_middleware

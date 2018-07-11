@@ -16,10 +16,6 @@
 /vendor/gems/et_acas_api/spec/dummy/tmp/*
 !/vendor/gems/et_acas_api/spec/dummy/log/.keep
 !/vendor/gems/et_acas_api/spec/dummy/tmp/.keep
-/vendor/gems/et_atos_file_transfer/spec/dummy/log/*
-/vendor/gems/et_atos_file_transfer/spec/dummy/tmp/*
-!/vendor/gems/et_atos_file_transfer/spec/dummy/log/.keep
-!/vendor/gems/et_atos_file_transfer/spec/dummy/tmp/.keep
 
 .byebug_history
 .idea
