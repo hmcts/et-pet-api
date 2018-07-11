@@ -37,19 +37,12 @@ RSpec.describe 'CreateClaim Request', type: :request do
         end
       end
 
+      before do
+        stub_request(:any, /mocked_atos_server\.com/).to_rack(EtAtosFileTransfer::Engine)
+      end
+
       let(:staging_folder) do
-        session = create_session(app)
-        actions = {
-          list_action: lambda {
-            session.get '/atos_api/v1/filetransfer/list'
-            session.response.body
-          },
-          download_action: lambda { |zip_file|
-            session.get "/atos_api/v1/filetransfer/download/#{zip_file}"
-            session.response
-          }
-        }
-        EtApi::Test::StagingFolder.new actions
+        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com'
       end
 
       let(:output_filename_pdf) { "#{xml_as_hash.fee_group_reference}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.pdf" }
