@@ -6,10 +6,9 @@ cache:
       - tmp/parallel_runtime_log
 services:
   - postgresql
+  - docker
 addons:
-  apt:
-    packages:
-      - docker-ce
+  postgresql: '9.3.5'
 env:
   global:
     - ENABLE_COVERAGE=true
