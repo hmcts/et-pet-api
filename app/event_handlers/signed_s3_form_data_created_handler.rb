@@ -1,6 +1,6 @@
 class SignedS3FormDataCreatedHandler
   def handle(root)
-    post = find_or_create_bucket.presigned_post(key: key)
+    post = find_or_create_bucket.presigned_post(key: key, success_action_status: '201')
     root[:output_values] = {}
     root[:output_values][:fields] = post.fields
     root[:output_values][:url] = post.url
