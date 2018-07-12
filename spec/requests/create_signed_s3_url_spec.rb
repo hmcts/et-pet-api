@@ -27,7 +27,8 @@ RSpec.describe 'Create signed S3 url request', type: :request do
                                                                           'x-amz-credential': a_string_matching(%r{\A[^\/]*\/\d{8}\/us-east-1\/s3\/aws4_request\z}),
                                                                           'x-amz-date': match_regex(/\A\d{8}T\d{6}Z\z/),
                                                                           policy: instance_of(String),
-                                                                          'x-amz-signature': instance_of(String)
+                                                                          'x-amz-signature': instance_of(String),
+									  'success_action_status': '201'
 
     end
 
