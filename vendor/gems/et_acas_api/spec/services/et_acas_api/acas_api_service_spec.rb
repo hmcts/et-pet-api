@@ -4,8 +4,8 @@ RSpec.describe EtAcasApi::AcasApiService do
   let(:certificate) { EtAcasApi::Certificate.new }
   let(:logger) { instance_spy('ActiveSupport::Logger') }
   let(:rsa_certificate_contents) { Rails.configuration.et_acas_api.rsa_certificate }
-  # Common Setup - The url to the service which should match that in spec/acas_interface_support/wsdl.txt
-  let(:example_get_certificate_url) { "https://localhost/Lookup/ECService.svc" }
+  # Common Setup - The url to the service
+  let(:example_get_certificate_url) { Rails.configuration.et_acas_api.service_url }
 
   describe '#get_certificate' do
     it 'requests the data from the correct entry in the wsdl' do

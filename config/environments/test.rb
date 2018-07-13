@@ -48,6 +48,6 @@ Rails.application.configure do
   config.et_acas_api.acas_rsa_certificate = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__))
   config.et_acas_api.rsa_certificate = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__))
   config.et_acas_api.rsa_private_key = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__))
-  config.et_acas_api.wsdl_url = Rails.root.join('config', 'acas', 'test', 'wsdl.txt')
-
+  config.et_acas_api.server_time_zone = 'Europe/London'
+  config.et_acas_api.service_url = 'http://fakeservice.com/Lookup/ECService.svc'
 end
