@@ -71,6 +71,6 @@ Rails.application.configure do
   else
     config.et_acas_api.rsa_private_key = File.read(ENV.fetch('RSA_ET_PRIVATE_KEY', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__)))
   end
-  config.et_acas_api.wsdl_url = Rails.root.join('config', 'acas', 'development', 'wsdl.txt')
   config.et_acas_api.server_time_zone = 'Europe/London'
+  config.et_acas_api.service_url = ENV.get('ACAS_SERVICE_URL', 'https://testec.acas.org.uk/Lookup/ECService.svc')
 end

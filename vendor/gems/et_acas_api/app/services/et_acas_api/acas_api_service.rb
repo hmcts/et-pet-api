@@ -7,14 +7,14 @@ module EtAcasApi
   class AcasApiService
     attr_reader :status, :errors
 
-    def initialize(wsdl_url: Rails.configuration.et_acas_api.wsdl_url,
+    def initialize(service_url: Rails.configuration.et_acas_api.service_url,
       current_time: Time.find_zone!(Rails.configuration.et_acas_api.server_time_zone).now,
       acas_rsa_certificate_contents: Rails.configuration.et_acas_api.acas_rsa_certificate,
       rsa_certificate_contents: Rails.configuration.et_acas_api.rsa_certificate,
       rsa_private_key_contents: Rails.configuration.et_acas_api.rsa_private_key,
       logger: Rails.logger)
 
-      self.wsdl_url = wsdl_url
+      self.service_url = service_url
       self.current_time = current_time
       self.acas_rsa_certificate = OpenSSL::X509::Certificate.new acas_rsa_certificate_contents
       self.rsa_certificate = OpenSSL::X509::Certificate.new rsa_certificate_contents
@@ -120,7 +120,7 @@ module EtAcasApi
     end
 
     def client
-      @client ||= Savon.client wsdl: wsdl_url,
+      @client ||= Savon.client wsdl: wsdl_document,
         wsse_timestamp: true,
         wsse_signature:
           SoapSignature.new(
@@ -142,7 +142,11 @@ module EtAcasApi
         rsa_private_key.private_decrypt(Base64.decode64(response_data[:iv]), OpenSSL::PKey::RSA::PKCS1_OAEP_PADDING)
     end
 
-    attr_accessor :wsdl_url, :current_time, :acas_rsa_certificate,
+    def wsdl_document
+      ActionController::Base.render('et_acas_api/wsdl/wsdl.txt.erb', locals: { service_url: service_url })
+    end
+
+    attr_accessor :service_url, :current_time, :acas_rsa_certificate,
       :rsa_certificate, :rsa_private_key, :response_data, :logger
     attr_writer :status, :errors
   end

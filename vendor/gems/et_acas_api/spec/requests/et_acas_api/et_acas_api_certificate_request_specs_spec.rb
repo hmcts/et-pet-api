@@ -10,9 +10,8 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
   end
   let(:json_response) { JSON.parse(response.body).with_indifferent_access }
 
-  # Fake External ACAS - note the example_get_certificate_url must match what is specified in the wsdl.txt file
-  # which is in spec/acas_interface_support/wsdl.txt
-  let(:example_get_certificate_url) { "https://localhost/Lookup/ECService.svc" }
+  # Fake External ACAS - note the example_get_certificate_url must match what is specified in the rails config
+  let(:example_get_certificate_url) { Rails.configuration.et_acas_api.service_url }
 
 
   describe "GET /et_acas_api_certificate_request_specs" do
