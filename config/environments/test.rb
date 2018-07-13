@@ -50,4 +50,7 @@ Rails.application.configure do
   config.et_acas_api.rsa_private_key = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__))
   config.et_acas_api.server_time_zone = 'Europe/London'
   config.et_acas_api.service_url = 'http://fakeservice.com/Lookup/ECService.svc'
+
+  config.et_atos_api.username = 'atos'
+  config.et_atos_api.password = 'password'
 end

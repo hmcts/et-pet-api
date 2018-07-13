@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ministryofjustice/et_atos_file_transfer.git
-  revision: 41dbae97246ed5e84e0013d3543c86a1e605f2cd
-  ref: 41dbae97246ed5e84e0013d3543c86a1e605f2cd
+  revision: 2fb8d578adf937776f13f2a1dd0e798f4178852f
+  ref: 2fb8d578adf937776f13f2a1dd0e798f4178852f
   specs:
     et_atos_file_transfer (0.1.0)
       rails (~> 5.2)

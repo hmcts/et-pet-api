@@ -42,7 +42,9 @@ RSpec.describe 'CreateClaim Request', type: :request do
       end
 
       let(:staging_folder) do
-        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com'
+        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
+                                       username: Rails.configuration.et_atos_api.username,
+                                       password: Rails.configuration.et_atos_api.password
       end
 
       let(:output_filename_pdf) { "#{xml_as_hash.fee_group_reference}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.pdf" }

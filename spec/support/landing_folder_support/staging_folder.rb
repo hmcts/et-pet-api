@@ -1,12 +1,14 @@
 module EtApi
   module Test
     class StagingFolder
-      def initialize(url:)
+      def initialize(url:, username:, password:)
         self.base_url = url
+        self.username = username
+        self.password = password
       end
 
       def filenames
-        resp = HTTParty.get("#{base_url}/v1/filetransfer/list")
+        resp = HTTParty.get("#{base_url}/v1/filetransfer/list", basic_auth: { username: username, password: password })
         resp.body.lines.map { |line| CGI.unescape(line.strip) }
       end
 
@@ -23,7 +25,7 @@ module EtApi
       def download(zip_file, to:)
         File.open(to, 'w+') do |file|
           file.binmode
-          HTTParty.get("#{base_url}/v1/filetransfer/download/#{zip_file}") do |chunk|
+          HTTParty.get("#{base_url}/v1/filetransfer/download/#{zip_file}", basic_auth: { username: username, password: password }) do |chunk|
             file.write(chunk)
           end
           file.rewind
@@ -68,7 +70,7 @@ module EtApi
 
       private
 
-      attr_accessor :base_url
+      attr_accessor :base_url, :username, :password
 
       def copy_to_temp_file(file_path)
         tempfile = Tempfile.new
