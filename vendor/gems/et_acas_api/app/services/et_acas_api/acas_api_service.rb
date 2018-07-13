@@ -8,7 +8,7 @@ module EtAcasApi
     attr_reader :status, :errors
 
     def initialize(wsdl_url: Rails.configuration.et_acas_api.wsdl_url,
-      current_time: Time.now,
+      current_time: Time.find_zone!(Rails.configuration.et_acas_api.server_time_zone).now,
       acas_rsa_certificate_contents: Rails.configuration.et_acas_api.acas_rsa_certificate,
       rsa_certificate_contents: Rails.configuration.et_acas_api.rsa_certificate,
       rsa_private_key_contents: Rails.configuration.et_acas_api.rsa_private_key,

@@ -34,7 +34,7 @@ module Dummy
     config.et_acas_api.rsa_certificate = File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__))
     config.et_acas_api.rsa_private_key = File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__))
     config.et_acas_api.wsdl_url = File.absolute_path(File.join('..', '..', 'acas_interface_support', 'wsdl.txt'), __dir__)
-
+    config.et_acas_api.server_time_zone = 'Europe/London'
   end
 end
 
