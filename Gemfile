@@ -29,8 +29,8 @@ gem 'wisper', '2.0.0'
 gem 'sidekiq', '~> 5.1', '>= 5.1.3'
 gem 'sidekiq-cron', '~> 0.6', '>= 0.6.3'
 
-# ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service (not yet decided)
-gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: '2fb8d578adf937776f13f2a1dd0e798f4178852f'
+# ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service
+gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: 'ebfac4a7c77195a683227b0613c69fac7f79b863'
 
 # Rubyzip used to produce and test zip files
 gem 'rubyzip', '~> 1.2', '>= 1.2.1'
