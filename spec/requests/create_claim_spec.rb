@@ -70,7 +70,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       end
 
       def force_export_now
-        ClaimsExportWorker.new.perform
+        ClaimsExportJob.perform_now
       end
     end
 

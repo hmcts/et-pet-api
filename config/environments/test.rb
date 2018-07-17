@@ -18,6 +18,11 @@ Rails.application.configure do
     'Cache-Control' => "public, max-age=#{1.hour.seconds.to_i}"
   }
 
+  # Configure active job to always use test mode to avoid executing unescessary event handlers etc.. on tests that
+  # dont want it.
+
+  config.active_job.queue_adapter = :test
+
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
