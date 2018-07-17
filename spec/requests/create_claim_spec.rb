@@ -20,6 +20,20 @@ RSpec.describe 'CreateClaim Request', type: :request do
     end
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
 
+    shared_context 'with fake sidekiq' do
+      around do |example|
+        Sidekiq::Testing.fake! do
+          example.run
+          EventWorker.clear
+        end
+      end
+
+      def run_background_jobs
+        EventWorker.drain
+        Sidekiq::Worker.drain_all
+      end
+    end
+
     shared_context 'with setup for claims' do |xml_factory:|
       let(:xml_as_hash) { xml_factory.call }
       let(:xml_input_file) do
@@ -140,6 +154,17 @@ RSpec.describe 'CreateClaim Request', type: :request do
       end
     end
 
+    shared_examples 'a claim with no provided reference number' do
+      it 'sends an email to the claimant' do
+        # Act - Run the background jobs
+        run_background_jobs
+        # Assert - make sure an email has been sent to the claimant
+        claimant = normalize_xml_hash(xml_as_hash.as_json)[:claimants].first
+        expect(ActionMailer::Base.deliveries).to include(an_object_having_attributes: {to: claimant[:email_address]})
+        expect(json_response).to include feeGroupReference: xml_as_hash.fee_group_reference
+      end
+    end
+
     shared_examples 'a claim with single respondent' do
       it 'has no secondary respondents in the et1 txt file' do
         # Assert - look for the correct file in the landing folder - will be async
@@ -227,9 +252,11 @@ RSpec.describe 'CreateClaim Request', type: :request do
     end
 
     context 'with xml for single claimant and respondent, no representatives and no reference number' do
+      include_context 'with fake sidekiq'
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 0, fee_group_reference: nil) }
       include_examples 'any claim variation'
+      include_examples 'a claim with no provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with no representatives'

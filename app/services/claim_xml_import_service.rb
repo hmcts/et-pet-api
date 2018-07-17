@@ -50,10 +50,13 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
 
   def generate_reference_for(claim)
     resp = claim.respondents.first
+    claimant = claim.claimants.first
     postcode_for_reference = resp.work_address.try(:post_code) || resp.address.try(:post_code)
     reference = ReferenceService.next_number
     office = OfficeService.lookup_postcode(postcode_for_reference)
     claim.reference="#{office.code}#{reference}00"
+    EventService.publish('ClaimAutoReferenceCreated', claim.reference, office, claimant.email_address)
+
   end
 
   def converted_root_data
