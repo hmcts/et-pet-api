@@ -3,6 +3,7 @@ require_relative 'boot'
 require "rails"
 # Pick the frameworks you want:
 require "active_model/railtie"
+require "active_job/railtie"
 require "active_record/railtie"
 require "active_storage/engine"
 require "action_controller/railtie"
@@ -30,6 +31,7 @@ module EtApi
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
     config.s3_direct_upload_bucket = ENV.fetch('S3_DIRECT_UPLOAD_BUCKET', 'defaultbucket')
   end
 end

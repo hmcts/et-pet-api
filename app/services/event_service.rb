@@ -57,7 +57,7 @@ class EventService
 
   def handler_proc_for_async(handler)
     lambda do |*args|
-      EventWorker.perform_async(handler, *args) unless ignore_events
+      EventJob.perform_later(handler.name, *args) unless ignore_events
     end
   end
 

@@ -28,6 +28,9 @@ Rails.application.configure do
 
   config.action_controller.default_url_options = { host: 'example.com' }
 
+  # Configure active job to always use async as it is more like real life
+  config.active_job.queue_adapter = :async
+
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
 

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'sidekiq/testing'
 RSpec.describe 'Create Response Request', type: :request do
   describe 'POST /api/v2/respondents/build_response' do
     let(:default_headers) do
@@ -15,7 +14,7 @@ RSpec.describe 'Create Response Request', type: :request do
 
     shared_context 'with staging folder visibility' do
       def force_export_now
-        ClaimsExportWorker.new.perform
+        ClaimsExportJob.perform_now
       end
 
       def formatted_name_for_filename(text)
@@ -61,14 +60,27 @@ RSpec.describe 'Create Response Request', type: :request do
 
     shared_context 'with fake sidekiq' do
       around do |example|
-        Sidekiq::Testing.fake! do
+        begin
+          original_adapter = ActiveJob::Base.queue_adapter
+          ActiveJob::Base.queue_adapter = :test
+          ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+          ActiveJob::Base.queue_adapter.performed_jobs.clear
           example.run
-          EventWorker.clear
+        ensure
+          ActiveJob::Base.queue_adapter = original_adapter
         end
       end
 
       def run_background_jobs
-        EventWorker.drain
+        begin
+          previous_value = ActiveJob::Base.queue_adapter.perform_enqueued_jobs
+          ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
+          ActiveJob::Base.queue_adapter.enqueued_jobs.select {|j| j[:job] == EventJob }.each do |job|
+            job[:job].perform_now(*ActiveJob::Arguments.deserialize(job[:args]))
+          end
+        ensure
+          ActiveJob::Base.queue_adapter.perform_enqueued_jobs = previous_value
+        end
       end
     end
 
