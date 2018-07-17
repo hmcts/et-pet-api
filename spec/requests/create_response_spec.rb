@@ -27,7 +27,9 @@ RSpec.describe 'Create Response Request', type: :request do
       end
 
       let(:staging_folder) do
-        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com'
+        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
+                                       username: Rails.configuration.et_atos_api.username,
+                                       password: Rails.configuration.et_atos_api.password
       end
     end
 
@@ -142,11 +144,11 @@ RSpec.describe 'Create Response Request', type: :request do
         respondent_name = input_respondent_factory.name
         output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
         expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_contents_for(
-          response: input_response_factory,
-          respondent: input_respondent_factory,
-          representative: input_representative_factory,
-          errors: errors
-        ), -> { errors.join("\n") }
+                                                                      response: input_response_factory,
+                                                                      respondent: input_respondent_factory,
+                                                                      representative: input_representative_factory,
+                                                                      errors: errors
+                                                                    ), -> { errors.join("\n") }
       end
 
       it 'creates a valid pdf file the data filled in correctly' do
@@ -155,11 +157,11 @@ RSpec.describe 'Create Response Request', type: :request do
         respondent_name = input_respondent_factory.name
         output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
         expect(staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
-          response: input_response_factory,
-          respondent: input_respondent_factory,
-          representative: input_representative_factory,
-          errors: errors
-        ), -> { errors.join("\n") }
+                                                                      response: input_response_factory,
+                                                                      respondent: input_respondent_factory,
+                                                                      representative: input_representative_factory,
+                                                                      errors: errors
+                                                                    ), -> { errors.join("\n") }
       end
     end
 
@@ -172,7 +174,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
     end
@@ -181,7 +183,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
     end
@@ -190,7 +192,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
     end
@@ -200,7 +202,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
 

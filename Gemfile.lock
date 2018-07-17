@@ -1,10 +1,12 @@
 GIT
   remote: https://github.com/ministryofjustice/et_atos_file_transfer.git
-  revision: 41dbae97246ed5e84e0013d3543c86a1e605f2cd
-  ref: 41dbae97246ed5e84e0013d3543c86a1e605f2cd
+  revision: ebfac4a7c77195a683227b0613c69fac7f79b863
+  ref: ebfac4a7c77195a683227b0613c69fac7f79b863
   specs:
     et_atos_file_transfer (0.1.0)
+      aws-sdk-s3 (~> 1.13)
       rails (~> 5.2)
+      unicorn (~> 5.4)
 
 GIT
   remote: https://github.com/ministryofjustice/et_fake_acas_server.git
