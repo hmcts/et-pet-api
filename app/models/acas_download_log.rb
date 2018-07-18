@@ -1,0 +1,2 @@
+class AcasDownloadLog < ApplicationRecord
+end

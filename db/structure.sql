@@ -27,6 +27,41 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: acas_download_logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.acas_download_logs (
+    id bigint NOT NULL,
+    user_id character varying,
+    certificate_number character varying,
+    method_of_issue character varying,
+    message character varying,
+    description character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: acas_download_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.acas_download_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: acas_download_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.acas_download_logs_id_seq OWNED BY public.acas_download_logs.id;
+
+
+--
 -- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -970,6 +1005,13 @@ ALTER SEQUENCE public.uploaded_files_id_seq OWNED BY public.uploaded_files.id;
 
 
 --
+-- Name: acas_download_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.acas_download_logs ALTER COLUMN id SET DEFAULT nextval('public.acas_download_logs_id_seq'::regclass);
+
+
+--
 -- Name: active_admin_comments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1149,6 +1191,14 @@ ALTER TABLE ONLY public.unique_references ALTER COLUMN id SET DEFAULT nextval('p
 --
 
 ALTER TABLE ONLY public.uploaded_files ALTER COLUMN id SET DEFAULT nextval('public.uploaded_files_id_seq'::regclass);
+
+
+--
+-- Name: acas_download_logs acas_download_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.acas_download_logs
+    ADD CONSTRAINT acas_download_logs_pkey PRIMARY KEY (id);
 
 
 --
@@ -1749,6 +1799,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180511160146'),
 ('20180511165627'),
 ('20180626154920'),
-('20180628143738');
+('20180628143738'),
+('20180718145321');
 
 
