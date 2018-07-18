@@ -1,2 +1,0 @@
-class AcasDownloadLog < ApplicationRecord
-end
