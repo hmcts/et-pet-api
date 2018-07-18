@@ -37,9 +37,10 @@ module EtAcasApi
       add_errors
       log_errors(id: id)
       build(certificate: into)
-      log_to_db(id: id, certificate: into, user_id: user_id)
     rescue Net::OpenTimeout => ex
       set_error_status_for(ex, id: id)
+    ensure
+      log_to_db(id: id, certificate: into, user_id: user_id)
     end
 
     private
