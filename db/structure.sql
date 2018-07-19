@@ -548,6 +548,41 @@ ALTER SEQUENCE public.claims_id_seq OWNED BY public.claims.id;
 
 
 --
+-- Name: et_acas_api_download_logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.et_acas_api_download_logs (
+    id bigint NOT NULL,
+    user_id character varying,
+    certificate_number character varying,
+    method_of_issue character varying,
+    message character varying,
+    description character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: et_acas_api_download_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.et_acas_api_download_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: et_acas_api_download_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.et_acas_api_download_logs_id_seq OWNED BY public.et_acas_api_download_logs.id;
+
+
+--
 -- Name: exported_files; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1075,6 +1110,13 @@ ALTER TABLE ONLY public.claims ALTER COLUMN id SET DEFAULT nextval('public.claim
 
 
 --
+-- Name: et_acas_api_download_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.et_acas_api_download_logs ALTER COLUMN id SET DEFAULT nextval('public.et_acas_api_download_logs_id_seq'::regclass);
+
+
+--
 -- Name: exported_files id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1277,6 +1319,14 @@ ALTER TABLE ONLY public.claimants
 
 ALTER TABLE ONLY public.claims
     ADD CONSTRAINT claims_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: et_acas_api_download_logs et_acas_api_download_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.et_acas_api_download_logs
+    ADD CONSTRAINT et_acas_api_download_logs_pkey PRIMARY KEY (id);
 
 
 --
@@ -1749,6 +1799,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180511160146'),
 ('20180511165627'),
 ('20180626154920'),
-('20180628143738');
+('20180628143738'),
+('20180718155326');
 
 

@@ -39,9 +39,37 @@ module EtAcasApi
       build(certificate: into)
     rescue Net::OpenTimeout => ex
       set_error_status_for(ex, id: id)
+    ensure
+      log_to_db(id: id, certificate: into, user_id: user_id)
     end
 
     private
+
+    def log_to_db(id:, certificate:, user_id:)
+      case status
+      when :found
+        DownloadLog.create! certificate_number: id,
+          message: certificate.message,
+          description: 'Certificate Search Success',
+          method_of_issue: certificate.method_of_issue,
+          user_id: user_id
+      when :not_found
+        DownloadLog.create! certificate_number: id,
+          description: 'Certificate Search Failure',
+          user_id: user_id,
+          message: 'Certificate Not Found'
+      when :invalid_certificate_format
+        DownloadLog.create! certificate_number: id,
+          description: 'Certificate Search Failure',
+          user_id: user_id,
+          message: 'Invalid Certificate Format'
+      when :acas_server_error
+        DownloadLog.create! certificate_number: id,
+          description: 'Certificate Search Failure',
+          user_id: user_id,
+          message: 'Internal Server Error'
+      end
+    end
 
     def set_error_status_for(ex, id:)
       self.status = :acas_server_error
