@@ -20,7 +20,7 @@ RSpec.describe BuildResponseCommand do
       expect(root_object.case_number).to eql '2234567/2016'
     end
 
-    it 'creates a new reference and stores it in the root object', db_clean: false do
+    it 'creates a new reference and stores it in the root object' do
       # Act
       command.apply(root_object)
 

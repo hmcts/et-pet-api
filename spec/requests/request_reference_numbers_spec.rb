@@ -44,7 +44,7 @@ RSpec.describe "RequestReferenceNumbers", type: :request do
                                        'ETOfficeTelephone' => '020 7273 8603'
     end
 
-    it 'returns the correct reference number', db_clean: false do
+    it 'returns the correct reference number' do
       # Act - Send a valid post code which should be found
       post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", headers: default_headers
 
