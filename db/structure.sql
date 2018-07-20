@@ -307,7 +307,10 @@ CREATE TABLE public.admin_users (
     permission_names character varying[],
     is_admin boolean DEFAULT false,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    username character varying,
+    name character varying,
+    department character varying
 );
 
 
@@ -1800,6 +1803,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180511165627'),
 ('20180626154920'),
 ('20180628143738'),
-('20180718155326');
+('20180718155326'),
+('20180719065824'),
+('20180719102805');
 
 
