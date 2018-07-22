@@ -310,7 +310,10 @@ CREATE TABLE public.admin_users (
     updated_at timestamp without time zone NOT NULL,
     username character varying,
     name character varying,
-    department character varying
+    department character varying,
+    failed_attempts integer DEFAULT 0 NOT NULL,
+    unlock_token character varying,
+    locked_at timestamp without time zone
 );
 
 
@@ -1513,6 +1516,20 @@ CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_us
 
 
 --
+-- Name: index_admin_users_on_unlock_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_admin_users_on_unlock_token ON public.admin_users USING btree (unlock_token);
+
+
+--
+-- Name: index_admin_users_on_username; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_admin_users_on_username ON public.admin_users USING btree (username);
+
+
+--
 -- Name: index_claim_claimants_on_claim_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1805,6 +1822,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180628143738'),
 ('20180718155326'),
 ('20180719065824'),
-('20180719102805');
+('20180719102805'),
+('20180719142155'),
+('20180719143301'),
+('20180720100511'),
+('20180721164447'),
+('20180722080012');
 
 
