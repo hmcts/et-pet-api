@@ -20,7 +20,7 @@ class ResponseExportService
   #
   # @return [UploadedFile] The pdf file
   def export_pdf
-    response.uploaded_files.detect { |f| f.filename == 'et3_atos_export.pdf' }
+    response.pdf_file
   end
 
   # Exports the text file for use by ExportService

@@ -18,6 +18,10 @@ class Response < ApplicationRecord
     ai_file.present?
   end
 
+  def pdf_file
+    uploaded_files.detect { |file| file.filename == 'et3_atos_export.pdf' }
+  end
+
   private
 
   def ai_file

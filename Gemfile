@@ -47,6 +47,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.7'
   gem 'simplecov', '~> 0.16.1'
   gem 'dotenv-rails', '~> 2.4'
+  gem 'site_prism', '~> 2.15', '>= 2.15.1'
 end
 
 group :development do

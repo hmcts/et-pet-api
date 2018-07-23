@@ -10,3 +10,4 @@ production:
   - export_claims
   - default
   - low
+  - mailers
