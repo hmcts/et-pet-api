@@ -41,6 +41,10 @@ module EtApi
           mail.subject == 'Your Response to Employment Tribunal claim online form receipt'
         end
 
+        def has_correct_to_address_for?(input_data) # rubocop:disable Naming/PredicateName
+          mail.to.include?(input_data.email_receipt)
+        end
+
         def office_name
           re = /It has been forwarded to the (.*) office/
           office_name_line.match(re)[1]
@@ -51,6 +55,7 @@ module EtApi
           aggregate_failures 'validating content' do
             expect(self.reference).to eql reference
             expect(has_correct_subject?).to be true
+            expect(has_correct_to_address_for?(input_data)).to be true
             expect(office_name).to eql office.name
             expect(office_address).to eql office.address
             expect(office_telephone).to eql office.telephone

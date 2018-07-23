@@ -3,7 +3,7 @@ class ResponseCreatedHandler
     ResponseFileBuilderService.new(response).call
     ResponseExportService.new(response).to_be_exported
     response.save
-    send_email(response) if response.try(:respondent).try(:email_address).present?
+    send_email(response) if response.email_receipt.present?
   end
 
   private
