@@ -14,7 +14,6 @@ Rails.application.routes.draw do
       end
     end
   end
-  mount EtAtosFileTransfer::Engine, at: '/atos_api'
   mount EtAcasApi::Engine => "/et_acas_api"
 
   get '/ping' => 'status#ping'

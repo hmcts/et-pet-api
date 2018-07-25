@@ -8,7 +8,7 @@ module EtApi
       end
 
       def filenames
-        resp = HTTParty.get("#{base_url}/v1/filetransfer/list", basic_auth: { username: username, password: password })
+        resp = HTTParty.get("#{base_url}/list", basic_auth: { username: username, password: password })
         resp.body.lines.map { |line| CGI.unescape(line.strip) }
       end
 
@@ -25,7 +25,7 @@ module EtApi
       def download(zip_file, to:)
         File.open(to, 'w+') do |file|
           file.binmode
-          HTTParty.get("#{base_url}/v1/filetransfer/download/#{zip_file}", basic_auth: { username: username, password: password }) do |chunk|
+          HTTParty.get("#{base_url}/download/#{zip_file}", basic_auth: { username: username, password: password }) do |chunk|
             file.write(chunk)
           end
           file.rewind
