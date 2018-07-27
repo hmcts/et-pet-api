@@ -1,0 +1,21 @@
+module Api
+  module V2
+    module References
+      class CreateReferencesController < ::ApplicationController
+        def create
+          root_object = {}
+          result = CommandService.dispatch root_object: root_object, data: {}, **create_params.to_h.symbolize_keys
+          EventService.publish('ReferenceCreated', root_object, command: result)
+          render locals: { result: result, data: root_object },
+                 status: (result.valid? ? :created : :unprocessable_entity)
+        end
+
+        private
+
+        def create_params
+          params.permit(:uuid, :command, data: {})
+        end
+      end
+    end
+  end
+end

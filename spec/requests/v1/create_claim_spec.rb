@@ -56,7 +56,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       let(:input_files) do
         files = xml_as_hash.files.map(&:filename)
         files.inject({}) do |acc, filename|
-          acc[filename] = File.absolute_path(File.join('..', '..', 'fixtures', filename), __FILE__)
+          acc[filename] = File.absolute_path(File.join('..', '..', '..', 'fixtures', filename), __FILE__)
           acc
         end
       end
