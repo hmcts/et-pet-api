@@ -33,6 +33,9 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration[5.1]
       # t.datetime :locked_at
 
 
+      ## Cached values from permissions
+      t.string :permission_names, array: true
+      t.boolean :is_admin, default: false
       t.timestamps null: false
     end
 

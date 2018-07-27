@@ -1,0 +1,26 @@
+version: '3'
+services:
+  dev:
+    build:
+      context: .
+    links:
+      - db
+      - minio
+    environment:
+      RAILS_ENV:
+      DB_HOST: db
+      DB_USERNAME: postgres
+      BUNDLE_WITHOUT: production
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DATABASE: 1
+      S3_DIRECT_UPLOAD_BUCKET: 'etapidirectbucket'
+
+    volumes:
+      - ../..:/app
+      - rubygems_cache:/usr/local/bundle
+    ports:
+      - ${PORT:-0}:8080
+    networks:
+      - api
+    command: bash -c "bundle && bundle exec rake db:create db:migrate && foreman start"

@@ -1,0 +1,13 @@
+---
+:concurrency: 5
+:verbose: true
+staging:
+  :concurrency: 10
+production:
+  :concurrency: 20
+:queues:
+  - events
+  - export_claims
+  - default
+  - low
+  - mailers

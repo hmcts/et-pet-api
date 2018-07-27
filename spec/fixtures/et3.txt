@@ -1,0 +1,53 @@
+ET3 - Response to an Employment Tribunal claim
+
+For Office Use
+
+Received at ET: 18/03/2014
+Case Number: 1234567/2014
+Code:
+Initials:
+
+Online Submission Reference: 241000085500
+
+FormVersion: 2
+
+## Intro:
+
+**In the claim of:
+**Case number: 1234567/2014
+**Tribunal office: manchesteret@hmcts.gsi.gov.uk
+
+## Section 1: Claimant's name
+
+~1.1 Claimant's name:
+
+## Section 2: Your organisation's details
+
+~2.1 Name of your organisation: ewer
+Contact name:
+~2.2 Address
+Address 1: wer
+Address 2: wre
+Address 3: er
+Address 4:
+Postcode: b54uu
+~2.3 Phone number:
+Mobile number:
+~2.4 How would you prefer us to communicate with you?:
+E-mail address:
+
+## Section 7: Your representative
+
+~7.1 Representative's name:
+~7.2 Name of the representative's organisation:
+Representative's Address 1:
+Representative's Address 2:
+Representative's Address 3:
+Representative's Address 4:
+Representative's Postcode:
+~7.4 Representative's Phone number:
+~7.5 Representative's Reference:
+~7.6 How would they prefer us to communicate with them?:
+Representative's E-mail address:
+
+**Version: Jadu 1.0

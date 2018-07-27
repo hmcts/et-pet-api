@@ -14,15 +14,13 @@ Rails.application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
-  # Attempt to read encrypted secrets from `config/secrets.yml.enc`.
-  # Requires an encryption key in `ENV["RAILS_MASTER_KEY"]` or
-  # `config/secrets.yml.key`.
-  config.read_encrypted_secrets = true
+  # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
+  # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
+  # config.require_master_key = true
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
-
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = 'http://assets.example.com'
@@ -31,6 +29,8 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
+  # Store uploaded files on the local file system (see config/storage.yml for options)
+  config.active_storage.service = :amazon
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
@@ -40,7 +40,7 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -48,7 +48,20 @@ Rails.application.configure do
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "et-api_#{Rails.env}"
+  config.active_job.queue_adapter = :sidekiq
+
   config.action_mailer.perform_caching = false
+  config.action_mailer.default_options = { from: 'no-reply@digital.justice.gov.uk' }
+
+  config.action_mailer.smtp_settings = {
+    address: ENV['SMTP_HOSTNAME'],
+    port: ENV['SMTP_PORT'],
+    user_name: ENV['SMTP_USERNAME'],
+    password: ENV['SMTP_PASSWORD'],
+    authentication: :login,
+    enable_starttls_auto: true
+  }
+
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -76,4 +89,28 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # These settings for acas api are a work in progress working alongside the devops team.
+  # For now, they will default to the test environment settings if not specified otherwise the app wont boot.
+  # Once the environment variables are in place in the deployment, these defaults can be removed.
+  # @TODO Check the status of this
+  if ENV.key?('RSA_ACAS_PUBLIC_CERTIFICATE_BASE64')
+    config.et_acas_api.acas_rsa_certificate = Base64.decode64(ENV['RSA_ACAS_PUBLIC_CERTIFICATE_BASE64'].gsub(/\\n/, "\n"))
+  else
+    config.et_acas_api.acas_rsa_certificate = File.read(ENV.fetch('RSA_ACAS_PUBLIC_CERTIFICATE', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__)))
+  end
+
+  if ENV.key?('RSA_ET_PUBLIC_CERTIFICATE_BASE64')
+    config.et_acas_api.rsa_certificate = Base64.decode64(ENV.fetch('RSA_ET_PUBLIC_CERTIFICATE_BASE64').gsub(/\\n/, "\n"))
+  else
+    config.et_acas_api.rsa_certificate = File.read(ENV.fetch('RSA_ET_PUBLIC_CERTIFICATE', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__)))
+  end
+
+  if ENV.key?('RSA_ET_PRIVATE_KEY_BASE64')
+    config.et_acas_api.rsa_private_key = Base64.decode64(ENV.fetch('RSA_ET_PRIVATE_KEY_BASE64').gsub(/\\n/, "\n"))
+  else
+    config.et_acas_api.rsa_private_key = File.read(ENV.fetch('RSA_ET_PRIVATE_KEY', File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__)))
+  end
+  config.et_acas_api.server_time_zone = 'Europe/London'
+  config.et_acas_api.service_url = ENV.fetch('ACAS_SERVICE_URL', 'https://testec.acas.org.uk/Lookup/ECService.svc')
 end
