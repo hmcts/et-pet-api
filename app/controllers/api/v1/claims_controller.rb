@@ -14,11 +14,7 @@ module Api
         result = CommandService.dispatch root_object: root_object, data: {}, **command_data
         EventService.publish('ClaimFromXmlCreated', root_object, command: result)
         render locals: { result: result, data: root_object },
-          status: (result.valid? ? :created : :unprocessable_entity)
-
-
-
-        #render locals: { claim: claim }, status: :created
+               status: (result.valid? ? :created : :unprocessable_entity)
       end
 
       private

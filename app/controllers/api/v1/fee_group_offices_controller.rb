@@ -11,7 +11,7 @@ module Api
         result = CommandService.dispatch root_object: root_object, data: {}, **command_data
         EventService.publish('ReferenceCreated', root_object, command: result)
         render locals: { result: result, data: root_object },
-          status: (result.valid? ? :created : :unprocessable_entity)
+               status: (result.valid? ? :created : :unprocessable_entity)
       end
 
       private

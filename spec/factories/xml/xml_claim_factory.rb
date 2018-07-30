@@ -86,7 +86,7 @@ FactoryBot.define do
     case_type 'Single'
     jurisdiction '2'
     office_code '22'
-    date_of_receipt_et Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S%z')
+    date_of_receipt_et { Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S%z') }
     remission_indicated 'NotRequested'
     administrator '-1'
     association :payment, :zero, factory: :xml_claim_payment
