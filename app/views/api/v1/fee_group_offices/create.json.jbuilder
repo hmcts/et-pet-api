@@ -1,5 +1,5 @@
 json.status "ok"
-json.fgr "#{data[:office].code}#{data[:reference]}00"
+json.fgr data[:reference]
 json.ETOfficeAddress data[:office].address
 json.ETOfficeCode data[:office].code
 json.ETOfficeName data[:office].name

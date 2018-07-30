@@ -40,6 +40,7 @@ RSpec.describe ClaimXmlImportService do
 
   describe 'import' do
     subject(:service) { described_class.new(simple_example_data, file_builder_service: mock_file_builder_class).tap { |s| s.uploaded_files = simple_example_input_files } }
+
     let(:destination_claim) { Claim.new }
 
     context 'with single claimant, respondent and representative' do
