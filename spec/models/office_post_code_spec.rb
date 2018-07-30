@@ -26,6 +26,14 @@ RSpec.describe OfficePostCode, type: :model do
       expect(office_post_code).to have_attributes(postcode: 'SW1H')
     end
 
+    it 'returns the correct office post code with a full post code given with space seperating and in lower case' do
+      # Arrange
+      office_post_code = OfficePostCode.with_partial_match('sw1h 9st').first
+
+      # Assert - according to the seed data, the best match is SW1H
+      expect(office_post_code).to have_attributes(postcode: 'SW1H')
+    end
+
     it 'returns the correct office post code with a full post code given without space seperating' do
       # Arrange
       office_post_code = OfficePostCode.with_partial_match('SW1H9ST').first
