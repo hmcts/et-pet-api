@@ -77,14 +77,16 @@ FactoryBot.define do
     end
 
     association :document_id, factory: :xml_claim_document_id
-    fee_group_reference '222000000300'
+    sequence :fee_group_reference do |idx|
+      "#{2220000000 + idx}00"
+    end
     submission_urn 'J704-ZK5E'
     current_quantity_of_claimants '1'
     submission_channel 'Web'
     case_type 'Single'
     jurisdiction '2'
     office_code '22'
-    date_of_receipt_et '2018-03-29T16:46:26+01:00'
+    date_of_receipt_et Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S%z')
     remission_indicated 'NotRequested'
     administrator '-1'
     association :payment, :zero, factory: :xml_claim_payment
