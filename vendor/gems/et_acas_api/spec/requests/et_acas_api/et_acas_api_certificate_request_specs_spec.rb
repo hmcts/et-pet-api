@@ -67,7 +67,7 @@ RSpec.describe "CertificateRequestSpecs", type: :request do
       it 'stores found response in download log' do
         get '/et_acas_api/certificates/R000100/00/14', headers: default_headers
         log = EtAcasApi::DownloadLog.find_by!(certificate_number: 'R000100/00/14')
-        expect(log).to have_attributes message: 'Certificate found',
+        expect(log).to have_attributes message: 'CertificateFound',
           description: 'Certificate Search Success',
           method_of_issue: 'Email',
           user_id: 'my_user'
