@@ -7,15 +7,27 @@ module Api
     # It is for compatibility with the old JADU system and will be deprecated when we move to V2
     class FeeGroupOfficesController < ::ApplicationController
       def create
-        reference = ReferenceService.next_number
-        office = OfficeService.lookup_postcode(my_params[:postcode])
-        render locals: { reference: reference, office: office }, status: :created
+        root_object = {}
+        result = CommandService.dispatch root_object: root_object, data: {}, **command_data
+        EventService.publish('ReferenceCreated', root_object, command: result)
+        render locals: { result: result, data: root_object },
+               status: (result.valid? ? :created : :unprocessable_entity)
       end
 
       private
 
       def my_params
         params.permit(:postcode)
+      end
+
+      def command_data
+        {
+          command: 'CreateReference',
+          uuid: SecureRandom.uuid,
+          data: {
+            'post_code' => my_params['postcode']
+          }
+        }
       end
     end
   end

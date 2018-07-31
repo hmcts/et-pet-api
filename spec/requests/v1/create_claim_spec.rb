@@ -10,7 +10,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
   #
   # accept application/json
   #
-  describe 'POST /api/v1/new-claim' do
+  describe 'POST /api/v1/new-claim', db_clean: true do
     let(:errors) { [] }
     let(:default_headers) do
       {
@@ -56,7 +56,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       let(:input_files) do
         files = xml_as_hash.files.map(&:filename)
         files.inject({}) do |acc, filename|
-          acc[filename] = File.absolute_path(File.join('..', '..', 'fixtures', filename), __FILE__)
+          acc[filename] = File.absolute_path(File.join('..', '..', '..', 'fixtures', filename), __FILE__)
           acc
         end
       end
@@ -146,6 +146,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
       it 'has the primary claimant in the et1 txt file' do
         # Assert - look for the correct file in the landing folder - will be async
+        #
         claimant = normalize_xml_hash(xml_as_hash.as_json)[:claimants].first
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
       end

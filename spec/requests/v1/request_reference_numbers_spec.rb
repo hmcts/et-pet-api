@@ -37,7 +37,7 @@ RSpec.describe "RequestReferenceNumbers", type: :request do
       # Assert - Make sure the response contains the correct data
       # apart from the fgr which is tested independently.
       expect(json_response).to include 'status' => 'ok',
-                                       'fgr' => an_instance_of(String),
+                                       'fgr' => a_string_matching(/\A\d{12}\z/),
                                        'ETOfficeCode' => 22,
                                        'ETOfficeName' => 'London Central',
                                        'ETOfficeAddress' => 'Victory House, 30-34 Kingsway, London WC2B 6EX',
@@ -49,13 +49,13 @@ RSpec.describe "RequestReferenceNumbers", type: :request do
       post '/api/v1/fgr-et-office', params: "postcode=SW1H%209ST", headers: default_headers
 
       # Assert - Make sure the response contains fgr
-      expect(json_response['fgr']).to match_regex(/\A22(\d{8,})00\z/)
+      expect(json_response['fgr']).to match_regex(/\A22(\d{8})00\z/)
     end
 
     it "returns the correct response if the office is not found" do
       post '/api/v1/fgr-et-office', params: "postcode=FF1 1ZZ", headers: default_headers
       expect(json_response).to include 'status' => 'ok',
-                                       'fgr' => an_instance_of(String),
+                                       'fgr' => a_string_matching(/\A\d{12}\z/),
                                        'ETOfficeCode' => 99,
                                        'ETOfficeName' => 'Default',
                                        'ETOfficeAddress' => 'Alexandra House, 14-22 The Parsonage, Manchester M3 2JA',
