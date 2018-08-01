@@ -25,7 +25,7 @@ RSpec.describe 'GetAcasCertificate Request', type: :request do
         claimant_name: 'Claimant Name',
         respondent_name: 'Respondent Name',
         certificate_number: 'R000100/00/14',
-        message: 'Certificate found',
+        message: 'CertificateFound',
         method_of_issue: 'Email',
         date_of_issue: "2017-12-01T12:00:00.000Z",
         date_of_receipt: "2017-01-01T12:00:00.000Z"
