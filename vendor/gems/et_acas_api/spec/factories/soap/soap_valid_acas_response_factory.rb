@@ -54,7 +54,7 @@ FactoryBot.define do
       date_of_issue { Time.zone.parse('3/3/2014 10:14:01') }
       date_of_receipt { Time.zone.parse('3/3/2014 10:14:31') }
       certificate_number 'R000080/18/59'
-      message 'Certificate found'
+      message 'CertificateFound'
       method_of_issue 'Email'
       respondent_name 'Respondent Name'
       response_code '100'

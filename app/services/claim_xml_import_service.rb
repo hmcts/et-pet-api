@@ -36,8 +36,10 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
   # Performs the import
   #
   # @return [Claim] The imported claim
-  def import
-    claim = Claim.new(converted_root_data.merge(converted_associated_data))
+  # @param [Claim] into The claim to import the data into
+  def import(into:)
+    claim = into
+    claim.attributes = converted_root_data.merge(converted_associated_data)
     generate_reference_for(claim) if claim.reference.blank?
     file_builder_service.new(claim).call
     rename_csv_file(claim: claim)

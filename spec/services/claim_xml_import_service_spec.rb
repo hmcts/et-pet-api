@@ -41,14 +41,16 @@ RSpec.describe ClaimXmlImportService do
   describe 'import' do
     subject(:service) { described_class.new(simple_example_data, file_builder_service: mock_file_builder_class).tap { |s| s.uploaded_files = simple_example_input_files } }
 
+    let(:destination_claim) { Claim.new }
+
     context 'with single claimant, respondent and representative' do
       it 'creates a new claim' do
-        expect { service.import }.to change(Claim, :count).by(1)
+        expect { service.import(into: destination_claim) }.to change(Claim, :count).by(1)
       end
 
       it 'converts the root data correctly' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
         claim = Claim.where(reference: reference).first
@@ -65,7 +67,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'converts the claimants correctly' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
         claim = Claim.where(reference: reference).first
@@ -89,7 +91,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'converts the respondents correctly' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
         claim = Claim.where(reference: reference).first
@@ -116,7 +118,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'converts the representatives correctly' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
         claim = Claim.where(reference: reference).first
@@ -139,7 +141,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'converts the files correctly' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
 
@@ -151,7 +153,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'stores the xml in a file' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
         claim = Claim.find_by(reference: reference)
@@ -161,7 +163,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'stores the xml as a byte for byte copy' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
         claim = Claim.find_by(reference: reference)
@@ -171,7 +173,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'calls the file builder to build the rest' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
         aggregate_failures 'ensure file builder was called with a claim' do
@@ -200,7 +202,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'converts the root data correctly' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
         claim = Claim.where(reference: reference).first
@@ -217,7 +219,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'imports all claimants' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
         claim = Claim.where(reference: reference).first
@@ -236,7 +238,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'converts the files correctly with the csv renamed' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
 
@@ -252,7 +254,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'calls the file builder to build the rest' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
         aggregate_failures 'ensure file builder was called with a claim' do
@@ -281,7 +283,7 @@ RSpec.describe ClaimXmlImportService do
 
       it 'converts the files correctly after renaming the rtf file' do
         # Act
-        service.import
+        service.import(into: destination_claim)
 
         # Assert
 

@@ -28,6 +28,8 @@ gem 'wisper', '2.0.0'
 
 gem 'sidekiq', '~> 5.1', '>= 5.1.3'
 gem 'sidekiq-cron', '~> 0.6', '>= 0.6.3'
+gem 'sidekiq-failures', '~> 1.0'
+gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
@@ -68,11 +70,11 @@ group :test do
   gem 'faker', '~> 1.8', '>= 1.8.7'
   gem 'webmock', '~> 3.4', '>= 3.4.1'
   gem 'httparty', '~> 0.16.2'
+  gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'eeaf6c89ce645e02d0f0a857aada546e1687d7ce'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
-gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'e81e7dfb24c23133c671631f193d3986fabbf132'
 

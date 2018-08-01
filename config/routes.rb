@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       namespace :respondents do
         post "build_response" => 'build_responses#create'
       end
+      namespace :references do
+        post "create_reference" => 'create_references#create'
+      end
       namespace :s3 do
         post 'create_signed_url' => 'signed_urls#create'
       end
