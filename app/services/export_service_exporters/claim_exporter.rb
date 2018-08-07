@@ -36,7 +36,9 @@ module ExportServiceExporters
     def export_file(claim:, to:, prefix:, ext:, type:)
       stored_file = claim_export_service.new(claim).send(:"export_#{type}")
       claimant = claim.primary_claimant
-      fn = "#{claim.reference}_#{prefix}_#{claimant.first_name.tr(' ', '_')}_#{claimant.last_name}.#{ext}"
+      first = replacing_special claimant.first_name
+      last = replacing_special claimant.last_name
+      fn = "#{claim.reference}_#{prefix}_#{first}_#{last}.#{ext}"
       stored_file.download_blob_to File.join(to, fn)
     end
 
@@ -46,6 +48,10 @@ module ExportServiceExporters
 
     def claim_has_rtf?(claim:)
       claim.uploaded_files.any? { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.rtf') }
+    end
+
+    def replacing_special(text)
+      text.gsub(/\s/, '_').gsub(/\W/, '')
     end
 
     attr_accessor :claim_export_service, :claims_to_export, :exports

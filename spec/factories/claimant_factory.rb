@@ -201,5 +201,11 @@ FactoryBot.define do
       gender ''
       date_of_birth { Date.parse('04/10/1998') }
     end
+
+    trait :mr_na_o_malley do
+      darien_bahringer
+      first_name 'n/a'
+      last_name "O'Malley"
+    end
   end
 end

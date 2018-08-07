@@ -33,7 +33,7 @@ module ExportServiceExporters
 
     def export_file(response:, to:, ext:, type:)
       stored_file = response_export_service.new(response).send(:"export_#{type}")
-      company_name_underscored = response.respondent.name.parameterize(separator: '_', preserve_case: true)
+      company_name_underscored = replacing_special response.respondent.name
       fn = "#{response.reference}_ET3_#{company_name_underscored}.#{ext}"
       stored_file.download_blob_to File.join(to, fn)
     end
@@ -41,9 +41,13 @@ module ExportServiceExporters
     def export_file_as_attachment(response:, to:, ext:, type:, optional: false)
       stored_file = response_export_service.new(response).send(:"export_#{type}")
       return if optional && stored_file.nil?
-      company_name_underscored = response.respondent.name.parameterize(separator: '_', preserve_case: true)
+      company_name_underscored = replacing_special response.respondent.name
       fn = "#{response.reference}_ET3_Attachment_#{company_name_underscored}.#{ext}"
       stored_file.download_blob_to File.join(to, fn)
+    end
+
+    def replacing_special(text)
+      text.gsub(/\s/, '_').gsub(/\W/, '')
     end
 
     attr_accessor :response_export_service, :responses_to_export, :exports

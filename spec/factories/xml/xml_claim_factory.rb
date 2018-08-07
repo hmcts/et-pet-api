@@ -211,6 +211,12 @@ FactoryBot.define do
 
     end
 
+    trait :mr_na_o_malley do
+      mr_first_last
+      forename 'n/a'
+      surname "O'Malley"
+    end
+
     trait :mr_first_last do
       group_contact 'true'
       title 'Mr'
@@ -438,6 +444,11 @@ FactoryBot.define do
     association :acas, :ac1234567890, factory: :xml_claim_acas
     association :alt_address, :piccadilly_circus_110, factory: :xml_claim_address
     alt_phone_number '03333 423554'
+
+    trait :mr_na_o_leary do
+      respondent_name
+      name "n/a O'Leary"
+    end
 
     trait :respondent_name do
       group_contact 'true'
