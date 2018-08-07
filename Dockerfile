@@ -32,7 +32,6 @@ RUN socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork TCP4:$(ip route|awk '/default/ {print 
 
 RUN wget https://github.com/papertrail/remote_syslog2/releases/download/v0.20/remote-syslog2_0.20_amd64.deb
 RUN dpkg -i remote-syslog2_0.20_amd64.deb
-RUN remote_syslog -p 20568 -d logs7.papertrailapp.com --pid-file=/var/run/remote_syslog.pid --hostname=$PAPERTRAIL_NAME-$HOSTNAME /usr/src/app/log/production.log
 
 COPY . /usr/src/app
 
