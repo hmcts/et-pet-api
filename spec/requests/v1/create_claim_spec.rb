@@ -71,12 +71,15 @@ RSpec.describe 'CreateClaim Request', type: :request do
                                        password: Rails.configuration.et_atos_api.password
       end
 
-      let(:output_filename_pdf) { "#{json_response['feeGroupReference']}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.pdf" }
-      let(:output_filename_txt) { "#{json_response['feeGroupReference']}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.txt" }
-      let(:output_filename_xml) { "#{json_response['feeGroupReference']}_ET1_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.xml" }
-      let(:output_filename_rtf) { "#{json_response['feeGroupReference']}_ET1_Attachment_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.rtf" }
-      let(:output_filename_additional_claimants_txt) { "#{json_response['feeGroupReference']}_ET1a_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.txt" }
-      let(:output_filename_additional_claimants_csv) { "#{json_response['feeGroupReference']}_ET1a_#{xml_as_hash.claimants.first.forename}_#{xml_as_hash.claimants.first.surname}.csv" }
+      # A private scrubber to set expectations for the filename - replaces white space with underscores and any non word chars are removed
+      scrubber = ->(text) { text.gsub(/\s/, '_').gsub(/\W/, '') }
+
+      let(:output_filename_pdf) { "#{json_response['feeGroupReference']}_ET1_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.pdf" }
+      let(:output_filename_txt) { "#{json_response['feeGroupReference']}_ET1_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.txt" }
+      let(:output_filename_xml) { "#{json_response['feeGroupReference']}_ET1_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.xml" }
+      let(:output_filename_rtf) { "#{json_response['feeGroupReference']}_ET1_Attachment_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.rtf" }
+      let(:output_filename_additional_claimants_txt) { "#{json_response['feeGroupReference']}_ET1a_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.txt" }
+      let(:output_filename_additional_claimants_csv) { "#{json_response['feeGroupReference']}_ET1a_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.csv" }
 
       before do
         perform_action
@@ -295,6 +298,22 @@ RSpec.describe 'CreateClaim Request', type: :request do
     context 'with xml for single claimant, respondent and representative' do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_claimants: 1, number_of_respondents: 1, number_of_representatives: 1) }
+      include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
+      include_examples 'a claim with single claimant'
+      include_examples 'a claim with single respondent'
+      include_examples 'a claim with a representative'
+    end
+
+    context 'with xml for single claimant, respondent and representative with non alphanumerics in names' do
+      factory = lambda do
+        claimants = FactoryBot.build_list(:xml_claimant, 1, :mr_na_o_malley)
+        respondents = FactoryBot.build_list(:xml_claim_respondent, 1, :mr_na_o_leary)
+        FactoryBot.build(:xml_claim, claimants: claimants, respondents: respondents, number_of_representatives: 1)
+      end
+
+      include_context 'with setup for claims',
+        xml_factory: factory
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
