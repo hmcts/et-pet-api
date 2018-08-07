@@ -34,5 +34,10 @@ FactoryBot.define do
       organisation_more_than_one_site true
       employment_at_site_number 5
     end
+
+    trait :mr_na_o_malley do
+      example_data
+      name "n/a O'Malley"
+    end
   end
 end
