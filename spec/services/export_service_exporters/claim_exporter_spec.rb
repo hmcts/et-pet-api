@@ -15,21 +15,21 @@ RSpec.describe ExportServiceExporters::ClaimExporter do
       it 'exports a pdf file with the correct name' do
         Dir.mktmpdir do |dir|
           exporter.export(to: dir)
-          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_omalley.pdf"))).to be true
+          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_OMalley.pdf"))).to be true
         end
       end
 
       it 'exports a txt file with the correct name' do
         Dir.mktmpdir do |dir|
           exporter.export(to: dir)
-          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_omalley.txt"))).to be true
+          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_OMalley.txt"))).to be true
         end
       end
 
       it 'exports an xml file with the correct name' do
         Dir.mktmpdir do |dir|
           exporter.export(to: dir)
-          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_omalley.xml"))).to be true
+          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_OMalley.xml"))).to be true
         end
       end
     end
