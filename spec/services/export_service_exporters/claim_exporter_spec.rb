@@ -34,6 +34,39 @@ RSpec.describe ExportServiceExporters::ClaimExporter do
       end
     end
 
+    context 'with claim that has claimant with non alpha numerics in name and an underscore' do
+      subject(:exporter) { described_class.new }
+
+      let(:claimants) { build_list(:claimant, 1, :mr_na_o_malley, last_name: "_O'Malley") }
+      let(:claim) { build(:claim, :with_pdf_file, :with_xml_file, :with_text_file, number_of_claimants: 0, claimants: claimants) }
+
+      # Create an export record to allow the claim to be found
+      before do
+        Export.create resource: claim
+      end
+
+      it 'exports a pdf file with the correct name' do
+        Dir.mktmpdir do |dir|
+          exporter.export(to: dir)
+          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_OMalley.pdf"))).to be true
+        end
+      end
+
+      it 'exports a txt file with the correct name' do
+        Dir.mktmpdir do |dir|
+          exporter.export(to: dir)
+          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_OMalley.txt"))).to be true
+        end
+      end
+
+      it 'exports an xml file with the correct name' do
+        Dir.mktmpdir do |dir|
+          exporter.export(to: dir)
+          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_OMalley.xml"))).to be true
+        end
+      end
+    end
+
     context 'with an error injected when second claim out of 3 is processed' do
       subject(:exporter) { described_class.new claim_export_service: claim_export_service_class }
 
