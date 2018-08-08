@@ -57,7 +57,7 @@ module ExportServiceExporters
     end
 
     def replacing_special(text)
-      text.gsub(/\s/, '_').gsub(/\W/, '')
+      text.gsub(/\W/, '').parameterize(separator: '_', preserve_case: true)
     end
 
     def with_exception_logging
