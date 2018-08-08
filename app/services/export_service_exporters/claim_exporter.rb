@@ -4,13 +4,19 @@ module ExportServiceExporters
       self.claims_to_export = claims_to_export
       self.claim_export_service = claim_export_service
       self.exports = []
+      self.exceptions = []
     end
 
     def export(to:)
       claims_to_export.each do |claim_export|
-        exports << claim_export
-        export_files(claim_export.resource, to: to)
+        with_exception_logging do
+          moving_afterwards(to: to) do |tmpdir|
+            export_files(claim_export.resource, to: tmpdir)
+          end
+          exports << claim_export
+        end
       end
+      report_exceptions
     end
 
     def mark_claims_as_exported
@@ -54,6 +60,25 @@ module ExportServiceExporters
       text.gsub(/\s/, '_').gsub(/\W/, '')
     end
 
-    attr_accessor :claim_export_service, :claims_to_export, :exports
+    def with_exception_logging
+      yield
+    rescue StandardError => ex
+      exceptions << ex
+    end
+
+    def report_exceptions
+      exceptions.each do |exception|
+        Raven.capture_exception(exception)
+      end
+    end
+
+    def moving_afterwards(to:)
+      Dir.mktmpdir do |dir|
+        yield dir
+        FileUtils.mv(Dir.glob(File.join(dir, '*')), to, force: true)
+      end
+    end
+
+    attr_accessor :claim_export_service, :claims_to_export, :exports, :exceptions
   end
 end

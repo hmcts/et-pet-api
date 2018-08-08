@@ -5,13 +5,19 @@ module ExportServiceExporters
       self.responses_to_export = responses_to_export
       self.response_export_service = response_export_service
       self.exports = []
+      self.exceptions = []
     end
 
     def export(to:)
       responses_to_export.each do |response_export|
+        with_exception_logging do
+          moving_afterwards(to: to) do |tempdir|
+            export_files(response_export.resource, to: tempdir)
+          end
+        end
         exports << response_export
-        export_files(response_export.resource, to: to)
       end
+      report_exceptions
     end
 
     def mark_responses_as_exported
@@ -50,6 +56,25 @@ module ExportServiceExporters
       text.gsub(/\s/, '_').gsub(/\W/, '')
     end
 
-    attr_accessor :response_export_service, :responses_to_export, :exports
+    def with_exception_logging
+      yield
+    rescue StandardError => ex
+      exceptions << ex
+    end
+
+    def report_exceptions
+      exceptions.each do |exception|
+        Raven.capture_exception(exception)
+      end
+    end
+
+    def moving_afterwards(to:)
+      Dir.mktmpdir do |dir|
+        yield dir
+        FileUtils.mv(Dir.glob(File.join(dir, '*')), to, force: true)
+      end
+    end
+
+    attr_accessor :response_export_service, :responses_to_export, :exports, :exceptions
   end
 end
