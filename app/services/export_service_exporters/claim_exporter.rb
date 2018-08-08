@@ -4,13 +4,19 @@ module ExportServiceExporters
       self.claims_to_export = claims_to_export
       self.claim_export_service = claim_export_service
       self.exports = []
+      self.exceptions = []
     end
 
     def export(to:)
       claims_to_export.each do |claim_export|
-        exports << claim_export
-        export_files(claim_export.resource, to: to)
+        with_exception_logging do
+          moving_afterwards(to: to) do |tmpdir|
+            export_files(claim_export.resource, to: tmpdir)
+          end
+          exports << claim_export
+        end
       end
+      report_exceptions
     end
 
     def mark_claims_as_exported
@@ -36,7 +42,9 @@ module ExportServiceExporters
     def export_file(claim:, to:, prefix:, ext:, type:)
       stored_file = claim_export_service.new(claim).send(:"export_#{type}")
       claimant = claim.primary_claimant
-      fn = "#{claim.reference}_#{prefix}_#{claimant.first_name.tr(' ', '_')}_#{claimant.last_name}.#{ext}"
+      first = replacing_special claimant.first_name
+      last = replacing_special claimant.last_name
+      fn = "#{claim.reference}_#{prefix}_#{first}_#{last}.#{ext}"
       stored_file.download_blob_to File.join(to, fn)
     end
 
@@ -48,6 +56,29 @@ module ExportServiceExporters
       claim.uploaded_files.any? { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.rtf') }
     end
 
-    attr_accessor :claim_export_service, :claims_to_export, :exports
+    def replacing_special(text)
+      text.gsub(/\W/, '').parameterize(separator: '_', preserve_case: true)
+    end
+
+    def with_exception_logging
+      yield
+    rescue StandardError => ex
+      exceptions << ex
+    end
+
+    def report_exceptions
+      exceptions.each do |exception|
+        Raven.capture_exception(exception)
+      end
+    end
+
+    def moving_afterwards(to:)
+      Dir.mktmpdir do |dir|
+        yield dir
+        FileUtils.mv(Dir.glob(File.join(dir, '*')), to, force: true)
+      end
+    end
+
+    attr_accessor :claim_export_service, :claims_to_export, :exports, :exceptions
   end
 end
