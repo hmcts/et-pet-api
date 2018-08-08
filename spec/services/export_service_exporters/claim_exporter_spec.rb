@@ -33,5 +33,73 @@ RSpec.describe ExportServiceExporters::ClaimExporter do
         end
       end
     end
+
+    context 'with an error injected when second claim out of 3 is processed' do
+      subject(:exporter) { described_class.new claim_export_service: claim_export_service_class }
+
+      let(:claim_export_service_class) { class_double ClaimExportService }
+      let(:claim_export_service1) { ClaimExportService.new(claims[0]) }
+      let(:claim_export_service2) { ClaimExportService.new(claims[1]) }
+      let(:claim_export_service3) { ClaimExportService.new(claims[2]) }
+      let(:claims) { create_list(:claim, 3, :ready_for_export, :with_pdf_file, :with_xml_file, :with_text_file, number_of_claimants: 1) }
+
+      # This is just one way of forcing an error.  Each iteration uses the claim export service's :export_pdf method
+      # so we force that to raise an error
+      before do
+        allow(claim_export_service_class).to receive(:new).with(claims[0]).and_return claim_export_service1
+        allow(claim_export_service_class).to receive(:new).with(claims[1]).and_return claim_export_service2
+        allow(claim_export_service_class).to receive(:new).with(claims[2]).and_return claim_export_service3
+        allow(claim_export_service2).to receive(:export_txt).and_raise(StandardError)
+      end
+
+      it 'exports a pdf for the first and last claim' do
+        Dir.mktmpdir do |dir|
+          exporter.export(to: dir)
+          aggregate_failures 'Validating pdfs do exist for 2 claims and not for the other' do
+            expect(Dir.glob(File.join(dir, "#{claims[0].reference}_ET1_First_*.pdf"))).to be_present
+            expect(Dir.glob(File.join(dir, "#{claims[1].reference}_ET1_First_*.pdf"))).to be_empty
+            expect(Dir.glob(File.join(dir, "#{claims[2].reference}_ET1_First_*.pdf"))).to be_present
+          end
+        end
+      end
+    end
+
+    context 'with an error injected when second and fourth claim out of 5 is processed' do
+      subject(:exporter) { described_class.new claim_export_service: claim_export_service_class }
+
+      let(:claim_export_service_class) { class_double ClaimExportService }
+      let(:claim_export_service1) { ClaimExportService.new(claims[0]) }
+      let(:claim_export_service2) { ClaimExportService.new(claims[1]) }
+      let(:claim_export_service3) { ClaimExportService.new(claims[2]) }
+      let(:claim_export_service4) { ClaimExportService.new(claims[3]) }
+      let(:claim_export_service5) { ClaimExportService.new(claims[4]) }
+      let(:claims) { create_list(:claim, 5, :ready_for_export, :with_pdf_file, :with_xml_file, :with_text_file, number_of_claimants: 1) }
+
+      # This is just one way of forcing an error.  Each iteration uses the claim export service's :export_pdf and :export_txt methods
+      # so we force one of each of those to raise an error.  This will prove that no stray files are left behind if the
+      # code exits from different points.
+      before do
+        allow(claim_export_service_class).to receive(:new).with(claims[0]).and_return claim_export_service1
+        allow(claim_export_service_class).to receive(:new).with(claims[1]).and_return claim_export_service2
+        allow(claim_export_service_class).to receive(:new).with(claims[2]).and_return claim_export_service3
+        allow(claim_export_service_class).to receive(:new).with(claims[3]).and_return claim_export_service4
+        allow(claim_export_service_class).to receive(:new).with(claims[4]).and_return claim_export_service5
+        allow(claim_export_service2).to receive(:export_txt).and_raise(StandardError)
+        allow(claim_export_service4).to receive(:export_pdf).and_raise(StandardError)
+      end
+
+      it 'exports a pdf for the first, third and last claim' do
+        Dir.mktmpdir do |dir|
+          exporter.export(to: dir)
+          aggregate_failures 'Verifying presence of all claims pdf files' do
+            expect(Dir.glob(File.join(dir, "#{claims[0].reference}_ET1_First_*.pdf"))).to be_present
+            expect(Dir.glob(File.join(dir, "#{claims[1].reference}_ET1_First_*.pdf"))).to be_empty
+            expect(Dir.glob(File.join(dir, "#{claims[2].reference}_ET1_First_*.pdf"))).to be_present
+            expect(Dir.glob(File.join(dir, "#{claims[3].reference}_ET1_First_*.pdf"))).to be_empty
+            expect(Dir.glob(File.join(dir, "#{claims[4].reference}_ET1_First_*.pdf"))).to be_present
+          end
+        end
+      end
+    end
   end
 end
