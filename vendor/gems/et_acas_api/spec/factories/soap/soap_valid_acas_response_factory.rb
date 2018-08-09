@@ -49,14 +49,14 @@ FactoryBot.define do
   factory :soap_valid_acas_response, class: '::EtAcasApi::Test::SoapResponse' do
     trait :valid do
       certificate_file { File.absolute_path(File.join('.', 'pdfs', '76 EC (C) Certificate R000080.pdf'), __dir__) }
-      claimant_name 'The Claimant'
+      claimant_name 'The Claimant’s Name'
       current_date_time { Time.zone.now }
       date_of_issue { Time.zone.parse('3/3/2014 10:14:01') }
       date_of_receipt { Time.zone.parse('3/3/2014 10:14:31') }
       certificate_number 'R000080/18/59'
       message 'CertificateFound'
       method_of_issue 'Email'
-      respondent_name 'Respondent Name'
+      respondent_name 'Respondent’s Name With A Horrible Character In It'
       response_code '100'
       service_version '1.0'
     end

@@ -128,7 +128,7 @@ module EtAcasApi
 
     def decoded(attr)
       aes = Base64.decode64(response_data[attr])
-      aes_decipher.decrypt(aes)
+      aes_decipher.decrypt(aes).force_encoding('utf-8')
     end
 
     def encode_encrypt(value)
