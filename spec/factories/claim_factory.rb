@@ -29,12 +29,6 @@ FactoryBot.define do
       end
     end
 
-    trait :with_xml_file do
-      after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :example_xml)
-      end
-    end
-
     trait :with_text_file do
       after(:build) do |claim, _evaluator|
         claim.uploaded_files << build(:uploaded_file, :example_claim_text)

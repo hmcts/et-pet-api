@@ -6,7 +6,7 @@ RSpec.describe ExportService do
 
     # Setup 2 claims that are ready for export
     let!(:claims) do
-      create_list(:claim, 2, :with_pdf_file, :with_xml_file, :with_text_file, :ready_for_export)
+      create_list(:claim, 2, :with_pdf_file, :with_text_file, :ready_for_export)
     end
 
     let!(:responses) do
@@ -49,15 +49,6 @@ RSpec.describe ExportService do
           expect(files_found.last).to be_a_file_copy_of(File.join(dir, expected_filenames.last))
         end
       end
-    end
-
-    it 'produces a zip file that contains an xml file for each claim' do
-      # Act
-      service.export
-
-      # Assert
-      expected_filenames = claims.map { |c| "#{c.reference}_ET1_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.xml" }
-      expect(EtApi::Test::StoredZipFile.file_names(zip: EtAtosFileTransfer::ExportedFile.last)).to include(*expected_filenames)
     end
 
     it 'produces a zip file that contains a txt file for each claim' do
@@ -113,7 +104,7 @@ RSpec.describe ExportService do
 
     context 'with multiple claimants from a CSV file' do
       let!(:claims) do
-        create_list(:claim, 2, :with_pdf_file, :with_xml_file, :with_text_file, :ready_for_export, :with_claimants_text_file, :with_claimants_csv_file, number_of_claimants: 11)
+        create_list(:claim, 2, :with_pdf_file, :with_text_file, :ready_for_export, :with_claimants_text_file, :with_claimants_csv_file, number_of_claimants: 11)
       end
 
       it 'produces a zip file that contains an ET1a txt file for each claim' do
@@ -137,7 +128,7 @@ RSpec.describe ExportService do
 
     context 'with a single claimant, respondent and representative with an uploaded rtf file' do
       let!(:claims) do
-        create_list(:claim, 2, :with_pdf_file, :with_xml_file, :with_text_file, :with_rtf_file, :ready_for_export)
+        create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_rtf_file, :ready_for_export)
       end
 
       it 'produces a zip file that contains an rtf file for each claim' do

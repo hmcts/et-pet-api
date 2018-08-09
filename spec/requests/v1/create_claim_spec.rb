@@ -76,7 +76,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
       let(:output_filename_pdf) { "#{json_response['feeGroupReference']}_ET1_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.pdf" }
       let(:output_filename_txt) { "#{json_response['feeGroupReference']}_ET1_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.txt" }
-      let(:output_filename_xml) { "#{json_response['feeGroupReference']}_ET1_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.xml" }
       let(:output_filename_rtf) { "#{json_response['feeGroupReference']}_ET1_Attachment_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.rtf" }
       let(:output_filename_additional_claimants_txt) { "#{json_response['feeGroupReference']}_ET1a_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.txt" }
       let(:output_filename_additional_claimants_csv) { "#{json_response['feeGroupReference']}_ET1a_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.csv" }
@@ -127,19 +126,6 @@ RSpec.describe 'CreateClaim Request', type: :request do
       it 'stores the pdf file with the correct filename in the landing folder' do
         # Assert - look for the correct file in the landing folder - will be async
         expect(staging_folder.all_unzipped_filenames).to include(output_filename_pdf)
-      end
-
-      it 'stores the xml file with the correct filename in the landing folder' do
-        # Assert - look for the correct file in the landing folder - will be async
-        expect(staging_folder.all_unzipped_filenames).to include(output_filename_xml)
-      end
-
-      it 'stores a copy of the original xml data' do
-        # Assert - look for the correct file in the landing folder - will be async
-        Dir.mktmpdir do |dir|
-          staging_folder.extract(output_filename_xml, to: File.join(dir, output_filename_xml))
-          expect(File.join(dir, output_filename_xml)).to be_an_xml_file_copy_of(xml_input_filename)
-        end
       end
 
       it 'has the correct structure in the et1 txt file' do
