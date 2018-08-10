@@ -13,12 +13,12 @@ module EtAcasApi
 
       def encrypt_from_acas(value)
         encrypt_cipher = build_encrypt_cipher
-        encrypt_cipher.encrypt(value)
+        encrypt_cipher.encrypt(String.new(value, encoding: 'ascii-8bit'))
       end
 
       def decrypt_from_acas(value)
         decrypt_cipher = build_decrypt_cipher
-        decrypt_cipher.decrypt(value)
+        decrypt_cipher.decrypt(value).force_encoding('utf-8')
       end
 
       private

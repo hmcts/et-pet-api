@@ -5,7 +5,7 @@ RSpec.describe ExportServiceExporters::ClaimExporter do
       subject(:exporter) { described_class.new }
 
       let(:claimants) { build_list(:claimant, 1, :mr_na_o_malley) }
-      let(:claim) { build(:claim, :with_pdf_file, :with_xml_file, :with_text_file, number_of_claimants: 0, claimants: claimants) }
+      let(:claim) { build(:claim, :with_pdf_file, :with_text_file, number_of_claimants: 0, claimants: claimants) }
 
       # Create an export record to allow the claim to be found
       before do
@@ -23,13 +23,6 @@ RSpec.describe ExportServiceExporters::ClaimExporter do
         Dir.mktmpdir do |dir|
           exporter.export(to: dir)
           expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_OMalley.txt"))).to be true
-        end
-      end
-
-      it 'exports an xml file with the correct name' do
-        Dir.mktmpdir do |dir|
-          exporter.export(to: dir)
-          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_OMalley.xml"))).to be true
         end
       end
     end
@@ -38,7 +31,7 @@ RSpec.describe ExportServiceExporters::ClaimExporter do
       subject(:exporter) { described_class.new }
 
       let(:claimants) { build_list(:claimant, 1, :mr_na_o_malley, last_name: "_O'Malley") }
-      let(:claim) { build(:claim, :with_pdf_file, :with_xml_file, :with_text_file, number_of_claimants: 0, claimants: claimants) }
+      let(:claim) { build(:claim, :with_pdf_file, :with_text_file, number_of_claimants: 0, claimants: claimants) }
 
       # Create an export record to allow the claim to be found
       before do
@@ -56,13 +49,6 @@ RSpec.describe ExportServiceExporters::ClaimExporter do
         Dir.mktmpdir do |dir|
           exporter.export(to: dir)
           expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_OMalley.txt"))).to be true
-        end
-      end
-
-      it 'exports an xml file with the correct name' do
-        Dir.mktmpdir do |dir|
-          exporter.export(to: dir)
-          expect(File.exist?(File.join(dir, "#{claim.reference}_ET1_na_OMalley.xml"))).to be true
         end
       end
     end
@@ -74,7 +60,7 @@ RSpec.describe ExportServiceExporters::ClaimExporter do
       let(:claim_export_service1) { ClaimExportService.new(claims[0]) }
       let(:claim_export_service2) { ClaimExportService.new(claims[1]) }
       let(:claim_export_service3) { ClaimExportService.new(claims[2]) }
-      let(:claims) { create_list(:claim, 3, :ready_for_export, :with_pdf_file, :with_xml_file, :with_text_file, number_of_claimants: 1) }
+      let(:claims) { create_list(:claim, 3, :ready_for_export, :with_pdf_file, :with_text_file, number_of_claimants: 1) }
 
       # This is just one way of forcing an error.  Each iteration uses the claim export service's :export_pdf method
       # so we force that to raise an error
@@ -106,7 +92,7 @@ RSpec.describe ExportServiceExporters::ClaimExporter do
       let(:claim_export_service3) { ClaimExportService.new(claims[2]) }
       let(:claim_export_service4) { ClaimExportService.new(claims[3]) }
       let(:claim_export_service5) { ClaimExportService.new(claims[4]) }
-      let(:claims) { create_list(:claim, 5, :ready_for_export, :with_pdf_file, :with_xml_file, :with_text_file, number_of_claimants: 1) }
+      let(:claims) { create_list(:claim, 5, :ready_for_export, :with_pdf_file, :with_text_file, number_of_claimants: 1) }
 
       # This is just one way of forcing an error.  Each iteration uses the claim export service's :export_pdf and :export_txt methods
       # so we force one of each of those to raise an error.  This will prove that no stray files are left behind if the

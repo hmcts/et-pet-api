@@ -26,7 +26,7 @@ RSpec.describe ExportServiceExporters::ResponseExporter do
         end
       end
 
-      it 'exports an xml file with the correct name' do
+      it 'exports an rtf file with the correct name' do
         Dir.mktmpdir do |dir|
           exporter.export(to: dir)
           expect(File.exist?(File.join(dir, "#{response.reference}_ET3_Attachment_na_OMalley.rtf"))).to be true
@@ -59,7 +59,7 @@ RSpec.describe ExportServiceExporters::ResponseExporter do
         end
       end
 
-      it 'exports an xml file with the correct name' do
+      it 'exports an rtf file with the correct name' do
         Dir.mktmpdir do |dir|
           exporter.export(to: dir)
           expect(File.exist?(File.join(dir, "#{response.reference}_ET3_Attachment_na_OMalley.rtf"))).to be true

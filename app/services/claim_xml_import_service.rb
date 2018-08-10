@@ -131,7 +131,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
         filename: filename, checksum: f['Checksum'],
         file: uploaded_files.dig(filename, :file)
       }
-    end + [file_for_data]
+    end
   end
 
   def rename_csv_file(claim:)
@@ -159,21 +159,5 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
     collection
   end
 
-  def file_for_data
-    claimant = converted_claimants_data.first
-    filename = "et1_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.xml"
-    {
-      filename: filename,
-      file: raw_file_for_data(filename)
-    }
-  end
-
-  def raw_file_for_data(filename)
-    tempfile = Tempfile.new.tap do |file|
-      file.write original_data
-      file.rewind
-    end
-    ActionDispatch::Http::UploadedFile.new filename: filename, tempfile: tempfile, type: 'text/xml'
-  end
   attr_accessor :data, :original_data, :file_builder_service
 end
