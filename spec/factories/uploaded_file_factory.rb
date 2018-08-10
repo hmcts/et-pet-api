@@ -8,17 +8,6 @@ FactoryBot.define do
       end
     end
 
-    trait :example_xml do
-      filename 'et1_first_last.xml'
-      checksum 'ee2714b8b731a8c1e95dffaa33f89728'
-      after(:build) do |uploaded_file, _evaluator|
-        tempfile = Tempfile.new
-        tempfile.write build(:xml_claim, :simple_user).to_xml
-        tempfile.rewind
-        uploaded_file.file.attach(Rack::Test::UploadedFile.new(tempfile.path, 'text/xml'))
-      end
-    end
-
     trait :example_claim_text do
       filename 'et1_first_last.txt'
       checksum 'ee2714b8b731a8c1e95dffaa33f89728'

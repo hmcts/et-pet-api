@@ -23,13 +23,6 @@ class ClaimExportService
     claim.pdf_file
   end
 
-  # Exports the xml file for use by ExportService
-  #
-  # @return [UploadedFile] The xml file
-  def export_xml
-    claim.uploaded_files.detect { |f| f.filename.ends_with?('.xml') }
-  end
-
   # Exports the text file for use by ExportService
   #
   # @return [UploadedFile] The text file
