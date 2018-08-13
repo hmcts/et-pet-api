@@ -63,6 +63,7 @@ module ClaimFileBuilder
 
     def apply_header_pdf_fields(result)
       result['case number'] = response.case_number
+      result['date_received'] = response.date_of_receipt.try(:strftime, '%d/%m/%Y')
       result['RTF'] = response.additional_information_rtf_file? ? 'Additional RTF' : ''
     end
 
