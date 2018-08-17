@@ -30,8 +30,9 @@ COPY ./vendor /usr/src/app/vendor
 # Hack to install private gems
 RUN socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork TCP4:$(ip route|awk '/default/ {print $3}'):$SSH_AUTH_PROXY_PORT & bundle install
 
-RUN wget https://github.com/papertrail/remote_syslog2/releases/download/v0.20/remote-syslog2_0.20_amd64.deb
-RUN dpkg -i remote-syslog2_0.20_amd64.deb
+RUN curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
+RUN mkdir /etc/cron.d
+RUN touch /etc/cron.d/awslogs
 
 COPY . /usr/src/app
 
