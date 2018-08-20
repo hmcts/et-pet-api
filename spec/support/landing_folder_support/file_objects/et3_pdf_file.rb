@@ -35,7 +35,6 @@ module EtApi
         def has_header_for?(response, errors: [], indent: 1)
           validate_fields section: :header, errors: errors, indent: indent do
             expect(field_values).to include 'case number' => response[:case_number] || ''
-            expect(field_values).to include('date_received' => date_for(Time.zone.now)).or(include('date_received' => date_for(1.hour.ago)))
             expect(field_values).to include 'RTF' => response[:additional_information_key].blank? ? '' : 'Additional RTF'
           end
         end
