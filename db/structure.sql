@@ -1786,7 +1786,7 @@ ALTER TABLE ONLY public.claim_claimants
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20180322173653'),
@@ -1827,6 +1827,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180719143301'),
 ('20180720100511'),
 ('20180721164447'),
-('20180722080012');
+('20180722080012'),
+('20180731090130'),
+('20180824103139');
 
 
