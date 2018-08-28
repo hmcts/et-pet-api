@@ -4,8 +4,8 @@ RSpec.describe ExportServiceExporters::ClaimExporter do
     context 'with claim that has claimant with non alpha numerics in name' do
       subject(:exporter) { described_class.new }
 
-      let(:claimants) { build_list(:claimant, 1, :mr_na_o_malley) }
-      let(:claim) { build(:claim, :with_pdf_file, :with_text_file, number_of_claimants: 0, claimants: claimants) }
+      let(:claim_claimants) { build_list(:claim_claimant, 1, :mr_na_o_malley) }
+      let(:claim) { build(:claim, :with_pdf_file, :with_text_file, number_of_claimants: 0, claim_claimants: claim_claimants) }
 
       # Create an export record to allow the claim to be found
       before do
