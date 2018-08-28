@@ -9,7 +9,7 @@ class ClaimClaimant < ApplicationRecord
   accepts_nested_attributes_for :claimant
 
   def self.primary_claimant
-    where(primary: true).first.try(:claimant)
+    find_by(primary: true).try(:claimant)
   end
 
   def self.secondary_claimants
