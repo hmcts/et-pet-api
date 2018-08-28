@@ -7,7 +7,7 @@ class UpdateClaimClaimantsWithPrimary < ActiveRecord::Migration[5.2]
 
   def up
     claims_processed = {}
-    ClaimClaimant.all.each do |c|
+    Admin::ClaimClaimant.all.each do |c|
       next if claims_processed.key?(c.claim_id)
       claims_processed[c.claim_id] = true
       c.update primary: true
