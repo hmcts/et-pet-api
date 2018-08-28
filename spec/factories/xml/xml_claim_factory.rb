@@ -10,6 +10,10 @@ module EtApi
           end
         end
 
+        def to_xml(builder: ::Builder::XmlMarkup.new(indent: 2, explicit_nil_handling: false))
+          as_json.each { |key, value| ActiveSupport::XmlMini.to_tag(key, value, builder: builder, skip_types: true) }
+        end
+
         private
 
         def normalize(value)
@@ -17,6 +21,8 @@ module EtApi
           when String then value
           when Node then value.as_json
           when Array then value.map { |i| normalize(i) }
+          when TrueClass then ::EtApi::Test::XML::BooleanTrueNode.new
+          when FalseClass then ::EtApi::Test::XML::BooleanFalseNode.new
           when nil then ::EtApi::Test::XML::NilNode.new
           else value
           end
@@ -27,7 +33,7 @@ module EtApi
 
         def to_xml(builder: ::Builder::XmlMarkup.new(indent: 2, explicit_nil_handling: false))
           builder.tag! 'ETFeesEntry', xmlns: 'http://www.justice.gov.uk/ETFEES', 'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance', 'xsi:noNamespaceSchemaLocation': 'ETFees_v0.24.xsd' do
-            as_json.each { |key, value| ActiveSupport::XmlMini.to_tag(key, value, builder: builder, skip_types: true) }
+            super(builder: builder)
           end
         end
       end
@@ -35,6 +41,18 @@ module EtApi
       class NilNode
         def to_xml(root:, builder:, **_args)
           builder.tag!(root, nil, {})
+        end
+      end
+
+      class BooleanTrueNode
+        def to_xml(root:, builder:, **_args)
+          builder.tag!(root, 'true', {})
+        end
+      end
+
+      class BooleanFalseNode
+        def to_xml(root:, builder:, **_args)
+          builder.tag!(root, 'false', {})
         end
       end
     end
@@ -153,8 +171,8 @@ FactoryBot.define do
       case_type 'Multiple'
       claimants do
         [
-          build(:xml_claimant, :mr_first_last),
           build(:xml_claimant, :tamara_swift),
+          build(:xml_claimant, :mr_first_last, group_contact: true), # Deliberately in second place instead of first to validate that we are not relying on position
           build(:xml_claimant, :diana_flatley),
           build(:xml_claimant, :mariana_mccullough),
           build(:xml_claimant, :eden_upton),
@@ -218,7 +236,7 @@ FactoryBot.define do
     end
 
     trait :mr_first_last do
-      group_contact 'true'
+      group_contact true
       title 'Mr'
       forename 'First'
       surname 'Last'
@@ -233,7 +251,7 @@ FactoryBot.define do
     end
 
     trait :tamara_swift do
-      group_contact 'false'
+      group_contact false
       title "Mrs"
       forename "tamara"
       surname "swift"
@@ -253,7 +271,7 @@ FactoryBot.define do
     end
 
     trait :diana_flatley do
-      group_contact 'false'
+      group_contact false
       title "Mr"
       forename "diana"
       surname "flatley"
@@ -273,7 +291,7 @@ FactoryBot.define do
     end
 
     trait :mariana_mccullough do
-      group_contact 'false'
+      group_contact false
       title "Ms"
       forename "mariana"
       surname "mccullough"
@@ -293,7 +311,7 @@ FactoryBot.define do
     end
 
     trait :eden_upton do
-      group_contact 'false'
+      group_contact false
       title "Mr"
       forename "eden"
       surname "upton"
@@ -313,7 +331,7 @@ FactoryBot.define do
     end
 
     trait :annie_schulist do
-      group_contact 'false'
+      group_contact false
       title "Miss"
       forename "annie"
       surname "schulist"
@@ -333,7 +351,7 @@ FactoryBot.define do
     end
 
     trait :thad_johns do
-      group_contact 'false'
+      group_contact false
       title "Mrs"
       forename "thad"
       surname "johns"
@@ -353,7 +371,7 @@ FactoryBot.define do
     end
 
     trait :coleman_kreiger do
-      group_contact 'false'
+      group_contact false
       title "Miss"
       forename "coleman"
       surname "kreiger"
@@ -391,7 +409,7 @@ FactoryBot.define do
     end
 
     trait :darien_bahringer do
-      group_contact 'false'
+      group_contact false
       title "Mr"
       forename "darien"
       surname "bahringer"
@@ -411,7 +429,7 @@ FactoryBot.define do
     end
 
     trait :eulalia_hammes do
-      group_contact 'false'
+      group_contact false
       title "Mrs"
       forename "eulalia"
       surname "hammes"
@@ -436,7 +454,7 @@ FactoryBot.define do
       new(attributes)
     end
 
-    group_contact 'true'
+    group_contact true
     name 'Respondent Name'
     association :address, :regent_street_108, factory: :xml_claim_address
     office_number '03333 423554'
@@ -451,7 +469,7 @@ FactoryBot.define do
     end
 
     trait :respondent_name do
-      group_contact 'true'
+      group_contact true
       name 'Respondent Name'
       association :address, :regent_street_108, factory: :xml_claim_address
       office_number '03333 423554'
@@ -462,7 +480,7 @@ FactoryBot.define do
     end
 
     trait :carlos_mills do
-      group_contact 'false'
+      group_contact false
       name 'Carlos Mills'
       association :address,
         factory: :xml_claim_address,
@@ -476,7 +494,7 @@ FactoryBot.define do
     end
 
     trait :felicity_schuster do
-      group_contact 'false'
+      group_contact false
       name 'Felicity Schuster'
       association :address,
         factory: :xml_claim_address,
@@ -490,7 +508,7 @@ FactoryBot.define do
     end
 
     trait :glennie_satterfield do
-      group_contact 'false'
+      group_contact false
       name 'Glennie Satterfield'
       association :address,
         factory: :xml_claim_address,
@@ -504,7 +522,7 @@ FactoryBot.define do
     end
 
     trait :romaine_rowe do
-      group_contact 'false'
+      group_contact false
       name 'Romaine Rowe'
       association :address,
         factory: :xml_claim_address,

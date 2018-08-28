@@ -74,11 +74,12 @@ RSpec.describe 'CreateClaim Request', type: :request do
       # A private scrubber to set expectations for the filename - replaces white space with underscores and any non word chars are removed
       scrubber = ->(text) { text.gsub(/\s/, '_').gsub(/\W/, '') }
 
-      let(:output_filename_pdf) { "#{json_response['feeGroupReference']}_ET1_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.pdf" }
-      let(:output_filename_txt) { "#{json_response['feeGroupReference']}_ET1_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.txt" }
-      let(:output_filename_rtf) { "#{json_response['feeGroupReference']}_ET1_Attachment_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.rtf" }
-      let(:output_filename_additional_claimants_txt) { "#{json_response['feeGroupReference']}_ET1a_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.txt" }
-      let(:output_filename_additional_claimants_csv) { "#{json_response['feeGroupReference']}_ET1a_#{scrubber.call xml_as_hash.claimants.first.forename}_#{scrubber.call xml_as_hash.claimants.first.surname}.csv" }
+      let(:xml_primary_claimant) { xml_as_hash.claimants.detect(&:group_contact) }
+      let(:output_filename_pdf) { "#{json_response['feeGroupReference']}_ET1_#{scrubber.call xml_primary_claimant.forename}_#{scrubber.call xml_primary_claimant.surname}.pdf" }
+      let(:output_filename_txt) { "#{json_response['feeGroupReference']}_ET1_#{scrubber.call xml_primary_claimant.forename}_#{scrubber.call xml_primary_claimant.surname}.txt" }
+      let(:output_filename_rtf) { "#{json_response['feeGroupReference']}_ET1_Attachment_#{scrubber.call xml_primary_claimant.forename}_#{scrubber.call xml_primary_claimant.surname}.rtf" }
+      let(:output_filename_additional_claimants_txt) { "#{json_response['feeGroupReference']}_ET1a_#{scrubber.call xml_primary_claimant.forename}_#{scrubber.call xml_primary_claimant.surname}.txt" }
+      let(:output_filename_additional_claimants_csv) { "#{json_response['feeGroupReference']}_ET1a_#{scrubber.call xml_primary_claimant.forename}_#{scrubber.call xml_primary_claimant.surname}.csv" }
 
       before do
         perform_action
@@ -136,7 +137,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       it 'has the primary claimant in the et1 txt file' do
         # Assert - look for the correct file in the landing folder - will be async
         #
-        claimant = normalize_xml_hash(xml_as_hash.as_json)[:claimants].first
+        claimant = normalize_xml_claimant(xml_primary_claimant.to_xml.to_h)
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
       end
 
@@ -193,12 +194,16 @@ RSpec.describe 'CreateClaim Request', type: :request do
 
       it 'stores an ET1a txt file with the correct header for the given input data' do
         claim = normalize_xml_hash(xml_as_hash.as_json)
-        expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_header_for(claim, errors: errors), -> { errors.join("\n") }
+        claimant = normalize_xml_claimant(xml_primary_claimant.to_xml.to_h)
+        expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_header_for(claim, primary_claimant: claimant, errors: errors), -> { errors.join("\n") }
       end
 
       it 'stores an ET1a txt file with all of the claimants in the correct format' do
         # Assert
-        claimants = normalize_xml_hash(xml_as_hash.as_json)[:claimants][1..-1]
+        claimant = normalize_xml_claimant(xml_primary_claimant.to_xml.to_h)
+        claimants = normalize_xml_hash(xml_as_hash.as_json)[:claimants].reject do |c|
+          c == claimant
+        end
         expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_claimants_for(claimants, errors: errors), -> { errors.join("\n") }
       end
     end

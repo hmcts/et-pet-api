@@ -19,7 +19,8 @@ FactoryBot.define do
     date_of_receipt { Time.zone.now }
 
     after(:build) do |claim, evaluator|
-      claim.claimants.concat build_list(:claimant, evaluator.number_of_claimants)
+      claim.claim_claimants.concat build_list(:claim_claimant, evaluator.number_of_claimants)
+      claim.claim_claimants.last.primary = true
       claim.claimant_count += evaluator.number_of_claimants
     end
 
@@ -64,7 +65,7 @@ FactoryBot.define do
       reference "222000000300"
       date_of_receipt { Time.zone.parse('29/3/2018') }
       number_of_claimants 0
-      claimants { [build(:claimant, :example_data)] }
+      claim_claimants { [build(:claim_claimant, :example_data)] }
       respondents { [build(:respondent, :example_data)] }
       representatives { [build(:representative, :example_data)] }
       uploaded_files { [build(:uploaded_file, :example_data)] }
@@ -72,19 +73,19 @@ FactoryBot.define do
 
     trait :example_data_multiple_claimants do
       example_data
-      claimants do
+      claim_claimants do
         [
-          build(:claimant, :example_data),
-          build(:claimant, :tamara_swift),
-          build(:claimant, :diana_flatley),
-          build(:claimant, :mariana_mccullough),
-          build(:claimant, :eden_upton),
-          build(:claimant, :annie_schulist),
-          build(:claimant, :thad_johns),
-          build(:claimant, :coleman_kreiger),
-          build(:claimant, :jenson_deckow),
-          build(:claimant, :darien_bahringer),
-          build(:claimant, :eulalia_hammes)
+          build(:claim_claimant, :example_data, primary: true),
+          build(:claim_claimant, :tamara_swift),
+          build(:claim_claimant, :diana_flatley),
+          build(:claim_claimant, :mariana_mccullough),
+          build(:claim_claimant, :eden_upton),
+          build(:claim_claimant, :annie_schulist),
+          build(:claim_claimant, :thad_johns),
+          build(:claim_claimant, :coleman_kreiger),
+          build(:claim_claimant, :jenson_deckow),
+          build(:claim_claimant, :darien_bahringer),
+          build(:claim_claimant, :eulalia_hammes)
         ]
       end
       uploaded_files { [build(:uploaded_file, :example_data), build(:uploaded_file, :example_claim_claimants_csv)] }
