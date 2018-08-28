@@ -91,11 +91,11 @@ module EtApi
         rescue RSpec::Expectations::ExpectationNotMetError => err
           errors << "Missing or invalid claimants section - checking index #{idx}"
           errors.concat(err.message.lines.map { |l| "#{'  ' * indent}#{l.gsub(/\n\z/, '')}" })
-          false
+          idx
         end
 
-        def has_header_for?(claim, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
-          claimant = claim[:claimants].first
+        def has_header_for?(claim, primary_claimant:, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+          claimant = primary_claimant
           respondent = claim[:respondents].first
           has_header_section? errors: errors, indent: indent,
                               reference: end_with(claim[:reference]),

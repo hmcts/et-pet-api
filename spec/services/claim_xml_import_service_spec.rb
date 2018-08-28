@@ -71,22 +71,47 @@ RSpec.describe ClaimXmlImportService do
 
         # Assert
         claim = Claim.where(reference: reference).first
-        expect(claim.claimants).to contain_exactly an_object_having_attributes title: 'Mr',
-                                                                               first_name: 'First',
-                                                                               last_name: 'Last',
-                                                                               address: an_object_having_attributes(
-                                                                                 building: '102',
-                                                                                 street: 'Petty France',
-                                                                                 locality: 'London',
-                                                                                 county: 'Greater London',
-                                                                                 post_code: 'SW1H 9AJ'
-                                                                               ),
-                                                                               address_telephone_number: '01234 567890',
-                                                                               mobile_number: '01234 098765',
-                                                                               email_address: 'test@digital.justice.gov.uk',
-                                                                               contact_preference: 'Email',
-                                                                               gender: 'Male',
-                                                                               date_of_birth: Date.parse('21/11/1982')
+        expect(claim.claim_claimants).to contain_exactly an_object_having_attributes primary: true,
+                                                                                     claimant: an_object_having_attributes(title: 'Mr',
+                                                                                                                           first_name: 'First',
+                                                                                                                           last_name: 'Last',
+                                                                                                                           address: an_object_having_attributes(
+                                                                                                                             building: '102',
+                                                                                                                             street: 'Petty France',
+                                                                                                                             locality: 'London',
+                                                                                                                             county: 'Greater London',
+                                                                                                                             post_code: 'SW1H 9AJ'
+                                                                                                                           ),
+                                                                                                                           address_telephone_number: '01234 567890',
+                                                                                                                           mobile_number: '01234 098765',
+                                                                                                                           email_address: 'test@digital.justice.gov.uk',
+                                                                                                                           contact_preference: 'Email',
+                                                                                                                           gender: 'Male',
+                                                                                                                           date_of_birth: Date.parse('21/11/1982'))
+      end
+
+      it 'converts the primary claimant correctly' do
+        # Act
+        service.import(into: destination_claim)
+
+        # Assert
+        claim = Claim.where(reference: reference).first
+        expect(claim.primary_claimant).to have_attributes title: 'Mr',
+                                                          first_name: 'First',
+                                                          last_name: 'Last',
+                                                          address: an_object_having_attributes(
+                                                            building: '102',
+                                                            street: 'Petty France',
+                                                            locality: 'London',
+                                                            county: 'Greater London',
+                                                            post_code: 'SW1H 9AJ'
+                                                          ),
+                                                          address_telephone_number: '01234 567890',
+                                                          mobile_number: '01234 098765',
+                                                          email_address: 'test@digital.justice.gov.uk',
+                                                          contact_preference: 'Email',
+                                                          gender: 'Male',
+                                                          date_of_birth: Date.parse('21/11/1982')
       end
 
       it 'converts the respondents correctly' do
@@ -203,7 +228,7 @@ RSpec.describe ClaimXmlImportService do
 
         # Assert
         claim = Claim.where(reference: reference).first
-        expect(claim.claimants).to contain_exactly an_object_having_attributes(title: 'Mr', first_name: 'First', last_name: 'Last'),
+        expect(claim.claim_claimants.map(&:claimant)).to contain_exactly an_object_having_attributes(title: 'Mr', first_name: 'First', last_name: 'Last'),
           an_object_having_attributes(title: 'Mrs', first_name: 'tamara', last_name: 'swift'),
           an_object_having_attributes(title: 'Mr', first_name: 'diana', last_name: 'flatley'),
           an_object_having_attributes(title: 'Ms', first_name: 'mariana', last_name: 'mccullough'),

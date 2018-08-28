@@ -15,7 +15,7 @@ class ClaimFileBuilderService
 
   def call
     add_file :claim_text_file, to: claim
-    add_file :claimants_text_file, to: claim if claim.claimants.length > 1
+    add_file :claimants_text_file, to: claim if claim.multiple_claimants?
   end
 
   private

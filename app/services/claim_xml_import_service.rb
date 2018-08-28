@@ -71,16 +71,20 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
 
   def converted_associated_data
     {
-      claimants_attributes: converted_claimants_data,
+      claim_claimants_attributes: converted_claim_claimants_data,
       respondents_attributes: converted_respondents_data,
       representatives_attributes: converted_representatives_data,
       uploaded_files_attributes: converted_files_data
     }
   end
 
-  def converted_claimants_data
+  def converted_claim_claimants_data
     collection(root, 'Claimants').map do |claimant|
-      convert_claimant_data(claimant)
+      {
+        primary: claimant['GroupContact'] == 'true',
+        claimant_attributes: convert_claimant_data(claimant)
+      }
+
     end
   end
 
