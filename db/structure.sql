@@ -355,8 +355,7 @@ CREATE TABLE public.ar_internal_metadata (
 CREATE TABLE public.claim_claimants (
     id bigint NOT NULL,
     claim_id bigint,
-    claimant_id bigint,
-    "primary" boolean DEFAULT false
+    claimant_id bigint
 );
 
 
@@ -531,7 +530,8 @@ CREATE TABLE public.claims (
     date_of_receipt timestamp without time zone,
     administrator boolean,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    primary_claimant_id bigint NOT NULL
 );
 
 
@@ -1594,6 +1594,13 @@ CREATE INDEX index_claimants_on_address_id ON public.claimants USING btree (addr
 
 
 --
+-- Name: index_claims_on_primary_claimant_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claims_on_primary_claimant_id ON public.claims USING btree (primary_claimant_id);
+
+
+--
 -- Name: index_exports_on_resource_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1831,6 +1838,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180722080012'),
 ('20180731090130'),
 ('20180828120205'),
-('20180828162908');
+('20180828162908'),
+('20180829143635');
 
 

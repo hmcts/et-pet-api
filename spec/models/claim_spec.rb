@@ -7,26 +7,23 @@ RSpec.describe Claim, type: :model do
 
   let(:claim) { described_class.new }
 
-  describe '#claim_claimants' do
+  describe '#secondary_claimants' do
     it 'returns claim - claimants built in memory' do
       # Arrange
-      claim.claim_claimants_attributes = [
+      claim.secondary_claimants_attributes = [
         {
-          primary: true,
-          claimant_attributes: {
-            title: 'Mr',
-            first_name: 'Fred',
-            last_name: 'Bloggs',
-            address_attributes: example_address_attrs
-          }
+          title: 'Mr',
+          first_name: 'Fred',
+          last_name: 'Bloggs',
+          address_attributes: example_address_attrs
         }
       ]
 
       # Act
-      results = claim.claim_claimants
+      results = claim.secondary_claimants
 
       # Assert
-      expect(results).to contain_exactly an_object_having_attributes primary: true, claimant: an_object_having_attributes(first_name: 'Fred', last_name: 'Bloggs')
+      expect(results).to contain_exactly an_object_having_attributes first_name: 'Fred', last_name: 'Bloggs'
     end
   end
 
@@ -93,24 +90,18 @@ RSpec.describe Claim, type: :model do
   describe 'claimant_count' do
     it 'returns the number of claimants built at initialisation time' do
       # Arrange
-      claim.claim_claimants_attributes = [
+      claim.primary_claimant_attributes = {
+        title: 'Mr',
+        first_name: 'Fred',
+        last_name: 'Bloggs',
+        address_attributes: example_address_attrs
+      }
+      claim.secondary_claimants_attributes = [
         {
-          primary: true,
-          claimant_attributes: {
-            title: 'Mr',
-            first_name: 'Fred',
-            last_name: 'Bloggs',
-            address_attributes: example_address_attrs
-          }
-        },
-        {
-          primary: false,
-          claimant_attributes: {
-            title: 'Mrs',
-            first_name: 'Sara',
-            last_name: 'Bloggs',
-            address_attributes: example_address_attrs
-          }
+          title: 'Mrs',
+          first_name: 'Sara',
+          last_name: 'Bloggs',
+          address_attributes: example_address_attrs
         }
       ]
 

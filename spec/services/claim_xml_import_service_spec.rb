@@ -71,31 +71,6 @@ RSpec.describe ClaimXmlImportService do
 
         # Assert
         claim = Claim.where(reference: reference).first
-        expect(claim.claim_claimants).to contain_exactly an_object_having_attributes primary: true,
-                                                                                     claimant: an_object_having_attributes(title: 'Mr',
-                                                                                                                           first_name: 'First',
-                                                                                                                           last_name: 'Last',
-                                                                                                                           address: an_object_having_attributes(
-                                                                                                                             building: '102',
-                                                                                                                             street: 'Petty France',
-                                                                                                                             locality: 'London',
-                                                                                                                             county: 'Greater London',
-                                                                                                                             post_code: 'SW1H 9AJ'
-                                                                                                                           ),
-                                                                                                                           address_telephone_number: '01234 567890',
-                                                                                                                           mobile_number: '01234 098765',
-                                                                                                                           email_address: 'test@digital.justice.gov.uk',
-                                                                                                                           contact_preference: 'Email',
-                                                                                                                           gender: 'Male',
-                                                                                                                           date_of_birth: Date.parse('21/11/1982'))
-      end
-
-      it 'converts the primary claimant correctly' do
-        # Act
-        service.import(into: destination_claim)
-
-        # Assert
-        claim = Claim.where(reference: reference).first
         expect(claim.primary_claimant).to have_attributes title: 'Mr',
                                                           first_name: 'First',
                                                           last_name: 'Last',
@@ -228,17 +203,19 @@ RSpec.describe ClaimXmlImportService do
 
         # Assert
         claim = Claim.where(reference: reference).first
-        expect(claim.claim_claimants.map(&:claimant)).to contain_exactly an_object_having_attributes(title: 'Mr', first_name: 'First', last_name: 'Last'),
-          an_object_having_attributes(title: 'Mrs', first_name: 'tamara', last_name: 'swift'),
-          an_object_having_attributes(title: 'Mr', first_name: 'diana', last_name: 'flatley'),
-          an_object_having_attributes(title: 'Ms', first_name: 'mariana', last_name: 'mccullough'),
-          an_object_having_attributes(title: 'Mr', first_name: 'eden', last_name: 'upton'),
-          an_object_having_attributes(title: 'Miss', first_name: 'annie', last_name: 'schulist'),
-          an_object_having_attributes(title: 'Mrs', first_name: 'thad', last_name: 'johns'),
-          an_object_having_attributes(title: 'Miss', first_name: 'coleman', last_name: 'kreiger'),
-          an_object_having_attributes(title: 'Ms', first_name: 'jensen', last_name: 'deckow'),
-          an_object_having_attributes(title: 'Mr', first_name: 'darien', last_name: 'bahringer'),
-          an_object_having_attributes(title: 'Mrs', first_name: 'eulalia', last_name: 'hammes')
+        aggregate_failures 'Validate primary and secondary claimants' do
+          expect(claim.primary_claimant).to have_attributes(title: 'Mr', first_name: 'First', last_name: 'Last')
+          expect(claim.secondary_claimants).to contain_exactly an_object_having_attributes(title: 'Mrs', first_name: 'tamara', last_name: 'swift'),
+            an_object_having_attributes(title: 'Mr', first_name: 'diana', last_name: 'flatley'),
+            an_object_having_attributes(title: 'Ms', first_name: 'mariana', last_name: 'mccullough'),
+            an_object_having_attributes(title: 'Mr', first_name: 'eden', last_name: 'upton'),
+            an_object_having_attributes(title: 'Miss', first_name: 'annie', last_name: 'schulist'),
+            an_object_having_attributes(title: 'Mrs', first_name: 'thad', last_name: 'johns'),
+            an_object_having_attributes(title: 'Miss', first_name: 'coleman', last_name: 'kreiger'),
+            an_object_having_attributes(title: 'Ms', first_name: 'jensen', last_name: 'deckow'),
+            an_object_having_attributes(title: 'Mr', first_name: 'darien', last_name: 'bahringer'),
+            an_object_having_attributes(title: 'Mrs', first_name: 'eulalia', last_name: 'hammes')
+        end
       end
 
       it 'converts the files correctly with the csv renamed' do

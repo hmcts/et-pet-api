@@ -134,7 +134,7 @@ FactoryBot.define do
     end
 
     after(:build) do |r, evaluator|
-      unless r.primary_claimant.present?
+      if r.primary_claimant.blank?
         r.primary_claimant = build(:xml_claimant, claimants_list.first)
       end
       unless r.secondary_claimants.is_a?(Array)
