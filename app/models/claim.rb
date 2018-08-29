@@ -39,6 +39,6 @@ class Claim < ApplicationRecord
   private
 
   def cache_claimant_count
-    self.claimant_count = secondary_claimants.length + 1
+    self.claimant_count = secondary_claimants.length + (primary_claimant.present? ? 1 : 0)
   end
 end
