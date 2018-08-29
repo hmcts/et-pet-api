@@ -31,10 +31,31 @@ module EtApi
 
       class Document < Node
 
+        def as_json
+          arrange_claimants(super)
+        end
+
         def to_xml(builder: ::Builder::XmlMarkup.new(indent: 2, explicit_nil_handling: false))
           builder.tag! 'ETFeesEntry', xmlns: 'http://www.justice.gov.uk/ETFEES', 'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance', 'xsi:noNamespaceSchemaLocation': 'ETFees_v0.24.xsd' do
             super(builder: builder)
           end
+        end
+
+        private
+
+        # Arranges the claimants as follows
+        # If no secondary claimants then the claimants will just contain the primary
+        # If 1 opr more secondary claimants exist then the primary is inserted after the first one
+        # this will make sure the code under test is not relying on position to determine the primary
+        def arrange_claimants(json)
+          claimants = json.delete('SecondaryClaimants')
+          if claimants.empty?
+            claimants.push(json.delete('PrimaryClaimant'))
+          else
+            claimants.insert(1, json.delete('PrimaryClaimant'))
+          end
+          json['Claimants'] = claimants
+          json
         end
       end
 
@@ -89,7 +110,7 @@ FactoryBot.define do
     end
 
     transient do
-      number_of_claimants 1
+      number_of_secondary_claimants 0
       number_of_respondents 1
       number_of_representatives 1
     end
@@ -113,10 +134,13 @@ FactoryBot.define do
     end
 
     after(:build) do |r, evaluator|
-      unless r.claimants.is_a?(Array)
-        r.claimants = []
-        evaluator.number_of_claimants.times do |idx|
-          r.claimants << build(:xml_claimant, claimants_list[idx % claimants_list.length])
+      unless r.primary_claimant.present?
+        r.primary_claimant = build(:xml_claimant, claimants_list.first)
+      end
+      unless r.secondary_claimants.is_a?(Array)
+        r.secondary_claimants = []
+        evaluator.number_of_secondary_claimants.times do |idx|
+          r.secondary_claimants << build(:xml_claimant, claimants_list[(idx + 1) % claimants_list.length])
         end
       end
 
@@ -147,9 +171,7 @@ FactoryBot.define do
       date_of_receipt_et '2018-03-29T16:46:26+01:00'
       remission_indicated 'NotRequested'
       administrator '-1'
-      claimants do
-        [build(:xml_claimant, :mr_first_last)]
-      end
+      primary_claimant { build(:xml_claimant, :mr_first_last) }
       respondents do
         [build(:xml_claim_respondent, :respondent_name)]
       end
@@ -169,10 +191,10 @@ FactoryBot.define do
 
     trait :with_csv do
       case_type 'Multiple'
-      claimants do
+      primary_claimant { build(:xml_claimant, :mr_first_last, group_contact: true) }
+      secondary_claimants do
         [
           build(:xml_claimant, :tamara_swift),
-          build(:xml_claimant, :mr_first_last, group_contact: true), # Deliberately in second place instead of first to validate that we are not relying on position
           build(:xml_claimant, :diana_flatley),
           build(:xml_claimant, :mariana_mccullough),
           build(:xml_claimant, :eden_upton),

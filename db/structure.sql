@@ -1,7 +1,9 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 SET row_security = off;
@@ -20,8 +22,6 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
-SET search_path = public, pg_catalog;
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -30,7 +30,7 @@ SET default_with_oids = false;
 -- Name: active_admin_comments; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE active_admin_comments (
+CREATE TABLE public.active_admin_comments (
     id bigint NOT NULL,
     namespace character varying,
     body text,
@@ -47,7 +47,7 @@ CREATE TABLE active_admin_comments (
 -- Name: active_admin_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE active_admin_comments_id_seq
+CREATE SEQUENCE public.active_admin_comments_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -59,14 +59,14 @@ CREATE SEQUENCE active_admin_comments_id_seq
 -- Name: active_admin_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE active_admin_comments_id_seq OWNED BY active_admin_comments.id;
+ALTER SEQUENCE public.active_admin_comments_id_seq OWNED BY public.active_admin_comments.id;
 
 
 --
 -- Name: active_storage_attachments; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE active_storage_attachments (
+CREATE TABLE public.active_storage_attachments (
     id bigint NOT NULL,
     name character varying NOT NULL,
     record_type character varying NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE active_storage_attachments (
 -- Name: active_storage_attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE active_storage_attachments_id_seq
+CREATE SEQUENCE public.active_storage_attachments_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -92,14 +92,14 @@ CREATE SEQUENCE active_storage_attachments_id_seq
 -- Name: active_storage_attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE active_storage_attachments_id_seq OWNED BY active_storage_attachments.id;
+ALTER SEQUENCE public.active_storage_attachments_id_seq OWNED BY public.active_storage_attachments.id;
 
 
 --
 -- Name: active_storage_blobs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE active_storage_blobs (
+CREATE TABLE public.active_storage_blobs (
     id bigint NOT NULL,
     key character varying NOT NULL,
     filename character varying NOT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE active_storage_blobs (
 -- Name: active_storage_blobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE active_storage_blobs_id_seq
+CREATE SEQUENCE public.active_storage_blobs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -127,14 +127,14 @@ CREATE SEQUENCE active_storage_blobs_id_seq
 -- Name: active_storage_blobs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE active_storage_blobs_id_seq OWNED BY active_storage_blobs.id;
+ALTER SEQUENCE public.active_storage_blobs_id_seq OWNED BY public.active_storage_blobs.id;
 
 
 --
 -- Name: addresses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE addresses (
+CREATE TABLE public.addresses (
     id bigint NOT NULL,
     building character varying,
     street character varying,
@@ -151,7 +151,7 @@ CREATE TABLE addresses (
 -- Name: addresses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE addresses_id_seq
+CREATE SEQUENCE public.addresses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -163,14 +163,14 @@ CREATE SEQUENCE addresses_id_seq
 -- Name: addresses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE addresses_id_seq OWNED BY addresses.id;
+ALTER SEQUENCE public.addresses_id_seq OWNED BY public.addresses.id;
 
 
 --
 -- Name: admin_permissions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE admin_permissions (
+CREATE TABLE public.admin_permissions (
     id bigint NOT NULL,
     name character varying,
     created_at timestamp without time zone NOT NULL,
@@ -182,7 +182,7 @@ CREATE TABLE admin_permissions (
 -- Name: admin_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE admin_permissions_id_seq
+CREATE SEQUENCE public.admin_permissions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -194,14 +194,14 @@ CREATE SEQUENCE admin_permissions_id_seq
 -- Name: admin_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE admin_permissions_id_seq OWNED BY admin_permissions.id;
+ALTER SEQUENCE public.admin_permissions_id_seq OWNED BY public.admin_permissions.id;
 
 
 --
 -- Name: admin_role_permissions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE admin_role_permissions (
+CREATE TABLE public.admin_role_permissions (
     id bigint NOT NULL,
     role_id bigint,
     permission_id bigint
@@ -212,7 +212,7 @@ CREATE TABLE admin_role_permissions (
 -- Name: admin_role_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE admin_role_permissions_id_seq
+CREATE SEQUENCE public.admin_role_permissions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -224,14 +224,14 @@ CREATE SEQUENCE admin_role_permissions_id_seq
 -- Name: admin_role_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE admin_role_permissions_id_seq OWNED BY admin_role_permissions.id;
+ALTER SEQUENCE public.admin_role_permissions_id_seq OWNED BY public.admin_role_permissions.id;
 
 
 --
 -- Name: admin_roles; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE admin_roles (
+CREATE TABLE public.admin_roles (
     id bigint NOT NULL,
     name character varying NOT NULL,
     is_admin boolean DEFAULT false,
@@ -243,7 +243,7 @@ CREATE TABLE admin_roles (
 -- Name: admin_roles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE admin_roles_id_seq
+CREATE SEQUENCE public.admin_roles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -255,14 +255,14 @@ CREATE SEQUENCE admin_roles_id_seq
 -- Name: admin_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE admin_roles_id_seq OWNED BY admin_roles.id;
+ALTER SEQUENCE public.admin_roles_id_seq OWNED BY public.admin_roles.id;
 
 
 --
 -- Name: admin_user_roles; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE admin_user_roles (
+CREATE TABLE public.admin_user_roles (
     id bigint NOT NULL,
     user_id bigint,
     role_id bigint
@@ -273,7 +273,7 @@ CREATE TABLE admin_user_roles (
 -- Name: admin_user_roles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE admin_user_roles_id_seq
+CREATE SEQUENCE public.admin_user_roles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -285,14 +285,14 @@ CREATE SEQUENCE admin_user_roles_id_seq
 -- Name: admin_user_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE admin_user_roles_id_seq OWNED BY admin_user_roles.id;
+ALTER SEQUENCE public.admin_user_roles_id_seq OWNED BY public.admin_user_roles.id;
 
 
 --
 -- Name: admin_users; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE admin_users (
+CREATE TABLE public.admin_users (
     id bigint NOT NULL,
     email character varying DEFAULT ''::character varying NOT NULL,
     encrypted_password character varying DEFAULT ''::character varying NOT NULL,
@@ -321,7 +321,7 @@ CREATE TABLE admin_users (
 -- Name: admin_users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE admin_users_id_seq
+CREATE SEQUENCE public.admin_users_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -333,14 +333,14 @@ CREATE SEQUENCE admin_users_id_seq
 -- Name: admin_users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE admin_users_id_seq OWNED BY admin_users.id;
+ALTER SEQUENCE public.admin_users_id_seq OWNED BY public.admin_users.id;
 
 
 --
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE ar_internal_metadata (
+CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
     created_at timestamp without time zone NOT NULL,
@@ -352,7 +352,7 @@ CREATE TABLE ar_internal_metadata (
 -- Name: claim_claimants; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE claim_claimants (
+CREATE TABLE public.claim_claimants (
     id bigint NOT NULL,
     claim_id bigint,
     claimant_id bigint,
@@ -364,7 +364,7 @@ CREATE TABLE claim_claimants (
 -- Name: claim_claimants_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE claim_claimants_id_seq
+CREATE SEQUENCE public.claim_claimants_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -376,14 +376,14 @@ CREATE SEQUENCE claim_claimants_id_seq
 -- Name: claim_claimants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE claim_claimants_id_seq OWNED BY claim_claimants.id;
+ALTER SEQUENCE public.claim_claimants_id_seq OWNED BY public.claim_claimants.id;
 
 
 --
 -- Name: claim_representatives; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE claim_representatives (
+CREATE TABLE public.claim_representatives (
     id bigint NOT NULL,
     claim_id bigint,
     representative_id bigint,
@@ -396,7 +396,7 @@ CREATE TABLE claim_representatives (
 -- Name: claim_representatives_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE claim_representatives_id_seq
+CREATE SEQUENCE public.claim_representatives_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -408,14 +408,14 @@ CREATE SEQUENCE claim_representatives_id_seq
 -- Name: claim_representatives_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE claim_representatives_id_seq OWNED BY claim_representatives.id;
+ALTER SEQUENCE public.claim_representatives_id_seq OWNED BY public.claim_representatives.id;
 
 
 --
 -- Name: claim_respondents; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE claim_respondents (
+CREATE TABLE public.claim_respondents (
     id bigint NOT NULL,
     claim_id bigint,
     respondent_id bigint,
@@ -428,7 +428,7 @@ CREATE TABLE claim_respondents (
 -- Name: claim_respondents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE claim_respondents_id_seq
+CREATE SEQUENCE public.claim_respondents_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -440,14 +440,14 @@ CREATE SEQUENCE claim_respondents_id_seq
 -- Name: claim_respondents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE claim_respondents_id_seq OWNED BY claim_respondents.id;
+ALTER SEQUENCE public.claim_respondents_id_seq OWNED BY public.claim_respondents.id;
 
 
 --
 -- Name: claim_uploaded_files; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE claim_uploaded_files (
+CREATE TABLE public.claim_uploaded_files (
     id bigint NOT NULL,
     claim_id bigint,
     uploaded_file_id bigint,
@@ -460,7 +460,7 @@ CREATE TABLE claim_uploaded_files (
 -- Name: claim_uploaded_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE claim_uploaded_files_id_seq
+CREATE SEQUENCE public.claim_uploaded_files_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -472,14 +472,14 @@ CREATE SEQUENCE claim_uploaded_files_id_seq
 -- Name: claim_uploaded_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE claim_uploaded_files_id_seq OWNED BY claim_uploaded_files.id;
+ALTER SEQUENCE public.claim_uploaded_files_id_seq OWNED BY public.claim_uploaded_files.id;
 
 
 --
 -- Name: claimants; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE claimants (
+CREATE TABLE public.claimants (
     id bigint NOT NULL,
     title character varying,
     first_name character varying,
@@ -500,7 +500,7 @@ CREATE TABLE claimants (
 -- Name: claimants_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE claimants_id_seq
+CREATE SEQUENCE public.claimants_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -512,14 +512,14 @@ CREATE SEQUENCE claimants_id_seq
 -- Name: claimants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE claimants_id_seq OWNED BY claimants.id;
+ALTER SEQUENCE public.claimants_id_seq OWNED BY public.claimants.id;
 
 
 --
 -- Name: claims; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE claims (
+CREATE TABLE public.claims (
     id bigint NOT NULL,
     reference character varying,
     submission_reference character varying,
@@ -539,7 +539,7 @@ CREATE TABLE claims (
 -- Name: claims_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE claims_id_seq
+CREATE SEQUENCE public.claims_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -551,14 +551,14 @@ CREATE SEQUENCE claims_id_seq
 -- Name: claims_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE claims_id_seq OWNED BY claims.id;
+ALTER SEQUENCE public.claims_id_seq OWNED BY public.claims.id;
 
 
 --
 -- Name: et_acas_api_download_logs; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE et_acas_api_download_logs (
+CREATE TABLE public.et_acas_api_download_logs (
     id bigint NOT NULL,
     user_id character varying,
     certificate_number character varying,
@@ -574,7 +574,7 @@ CREATE TABLE et_acas_api_download_logs (
 -- Name: et_acas_api_download_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE et_acas_api_download_logs_id_seq
+CREATE SEQUENCE public.et_acas_api_download_logs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -586,14 +586,14 @@ CREATE SEQUENCE et_acas_api_download_logs_id_seq
 -- Name: et_acas_api_download_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE et_acas_api_download_logs_id_seq OWNED BY et_acas_api_download_logs.id;
+ALTER SEQUENCE public.et_acas_api_download_logs_id_seq OWNED BY public.et_acas_api_download_logs.id;
 
 
 --
 -- Name: exported_files; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE exported_files (
+CREATE TABLE public.exported_files (
     id bigint NOT NULL,
     filename character varying,
     content_type character varying,
@@ -606,7 +606,7 @@ CREATE TABLE exported_files (
 -- Name: exported_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE exported_files_id_seq
+CREATE SEQUENCE public.exported_files_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -618,14 +618,14 @@ CREATE SEQUENCE exported_files_id_seq
 -- Name: exported_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE exported_files_id_seq OWNED BY exported_files.id;
+ALTER SEQUENCE public.exported_files_id_seq OWNED BY public.exported_files.id;
 
 
 --
 -- Name: exports; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE exports (
+CREATE TABLE public.exports (
     id bigint NOT NULL,
     resource_id bigint,
     pdf_file_id bigint,
@@ -641,7 +641,7 @@ CREATE TABLE exports (
 -- Name: exports_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE exports_id_seq
+CREATE SEQUENCE public.exports_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -653,14 +653,14 @@ CREATE SEQUENCE exports_id_seq
 -- Name: exports_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE exports_id_seq OWNED BY exports.id;
+ALTER SEQUENCE public.exports_id_seq OWNED BY public.exports.id;
 
 
 --
 -- Name: office_post_codes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE office_post_codes (
+CREATE TABLE public.office_post_codes (
     id bigint NOT NULL,
     postcode character varying,
     office_id bigint,
@@ -673,7 +673,7 @@ CREATE TABLE office_post_codes (
 -- Name: office_post_codes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE office_post_codes_id_seq
+CREATE SEQUENCE public.office_post_codes_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -685,14 +685,14 @@ CREATE SEQUENCE office_post_codes_id_seq
 -- Name: office_post_codes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE office_post_codes_id_seq OWNED BY office_post_codes.id;
+ALTER SEQUENCE public.office_post_codes_id_seq OWNED BY public.office_post_codes.id;
 
 
 --
 -- Name: offices; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE offices (
+CREATE TABLE public.offices (
     id bigint NOT NULL,
     code integer,
     name character varying,
@@ -709,7 +709,7 @@ CREATE TABLE offices (
 -- Name: offices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE offices_id_seq
+CREATE SEQUENCE public.offices_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -721,14 +721,14 @@ CREATE SEQUENCE offices_id_seq
 -- Name: offices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE offices_id_seq OWNED BY offices.id;
+ALTER SEQUENCE public.offices_id_seq OWNED BY public.offices.id;
 
 
 --
 -- Name: pre_allocated_file_keys; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE pre_allocated_file_keys (
+CREATE TABLE public.pre_allocated_file_keys (
     id bigint NOT NULL,
     key character varying,
     allocated_to_type character varying,
@@ -743,7 +743,7 @@ CREATE TABLE pre_allocated_file_keys (
 -- Name: pre_allocated_file_keys_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE pre_allocated_file_keys_id_seq
+CREATE SEQUENCE public.pre_allocated_file_keys_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -755,14 +755,14 @@ CREATE SEQUENCE pre_allocated_file_keys_id_seq
 -- Name: pre_allocated_file_keys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE pre_allocated_file_keys_id_seq OWNED BY pre_allocated_file_keys.id;
+ALTER SEQUENCE public.pre_allocated_file_keys_id_seq OWNED BY public.pre_allocated_file_keys.id;
 
 
 --
 -- Name: representatives; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE representatives (
+CREATE TABLE public.representatives (
     id bigint NOT NULL,
     name character varying,
     organisation_name character varying,
@@ -786,7 +786,7 @@ CREATE TABLE representatives (
 -- Name: representatives_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE representatives_id_seq
+CREATE SEQUENCE public.representatives_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -798,14 +798,14 @@ CREATE SEQUENCE representatives_id_seq
 -- Name: representatives_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE representatives_id_seq OWNED BY representatives.id;
+ALTER SEQUENCE public.representatives_id_seq OWNED BY public.representatives.id;
 
 
 --
 -- Name: respondents; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE respondents (
+CREATE TABLE public.respondents (
     id bigint NOT NULL,
     name character varying,
     address_id bigint,
@@ -831,7 +831,7 @@ CREATE TABLE respondents (
 -- Name: respondents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE respondents_id_seq
+CREATE SEQUENCE public.respondents_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -843,14 +843,14 @@ CREATE SEQUENCE respondents_id_seq
 -- Name: respondents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE respondents_id_seq OWNED BY respondents.id;
+ALTER SEQUENCE public.respondents_id_seq OWNED BY public.respondents.id;
 
 
 --
 -- Name: response_uploaded_files; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE response_uploaded_files (
+CREATE TABLE public.response_uploaded_files (
     id bigint NOT NULL,
     response_id bigint,
     uploaded_file_id bigint,
@@ -863,7 +863,7 @@ CREATE TABLE response_uploaded_files (
 -- Name: response_uploaded_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE response_uploaded_files_id_seq
+CREATE SEQUENCE public.response_uploaded_files_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -875,14 +875,14 @@ CREATE SEQUENCE response_uploaded_files_id_seq
 -- Name: response_uploaded_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE response_uploaded_files_id_seq OWNED BY response_uploaded_files.id;
+ALTER SEQUENCE public.response_uploaded_files_id_seq OWNED BY public.response_uploaded_files.id;
 
 
 --
 -- Name: responses; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE responses (
+CREATE TABLE public.responses (
     id bigint NOT NULL,
     respondent_id bigint,
     representative_id bigint,
@@ -924,7 +924,7 @@ CREATE TABLE responses (
 -- Name: responses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE responses_id_seq
+CREATE SEQUENCE public.responses_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -936,14 +936,14 @@ CREATE SEQUENCE responses_id_seq
 -- Name: responses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE responses_id_seq OWNED BY responses.id;
+ALTER SEQUENCE public.responses_id_seq OWNED BY public.responses.id;
 
 
 --
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE schema_migrations (
+CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
 );
 
@@ -952,7 +952,7 @@ CREATE TABLE schema_migrations (
 -- Name: unique_references; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE unique_references (
+CREATE TABLE public.unique_references (
     id bigint NOT NULL,
     number integer,
     created_at timestamp without time zone NOT NULL,
@@ -964,7 +964,7 @@ CREATE TABLE unique_references (
 -- Name: unique_references_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE unique_references_id_seq
+CREATE SEQUENCE public.unique_references_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -976,14 +976,14 @@ CREATE SEQUENCE unique_references_id_seq
 -- Name: unique_references_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE unique_references_id_seq OWNED BY unique_references.id;
+ALTER SEQUENCE public.unique_references_id_seq OWNED BY public.unique_references.id;
 
 
 --
 -- Name: uploaded_files; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE uploaded_files (
+CREATE TABLE public.uploaded_files (
     id bigint NOT NULL,
     filename character varying,
     checksum character varying,
@@ -996,7 +996,7 @@ CREATE TABLE uploaded_files (
 -- Name: uploaded_files_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE uploaded_files_id_seq
+CREATE SEQUENCE public.uploaded_files_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1008,427 +1008,427 @@ CREATE SEQUENCE uploaded_files_id_seq
 -- Name: uploaded_files_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE uploaded_files_id_seq OWNED BY uploaded_files.id;
+ALTER SEQUENCE public.uploaded_files_id_seq OWNED BY public.uploaded_files.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: active_admin_comments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY active_admin_comments ALTER COLUMN id SET DEFAULT nextval('active_admin_comments_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY active_storage_attachments ALTER COLUMN id SET DEFAULT nextval('active_storage_attachments_id_seq'::regclass);
+ALTER TABLE ONLY public.active_admin_comments ALTER COLUMN id SET DEFAULT nextval('public.active_admin_comments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: active_storage_attachments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY active_storage_blobs ALTER COLUMN id SET DEFAULT nextval('active_storage_blobs_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY addresses ALTER COLUMN id SET DEFAULT nextval('addresses_id_seq'::regclass);
+ALTER TABLE ONLY public.active_storage_attachments ALTER COLUMN id SET DEFAULT nextval('public.active_storage_attachments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: active_storage_blobs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY admin_permissions ALTER COLUMN id SET DEFAULT nextval('admin_permissions_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY admin_role_permissions ALTER COLUMN id SET DEFAULT nextval('admin_role_permissions_id_seq'::regclass);
+ALTER TABLE ONLY public.active_storage_blobs ALTER COLUMN id SET DEFAULT nextval('public.active_storage_blobs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: addresses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY admin_roles ALTER COLUMN id SET DEFAULT nextval('admin_roles_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY admin_user_roles ALTER COLUMN id SET DEFAULT nextval('admin_user_roles_id_seq'::regclass);
+ALTER TABLE ONLY public.addresses ALTER COLUMN id SET DEFAULT nextval('public.addresses_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: admin_permissions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY admin_users ALTER COLUMN id SET DEFAULT nextval('admin_users_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY claim_claimants ALTER COLUMN id SET DEFAULT nextval('claim_claimants_id_seq'::regclass);
+ALTER TABLE ONLY public.admin_permissions ALTER COLUMN id SET DEFAULT nextval('public.admin_permissions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: admin_role_permissions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claim_representatives ALTER COLUMN id SET DEFAULT nextval('claim_representatives_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY claim_respondents ALTER COLUMN id SET DEFAULT nextval('claim_respondents_id_seq'::regclass);
+ALTER TABLE ONLY public.admin_role_permissions ALTER COLUMN id SET DEFAULT nextval('public.admin_role_permissions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: admin_roles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claim_uploaded_files ALTER COLUMN id SET DEFAULT nextval('claim_uploaded_files_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY claimants ALTER COLUMN id SET DEFAULT nextval('claimants_id_seq'::regclass);
+ALTER TABLE ONLY public.admin_roles ALTER COLUMN id SET DEFAULT nextval('public.admin_roles_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: admin_user_roles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claims ALTER COLUMN id SET DEFAULT nextval('claims_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY et_acas_api_download_logs ALTER COLUMN id SET DEFAULT nextval('et_acas_api_download_logs_id_seq'::regclass);
+ALTER TABLE ONLY public.admin_user_roles ALTER COLUMN id SET DEFAULT nextval('public.admin_user_roles_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: admin_users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY exported_files ALTER COLUMN id SET DEFAULT nextval('exported_files_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY exports ALTER COLUMN id SET DEFAULT nextval('exports_id_seq'::regclass);
+ALTER TABLE ONLY public.admin_users ALTER COLUMN id SET DEFAULT nextval('public.admin_users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: claim_claimants id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY office_post_codes ALTER COLUMN id SET DEFAULT nextval('office_post_codes_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY offices ALTER COLUMN id SET DEFAULT nextval('offices_id_seq'::regclass);
+ALTER TABLE ONLY public.claim_claimants ALTER COLUMN id SET DEFAULT nextval('public.claim_claimants_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: claim_representatives id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY pre_allocated_file_keys ALTER COLUMN id SET DEFAULT nextval('pre_allocated_file_keys_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY representatives ALTER COLUMN id SET DEFAULT nextval('representatives_id_seq'::regclass);
+ALTER TABLE ONLY public.claim_representatives ALTER COLUMN id SET DEFAULT nextval('public.claim_representatives_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: claim_respondents id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY respondents ALTER COLUMN id SET DEFAULT nextval('respondents_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY response_uploaded_files ALTER COLUMN id SET DEFAULT nextval('response_uploaded_files_id_seq'::regclass);
+ALTER TABLE ONLY public.claim_respondents ALTER COLUMN id SET DEFAULT nextval('public.claim_respondents_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: claim_uploaded_files id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY responses ALTER COLUMN id SET DEFAULT nextval('responses_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY unique_references ALTER COLUMN id SET DEFAULT nextval('unique_references_id_seq'::regclass);
+ALTER TABLE ONLY public.claim_uploaded_files ALTER COLUMN id SET DEFAULT nextval('public.claim_uploaded_files_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: claimants id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY uploaded_files ALTER COLUMN id SET DEFAULT nextval('uploaded_files_id_seq'::regclass);
+ALTER TABLE ONLY public.claimants ALTER COLUMN id SET DEFAULT nextval('public.claimants_id_seq'::regclass);
 
 
 --
--- Name: active_admin_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: claims id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY active_admin_comments
+ALTER TABLE ONLY public.claims ALTER COLUMN id SET DEFAULT nextval('public.claims_id_seq'::regclass);
+
+
+--
+-- Name: et_acas_api_download_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.et_acas_api_download_logs ALTER COLUMN id SET DEFAULT nextval('public.et_acas_api_download_logs_id_seq'::regclass);
+
+
+--
+-- Name: exported_files id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.exported_files ALTER COLUMN id SET DEFAULT nextval('public.exported_files_id_seq'::regclass);
+
+
+--
+-- Name: exports id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.exports ALTER COLUMN id SET DEFAULT nextval('public.exports_id_seq'::regclass);
+
+
+--
+-- Name: office_post_codes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.office_post_codes ALTER COLUMN id SET DEFAULT nextval('public.office_post_codes_id_seq'::regclass);
+
+
+--
+-- Name: offices id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.offices ALTER COLUMN id SET DEFAULT nextval('public.offices_id_seq'::regclass);
+
+
+--
+-- Name: pre_allocated_file_keys id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.pre_allocated_file_keys ALTER COLUMN id SET DEFAULT nextval('public.pre_allocated_file_keys_id_seq'::regclass);
+
+
+--
+-- Name: representatives id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.representatives ALTER COLUMN id SET DEFAULT nextval('public.representatives_id_seq'::regclass);
+
+
+--
+-- Name: respondents id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.respondents ALTER COLUMN id SET DEFAULT nextval('public.respondents_id_seq'::regclass);
+
+
+--
+-- Name: response_uploaded_files id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.response_uploaded_files ALTER COLUMN id SET DEFAULT nextval('public.response_uploaded_files_id_seq'::regclass);
+
+
+--
+-- Name: responses id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.responses ALTER COLUMN id SET DEFAULT nextval('public.responses_id_seq'::regclass);
+
+
+--
+-- Name: unique_references id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.unique_references ALTER COLUMN id SET DEFAULT nextval('public.unique_references_id_seq'::regclass);
+
+
+--
+-- Name: uploaded_files id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.uploaded_files ALTER COLUMN id SET DEFAULT nextval('public.uploaded_files_id_seq'::regclass);
+
+
+--
+-- Name: active_admin_comments active_admin_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.active_admin_comments
     ADD CONSTRAINT active_admin_comments_pkey PRIMARY KEY (id);
 
 
 --
--- Name: active_storage_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: active_storage_attachments active_storage_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY active_storage_attachments
+ALTER TABLE ONLY public.active_storage_attachments
     ADD CONSTRAINT active_storage_attachments_pkey PRIMARY KEY (id);
 
 
 --
--- Name: active_storage_blobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: active_storage_blobs active_storage_blobs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY active_storage_blobs
+ALTER TABLE ONLY public.active_storage_blobs
     ADD CONSTRAINT active_storage_blobs_pkey PRIMARY KEY (id);
 
 
 --
--- Name: addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: addresses addresses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY addresses
+ALTER TABLE ONLY public.addresses
     ADD CONSTRAINT addresses_pkey PRIMARY KEY (id);
 
 
 --
--- Name: admin_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: admin_permissions admin_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY admin_permissions
+ALTER TABLE ONLY public.admin_permissions
     ADD CONSTRAINT admin_permissions_pkey PRIMARY KEY (id);
 
 
 --
--- Name: admin_role_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: admin_role_permissions admin_role_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY admin_role_permissions
+ALTER TABLE ONLY public.admin_role_permissions
     ADD CONSTRAINT admin_role_permissions_pkey PRIMARY KEY (id);
 
 
 --
--- Name: admin_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: admin_roles admin_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY admin_roles
+ALTER TABLE ONLY public.admin_roles
     ADD CONSTRAINT admin_roles_pkey PRIMARY KEY (id);
 
 
 --
--- Name: admin_user_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: admin_user_roles admin_user_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY admin_user_roles
+ALTER TABLE ONLY public.admin_user_roles
     ADD CONSTRAINT admin_user_roles_pkey PRIMARY KEY (id);
 
 
 --
--- Name: admin_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: admin_users admin_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY admin_users
+ALTER TABLE ONLY public.admin_users
     ADD CONSTRAINT admin_users_pkey PRIMARY KEY (id);
 
 
 --
--- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY ar_internal_metadata
+ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
 
 
 --
--- Name: claim_claimants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: claim_claimants claim_claimants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claim_claimants
+ALTER TABLE ONLY public.claim_claimants
     ADD CONSTRAINT claim_claimants_pkey PRIMARY KEY (id);
 
 
 --
--- Name: claim_representatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: claim_representatives claim_representatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claim_representatives
+ALTER TABLE ONLY public.claim_representatives
     ADD CONSTRAINT claim_representatives_pkey PRIMARY KEY (id);
 
 
 --
--- Name: claim_respondents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: claim_respondents claim_respondents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claim_respondents
+ALTER TABLE ONLY public.claim_respondents
     ADD CONSTRAINT claim_respondents_pkey PRIMARY KEY (id);
 
 
 --
--- Name: claim_uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: claim_uploaded_files claim_uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claim_uploaded_files
+ALTER TABLE ONLY public.claim_uploaded_files
     ADD CONSTRAINT claim_uploaded_files_pkey PRIMARY KEY (id);
 
 
 --
--- Name: claimants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: claimants claimants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claimants
+ALTER TABLE ONLY public.claimants
     ADD CONSTRAINT claimants_pkey PRIMARY KEY (id);
 
 
 --
--- Name: claims_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: claims claims_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claims
+ALTER TABLE ONLY public.claims
     ADD CONSTRAINT claims_pkey PRIMARY KEY (id);
 
 
 --
--- Name: et_acas_api_download_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: et_acas_api_download_logs et_acas_api_download_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY et_acas_api_download_logs
+ALTER TABLE ONLY public.et_acas_api_download_logs
     ADD CONSTRAINT et_acas_api_download_logs_pkey PRIMARY KEY (id);
 
 
 --
--- Name: exported_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: exported_files exported_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY exported_files
+ALTER TABLE ONLY public.exported_files
     ADD CONSTRAINT exported_files_pkey PRIMARY KEY (id);
 
 
 --
--- Name: exports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: exports exports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY exports
+ALTER TABLE ONLY public.exports
     ADD CONSTRAINT exports_pkey PRIMARY KEY (id);
 
 
 --
--- Name: office_post_codes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: office_post_codes office_post_codes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY office_post_codes
+ALTER TABLE ONLY public.office_post_codes
     ADD CONSTRAINT office_post_codes_pkey PRIMARY KEY (id);
 
 
 --
--- Name: offices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: offices offices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY offices
+ALTER TABLE ONLY public.offices
     ADD CONSTRAINT offices_pkey PRIMARY KEY (id);
 
 
 --
--- Name: pre_allocated_file_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: pre_allocated_file_keys pre_allocated_file_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY pre_allocated_file_keys
+ALTER TABLE ONLY public.pre_allocated_file_keys
     ADD CONSTRAINT pre_allocated_file_keys_pkey PRIMARY KEY (id);
 
 
 --
--- Name: representatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: representatives representatives_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY representatives
+ALTER TABLE ONLY public.representatives
     ADD CONSTRAINT representatives_pkey PRIMARY KEY (id);
 
 
 --
--- Name: respondents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: respondents respondents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY respondents
+ALTER TABLE ONLY public.respondents
     ADD CONSTRAINT respondents_pkey PRIMARY KEY (id);
 
 
 --
--- Name: response_uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: response_uploaded_files response_uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY response_uploaded_files
+ALTER TABLE ONLY public.response_uploaded_files
     ADD CONSTRAINT response_uploaded_files_pkey PRIMARY KEY (id);
 
 
 --
--- Name: responses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: responses responses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY responses
+ALTER TABLE ONLY public.responses
     ADD CONSTRAINT responses_pkey PRIMARY KEY (id);
 
 
 --
--- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY schema_migrations
+ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
 
 
 --
--- Name: unique_references_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: unique_references unique_references_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY unique_references
+ALTER TABLE ONLY public.unique_references
     ADD CONSTRAINT unique_references_pkey PRIMARY KEY (id);
 
 
 --
--- Name: uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: uploaded_files uploaded_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY uploaded_files
+ALTER TABLE ONLY public.uploaded_files
     ADD CONSTRAINT uploaded_files_pkey PRIMARY KEY (id);
 
 
@@ -1436,351 +1436,351 @@ ALTER TABLE ONLY uploaded_files
 -- Name: index_active_admin_comments_on_author_type_and_author_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_active_admin_comments_on_author_type_and_author_id ON active_admin_comments USING btree (author_type, author_id);
+CREATE INDEX index_active_admin_comments_on_author_type_and_author_id ON public.active_admin_comments USING btree (author_type, author_id);
 
 
 --
 -- Name: index_active_admin_comments_on_namespace; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_active_admin_comments_on_namespace ON active_admin_comments USING btree (namespace);
+CREATE INDEX index_active_admin_comments_on_namespace ON public.active_admin_comments USING btree (namespace);
 
 
 --
 -- Name: index_active_admin_comments_on_resource_type_and_resource_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON active_admin_comments USING btree (resource_type, resource_id);
+CREATE INDEX index_active_admin_comments_on_resource_type_and_resource_id ON public.active_admin_comments USING btree (resource_type, resource_id);
 
 
 --
 -- Name: index_active_storage_attachments_on_blob_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_active_storage_attachments_on_blob_id ON active_storage_attachments USING btree (blob_id);
+CREATE INDEX index_active_storage_attachments_on_blob_id ON public.active_storage_attachments USING btree (blob_id);
 
 
 --
 -- Name: index_active_storage_attachments_uniqueness; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_active_storage_attachments_uniqueness ON active_storage_attachments USING btree (record_type, record_id, name, blob_id);
+CREATE UNIQUE INDEX index_active_storage_attachments_uniqueness ON public.active_storage_attachments USING btree (record_type, record_id, name, blob_id);
 
 
 --
 -- Name: index_active_storage_blobs_on_key; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON active_storage_blobs USING btree (key);
+CREATE UNIQUE INDEX index_active_storage_blobs_on_key ON public.active_storage_blobs USING btree (key);
 
 
 --
 -- Name: index_admin_role_permissions_on_permission_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_admin_role_permissions_on_permission_id ON admin_role_permissions USING btree (permission_id);
+CREATE INDEX index_admin_role_permissions_on_permission_id ON public.admin_role_permissions USING btree (permission_id);
 
 
 --
 -- Name: index_admin_role_permissions_on_role_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_admin_role_permissions_on_role_id ON admin_role_permissions USING btree (role_id);
+CREATE INDEX index_admin_role_permissions_on_role_id ON public.admin_role_permissions USING btree (role_id);
 
 
 --
 -- Name: index_admin_user_roles_on_role_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_admin_user_roles_on_role_id ON admin_user_roles USING btree (role_id);
+CREATE INDEX index_admin_user_roles_on_role_id ON public.admin_user_roles USING btree (role_id);
 
 
 --
 -- Name: index_admin_user_roles_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_admin_user_roles_on_user_id ON admin_user_roles USING btree (user_id);
+CREATE INDEX index_admin_user_roles_on_user_id ON public.admin_user_roles USING btree (user_id);
 
 
 --
 -- Name: index_admin_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_admin_users_on_email ON admin_users USING btree (email);
+CREATE UNIQUE INDEX index_admin_users_on_email ON public.admin_users USING btree (email);
 
 
 --
 -- Name: index_admin_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON admin_users USING btree (reset_password_token);
+CREATE UNIQUE INDEX index_admin_users_on_reset_password_token ON public.admin_users USING btree (reset_password_token);
 
 
 --
 -- Name: index_admin_users_on_unlock_token; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_admin_users_on_unlock_token ON admin_users USING btree (unlock_token);
+CREATE UNIQUE INDEX index_admin_users_on_unlock_token ON public.admin_users USING btree (unlock_token);
 
 
 --
 -- Name: index_admin_users_on_username; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_admin_users_on_username ON admin_users USING btree (username);
+CREATE UNIQUE INDEX index_admin_users_on_username ON public.admin_users USING btree (username);
 
 
 --
 -- Name: index_claim_claimants_on_claim_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claim_claimants_on_claim_id ON claim_claimants USING btree (claim_id);
+CREATE INDEX index_claim_claimants_on_claim_id ON public.claim_claimants USING btree (claim_id);
 
 
 --
 -- Name: index_claim_claimants_on_claimant_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claim_claimants_on_claimant_id ON claim_claimants USING btree (claimant_id);
+CREATE INDEX index_claim_claimants_on_claimant_id ON public.claim_claimants USING btree (claimant_id);
 
 
 --
 -- Name: index_claim_representatives_on_claim_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claim_representatives_on_claim_id ON claim_representatives USING btree (claim_id);
+CREATE INDEX index_claim_representatives_on_claim_id ON public.claim_representatives USING btree (claim_id);
 
 
 --
 -- Name: index_claim_representatives_on_representative_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claim_representatives_on_representative_id ON claim_representatives USING btree (representative_id);
+CREATE INDEX index_claim_representatives_on_representative_id ON public.claim_representatives USING btree (representative_id);
 
 
 --
 -- Name: index_claim_respondents_on_claim_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claim_respondents_on_claim_id ON claim_respondents USING btree (claim_id);
+CREATE INDEX index_claim_respondents_on_claim_id ON public.claim_respondents USING btree (claim_id);
 
 
 --
 -- Name: index_claim_respondents_on_respondent_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claim_respondents_on_respondent_id ON claim_respondents USING btree (respondent_id);
+CREATE INDEX index_claim_respondents_on_respondent_id ON public.claim_respondents USING btree (respondent_id);
 
 
 --
 -- Name: index_claim_uploaded_files_on_claim_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claim_uploaded_files_on_claim_id ON claim_uploaded_files USING btree (claim_id);
+CREATE INDEX index_claim_uploaded_files_on_claim_id ON public.claim_uploaded_files USING btree (claim_id);
 
 
 --
 -- Name: index_claim_uploaded_files_on_uploaded_file_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claim_uploaded_files_on_uploaded_file_id ON claim_uploaded_files USING btree (uploaded_file_id);
+CREATE INDEX index_claim_uploaded_files_on_uploaded_file_id ON public.claim_uploaded_files USING btree (uploaded_file_id);
 
 
 --
 -- Name: index_claimants_on_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_claimants_on_address_id ON claimants USING btree (address_id);
+CREATE INDEX index_claimants_on_address_id ON public.claimants USING btree (address_id);
 
 
 --
 -- Name: index_exports_on_resource_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_exports_on_resource_id ON exports USING btree (resource_id);
+CREATE INDEX index_exports_on_resource_id ON public.exports USING btree (resource_id);
 
 
 --
 -- Name: index_office_post_codes_on_office_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_office_post_codes_on_office_id ON office_post_codes USING btree (office_id);
+CREATE INDEX index_office_post_codes_on_office_id ON public.office_post_codes USING btree (office_id);
 
 
 --
 -- Name: index_pre_allocated_file_keys_to_allocated_id_and_type; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_pre_allocated_file_keys_to_allocated_id_and_type ON pre_allocated_file_keys USING btree (allocated_to_type, allocated_to_id);
+CREATE INDEX index_pre_allocated_file_keys_to_allocated_id_and_type ON public.pre_allocated_file_keys USING btree (allocated_to_type, allocated_to_id);
 
 
 --
 -- Name: index_representatives_on_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_representatives_on_address_id ON representatives USING btree (address_id);
+CREATE INDEX index_representatives_on_address_id ON public.representatives USING btree (address_id);
 
 
 --
 -- Name: index_respondents_on_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_respondents_on_address_id ON respondents USING btree (address_id);
+CREATE INDEX index_respondents_on_address_id ON public.respondents USING btree (address_id);
 
 
 --
 -- Name: index_respondents_on_work_address_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_respondents_on_work_address_id ON respondents USING btree (work_address_id);
+CREATE INDEX index_respondents_on_work_address_id ON public.respondents USING btree (work_address_id);
 
 
 --
 -- Name: index_response_uploaded_files_on_response_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_response_uploaded_files_on_response_id ON response_uploaded_files USING btree (response_id);
+CREATE INDEX index_response_uploaded_files_on_response_id ON public.response_uploaded_files USING btree (response_id);
 
 
 --
 -- Name: index_response_uploaded_files_on_uploaded_file_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_response_uploaded_files_on_uploaded_file_id ON response_uploaded_files USING btree (uploaded_file_id);
+CREATE INDEX index_response_uploaded_files_on_uploaded_file_id ON public.response_uploaded_files USING btree (uploaded_file_id);
 
 
 --
 -- Name: index_responses_on_representative_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_responses_on_representative_id ON responses USING btree (representative_id);
+CREATE INDEX index_responses_on_representative_id ON public.responses USING btree (representative_id);
 
 
 --
 -- Name: index_responses_on_respondent_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_responses_on_respondent_id ON responses USING btree (respondent_id);
+CREATE INDEX index_responses_on_respondent_id ON public.responses USING btree (respondent_id);
 
 
 --
--- Name: fk_rails_303e8e36aa; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: claim_representatives fk_rails_303e8e36aa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claim_representatives
-    ADD CONSTRAINT fk_rails_303e8e36aa FOREIGN KEY (representative_id) REFERENCES representatives(id);
-
-
---
--- Name: fk_rails_3b2aad2c6b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY claim_claimants
-    ADD CONSTRAINT fk_rails_3b2aad2c6b FOREIGN KEY (claim_id) REFERENCES claims(id);
+ALTER TABLE ONLY public.claim_representatives
+    ADD CONSTRAINT fk_rails_303e8e36aa FOREIGN KEY (representative_id) REFERENCES public.representatives(id);
 
 
 --
--- Name: fk_rails_5b676c7564; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: claim_claimants fk_rails_3b2aad2c6b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claimants
-    ADD CONSTRAINT fk_rails_5b676c7564 FOREIGN KEY (address_id) REFERENCES addresses(id);
-
-
---
--- Name: fk_rails_6b02086897; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY claim_representatives
-    ADD CONSTRAINT fk_rails_6b02086897 FOREIGN KEY (claim_id) REFERENCES claims(id);
+ALTER TABLE ONLY public.claim_claimants
+    ADD CONSTRAINT fk_rails_3b2aad2c6b FOREIGN KEY (claim_id) REFERENCES public.claims(id);
 
 
 --
--- Name: fk_rails_6e31f27150; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: claimants fk_rails_5b676c7564; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY representatives
-    ADD CONSTRAINT fk_rails_6e31f27150 FOREIGN KEY (address_id) REFERENCES addresses(id);
-
-
---
--- Name: fk_rails_6f891eb8c6; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY claim_respondents
-    ADD CONSTRAINT fk_rails_6f891eb8c6 FOREIGN KEY (respondent_id) REFERENCES respondents(id);
+ALTER TABLE ONLY public.claimants
+    ADD CONSTRAINT fk_rails_5b676c7564 FOREIGN KEY (address_id) REFERENCES public.addresses(id);
 
 
 --
--- Name: fk_rails_aef838d57f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: claim_representatives fk_rails_6b02086897; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claim_uploaded_files
-    ADD CONSTRAINT fk_rails_aef838d57f FOREIGN KEY (uploaded_file_id) REFERENCES uploaded_files(id);
-
-
---
--- Name: fk_rails_b2834e6387; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY respondents
-    ADD CONSTRAINT fk_rails_b2834e6387 FOREIGN KEY (address_id) REFERENCES addresses(id);
+ALTER TABLE ONLY public.claim_representatives
+    ADD CONSTRAINT fk_rails_6b02086897 FOREIGN KEY (claim_id) REFERENCES public.claims(id);
 
 
 --
--- Name: fk_rails_c38ecd1031; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: representatives fk_rails_6e31f27150; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claim_respondents
-    ADD CONSTRAINT fk_rails_c38ecd1031 FOREIGN KEY (claim_id) REFERENCES claims(id);
-
-
---
--- Name: fk_rails_c95be0dd75; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY claim_uploaded_files
-    ADD CONSTRAINT fk_rails_c95be0dd75 FOREIGN KEY (claim_id) REFERENCES claims(id);
+ALTER TABLE ONLY public.representatives
+    ADD CONSTRAINT fk_rails_6e31f27150 FOREIGN KEY (address_id) REFERENCES public.addresses(id);
 
 
 --
--- Name: fk_rails_caf1d8fe35; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: claim_respondents fk_rails_6f891eb8c6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY response_uploaded_files
-    ADD CONSTRAINT fk_rails_caf1d8fe35 FOREIGN KEY (response_id) REFERENCES responses(id);
-
-
---
--- Name: fk_rails_d276fbe15b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY office_post_codes
-    ADD CONSTRAINT fk_rails_d276fbe15b FOREIGN KEY (office_id) REFERENCES offices(id);
+ALTER TABLE ONLY public.claim_respondents
+    ADD CONSTRAINT fk_rails_6f891eb8c6 FOREIGN KEY (respondent_id) REFERENCES public.respondents(id);
 
 
 --
--- Name: fk_rails_d2d3e755fa; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: claim_uploaded_files fk_rails_aef838d57f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY respondents
-    ADD CONSTRAINT fk_rails_d2d3e755fa FOREIGN KEY (work_address_id) REFERENCES addresses(id);
-
-
---
--- Name: fk_rails_e34b7bdec4; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY response_uploaded_files
-    ADD CONSTRAINT fk_rails_e34b7bdec4 FOREIGN KEY (uploaded_file_id) REFERENCES uploaded_files(id);
+ALTER TABLE ONLY public.claim_uploaded_files
+    ADD CONSTRAINT fk_rails_aef838d57f FOREIGN KEY (uploaded_file_id) REFERENCES public.uploaded_files(id);
 
 
 --
--- Name: fk_rails_fc3432143b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: respondents fk_rails_b2834e6387; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY claim_claimants
-    ADD CONSTRAINT fk_rails_fc3432143b FOREIGN KEY (claimant_id) REFERENCES claimants(id);
+ALTER TABLE ONLY public.respondents
+    ADD CONSTRAINT fk_rails_b2834e6387 FOREIGN KEY (address_id) REFERENCES public.addresses(id);
+
+
+--
+-- Name: claim_respondents fk_rails_c38ecd1031; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claim_respondents
+    ADD CONSTRAINT fk_rails_c38ecd1031 FOREIGN KEY (claim_id) REFERENCES public.claims(id);
+
+
+--
+-- Name: claim_uploaded_files fk_rails_c95be0dd75; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claim_uploaded_files
+    ADD CONSTRAINT fk_rails_c95be0dd75 FOREIGN KEY (claim_id) REFERENCES public.claims(id);
+
+
+--
+-- Name: response_uploaded_files fk_rails_caf1d8fe35; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.response_uploaded_files
+    ADD CONSTRAINT fk_rails_caf1d8fe35 FOREIGN KEY (response_id) REFERENCES public.responses(id);
+
+
+--
+-- Name: office_post_codes fk_rails_d276fbe15b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.office_post_codes
+    ADD CONSTRAINT fk_rails_d276fbe15b FOREIGN KEY (office_id) REFERENCES public.offices(id);
+
+
+--
+-- Name: respondents fk_rails_d2d3e755fa; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.respondents
+    ADD CONSTRAINT fk_rails_d2d3e755fa FOREIGN KEY (work_address_id) REFERENCES public.addresses(id);
+
+
+--
+-- Name: response_uploaded_files fk_rails_e34b7bdec4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.response_uploaded_files
+    ADD CONSTRAINT fk_rails_e34b7bdec4 FOREIGN KEY (uploaded_file_id) REFERENCES public.uploaded_files(id);
+
+
+--
+-- Name: claim_claimants fk_rails_fc3432143b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claim_claimants
+    ADD CONSTRAINT fk_rails_fc3432143b FOREIGN KEY (claimant_id) REFERENCES public.claimants(id);
 
 
 --
