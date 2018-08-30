@@ -19,7 +19,8 @@ FactoryBot.define do
     date_of_receipt { Time.zone.now }
 
     after(:build) do |claim, evaluator|
-      claim.claimants.concat build_list(:claimant, evaluator.number_of_claimants)
+      claim.primary_claimant = build(:claimant) if claim.primary_claimant.blank?
+      claim.secondary_claimants.concat build_list(:claimant, evaluator.number_of_claimants - 1)
       claim.claimant_count += evaluator.number_of_claimants
     end
 
@@ -64,7 +65,8 @@ FactoryBot.define do
       reference "222000000300"
       date_of_receipt { Time.zone.parse('29/3/2018') }
       number_of_claimants 0
-      claimants { [build(:claimant, :example_data)] }
+      primary_claimant { build(:claimant, :example_data) }
+      secondary_claimants []
       respondents { [build(:respondent, :example_data)] }
       representatives { [build(:representative, :example_data)] }
       uploaded_files { [build(:uploaded_file, :example_data)] }
@@ -72,9 +74,8 @@ FactoryBot.define do
 
     trait :example_data_multiple_claimants do
       example_data
-      claimants do
+      secondary_claimants do
         [
-          build(:claimant, :example_data),
           build(:claimant, :tamara_swift),
           build(:claimant, :diana_flatley),
           build(:claimant, :mariana_mccullough),

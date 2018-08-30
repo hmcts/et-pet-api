@@ -29,6 +29,12 @@ module EtApi
         }
       end
 
+      def normalize_xml_claimants(claimants_array)
+        claimants_array.map do |claimant_hash|
+          normalize_xml_claimant(claimant_hash)
+        end
+      end
+
       def normalize_xml_respondent(respondent)
         {
           name: respondent['Name'],
