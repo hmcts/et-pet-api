@@ -16,8 +16,8 @@ module ClaimFileBuilder
 
     def self.render(claim)
       ApplicationController.render "file_builders/export_claimants.txt.erb", locals: {
-        claim: claim, primary_claimant: claim.claimants.first,
-        secondary_claimants: claim.claimants[1..-1],
+        claim: claim, primary_claimant: claim.primary_claimant,
+        secondary_claimants: claim.secondary_claimants,
         primary_respondent: claim.respondents.first
       }
     end

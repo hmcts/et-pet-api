@@ -4,7 +4,7 @@ module ClaimFileBuilder
 
     class_methods do
       def filename_for(claim:, extension: "txt", prefix: "et1")
-        claimant = claim.claimants.first
+        claimant = claim.primary_claimant
         "#{prefix}_#{claimant.first_name.tr(' ', '_')}_#{claimant.last_name}.#{extension}"
       end
     end

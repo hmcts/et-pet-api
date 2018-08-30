@@ -7,10 +7,10 @@ RSpec.describe Claim, type: :model do
 
   let(:claim) { described_class.new }
 
-  describe '#claimants' do
-    it 'returns claimants built in memory' do
+  describe '#secondary_claimants' do
+    it 'returns claim - claimants built in memory' do
       # Arrange
-      claim.claimants_attributes = [
+      claim.secondary_claimants_attributes = [
         {
           title: 'Mr',
           first_name: 'Fred',
@@ -20,7 +20,7 @@ RSpec.describe Claim, type: :model do
       ]
 
       # Act
-      results = claim.claimants
+      results = claim.secondary_claimants
 
       # Assert
       expect(results).to contain_exactly an_object_having_attributes first_name: 'Fred', last_name: 'Bloggs'
@@ -90,13 +90,13 @@ RSpec.describe Claim, type: :model do
   describe 'claimant_count' do
     it 'returns the number of claimants built at initialisation time' do
       # Arrange
-      claim.claimants_attributes = [
-        {
-          title: 'Mr',
-          first_name: 'Fred',
-          last_name: 'Bloggs',
-          address_attributes: example_address_attrs
-        },
+      claim.primary_claimant_attributes = {
+        title: 'Mr',
+        first_name: 'Fred',
+        last_name: 'Bloggs',
+        address_attributes: example_address_attrs
+      }
+      claim.secondary_claimants_attributes = [
         {
           title: 'Mrs',
           first_name: 'Sara',

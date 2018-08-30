@@ -33,7 +33,7 @@ module ExportServiceExporters
     def export_files(claim, to:)
       export_file(claim: claim, to: to, prefix: 'ET1', ext: :pdf, type: :pdf)
       export_file(claim: claim, to: to, prefix: 'ET1', ext: :txt, type: :txt)
-      export_file(claim: claim, to: to, prefix: 'ET1a', ext: :txt, type: :claimants_txt) if claim.claimants.count > 1
+      export_file(claim: claim, to: to, prefix: 'ET1a', ext: :txt, type: :claimants_txt) if claim.multiple_claimants?
       export_file(claim: claim, to: to, prefix: 'ET1a', ext: :csv, type: :claimants_csv) if claim_has_csv?(claim: claim)
       export_file(claim: claim, to: to, prefix: 'ET1_Attachment', ext: :rtf, type: :rtf) if claim_has_rtf?(claim: claim)
     end
