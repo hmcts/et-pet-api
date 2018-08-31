@@ -1615,6 +1615,13 @@ CREATE INDEX index_office_post_codes_on_office_id ON public.office_post_codes US
 
 
 --
+-- Name: index_office_post_codes_on_postcode; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_office_post_codes_on_postcode ON public.office_post_codes USING btree (postcode);
+
+
+--
 -- Name: index_pre_allocated_file_keys_to_allocated_id_and_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1794,7 +1801,7 @@ ALTER TABLE ONLY public.claim_claimants
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20180322173653'),
@@ -1837,8 +1844,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180721164447'),
 ('20180722080012'),
 ('20180731090130'),
+('20180824103139'),
 ('20180828120205'),
 ('20180828162908'),
+('20180829121912'),
 ('20180829143635');
+
 
 
