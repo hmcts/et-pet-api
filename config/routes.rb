@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       namespace :respondents do
         post "build_response" => 'build_responses#create'
       end
+      namespace :diversity do
+        post "build_diversity_response" => 'build_diversity_responses#create'
+      end
       namespace :references do
         post "create_reference" => 'create_references#create'
       end

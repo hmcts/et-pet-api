@@ -5,7 +5,7 @@ RSpec.describe ClaimFileBuilder::BuildClaimantsTextFile do
 
   describe '#call' do
     context 'with 11 claimants, 1 respondent and representative' do
-      let(:claim) { build(:claim, :example_data_multiple_claimants) }
+      let(:claim) { create(:claim, :example_data_multiple_claimants) }
 
       it 'stores an ET1a txt file with the correct filename' do
         # Act
