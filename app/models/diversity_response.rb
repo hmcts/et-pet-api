@@ -1,0 +1,2 @@
+class DiversityResponse < ApplicationRecord
+end
