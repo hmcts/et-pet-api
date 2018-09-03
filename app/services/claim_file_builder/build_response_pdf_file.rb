@@ -169,11 +169,9 @@ module ClaimFileBuilder
     end
 
     def apply_disability_pdf_fields(result)
-      representative = response.representative
-      return apply_no_disability_pdf_fields(result) if representative.nil?
-      return if representative.nil?
-      result['8.1 tick box'] = tri_state_value_for(representative.disability)
-      result['8.1 if yes'] = representative.disability_information
+      respondent = response.respondent
+      result['8.1 tick box'] = tri_state_value_for(respondent.disability)
+      result['8.1 if yes'] = respondent.disability_information
     end
 
     def apply_no_disability_pdf_fields(result)

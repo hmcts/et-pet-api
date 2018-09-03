@@ -33,6 +33,8 @@ FactoryBot.define do
       organisation_employ_gb 10
       organisation_more_than_one_site true
       employment_at_site_number 5
+      disability_information ''
+      disability false
     end
 
     trait :mr_na_o_malley do
