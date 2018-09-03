@@ -4,7 +4,7 @@
 
 <a href="https://codeclimate.com/github/ministryofjustice/et_api/test_coverage"><img src="https://api.codeclimate.com/v1/badges/1229a56ce687e1a1376d/test_coverage" /></a>
 
-The API server for the ET service including ET1 and ET3 (WORK IN PROGRESS)
+The API server for the ET service including ET1 and ET3
 
 ## Introduction
 

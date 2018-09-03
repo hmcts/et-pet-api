@@ -20,7 +20,7 @@ module EtApi
             has_response_for?(response, errors: errors, indent: indent) &&
             has_contract_claim_for?(response, errors: errors, indent: indent) &&
             has_representative_for?(representative, errors: errors, indent: indent) &&
-            has_disability_for?(representative, errors: errors, indent: indent)
+            has_disability_for?(respondent, errors: errors, indent: indent)
         end
 
         def has_correct_contents_from_db_for?(response:, errors: [], indent: 1)
@@ -158,11 +158,10 @@ module EtApi
           end
         end
 
-        def has_disability_for?(representative, errors: [], indent: 1)
-          return has_no_disability?(errors: errors, indent: indent) if representative.nil?
+        def has_disability_for?(respondent, errors: [], indent: 1)
           validate_fields section: :disability, errors: errors, indent: indent do
-            expect(field_values).to include '8.1 tick box' => tri_state_value_for(representative[:disability])
-            expect(field_values).to include '8.1 if yes' => representative[:disability_information] || ''
+            expect(field_values).to include '8.1 tick box' => tri_state_value_for(respondent[:disability])
+            expect(field_values).to include '8.1 if yes' => respondent[:disability_information] || ''
           end
         end
 

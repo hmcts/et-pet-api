@@ -21,8 +21,6 @@ FactoryBot.define do
       reference 'solicitor-reference'
       contact_preference 'email'
       fax_number '02222 222222'
-      disability_information ''
-      disability false
     end
   end
 end
