@@ -127,6 +127,8 @@ FactoryBot.define do
       fax_number ''
       organisation_employ_gb 10
       employment_at_site_number 5
+      disability true
+      disability_information 'Lorem ipsum disability'
     end
   end
 
@@ -153,8 +155,6 @@ FactoryBot.define do
       contact_preference 'fax'
       email_address ''
       fax_number '0207 345 6789'
-      disability true
-      disability_information 'Lorem ipsum disability'
     end
   end
 

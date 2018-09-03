@@ -819,9 +819,7 @@ CREATE TABLE representatives (
     updated_at timestamp without time zone NOT NULL,
     reference character varying,
     contact_preference character varying,
-    fax_number character varying,
-    disability boolean,
-    disability_information character varying
+    fax_number character varying
 );
 
 
@@ -866,7 +864,9 @@ CREATE TABLE respondents (
     fax_number character varying,
     organisation_employ_gb integer,
     organisation_more_than_one_site boolean,
-    employment_at_site_number integer
+    employment_at_site_number integer,
+    disability boolean,
+    disability_information character varying
 );
 
 
@@ -1908,6 +1908,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180828120205'),
 ('20180828162908'),
 ('20180829121912'),
-('20180829143635');
+('20180829143635'),
+('20180903102740'),
+('20180903102828'),
+('20180903104122');
 
 
