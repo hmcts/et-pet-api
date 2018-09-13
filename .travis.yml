@@ -8,7 +8,7 @@ services:
   - postgresql
   - docker
 addons:
-  postgresql: '9.3.5'
+  postgresql: '9.6'
 env:
   global:
     - ENABLE_COVERAGE=true
