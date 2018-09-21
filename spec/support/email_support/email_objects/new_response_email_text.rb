@@ -60,7 +60,7 @@ module EtApi
             expect(office_address).to eql office.address
             expect(office_telephone).to eql office.telephone
             now = Time.zone.now
-            expect(submission_date).to eql(now.strftime('%d/%m/%Y %H:%M').in_time_zone("London")).or(eql((now - 1.minute).strftime('%d/%m/%Y %H:%M').in_time_zone("London")))
+            expect(submission_date).to eql(now.strftime('%d/%m/%Y')).or(eql((now - 1.minute).strftime('%d/%m/%Y')))
             expect(attached_pdf_for(reference: reference)).to be_present
           end
           true
