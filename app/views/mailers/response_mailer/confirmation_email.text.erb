@@ -2,7 +2,7 @@
   Office address: <%= @office.address %>
   Telephone: <%= @office.telephone %>
   This is your reference number: <%= @response.reference %> which should be quoted on all correspondence.
-  Submission date: <%= @response.date_of_receipt.strftime('%d/%m/%Y %H:%M') %>
+  Submission date: <%= @response.date_of_receipt.in_time_zone(Rails.configuration.mailer_time_zone).strftime('%d/%m/%Y %H:%M') %>
   Our national enquiry line can be contacted on:
     England and Wales: 0300 132 1024 <br>
     Scotland: 0141 354 8574 <br>
