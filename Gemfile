@@ -45,6 +45,9 @@ gem 'pdf-forms', '~> 1.1', '>= 1.1.1'
 # AWS SDK gem
 gem 'aws-sdk-s3', '~> 1.13'
 
+# For general easy http access - mainly for test but used in app too
+gem 'httparty', '~> 0.16.2'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -69,7 +72,6 @@ group :test do
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 1.8', '>= 1.8.7'
   gem 'webmock', '~> 3.4', '>= 3.4.1'
-  gem 'httparty', '~> 0.16.2'
   gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'ba78be596b80a6006b543a03f1b40ff6b130d5fc'
 end
 

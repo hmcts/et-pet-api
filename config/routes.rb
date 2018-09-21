@@ -18,6 +18,9 @@ Rails.application.routes.draw do
       namespace :s3 do
         post 'create_signed_url' => 'signed_urls#create'
       end
+      namespace :claims do
+        post "build_claim" => 'build_claims#create'
+      end
     end
   end
   mount EtAcasApi::Engine => "/et_acas_api"

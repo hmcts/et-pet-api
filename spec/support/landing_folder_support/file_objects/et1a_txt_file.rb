@@ -102,13 +102,12 @@ module EtApi
           idx
         end
 
-        def has_header_for?(claim, primary_claimant:, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_header_for?(claim, primary_claimant:, primary_respondent:, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           claimant = primary_claimant
-          respondent = claim[:respondents].first
           has_header_section? errors: errors, indent: indent,
                               reference: end_with(claim[:reference]),
-                              date_of_receipt: end_with(Date.parse(claim[:date_of_receipt]).strftime('%d/%m/%Y')),
-                              claim_parties: end_with("#{claimant[:first_name]} #{claimant[:last_name]} v #{respondent[:name]}")
+                              date_of_receipt: end_with(claim[:date_of_receipt].strftime('%d/%m/%Y')),
+                              claim_parties: end_with("#{claimant[:first_name]} #{claimant[:last_name]} v #{primary_respondent[:name]}")
         end
 
         def has_claimants_for?(claimants, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
