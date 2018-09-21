@@ -202,7 +202,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       it 'stores an ET1a txt file with the correct header for the given input data' do
         claim = normalize_xml_hash(xml_as_hash.as_json)
         claimant = normalize_xml_claimant(xml_primary_claimant.to_xml.to_h)
-        expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_header_for(claim, primary_claimant: claimant, errors: errors), -> { errors.join("\n") }
+        expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_header_for(claim, primary_respondent: claim[:respondents].first, primary_claimant: claimant, errors: errors), -> { errors.join("\n") }
       end
 
       it 'stores an ET1a txt file with all of the claimants in the correct format' do
