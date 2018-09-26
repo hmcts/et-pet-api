@@ -134,17 +134,24 @@ RSpec.describe 'CreateClaim Request', type: :request do
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors), -> { errors.join("\n") }
       end
 
-      it 'has the primary claimant in the et1 txt file' do
-        # Assert - look for the correct file in the landing folder - will be async
-        #
-        claimant = normalize_xml_claimant(xml_primary_claimant.to_xml.to_h)
-        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
+      it 'has the correct encoding for the et1 txt file' do
+        # Assert - look for the correct structure
+        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_correct_encoding(errors: errors), -> { errors.join("\n") }
       end
 
       it 'has the primary respondent in the et1 txt file' do
         # Assert - look for the correct file in the landing folder - will be async
         respondent = normalize_xml_hash(xml_as_hash.as_json)[:respondents][0]
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
+      end
+    end
+
+    shared_examples 'a claim matching primary claimant with the input factory' do
+      it 'has the primary claimant in the et1 txt file' do
+        # Assert - look for the correct file in the landing folder - will be async
+        #
+        claimant = normalize_xml_claimant(xml_primary_claimant.to_xml.to_h)
+        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
       end
     end
 
@@ -203,6 +210,11 @@ RSpec.describe 'CreateClaim Request', type: :request do
         claimants = normalize_xml_claimants(xml_as_hash.secondary_claimants.as_json)
         expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_claimants_for(claimants, errors: errors), -> { errors.join("\n") }
       end
+
+      it 'has the correct encoding for the et1a txt file' do
+        # Assert - look for the correct structure
+        expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_correct_encoding(errors: errors), -> { errors.join("\n") }
+      end
     end
 
     shared_examples 'a claim with no representatives' do
@@ -247,6 +259,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_secondary_claimants: 0, number_of_respondents: 1, number_of_representatives: 0, fee_group_reference: nil) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with no representatives'
@@ -256,6 +269,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_secondary_claimants: 0, number_of_respondents: 1, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
@@ -266,6 +280,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_secondary_claimants: 4, number_of_respondents: 1, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
@@ -276,6 +291,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 1, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
@@ -287,6 +303,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_secondary_claimants: 0, number_of_respondents: 1, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
@@ -303,16 +320,48 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: factory
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with a representative'
     end
 
+    context 'with xml for single claimant, respondent and representative with utf8 apostrophes in data' do
+      factory = lambda do
+        claimant = FactoryBot.build(:xml_claimant, :latoya_bishop)
+        respondents = FactoryBot.build_list(:xml_claim_respondent, 1, :mr_na_o_leary)
+        FactoryBot.build(:xml_claim, primary_claimant: claimant, secondary_claimants: [], respondents: respondents, number_of_representatives: 1)
+      end
+
+      include_context 'with setup for claims',
+        xml_factory: factory
+      include_examples 'any claim variation'
+      include_examples 'a claim with provided reference number'
+      include_examples 'a claim with single claimant'
+      include_examples 'a claim with single respondent'
+      include_examples 'a claim with a representative'
+
+      it 'has the primary claimant in the et1 txt file' do
+        # Assert - look for the correct file in the landing folder - will be async
+        #
+        address = {
+          building: end_with('24'),
+          street: end_with('St John’s Lane'.encode('windows-1252').force_encoding('ascii-8bit')),
+          locality: end_with('Birmingham'),
+          county: end_with('West Midlands'),
+          post_code: end_with('B2 6YK')
+        }
+#        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
+        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_section(address: address, errors: errors), -> { errors.join("\n") }
+      end
+    end
+
     context 'with xml for multiple claimants, 1 respondent and a representative' do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_secondary_claimants: 4, number_of_respondents: 1, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
@@ -323,6 +372,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 1, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with single respondent'
@@ -334,6 +384,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_secondary_claimants: 0, number_of_respondents: 3, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with multiple respondents'
@@ -344,6 +395,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_secondary_claimants: 4, number_of_respondents: 3, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple respondents'
@@ -354,6 +406,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 3, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple respondents'
@@ -365,6 +418,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_secondary_claimants: 0, number_of_respondents: 3, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with multiple respondents'
@@ -375,6 +429,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, number_of_secondary_claimants: 4, number_of_respondents: 3, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple respondents'
@@ -385,6 +440,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       include_context 'with setup for claims',
         xml_factory: -> { FactoryBot.build(:xml_claim, :with_csv, number_of_respondents: 3, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple respondents'
@@ -398,6 +454,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
       let(:input_rtf_file) { input_files[xml_as_hash.files.find { |f| f.filename.end_with?('.rtf') }.filename] }
 
       include_examples 'any claim variation'
+      include_examples 'a claim matching primary claimant with the input factory'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'

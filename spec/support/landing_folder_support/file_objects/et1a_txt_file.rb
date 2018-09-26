@@ -21,6 +21,14 @@ module EtApi
           cloned_tempfile.rewind
         end
 
+        def has_correct_encoding?(errors: [], indent: 1)
+          expect(tempfile.path).to have_file_encoding('unknown-8bit').or have_file_encoding('us-ascii')
+          true
+        rescue RSpec::Expectations::ExpectationNotMetError => err
+          errors.concat(err.message.lines.map { |l| "#{'  ' * indent}#{l.gsub(/\n\z/, '')}" })
+          false
+        end
+
         def has_correct_file_structure?(errors: []) # rubocop:disable Naming/PredicateName
           has_header_section?(errors: errors)
           has_claimants_sections?(errors: errors)
