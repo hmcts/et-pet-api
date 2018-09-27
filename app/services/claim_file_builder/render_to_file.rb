@@ -5,7 +5,7 @@ module ClaimFileBuilder
     class_methods do
 
       def render_to_file(object:)
-        Tempfile.new.tap do |file|
+        Tempfile.new(encoding: 'windows-1252').tap do |file|
           file.write with_windows_lf(render(object))
           file.rewind
         end

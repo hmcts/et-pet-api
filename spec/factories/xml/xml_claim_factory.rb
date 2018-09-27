@@ -137,6 +137,8 @@ FactoryBot.define do
       if r.primary_claimant.blank?
         r.primary_claimant = build(:xml_claimant, claimants_list.first)
       end
+      r.primary_claimant.group_contact = true
+
       unless r.secondary_claimants.is_a?(Array)
         r.secondary_claimants = []
         evaluator.number_of_secondary_claimants.times do |idx|
@@ -469,6 +471,29 @@ FactoryBot.define do
       sex ''
       date_of_birth '04/10/1998'
     end
+
+    # Latoya has a utf-8 apostrophe in her address just to be a bit awkward
+    trait :latoya_bishop do
+      group_contact false
+      title "Mrs"
+      forename "latoya"
+      surname "bishop"
+      association :address, factory: :xml_claim_address,
+                            line: '24',
+                            street: 'St John’s Lane',
+                            town: 'Birmingham',
+                            county: 'West Midlands',
+                            postcode: 'B2 6YK'
+      office_number ''
+      alt_phone_number ''
+      email ''
+      fax nil
+      preferred_contact_method ''
+      sex ''
+      date_of_birth '04/11/1994'
+    end
+
+
   end
 
   factory :xml_claim_respondent, class: ::EtApi::Test::XML::Node do
@@ -569,6 +594,14 @@ FactoryBot.define do
       town 'London'
       county 'Greater London'
       postcode 'SW1H 9AJ'
+    end
+
+    trait :st_johns_lane do
+      line '64'
+      street 'St John’s Lane'
+      town 'Birmingham'
+      county 'West Midlands'
+      postcode 'B1 3GJ'
     end
 
     trait :regent_street_108 do
