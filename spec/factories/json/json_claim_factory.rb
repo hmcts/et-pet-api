@@ -41,7 +41,6 @@ FactoryBot.define do
     trait :with_csv do
       case_type 'Multiple'
       has_csv_file true
-      number_of_secondary_claimants 10
     end
 
     trait :with_rtf do
@@ -61,6 +60,19 @@ FactoryBot.define do
       jurisdiction '2'
       office_code '22'
       date_of_receipt { Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S%z') }
+
+      other_known_claimant_names ""
+      discrimination_claims []
+      pay_claims []
+      desired_outcomes []
+      other_claim_details ""
+      claim_details ""
+      other_outcome ""
+      send_claim_to_whistleblowing_entity false
+      miscellaneous_information ''
+      employment_details { {} }
+      is_unfair_dismissal false
+
 
     end
     trait :full do

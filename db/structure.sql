@@ -533,7 +533,18 @@ CREATE TABLE public.claims (
     administrator boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    primary_claimant_id bigint NOT NULL
+    primary_claimant_id bigint NOT NULL,
+    other_known_claimant_names character varying,
+    discrimination_claims character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    pay_claims character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    desired_outcomes character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    other_claim_details text,
+    claim_details text,
+    other_outcome character varying,
+    send_claim_to_whistleblowing_entity boolean,
+    miscellaneous_information text,
+    employment_details jsonb DEFAULT '"{}"'::jsonb NOT NULL,
+    is_unfair_dismissal boolean
 );
 
 
@@ -868,7 +879,9 @@ CREATE TABLE public.respondents (
     organisation_more_than_one_site boolean,
     employment_at_site_number integer,
     disability boolean,
-    disability_information character varying
+    disability_information character varying,
+    acas_certificate_number character varying,
+    acas_exemption_code character varying
 );
 
 
@@ -1914,6 +1927,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180903102740'),
 ('20180903102828'),
 ('20180903104122'),
-('20180919110439');
+('20180919110439'),
+('20180925162336'),
+('20180925165653');
 
 

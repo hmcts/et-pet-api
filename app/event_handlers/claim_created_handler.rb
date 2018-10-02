@@ -1,5 +1,6 @@
 class ClaimCreatedHandler
-  def handle(claim, file_builder_service: ClaimFileBuilderService, export_service: ClaimExportService)
+  def handle(claim, file_builder_service: ClaimFileBuilderService, export_service: ClaimExportService, multiple_claimant_importer_service: ClaimClaimantsFileImporterService)
+    multiple_claimant_importer_service.new(claim, autosave: false).call if claim.claimants_csv_file.present?
     file_builder_service.new(claim).call
     rename_csv_file(claim: claim)
     rename_rtf_file(claim: claim)
@@ -10,7 +11,7 @@ class ClaimCreatedHandler
   private
 
   def rename_csv_file(claim:)
-    file = claim.uploaded_files.detect { |f| f.filename.ends_with?('.csv') }
+    file = claim.claimants_csv_file
     return if file.nil?
     claimant = claim.primary_claimant
     file.filename = "et1a_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.csv"

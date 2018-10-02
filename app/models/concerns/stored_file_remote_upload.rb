@@ -20,4 +20,8 @@ module StoredFileRemoteUpload
                                            tempfile: file,
                                            type: response.content_type
   end
+
+  def import_from_key=(key)
+    # @TODO Implement import_from_key - needed for the future
+  end
 end

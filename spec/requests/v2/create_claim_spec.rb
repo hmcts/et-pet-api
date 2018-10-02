@@ -180,10 +180,20 @@ RSpec.describe 'Create Claim Request', type: :request do
         respondent = normalize_json_respondent(input_primary_respondent_factory.to_h)
         expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_header_for(claim, primary_claimant: claimant, primary_respondent: respondent, errors: errors), -> { errors.join("\n") }
       end
+    end
 
+    shared_examples 'a claim with multiple claimants from json' do
       it 'stores an ET1a txt file with all of the claimants in the correct format' do
         # Assert
         claimants = normalize_json_claimants(input_secondary_claimants_factory.map(&:to_h))
+        expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_claimants_for(claimants, errors: errors), -> { errors.join("\n") }
+      end
+    end
+
+    shared_examples 'a claim with multiple claimants from csv' do
+      it 'stores an ET1a txt file with all of the claimants in the correct format' do
+        # Assert
+        claimants = normalize_claimants_from_file
         expect(staging_folder.et1a_txt_file(output_filename_additional_claimants_txt)).to have_claimants_for(claimants, errors: errors), -> { errors.join("\n") }
       end
     end
@@ -257,6 +267,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple claimants from json'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with no representatives'
     end
@@ -268,6 +279,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple claimants from csv'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with no representatives'
       include_examples 'a claim with a csv file'
@@ -309,6 +321,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple claimants from json'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with a representative'
     end
@@ -320,6 +333,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple claimants from csv'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with a representative'
       include_examples 'a claim with a csv file'
@@ -343,6 +357,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple claimants from json'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with no representatives'
     end
@@ -354,6 +369,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple claimants from csv'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with no representatives'
       include_examples 'a claim with a csv file'
@@ -377,6 +393,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple claimants from json'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with a representative'
     end
@@ -388,6 +405,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple claimants from csv'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with a representative'
       include_examples 'a claim with a csv file'

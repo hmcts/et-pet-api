@@ -24,6 +24,8 @@ FactoryBot.define do
       employment_at_site_number 5
       disability true
       disability_information 'Lorem ipsum disability'
+      acas_certificate_number 'AC123456/78/90'
+      acas_exemption_code nil
     end
 
     trait :mr_na_o_leary do
