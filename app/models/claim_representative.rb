@@ -5,4 +5,5 @@
 class ClaimRepresentative < ApplicationRecord
   belongs_to :claim
   belongs_to :representative
+  default_scope { order(created_at: :asc) }
 end

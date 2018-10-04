@@ -5,4 +5,5 @@
 class ClaimUploadedFile < ApplicationRecord
   belongs_to :claim
   belongs_to :uploaded_file
+  default_scope { order(created_at: :asc) }
 end
