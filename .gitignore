@@ -23,3 +23,5 @@
 /config/master.key
 .editorconfig
 **/.DS_Store
+
+awslogs.conf
