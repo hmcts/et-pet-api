@@ -352,7 +352,7 @@ RSpec.describe 'CreateClaim Request', type: :request do
           county: end_with('West Midlands'),
           post_code: end_with('B2 6YK')
         }
-#        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
+        #        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_section(address: address, errors: errors), -> { errors.join("\n") }
       end
     end

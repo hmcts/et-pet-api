@@ -17,8 +17,8 @@ module StoredFileRemoteUpload
     end
     file.flush
     self.file = ActionDispatch::Http::UploadedFile.new filename: filename || File.basename(url),
-                                           tempfile: file,
-                                           type: response.content_type
+                                                       tempfile: file,
+                                                       type: response.content_type
   end
 
   def import_from_key=(key)

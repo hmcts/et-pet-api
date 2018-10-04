@@ -27,7 +27,7 @@ FactoryBot.define do
         build(:json_command, uuid: SecureRandom.uuid, command: 'BuildPrimaryRespondent', data: build(:json_respondent_data, primary_respondent_factory)),
         build(:json_command, uuid: SecureRandom.uuid, command: 'BuildPrimaryClaimant', data: build(:json_claimant_data, primary_claimant_factory)),
         build(:json_command, uuid: SecureRandom.uuid, command: 'BuildSecondaryClaimants', data: build_list(:json_claimant_data, number_of_secondary_claimants, :mr_first_last)),
-        build(:json_command, uuid: SecureRandom.uuid, command: 'BuildSecondaryRespondents', data: build_list(:json_respondent_data, number_of_secondary_respondents, :full)),
+        build(:json_command, uuid: SecureRandom.uuid, command: 'BuildSecondaryRespondents', data: build_list(:json_respondent_data, number_of_secondary_respondents, :full))
       ]
       a << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildPrimaryRepresentative', data: build(:json_representative_data, :full)) if number_of_representatives > 0
       a << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildPdfFile', data: build(:json_file_data, :et1_first_last_pdf)) if has_pdf_file
@@ -46,8 +46,6 @@ FactoryBot.define do
     trait :with_rtf do
       has_rtf_file true
     end
-
-
 
   end
 
@@ -70,9 +68,8 @@ FactoryBot.define do
       other_outcome ""
       send_claim_to_whistleblowing_entity false
       miscellaneous_information ''
-      employment_details { {} }
+      employment_details({})
       is_unfair_dismissal false
-
 
     end
     trait :full do

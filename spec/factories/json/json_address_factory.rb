@@ -50,6 +50,6 @@ FactoryBot.define do
       county 'Greater London'
       post_code 'SW1H 9PP'
     end
-    
+
   end
 end

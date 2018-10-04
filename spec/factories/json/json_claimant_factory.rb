@@ -29,11 +29,11 @@ FactoryBot.define do
       first_name "tamara"
       last_name "swift"
       association :address_attributes, factory: :json_address_data,
-        building: '71088',
-        street: 'nova loaf',
-        locality: 'keelingborough',
-        county: 'hawaii',
-        post_code: 'yy9a 2la'
+                                       building: '71088',
+                                       street: 'nova loaf',
+                                       locality: 'keelingborough',
+                                       county: 'hawaii',
+                                       post_code: 'yy9a 2la'
       address_telephone_number ''
       mobile_number ''
       email_address ''
@@ -49,11 +49,11 @@ FactoryBot.define do
       first_name "diana"
       last_name "flatley"
       association :address_attributes, factory: :json_address_data,
-        building: '66262',
-        street: 'feeney station',
-        locality: 'west jewelstad',
-        county: 'montana',
-        post_code: 'r8p 0jb'
+                                       building: '66262',
+                                       street: 'feeney station',
+                                       locality: 'west jewelstad',
+                                       county: 'montana',
+                                       post_code: 'r8p 0jb'
       address_telephone_number ''
       mobile_number ''
       email_address ''
@@ -69,11 +69,11 @@ FactoryBot.define do
       first_name "mariana"
       last_name "mccullough"
       association :address_attributes, factory: :json_address_data,
-        building: '819',
-        street: 'mitchell glen',
-        locality: 'east oliverton',
-        county: 'south carolina',
-        post_code: 'uh2 4na'
+                                       building: '819',
+                                       street: 'mitchell glen',
+                                       locality: 'east oliverton',
+                                       county: 'south carolina',
+                                       post_code: 'uh2 4na'
       address_telephone_number ''
       mobile_number ''
       email_address ''
@@ -89,11 +89,11 @@ FactoryBot.define do
       first_name "eden"
       last_name "upton"
       association :address_attributes, factory: :json_address_data,
-        building: '272',
-        street: 'hoeger lodge',
-        locality: 'west roxane',
-        county: 'new mexico',
-        post_code: 'pd3p 8ns'
+                                       building: '272',
+                                       street: 'hoeger lodge',
+                                       locality: 'west roxane',
+                                       county: 'new mexico',
+                                       post_code: 'pd3p 8ns'
       address_telephone_number ''
       mobile_number ''
       email_address ''
@@ -109,11 +109,11 @@ FactoryBot.define do
       first_name "annie"
       last_name "schulist"
       association :address_attributes, factory: :json_address_data,
-        building: '3216',
-        street: 'franecki turnpike',
-        locality: 'amaliahaven',
-        county: 'washington',
-        post_code: 'f3 6nl'
+                                       building: '3216',
+                                       street: 'franecki turnpike',
+                                       locality: 'amaliahaven',
+                                       county: 'washington',
+                                       post_code: 'f3 6nl'
       address_telephone_number ''
       mobile_number ''
       email_address ''
@@ -129,11 +129,11 @@ FactoryBot.define do
       first_name "thad"
       last_name "johns"
       association :address_attributes, factory: :json_address_data,
-        building: '66462',
-        street: 'austyn trafficway',
-        locality: 'lake valentin',
-        county: 'new jersey',
-        post_code: 'rt49 2qa'
+                                       building: '66462',
+                                       street: 'austyn trafficway',
+                                       locality: 'lake valentin',
+                                       county: 'new jersey',
+                                       post_code: 'rt49 2qa'
       address_telephone_number ''
       mobile_number ''
       email_address ''
@@ -149,11 +149,11 @@ FactoryBot.define do
       first_name "coleman"
       last_name "kreiger"
       association :address_attributes, factory: :json_address_data,
-        building: '934',
-        street: 'whitney burgs',
-        locality: 'emmanuelhaven',
-        county: 'alaska',
-        post_code: 'td6b 6jj'
+                                       building: '934',
+                                       street: 'whitney burgs',
+                                       locality: 'emmanuelhaven',
+                                       county: 'alaska',
+                                       post_code: 'td6b 6jj'
       address_telephone_number ''
       mobile_number ''
       email_address ''
@@ -169,11 +169,11 @@ FactoryBot.define do
       first_name "jensen"
       last_name "deckow"
       association :address_attributes, factory: :json_address_data,
-        building: '1230',
-        street: 'guiseppe courts',
-        locality: 'south candacebury',
-        county: 'arkansas',
-        post_code: 'u0p 6al'
+                                       building: '1230',
+                                       street: 'guiseppe courts',
+                                       locality: 'south candacebury',
+                                       county: 'arkansas',
+                                       post_code: 'u0p 6al'
       address_telephone_number ''
       mobile_number ''
       email_address ''
@@ -188,11 +188,11 @@ FactoryBot.define do
       first_name "darien"
       last_name "bahringer"
       association :address_attributes, factory: :json_address_data,
-        building: '3497',
-        street: 'wilkinson junctions',
-        locality: 'kihnview',
-        county: 'hawaii',
-        post_code: 'z2e 3wl'
+                                       building: '3497',
+                                       street: 'wilkinson junctions',
+                                       locality: 'kihnview',
+                                       county: 'hawaii',
+                                       post_code: 'z2e 3wl'
       address_telephone_number ''
       mobile_number ''
       email_address ''
@@ -208,11 +208,11 @@ FactoryBot.define do
       first_name "eulalia"
       last_name "hammes"
       association :address_attributes, factory: :json_address_data,
-        building: '376',
-        street: 'krajcik wall',
-        locality: 'south ottis',
-        county: 'idaho',
-        post_code: 'kg2 5aj'
+                                       building: '376',
+                                       street: 'krajcik wall',
+                                       locality: 'south ottis',
+                                       county: 'idaho',
+                                       post_code: 'kg2 5aj'
       address_telephone_number ''
       mobile_number ''
       email_address ''

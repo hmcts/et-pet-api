@@ -22,9 +22,8 @@ module Api
         private
 
         def sub_commands(p)
-          p[:data].map(&:to_h) + [{command: 'AssignReferenceToClaim', uuid: SecureRandom.uuid, data: {}}]
+          p[:data].map(&:to_h) + [{ command: 'AssignReferenceToClaim', uuid: SecureRandom.uuid, data: {} }]
         end
-
 
         def build_claims_params
           params.permit!.to_h.slice(:uid, :command, :data).tap do |p|

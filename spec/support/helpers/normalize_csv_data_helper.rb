@@ -2,7 +2,7 @@ require 'csv'
 module EtApi
   module Test
     module NormalizeCsvDataHelper
-      def normalize_claimants_from_file(file: File.absolute_path(File.join('../../fixtures/simple_user_with_csv_group_claims.csv')  ,__dir__))
+      def normalize_claimants_from_file(file: File.absolute_path(File.join('../../fixtures/simple_user_with_csv_group_claims.csv'), __dir__))
         claimants_array = []
         CSV.foreach file, headers: true do |row|
           claimants_array << {

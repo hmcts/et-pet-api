@@ -252,7 +252,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for single claimant and respondent but no representatives' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
@@ -263,7 +263,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for multiple claimants, 1 respondent and no representatives' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 0) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 0) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
@@ -275,7 +275,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 0) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 0) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
@@ -288,7 +288,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for single claimant, respondent and representative' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
@@ -299,14 +299,14 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for single claimant, respondent and representative with non alphanumerics in names' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> do
-                        FactoryBot.build :json_build_claim_commands,
-                                         number_of_secondary_claimants: 0,
-                                         number_of_secondary_respondents: 0,
-                                         number_of_representatives: 1,
-                                         primary_respondent_factory: :mr_na_o_leary,
-                                         primary_claimant_factory: :mr_na_o_malley
-                      end
+        json_factory: -> do
+          FactoryBot.build :json_build_claim_commands,
+            number_of_secondary_claimants: 0,
+            number_of_secondary_respondents: 0,
+            number_of_representatives: 1,
+            primary_respondent_factory: :mr_na_o_leary,
+            primary_claimant_factory: :mr_na_o_malley
+        end
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
@@ -317,7 +317,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for multiple claimants, 1 respondent and a representative' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 1) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 1) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
@@ -329,7 +329,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for multiple claimants, single respondent and representative - with csv file uploaded' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 1) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 1) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
@@ -342,7 +342,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for single claimant and multiple respondents but no representatives' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 0) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 0) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
@@ -353,7 +353,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for multiple claimant, multiple respondents but no representatives' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 0) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 0) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
@@ -365,7 +365,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for multiple claimant, multiple respondents but no representatives - with csv file uploaded' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 0) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 0) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
@@ -378,7 +378,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for single claimant, multiple respondents and a representative' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 1) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 1) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
@@ -389,7 +389,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for multiple claimants, multiple respondents and a representative' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 1) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 1) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
@@ -401,7 +401,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 1) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 1) }
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
@@ -414,7 +414,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for single claimant, single respondent and representative - with rtf file uploaded' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
 
       include_examples 'any claim variation'
       include_examples 'a claim with provided reference number'
@@ -425,6 +425,5 @@ RSpec.describe 'Create Claim Request', type: :request do
     end
 
   end
-
 
 end
