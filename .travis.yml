@@ -27,6 +27,9 @@ before_script:
   - ./bin/dev/docker-support-services up -d
   - ./bin/wait-for-it.sh localhost:9000
   - ./bin/wait-for-it.sh localhost:5433
+  - sleep 5
+  - ./bin/wait-for-it.sh localhost:5433
+  - ./bin/wait-for-it.sh localhost:9000
   - bundle install && bundle exec rails db:create db:migrate RAILS_ENV=test
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
