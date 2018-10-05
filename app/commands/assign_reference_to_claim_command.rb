@@ -6,7 +6,7 @@ class AssignReferenceToClaimCommand < BaseCommand
   end
 
   def apply(root_object)
-    generate_reference_for(root_object) if root_object.reference.blank
+    generate_reference_for(root_object) if root_object.reference.blank?
     meta.merge! reference: root_object.reference
   end
 

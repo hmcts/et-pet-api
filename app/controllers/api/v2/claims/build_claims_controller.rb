@@ -11,8 +11,9 @@ module Api
                                            uuid: p[:uuid],
                                            data: sub_commands(p),
                                            root_object: root_object
-          # This is a bit of a frig - because we are not expecting the caller to add the AssignReferenceToClaim command, we
-          # cant expect them to check the meta for that command so we pretend its from the BuildClaim command instead
+          # This is a bit of a frig - because we are not expecting the caller to
+          # add the AssignReferenceToClaim command, we cant expect them to check the meta for
+          # that command so we pretend its from the BuildClaim command instead
           result.meta['BuildClaim'] = result.meta.delete('AssignReferenceToClaim')
           root_object.save!
           EventService.publish('ClaimCreated', root_object)
@@ -21,8 +22,8 @@ module Api
 
         private
 
-        def sub_commands(p)
-          p[:data].map(&:to_h) + [{ command: 'AssignReferenceToClaim', uuid: SecureRandom.uuid, data: {} }]
+        def sub_commands(claims_params)
+          claims_params[:data].map(&:to_h) + [{ command: 'AssignReferenceToClaim', uuid: SecureRandom.uuid, data: {} }]
         end
 
         def build_claims_params

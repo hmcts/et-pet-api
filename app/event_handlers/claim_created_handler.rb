@@ -1,5 +1,9 @@
 class ClaimCreatedHandler
-  def handle(claim, file_builder_service: ClaimFileBuilderService, export_service: ClaimExportService, multiple_claimant_importer_service: ClaimClaimantsFileImporterService)
+  def handle(claim,
+    file_builder_service: ClaimFileBuilderService,
+    export_service: ClaimExportService,
+    multiple_claimant_importer_service: ClaimClaimantsFileImporterService)
+
     multiple_claimant_importer_service.new(claim, autosave: false).call if claim.claimants_csv_file.present?
     file_builder_service.new(claim).call
     rename_csv_file(claim: claim)
