@@ -25,7 +25,6 @@ before_install:
   - sudo apt-get install pdftk
 before_script:
   - ./bin/dev/docker-support-services up -d
-  - ./bin/wait-for-it.sh localhost:9000
   - ./bin/wait-for-it.sh localhost:5433
   - sleep 5
   - ./bin/wait-for-it.sh localhost:5433

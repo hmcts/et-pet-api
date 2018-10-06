@@ -31,7 +31,8 @@ module ExportServiceExporters
     private
 
     def export_files(claim, to:)
-      export_file(claim: claim, to: to, prefix: 'ET1', ext: :pdf, type: :pdf)
+      export_file(claim: claim, to:
+        to, prefix: 'ET1', ext: :pdf, type: :pdf)
       export_file(claim: claim, to: to, prefix: 'ET1', ext: :txt, type: :txt)
       export_file(claim: claim, to: to, prefix: 'ET1a', ext: :txt, type: :claimants_txt) if claim.multiple_claimants?
       export_file(claim: claim, to: to, prefix: 'ET1a', ext: :csv, type: :claimants_csv) if claim_has_csv?(claim: claim)
@@ -48,7 +49,7 @@ module ExportServiceExporters
     end
 
     def claim_has_csv?(claim:)
-      claim.uploaded_files.any? { |f| f.filename.starts_with?('et1a') && f.filename.ends_with?('.csv') }
+      claim.claimants_csv_file.present?
     end
 
     def claim_has_rtf?(claim:)

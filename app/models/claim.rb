@@ -32,6 +32,13 @@ class Claim < ApplicationRecord
     uploaded_files.detect { |f| f.filename.ends_with?('.pdf') }
   end
 
+  # A claim can only have one csv file - this is it
+  #
+  # @return [UploadedFile, nil] The csv file if it exists
+  def claimants_csv_file
+    uploaded_files.detect { |f| f.filename.ends_with?('.csv') }
+  end
+
   def multiple_claimants?
     secondary_claimants.length.positive?
   end

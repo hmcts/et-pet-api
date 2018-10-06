@@ -9,7 +9,7 @@ module EtApi
         h[:claimants].map! { |c| normalize_xml_claimant(c) }
         h[:respondents].map! { |r| normalize_xml_respondent(r) }
         h[:representatives].map! { |r| normalize_xml_representative(r) }
-        h[:date_of_receipt] = h.delete(:date_of_receipt_et)
+        h[:date_of_receipt] = Time.zone.parse(h.delete(:date_of_receipt_et))
         h[:reference] = h.delete(:fee_group_reference)
         h
       end
