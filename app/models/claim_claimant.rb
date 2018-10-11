@@ -5,4 +5,5 @@
 class ClaimClaimant < ApplicationRecord
   belongs_to :claim
   belongs_to :claimant
+  default_scope { order(id: :asc) }
 end

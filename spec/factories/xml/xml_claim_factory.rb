@@ -493,7 +493,6 @@ FactoryBot.define do
       date_of_birth '04/11/1994'
     end
 
-
   end
 
   factory :xml_claim_respondent, class: ::EtApi::Test::XML::Node do

@@ -141,7 +141,7 @@ class ClaimXmlImportService # rubocop:disable Metrics/ClassLength
   end
 
   def rename_csv_file(claim:)
-    file = claim.uploaded_files.detect { |f| f.filename.ends_with?('.csv') }
+    file = claim.claimants_csv_file
     return if file.nil?
     claimant = claim.primary_claimant
     file.filename = "et1a_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.csv"
