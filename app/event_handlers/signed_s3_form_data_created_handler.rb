@@ -23,6 +23,6 @@ class SignedS3FormDataCreatedHandler
   end
 
   def key
-    @key ||= "direct_uploads/#{SecureRandom.uuid}"
+    "direct_uploads/#{SecureRandom.uuid}"
   end
 end
