@@ -314,6 +314,34 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim with a representative'
     end
 
+    context 'with json for single claimant, respondent and representative with unicode chars in phone number' do
+      include_context 'with fake sidekiq'
+      include_context 'with setup for claims',
+        json_factory: -> do
+          FactoryBot.build :json_build_claim_commands,
+            number_of_secondary_claimants: 0,
+            number_of_secondary_respondents: 0,
+            number_of_representatives: 1,
+            primary_respondent_factory: :mr_na_unicode,
+            primary_claimant_factory: :mr_na_unicode
+        end
+      it 'has the primary claimant in the et1 txt file with the unicode stripped' do
+        # Assert - look for the correct file in the landing folder - will be async
+        #
+        claimant = normalize_json_claimant(input_primary_claimant_factory.to_h)
+        claimant[:mobile_number] = "01234 777666"
+        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
+      end
+
+      it 'has the primary respondent in the et1 txt file with the unicode stripped' do
+        # Assert - look for the correct file in the landing folder - will be async
+        respondent = normalize_json_respondent(input_factory.data.detect { |command_factory| command_factory.command == 'BuildPrimaryRespondent' }.data.to_h)
+        respondent[:address_telephone_number] = "01234 777666"
+        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
+      end
+
+    end
+
     context 'with json for multiple claimants, 1 respondent and a representative' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
