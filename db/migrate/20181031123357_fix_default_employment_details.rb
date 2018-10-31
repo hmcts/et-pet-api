@@ -1,5 +1,5 @@
 class FixDefaultEmploymentDetails < ActiveRecord::Migration[5.2]
-  def change
+  def up
     change_column :claims, :employment_details, :jsonb, default: {}, null: false
   end
 
