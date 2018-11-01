@@ -43,5 +43,21 @@ RSpec.describe 'Create signed S3 url request', type: :request do
       # Assert - Make sure the data is in the response
       expect(json_response).to include data: a_hash_including(url: instance_of(String))
     end
+
+    it 'provides a unique response every time' do
+      # Arrange - build the data
+      response_keys = []
+      json_factory = FactoryBot.build(:json_create_signed_s3_url_command)
+      json_data = json_factory.to_json
+
+      # Act - Make the request
+      5.times do
+        post '/api/v2/s3/create_signed_url', params: json_data, headers: default_headers
+        response_keys << response.parsed_body["data"]["fields"]["key"]
+      end
+
+      # Assert - Make sure the data is in the response
+      expect(response_keys.uniq.length).to eq 5
+    end
   end
 end
