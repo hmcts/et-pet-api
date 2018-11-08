@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ministryofjustice/et_atos_file_transfer.git
-  revision: 8676704f9ff1a2cb728d4a2d8781928c081c1cfe
-  ref: 8676704f9ff1a2cb728d4a2d8781928c081c1cfe
+  revision: 4c177ffa4f2b59c2e7749e830f78c4f922da47ad
+  ref: 4c177ffa4f2b59c2e7749e830f78c4f922da47ad
   specs:
     et_atos_file_transfer (0.1.0)
       aws-sdk-s3 (~> 1.13)
