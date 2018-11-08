@@ -32,5 +32,11 @@ FactoryBot.define do
       full
       name "n/a O'Leary"
     end
+
+    trait :mr_na_unicode do
+      full
+      name "n/a Unicode"
+      address_telephone_number "\u202d01234 777666\u202d"
+    end
   end
 end
