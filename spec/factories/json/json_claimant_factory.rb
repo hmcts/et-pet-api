@@ -9,6 +9,13 @@ FactoryBot.define do
       last_name "O'Malley"
     end
 
+    trait :mr_na_unicode do
+      mr_first_last
+      first_name 'n/a'
+      last_name "Unicode"
+      mobile_number "\u202d01234 777666\u202d"
+    end
+
     trait :mr_first_last do
       title 'Mr'
       first_name 'First'
