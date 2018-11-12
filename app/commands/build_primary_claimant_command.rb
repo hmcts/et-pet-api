@@ -1,5 +1,18 @@
 class BuildPrimaryClaimantCommand < BaseCommand
-  def apply(root_object)
-    root_object.build_primary_claimant(input_data)
+  attribute :title, :string
+  attribute :first_name, :string
+  attribute :last_name, :string
+  attribute :address_attributes
+  attribute :address_telephone_number, :string
+  attribute :mobile_number, :string
+  attribute :email_address, :string
+  attribute :fax_number, :string
+  attribute :contact_preference, :string
+  attribute :gender, :string
+  attribute :date_of_birth, :date
+  attribute :special_needs, :string
+
+  def apply(root_object, **_args)
+    root_object.build_primary_claimant(attributes)
   end
 end

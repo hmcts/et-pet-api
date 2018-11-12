@@ -1,5 +1,7 @@
 class CreateReferenceCommand < BaseCommand
-  def apply(root_object)
+  attribute :post_code, :string
+
+  def apply(root_object, **_args)
     root_object
   end
 end

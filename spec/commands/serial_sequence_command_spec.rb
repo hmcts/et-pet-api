@@ -21,51 +21,69 @@ RSpec.describe SerialSequenceCommand do
   let(:root_object) { Object.new }
 
   describe '#apply' do
-    context 'when all commands return positive results' do
-      let(:command_service) { class_spy(CommandService, dispatch: positive_command_instance) }
-      let(:positive_command_instance) { instance_spy(BaseCommand, valid?: true, uuid: 'anythinggoeshere', meta: { reference: '123456' }) }
+    let(:command_service) { class_spy(CommandService, dispatch: positive_command_instance) }
+    let(:positive_command_instance) { instance_spy(CommandService::CommandResponse, valid?: true, command: nil, meta: { reference: '123456' }) }
 
-      it 'calls dispatch on the command service for each command in the data' do
-        # Act - Call the method
-        #
-        command.apply(root_object)
+    it 'calls dispatch on the command service for each command in the data' do
+      # Act - Call the method
+      #
+      command.apply(root_object)
 
-        # Assert
-        aggregate_failures 'assert that the command service has been called twice' do
-          expect(command_service).to have_received(:dispatch).with(data[0].merge(root_object: root_object).symbolize_keys).ordered
-          expect(command_service).to have_received(:dispatch).with(data[1].merge(root_object: root_object).symbolize_keys).ordered
-        end
-      end
-
-      it 'stores meta from each service' do
-        # Act - Call the method
-        #
-        command.apply(root_object)
-
-        # Assert
-        expect(command.meta).to include 'Dummy1' => { reference: '123456' }, 'Dummy2' => { reference: '123456' }
+      # Assert
+      aggregate_failures 'assert that the command service has been called twice' do
+        expect(command_service).to have_received(:dispatch).with(data[0].merge(root_object: root_object).symbolize_keys).ordered
+        expect(command_service).to have_received(:dispatch).with(data[1].merge(root_object: root_object).symbolize_keys).ordered
       end
     end
 
+    it 'stores meta from each service' do
+      # Arrange
+      meta = {}
+
+      # Act - Call the method
+      #
+      command.apply(root_object, meta: meta)
+
+      # Assert
+      expect(meta).to include 'Dummy1' => { reference: '123456' }, 'Dummy2' => { reference: '123456' }
+    end
+  end
+
+  describe '#valid?' do
     context 'when the first command returns an invalid result' do
       let(:command_service) { class_spy(CommandService) }
-      let(:positive_command_instance) { instance_spy(BaseCommand, valid?: true, uuid: 'anythinggoeshere') }
-      let(:negative_command_instance) { instance_spy(BaseCommand, valid?: false, uuid: 'anythinggoeshere') }
+      let(:positive_command_instance) { instance_spy(BaseCommand, valid?: true) }
+      let(:negative_command_instance) { instance_spy(BaseCommand, valid?: false) }
 
       before do
-        allow(command_service).to receive(:dispatch).and_return(negative_command_instance, positive_command_instance)
+        allow(command_service).to receive(:command_for).and_return(negative_command_instance, positive_command_instance)
       end
 
       it 'calls dispatch on the command service only for the first' do
         # Act - Call the method
         #
-        command.apply(root_object)
+        result = command.valid?(root_object)
 
         # Assert
-        aggregate_failures 'assert that the command service has been called twice' do
-          expect(command_service).to have_received(:dispatch).with(data[0].merge(root_object: root_object).symbolize_keys).ordered
-          expect(command_service).to have_received(:dispatch).exactly(:once)
-        end
+        expect(result).to be false
+      end
+    end
+
+    context 'when both commands returns a valid result' do
+      let(:command_service) { class_spy(CommandService) }
+      let(:positive_command_instance) { instance_spy(BaseCommand, valid?: true) }
+
+      before do
+        allow(command_service).to receive(:command_for).and_return(positive_command_instance, positive_command_instance)
+      end
+
+      it 'calls dispatch on the command service only for the first' do
+        # Act - Call the method
+        #
+        result = command.valid?(root_object)
+
+        # Assert
+        expect(result).to be true
       end
     end
   end

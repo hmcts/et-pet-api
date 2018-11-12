@@ -1,26 +1,20 @@
 class BaseCommand
-  attr_reader :uuid, :input_data, :meta, :valid, :async, :output_data
+  include ActiveModel::Model
+  include ActiveModel::Attributes
+  attr_reader :uuid
 
   def initialize(uuid:, data:, async: true, command_service: CommandService)
     self.uuid = uuid
-    self.input_data = data
-    self.meta = {}
-    self.output_data = {}
-    self.valid = true
-    self.async = async
     self.command_service = command_service
+    super(data)
   end
 
-  def apply(_root_object)
+  def apply(_root_object, meta: {})
     raise 'apply is to be implemented in the subclass'
-  end
-
-  def valid?
-    valid
   end
 
   private
 
-  attr_writer :uuid, :input_data, :meta, :valid, :async, :output_data
+  attr_writer :uuid
   attr_accessor :command_service
 end
