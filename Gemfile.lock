@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/ministryofjustice/et_atos_file_transfer.git
-  revision: 8676704f9ff1a2cb728d4a2d8781928c081c1cfe
-  ref: 8676704f9ff1a2cb728d4a2d8781928c081c1cfe
+  revision: 4c177ffa4f2b59c2e7749e830f78c4f922da47ad
+  ref: 4c177ffa4f2b59c2e7749e830f78c4f922da47ad
   specs:
     et_atos_file_transfer (0.1.0)
       aws-sdk-s3 (~> 1.13)
@@ -154,7 +154,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.2.2)
+    loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -171,7 +171,7 @@ GEM
     multipart-post (2.0.0)
     mustermann (1.0.2)
     nio4r (2.3.1)
-    nokogiri (1.8.4)
+    nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
     nori (2.6.0)
     parallel (1.12.1)
