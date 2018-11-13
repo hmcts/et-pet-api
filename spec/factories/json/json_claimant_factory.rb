@@ -28,7 +28,7 @@ FactoryBot.define do
       contact_preference 'email'
       gender 'Male'
       date_of_birth '1982-11-21'
-      special_needs false
+      special_needs nil
     end
 
     trait :tamara_swift do
@@ -48,7 +48,7 @@ FactoryBot.define do
       contact_preference ''
       gender ''
       date_of_birth '1957-07-06'
-      special_needs false
+      special_needs nil
     end
 
     trait :diana_flatley do
@@ -68,7 +68,7 @@ FactoryBot.define do
       contact_preference ''
       gender ''
       date_of_birth '1986-09-24'
-      special_needs false
+      special_needs nil
     end
 
     trait :mariana_mccullough do
@@ -88,7 +88,7 @@ FactoryBot.define do
       contact_preference ''
       gender ''
       date_of_birth '1992-08-10'
-      special_needs false
+      special_needs nil
     end
 
     trait :eden_upton do
@@ -108,7 +108,7 @@ FactoryBot.define do
       contact_preference ''
       gender ''
       date_of_birth '1965-01-09'
-      special_needs false
+      special_needs nil
     end
 
     trait :annie_schulist do
@@ -128,7 +128,7 @@ FactoryBot.define do
       contact_preference ''
       gender ''
       date_of_birth '1988-07-19'
-      special_needs false
+      special_needs nil
     end
 
     trait :thad_johns do
@@ -148,7 +148,7 @@ FactoryBot.define do
       contact_preference ''
       gender ''
       date_of_birth '1993-06-14'
-      special_needs false
+      special_needs nil
     end
 
     trait :coleman_kreiger do
@@ -168,7 +168,7 @@ FactoryBot.define do
       contact_preference ''
       gender ''
       date_of_birth '1960-05-12'
-      special_needs false
+      special_needs nil
     end
 
     trait :jenson_deckow do
@@ -187,7 +187,7 @@ FactoryBot.define do
       contact_preference ''
       gender ''
       date_of_birth '1970-04-27'
-      special_needs false
+      special_needs nil
     end
 
     trait :darien_bahringer do
@@ -207,7 +207,7 @@ FactoryBot.define do
       contact_preference ''
       gender ''
       date_of_birth '1958-06-29'
-      special_needs false
+      special_needs nil
     end
 
     trait :eulalia_hammes do
@@ -227,7 +227,14 @@ FactoryBot.define do
       contact_preference ''
       gender ''
       date_of_birth '1998-10-04'
-      special_needs false
+      special_needs nil
+    end
+
+    trait :minimal do
+      title "Mrs"
+      first_name "eulalia"
+      last_name "hammes"
+      date_of_birth '1998-10-04'
     end
   end
 end

@@ -5,7 +5,7 @@ class AssignReferenceToClaimCommand < BaseCommand
     self.office_service = OfficeService
   end
 
-  def apply(root_object)
+  def apply(root_object, meta: {})
     generate_reference_for(root_object) if root_object.reference.blank?
     meta.merge! reference: root_object.reference
   end

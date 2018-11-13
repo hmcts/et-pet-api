@@ -1,5 +1,8 @@
 class CreateClaimFromXmlCommand < BaseCommand
-  def apply(root_object)
+  attribute :xml
+  attribute :files
+
+  def apply(root_object, **_args)
     root_object
   end
 end
