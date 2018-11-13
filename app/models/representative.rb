@@ -3,5 +3,5 @@
 # A representative for an employment tribunal claim
 class Representative < ApplicationRecord
   belongs_to :address
-  accepts_nested_attributes_for :address, reject_if: -> (attrs) { attrs.blank? }
+  accepts_nested_attributes_for :address, reject_if: ->(attrs) { attrs.blank? }
 end
