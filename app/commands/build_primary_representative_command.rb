@@ -1,7 +1,7 @@
 class BuildPrimaryRepresentativeCommand < BaseCommand
   attribute :name, :string
   attribute :organisation_name, :string
-  attribute :address_attributes
+  attribute :address_attributes, default: {}
   attribute :address_telephone_number, :string
   attribute :mobile_number, :string
   attribute :representative_type, :string

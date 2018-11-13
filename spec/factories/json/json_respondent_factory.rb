@@ -6,12 +6,12 @@ FactoryBot.define do
     trait :minimal do
       name 'dodgy_co'
       association :address_attributes, :the_shard, factory: :json_address_data
-      association :work_address_attributes, :the_shard, factory: :json_address_data
       organisation_more_than_one_site false
     end
 
     trait :full do
       minimal
+      association :work_address_attributes, :the_shard, factory: :json_address_data
       contact 'John Smith'
       dx_number ""
       address_telephone_number ''

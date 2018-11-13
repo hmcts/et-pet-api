@@ -2,7 +2,7 @@ class BuildPrimaryClaimantCommand < BaseCommand
   attribute :title, :string
   attribute :first_name, :string
   attribute :last_name, :string
-  attribute :address_attributes
+  attribute :address_attributes, default: {}
   attribute :address_telephone_number, :string
   attribute :mobile_number, :string
   attribute :email_address, :string

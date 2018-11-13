@@ -229,5 +229,12 @@ FactoryBot.define do
       date_of_birth '1998-10-04'
       special_needs nil
     end
+
+    trait :minimal do
+      title "Mrs"
+      first_name "eulalia"
+      last_name "hammes"
+      date_of_birth '1998-10-04'
+    end
   end
 end

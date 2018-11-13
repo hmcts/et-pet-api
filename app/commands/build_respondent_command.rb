@@ -15,8 +15,8 @@ class BuildRespondentCommand < BaseCommand
   attribute :acas_exemption_code, :string
 
   attribute :name, :string
-  attribute :address_attributes
-  attribute :work_address_attributes
+  attribute :address_attributes, default: {}
+  attribute :work_address_attributes, default: {}
   attribute :organisation_more_than_one_site, :boolean
 
   def apply(root_object, **_args)
