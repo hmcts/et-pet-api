@@ -16,7 +16,8 @@ class BaseCommand
 
   # Apply changes to the root object based on the command data - always overriden in sub class
   # @param [Object] root_object Any object which has changes applied to it by the command
-  # @param [Hash] meta A general purpose hash for use when the caller needs some feedback before the command is started. Defaults to empty hash
+  # @param [Hash] meta A general purpose hash for use when the caller needs some feedback before the
+  #   command is started. Defaults to empty hash
   def apply(_root_object, meta: {}) # rubocop:disable Lint/UnusedMethodArgument
     raise 'apply is to be implemented in the subclass'
   end
