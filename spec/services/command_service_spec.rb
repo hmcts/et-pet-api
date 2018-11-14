@@ -24,7 +24,7 @@ RSpec.describe CommandService do
                          root_object: root_object
 
         # Assert - Make sure the command class received new with the correct params
-        expect(command_class).to have_received(:new).with(uuid: uuid, data: data, async: true)
+        expect(command_class).to have_received(:new).with(uuid: uuid, data: data, async: true, command: 'Dummy')
       end
 
       it 'creates a new instance of the command with async set to false if specified' do
@@ -36,7 +36,7 @@ RSpec.describe CommandService do
                          async: false
 
         # Assert - Make sure the command class received new with the correct params
-        expect(command_class).to have_received(:new).with(uuid: uuid, data: data, async: false)
+        expect(command_class).to have_received(:new).with(uuid: uuid, data: data, async: false, command: 'Dummy')
       end
 
       it 'calls apply on the command with the root object passed in' do

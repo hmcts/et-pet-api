@@ -1,14 +1,16 @@
 class BaseCommand
   include ActiveModel::Model
   include ActiveModel::Attributes
-  attr_reader :uuid
+  attr_reader :uuid, :command_name
 
   # Creates a new command
   # @param [String] uuid The unique id of the command
   # @param [Hash] data The data for the command
   # @param [Boolean] async If true, the command handler will run in background
-  def initialize(uuid:, data:, async: true, command_service: CommandService)
+  def initialize(uuid:, data:, async: true, command_service: CommandService,
+    command: self.class.name.try(:demodulize).try(:gsub, /Command\Z/, ''))
     self.uuid = uuid
+    self.command_name = command
     self.command_service = command_service
     self.async = async
     super(data)
@@ -24,6 +26,6 @@ class BaseCommand
 
   private
 
-  attr_writer :uuid
+  attr_writer :uuid, :command_name
   attr_accessor :command_service, :async
 end

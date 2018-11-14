@@ -48,6 +48,17 @@ FactoryBot.define do
         ]
       end
     end
+
+    trait :invalid_case_number do
+      uuid { SecureRandom.uuid }
+      command 'SerialSequence'
+      data do
+        [
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data, :full, :invalid_case_number)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, :full))
+        ]
+      end
+    end
   end
 
   factory :json_response_data, class: ::EtApi::Test::Json::Node do
@@ -88,6 +99,11 @@ FactoryBot.define do
       claim_information "lorem ipsum info"
       email_receipt "email@recei.pt"
     end
+
+    trait :invalid_case_number do
+      case_number '6554321/2017'
+    end
+
     additional_information_key do
       next if rtf_file_path.nil?
       config = {

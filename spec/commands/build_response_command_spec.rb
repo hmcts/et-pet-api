@@ -80,4 +80,49 @@ RSpec.describe BuildResponseCommand do
       expect(meta).to include(office_phone_number: '020 7273 8603')
     end
   end
+
+  describe '#valid?' do
+    let(:office) { Office.first }
+    let(:office_code) { "%02d" % office.code }
+
+    context 'with invalid case number' do
+      let(:data) do
+        {
+          case_number: '0034567/2016'
+        }
+      end
+
+      it 'is false' do
+        # Act
+        result = command.valid?
+
+        # Assert
+        expect(result).to be false
+      end
+
+      it 'contains the correct error key in the case_number attribute' do
+        # Act
+        command.valid?
+
+        # Assert
+        expect(command.errors.details[:case_number]).to include(error: :invalid_office_code, command: 'BuildResponse', uuid: uuid)
+      end
+    end
+
+    context 'with valid case number' do
+      let(:data) do
+        {
+          case_number: "#{office_code}34567/2016"
+        }
+      end
+
+      it 'is true' do
+        # Act
+        result = command.valid?
+
+        # Assert
+        expect(result).to be true
+      end
+    end
+  end
 end

@@ -28,6 +28,8 @@ class BuildResponseCommand < BaseCommand
   attribute :email_receipt, :string
   attribute :additional_information_key, :string
 
+  validate :validate_office_code_in_case_number
+
   def initialize(*)
     super
     self.reference_service = ReferenceService
@@ -56,5 +58,16 @@ class BuildResponseCommand < BaseCommand
     office_code = to.case_number[0..1]
     to.reference = "#{office_code}#{reference_service.next_number}00"
     to.date_of_receipt = Time.zone.now
+  end
+
+  def validate_office_code_in_case_number
+    return if case_number.nil? || office_present?
+
+    errors.add(:case_number, :invalid_office_code, command: command_name, uuid: uuid)
+  end
+
+  def office_present?
+    office_code = case_number[0..1]
+    Office.where(code: office_code.to_i).present?
   end
 end
