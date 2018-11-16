@@ -1,0 +1,1173 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Employment Tribunal API Server",
+    "description": "This server is the central API server for all things employment tribunals.",
+    "termsOfService": "http://open-api.io/terms/",
+    "contact": {
+      "name": "API Support",
+      "url": "http://www.open-api.io/support",
+      "email": "support@open-api.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v2/claims/build_claim": {
+      "post": {
+        "tags": [
+          "Claim"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "",
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "example": "0da6554d-a0ae-401d-8b88-a5b67b43e195",
+                  "description": "A unique ID produced by the client to refer to this command"
+                },
+                "data": {
+                  "type": "array",
+                  "example": [
+                    {
+                      "uuid": "e310de01-8792-47ba-ae56-a8ec7244deb9",
+                      "command": "BuildClaim",
+                      "data": {
+                        "reference": "222000000100",
+                        "submission_reference": "J704-ZK5E",
+                        "submission_channel": "Web",
+                        "case_type": "Single",
+                        "jurisdiction": "2",
+                        "office_code": "22",
+                        "date_of_receipt": "2018-11-16T12:09:45+0000",
+                        "other_known_claimant_names": "",
+                        "discrimination_claims": [
+
+                        ],
+                        "pay_claims": [
+
+                        ],
+                        "desired_outcomes": [
+
+                        ],
+                        "other_claim_details": "",
+                        "claim_details": "",
+                        "other_outcome": "",
+                        "send_claim_to_whistleblowing_entity": false,
+                        "miscellaneous_information": "",
+                        "employment_details": {
+                        },
+                        "is_unfair_dismissal": false
+                      }
+                    },
+                    {
+                      "uuid": "0d5b3bc3-b910-42a4-b781-f02f475bb947",
+                      "command": "BuildPrimaryRespondent",
+                      "data": {
+                        "name": "dodgy_co",
+                        "address_attributes": {
+                          "building": "the_shard",
+                          "street": "downing_street",
+                          "locality": "westminster",
+                          "county": "",
+                          "post_code": "wc1 1aa"
+                        },
+                        "organisation_more_than_one_site": false,
+                        "work_address_attributes": {
+                          "building": "the_shard",
+                          "street": "downing_street",
+                          "locality": "westminster",
+                          "county": "",
+                          "post_code": "wc1 1aa"
+                        },
+                        "contact": "John Smith",
+                        "dx_number": "",
+                        "address_telephone_number": "",
+                        "work_address_telephone_number": "",
+                        "alt_phone_number": "",
+                        "contact_preference": "email",
+                        "email_address": "john@dodgyco.com",
+                        "fax_number": "",
+                        "organisation_employ_gb": 10,
+                        "employment_at_site_number": 5,
+                        "disability": true,
+                        "disability_information": "Lorem ipsum disability",
+                        "acas_certificate_number": "AC123456/78/90",
+                        "acas_exemption_code": null
+                      }
+                    },
+                    {
+                      "uuid": "d32d67d5-ce6d-4a75-b935-407c2ffa8047",
+                      "command": "BuildPrimaryClaimant",
+                      "data": {
+                        "title": "Mr",
+                        "first_name": "First",
+                        "last_name": "Last",
+                        "address_attributes": {
+                          "building": "102",
+                          "street": "Petty France",
+                          "locality": "London",
+                          "county": "Greater London",
+                          "post_code": "SW1H 9AJ"
+                        },
+                        "address_telephone_number": "01234 567890",
+                        "mobile_number": "01234 098765",
+                        "email_address": "test@digital.justice.gov.uk",
+                        "fax_number": null,
+                        "contact_preference": "email",
+                        "gender": "Male",
+                        "date_of_birth": "1982-11-21",
+                        "special_needs": null
+                      }
+                    },
+                    {
+                      "uuid": "b98eeb75-eff4-43bb-93bd-80908994c251",
+                      "command": "BuildSecondaryClaimants",
+                      "data": [
+                        {
+                          "title": "Mr",
+                          "first_name": "First",
+                          "last_name": "Last",
+                          "address_attributes": {
+                            "building": "102",
+                            "street": "Petty France",
+                            "locality": "London",
+                            "county": "Greater London",
+                            "post_code": "SW1H 9AJ"
+                          },
+                          "address_telephone_number": "01234 567890",
+                          "mobile_number": "01234 098765",
+                          "email_address": "test@digital.justice.gov.uk",
+                          "fax_number": null,
+                          "contact_preference": "email",
+                          "gender": "Male",
+                          "date_of_birth": "1982-11-21",
+                          "special_needs": null
+                        }
+                      ]
+                    },
+                    {
+                      "uuid": "1051704b-04a6-4f9b-8fbe-bd7104d35b7e",
+                      "command": "BuildSecondaryRespondents",
+                      "data": [
+                        {
+                          "name": "dodgy_co",
+                          "address_attributes": {
+                            "building": "the_shard",
+                            "street": "downing_street",
+                            "locality": "westminster",
+                            "county": "",
+                            "post_code": "wc1 1aa"
+                          },
+                          "organisation_more_than_one_site": false,
+                          "work_address_attributes": {
+                            "building": "the_shard",
+                            "street": "downing_street",
+                            "locality": "westminster",
+                            "county": "",
+                            "post_code": "wc1 1aa"
+                          },
+                          "contact": "John Smith",
+                          "dx_number": "",
+                          "address_telephone_number": "",
+                          "work_address_telephone_number": "",
+                          "alt_phone_number": "",
+                          "contact_preference": "email",
+                          "email_address": "john@dodgyco.com",
+                          "fax_number": "",
+                          "organisation_employ_gb": 10,
+                          "employment_at_site_number": 5,
+                          "disability": true,
+                          "disability_information": "Lorem ipsum disability",
+                          "acas_certificate_number": "AC123456/78/90",
+                          "acas_exemption_code": null
+                        }
+                      ]
+                    },
+                    {
+                      "uuid": "9ab2f05f-efda-4f2f-812f-986286c055b9",
+                      "command": "BuildPrimaryRepresentative",
+                      "data": {
+                        "name": "Jane Doe",
+                        "organisation_name": "repco ltd",
+                        "address_attributes": {
+                          "building": "Rep Building",
+                          "street": "Rep Street",
+                          "locality": "Rep Town",
+                          "county": "Rep County",
+                          "post_code": "WC2 2BB"
+                        },
+                        "address_telephone_number": "0207 987 6543",
+                        "mobile_number": "07987654321",
+                        "representative_type": "Private Individual",
+                        "dx_number": "dx address",
+                        "reference": "Rep Ref",
+                        "contact_preference": "fax",
+                        "email_address": "",
+                        "fax_number": "0207 345 6789"
+                      }
+                    },
+                    {
+                      "uuid": "ba007f46-bf2d-4ab8-9feb-717aac3600a9",
+                      "command": "BuildPdfFile",
+                      "data": {
+                        "data_url": "http://localhost:9000/etapibuckettest/4aMcZDSL8sbbPLQ7vqvAZCVn?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20181116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20181116T120946Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=5e5bd8525d15c8075461956d3f6720225a5278a7864d4e8fe298b1eb0ebefbe5",
+                        "filename": "et1_first_last.pdf",
+                        "checksum": "ee2714b8b731a8c1e95dffaa33f89728",
+                        "data_from_key": null
+                      }
+                    }
+                  ],
+                  "description": "An array of commands to execute to build the complete claim",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "example": "SerialSequence",
+                  "description": " command",
+                  "enum": [
+                    "SerialSequence"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Create a claim with a claimant, respondent and representative",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "7f6a249f-f7b8-4b93-b8db-ed9b45d645b5"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.332501"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "248"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "accepted",
+                "meta": {
+                  "BuildClaim": {
+                    "reference": "222000000100"
+                  },
+                  "BuildPrimaryRespondent": {
+                  },
+                  "BuildPrimaryClaimant": {
+                  },
+                  "BuildSecondaryClaimants": {
+                  },
+                  "BuildSecondaryRespondents": {
+                  },
+                  "BuildPrimaryRepresentative": {
+                  },
+                  "BuildPdfFile": {
+                  }
+                },
+                "uuid": null
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+
+        ]
+      }
+    },
+    "/api/v2/references/create_reference": {
+      "post": {
+        "tags": [
+          "Claim Reference"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "",
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "example": "97cb3270-a517-4170-9d30-dd62a567dc40",
+                  "description": "A unique ID produced by the client to refer to this command"
+                },
+                "data": {
+                  "type": "object",
+                  "example": {
+                    "post_code": "SW1H 209ST"
+                  },
+                  "description": "The command data containing the post code"
+                },
+                "command": {
+                  "type": "string",
+                  "example": "CreateReference",
+                  "description": " command",
+                  "enum": [
+                    "CreateReference"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create a reference number based on post code",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "ETag": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "W/\"a8ca46e952afeb337c9fcbd6b98a58e4\""
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "max-age=0, private, must-revalidate"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "32c61ef7-ff76-4ab8-bb9b-693d9d41040c"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.044544"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "246"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "created",
+                "meta": {
+                },
+                "uuid": "97cb3270-a517-4170-9d30-dd62a567dc40",
+                "data": {
+                  "reference": "222000032200",
+                  "office": {
+                    "code": "22",
+                    "name": "London Central",
+                    "address": "Victory House, 30-34 Kingsway, London WC2B 6EX",
+                    "telephone": "020 7273 8603"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+
+        ]
+      }
+    },
+    "/api/v2/s3/create_signed_url": {
+      "post": {
+        "tags": [
+          "Signed S3 Resource"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "",
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "example": "6dc9139a-5e24-4a3d-ac49-010760603388",
+                  "description": "A unique ID produced by the client to refer to this command"
+                },
+                "data": {
+                  "type": "string",
+                  "description": "No data is required for this command"
+                },
+                "command": {
+                  "type": "string",
+                  "example": "CreateSignedS3FormData",
+                  "description": " command",
+                  "enum": [
+                    "SerialSequence"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Create a signed s3 object suitable for use in a HTML form for use with direct upload",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1d65e6d7-4072-46d3-bb71-9d7a90798e03"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.031540"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "904"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "accepted",
+                "meta": {
+                },
+                "uuid": "6dc9139a-5e24-4a3d-ac49-010760603388",
+                "data": {
+                  "fields": {
+                    "key": "direct_uploads/2de2be91-5032-4b70-a2dd-61d0f3a7dd1a",
+                    "success_action_status": "201",
+                    "policy": "eyJleHBpcmF0aW9uIjoiMjAxOC0xMS0xNlQxMzowOTo0NloiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJldGFwaWRpcmVjdGJ1Y2tldHRlc3QifSx7ImtleSI6ImRpcmVjdF91cGxvYWRzLzJkZTJiZTkxLTUwMzItNGI3MC1hMmRkLTYxZDBmM2E3ZGQxYSJ9LHsic3VjY2Vzc19hY3Rpb25fc3RhdHVzIjoiMjAxIn0seyJ4LWFtei1jcmVkZW50aWFsIjoiYWNjZXNzS2V5MS8yMDE4MTExNi91cy1lYXN0LTEvczMvYXdzNF9yZXF1ZXN0In0seyJ4LWFtei1hbGdvcml0aG0iOiJBV1M0LUhNQUMtU0hBMjU2In0seyJ4LWFtei1kYXRlIjoiMjAxODExMTZUMTIwOTQ2WiJ9XX0=",
+                    "x-amz-credential": "accessKey1/20181116/us-east-1/s3/aws4_request",
+                    "x-amz-algorithm": "AWS4-HMAC-SHA256",
+                    "x-amz-date": "20181116T120946Z",
+                    "x-amz-signature": "cba037b371a7f82e808e2586ccd457131b26cacc3446b1c89287c8545298a121"
+                  },
+                  "url": "http://localhost:9000/etapidirectbuckettest"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+
+        ]
+      }
+    },
+    "/api/v2/diversity/build_diversity_response": {
+      "post": {
+        "tags": [
+          "Diversity response"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "",
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "example": "81302a72-b9f4-4682-a221-14aea387e897",
+                  "description": "A unique ID produced by the client to refer to this command"
+                },
+                "data": {
+                  "type": "object",
+                  "example": {
+                    "claim_type": "Discrimination",
+                    "sex": "Prefer not to say",
+                    "sexual_identity": "Gay / Lesbian",
+                    "age_group": "35-44",
+                    "ethnicity": "Black / African / Caribbean / Black British",
+                    "ethnicity_subgroup": "Any other Black / African / Caribbean background",
+                    "disability": "No",
+                    "caring_responsibility": "Prefer not to say",
+                    "gender": "Prefer not to say",
+                    "gender_at_birth": "Prefer not to say",
+                    "pregnancy": "Prefer not to say",
+                    "relationship": "Divorced",
+                    "religion": "Prefer not to say"
+                  },
+                  "description": "The diversity response data"
+                },
+                "command": {
+                  "type": "string",
+                  "example": "BuildDiversityResponse",
+                  "description": " command",
+                  "enum": [
+                    "BuildDiversityResponse"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create a diversity response",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "ETag": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "W/\"1bcfaa7472f59b634731eb460a1c2fc1\""
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "max-age=0, private, must-revalidate"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1b5ed0e8-7a95-4a82-89c3-31de096437cf"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.036017"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "67"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "accepted",
+                "uuid": "81302a72-b9f4-4682-a221-14aea387e897"
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+
+        ]
+      }
+    },
+    "/et_acas_api/certificates/{id}": {
+      "get": {
+        "tags": [
+          "Acas Certificate"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Valid certificate response",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "ETag": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "W/\"f7ef2c04560c5ebd089a879b36bb84c6\""
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "max-age=0, private, must-revalidate"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "55879b21-a8eb-4cfb-a192-0cd61429f963"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.273474"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "43217"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "found",
+                "data": {
+                  "claimant_name": "Claimant’s Name",
+                  "respondent_name": "Respondent’s Name",
+                  "certificate_number": "R000100/00/14",
+                  "date_of_issue": "2017-12-01T12:00:00.000Z",
+                  "date_of_receipt": "2017-01-01T12:00:00.000Z",
+                  "message": "CertificateFound",
+                  "method_of_issue": "Email",
+                  "certificate_base64": "JVBERi0xLjQKJeLjz9MKMiAwIG9iago8PC9MZW5ndGggMTU5MC9GaWx0ZXIv\nRmxhdGVEZWNvZGU+PnN0cmVhbQp4nK1Y2XLaSBT9Fb3FqRravS+PGOMpp5zN\noWqWyosM7aAJSESIZPz3c1oSphsw9mTGVNlIvZ2+5y7nmmUUnwHDLysZcZRS\nLiXLpsvsW8baQZZpRYR0zllpMsmJcv13TBrEYzRbZoo74hSljPOwfJG+4JpQ\niTOo4xhKFqdD8+y3rIwgCIAzCl9bYM4S6h4PBf54MU22wvzz31l2WWUf28/x\nWxlN2gVMiZ+4lXainW6UcvvX2hvr7nUxyc6vhvh5kzGWTe57TC0NjBGqAg+U\nZ5MlXnzJzsbD25s/Xk/+ys6y9vfo/bvR9c31cHL9/l14ARREcPCiJRZMZv08\nQaw2lErh+rej8e3k+up6NJyMd7sNGOzFnMCJxuEJeDXOZ1g1uczOBruZFvtx\nTGuNEsbGy9Wielj6sonATeriblPmi3X0bjiNZzAAbWEbA6Kwo5FqH7d21rHt\nbdbMDnfrx5OIRZpJSowwsLbTgTvY9mlrAkge4xqPoodbf+9rX0797h2jmjhh\nKRVqi+XdZnnn63hZ2N3Sc2bPlWsXCUVkYENaE18LuD8myLUljIIgzl+A/ENd\nrVd+2hTffewJi7xY5rH9E/5uohmvHtf4uinui2ne+MFNVX3drHi7UFPiDOJK\nUNnz2/tHPND5h3Xhdu2cq0Uec8up+WX3qDhxDpawwvZbXlX1sjOfcEQLABUm\nIf/sU0NaOI4YHryN8WT4V1/VX3xM4mi+qafzDipDIKjepAdQh/WmnPlFtPRT\nU3vfxGYTorXa27yczv26AdRX2XYfpU03yNTOmvLNn4lrphQzHSIzJCumfpbj\nW79eVQB+iuXrclZ8L2abfLFDdutXtV9jmZ91ScIQZUNeojbmF0Hw6X1LiCTa\nMkTjY744Ho2jRbXe1L73DeQOwYNt2KHB+XA2A4SYrJuibFci9KWi24x1+VTG\nYu0plhHBbJyg/tdD+BOH9O5w2c/YpgRi2wqodb/ppPpRdsaIhgaJ0zy3xaja\nlM3DCzYZXuy24Yq41rVQtLpthhejE77INWoWFXBF87wrXiI7RBat7ncPUhIu\nd0ENA9Z+6otVnAbuHqIkgLohUF7FY5bfy8Lx5mfNPD43TtBWEmrhalxt9ymr\nPpEVVcuAZoSj8sOH2UkP5jI64m0eYUX+YvaUDZ0h3AgcwV8Qz//KiMV6vYlm\nCwbUuImw2wmxTR9NCD1mt14bp8n4LGaBWcNw252aeZEk0F1BSKzNdBAxzPxn\nqwmO1CJR9kHf81Z765t5NXvKP/bM5FD9rYaZ2JbyVrBI1B2kOpUWj4PIHy/z\nYnEKOAoYuHZWC/E88MkLzHoWT3GOcAGOud2Cb6qWMNae6oTTJ+FPq/K+qJdJ\n9HTVWBtiQqrnIpEgaXQhgSgbSqwR/aTV0QI0jUQGYxIVFtiMS+vyPAnpaQVp\nWPiYxR9FM989DgSHonfwCc6OqM40C9T+26aofSo0IaxlKPU9eiwK1b2TFmAN\n2zqlEj18Np5EMvJRhvaPqcjsmdjJQEttCAa2M32TJ6o2TWpGEO0QP9RtCbjz\n91VXNaEPGQQVZ9Im8Ipy3RTNpinKL7Gh0PqwQJO2R+QXGJt6P8OS+HCKnqPr\nTnrTFG1+RP43WKu5PelWeyn4lMjvpJoUkODSWSUSKXcQThJ2ZMhWcKIXlKAP\nC5+vYyRfvV8lvt7FknW4LdoXLlKPPB5/az+FeFnE2SvmjYXGTibEPVSbxI0X\nsYIsfefkBnlYwbZCiTTguoCWxBoLxnnqkN82VQJu3+0PGpKBoOiZuAkdhz4M\nm3K/Ofl85v+Gmx65LgsbqZB8VKIGiz7MSS++U5vmq5XP6zjS87vqu//8Os5w\nZbc/IsAwlF2Z3jkvYzAnvSs+ZoV8sqv00D1kr3EYSBEUHDpBwY6IfwTs1Ndl\nElsaiiI0YMJsFfFeZVzmDVoAcqJCSDRHnCPWNOs9uu3sL0bgfL+zx2lGB/dm\nrX+P8zrhZQSExaJ4vOO2R9msVlUdm+f9Pbw6pvkQlQN/Ikh9/oK69TIgoVil\nLnGATKLqBO0q1TZNRlCFJsLiVKOSkjRgdqe1Dxz6p6BdvgjaxOdt5RQUfWgI\nKJ3gOhCNFCkmrh5chL8q6K/u32aJl6MT5XsEfcz+AbIkqXYKZW5kc3RyZWFt\nCmVuZG9iagozIDAgb2JqCjw8L1R5cGUvWE9iamVjdC9Db2xvclNwYWNlL0Rl\ndmljZVJHQi9TdWJ0eXBlL0ltYWdlL0JpdHNQZXJDb21wb25lbnQgOC9XaWR0\naCAzMjcvTGVuZ3RoIDY0NzcvSGVpZ2h0IDExMi9GaWx0ZXIvRENURGVjb2Rl\nPj5zdHJlYW0K/9j/4AAQSkZJRgABAQEAYABgAAD/4QBaRXhpZgAATU0AKgAA\nAAgABQMBAAUAAAABAAAASgMDAAEAAAABAAAAAFEQAAEAAAABAQAAAFERAAQA\nAAABAAAOw1ESAAQAAAABAAAOxAAAAAAAAYagAACxj//bAEMACAYGBwYFCAcH\nBwkJCAoMFA0MCwsMGRITDxQdGh8eHRocHCAkLicgIiwjHBwoNyksMDE0NDQf\nJzk9ODI8LjM0Mv/bAEMBCQkJDAsMGA0NGDIhHCEyMjIyMjIyMjIyMjIyMjIy\nMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMv/AABEIAHABRwMB\nIgACEQEDEQH/xAAfAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgv/xAC1\nEAACAQMDAgQDBQUEBAAAAX0BAgMABBEFEiExQQYTUWEHInEUMoGRoQgjQrHB\nFVLR8CQzYnKCCQoWFxgZGiUmJygpKjQ1Njc4OTpDREVGR0hJSlNUVVZXWFla\nY2RlZmdoaWpzdHV2d3h5eoOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0\ntba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4eLj5OXm5+jp6vHy8/T19vf4+fr/\nxAAfAQADAQEBAQEBAQEBAAAAAAAAAQIDBAUGBwgJCgv/xAC1EQACAQIEBAME\nBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEK\nFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlq\nc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrC\nw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhED\nEQA/APfaKKKACis7WNbsdDtfPvZdueEjXlnPsK8z1nx7qupFo7VvsUHYRH5z\n9W/wxW1OhOptsZVK0ae+56ndajZWIzd3cEHceZIFz+dY03jnw9CcfbvMPokT\nH9cYrx13eRy8js7HksxyTTa6o4OPVnK8XLoj1z/hYeg/37j/AL9U5fiDoDHB\nmnT3MJ/pXkNFV9UpkfWqh7bb+LdBuiBHqcAJ/wCemU/9CArXjlSaMSROroej\n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\n1Pc1wPhqET69bAjhCX/IHH64r0euTEy1UTrw0dHIKrahZpf2MttIBh14Poex\nqzRXOnZ3Olq+h5dHpGozMVjs5jg4J2ED8+laEXhHVJhh1jhz3d+n5Zr0Git3\niZdDnWHj1PKf+FLQMM/2xJGfTyg4/PIqP/hVmpWETLaXdvOuc4dirH9MfrXr\nVJT+t1erF9Uo9EeK3Pg/X7XO/TZXHrEQ/wDImtfwHokreImmvbaSP7Km9VkQ\nr854HX8TXqdULvW9LsSRdahbxsOqmQbvy61TxM5xcbCWGhCSlcv0tcxP4+8P\nwkhbmSbH/POJv64qm/xL0dc7La9Y9vkUA/8Aj1YqjUfQ2damupV+J6r9i09s\nfMJHAP1A/wAK81rrPF3iu18Q21tFb280RicsTJjnI9jXJ16NCLjTSZ51eSlN\ntBXK3DF7mVj3cn9a6quWuV2XUq+jn+ddEDkq7I3PB3/IXl/64H/0Ja7euI8H\nf8heX/rgf/Qlrt6yq/EbUPgJrW4a0u4bhAC0bhgD3xXoFl4k028RcziGQ9Ul\nOMfj0rzmiuapSU9zqp1XDY9bR0kXcjKy+qnIpa8lSR423I7K3qpxV2LW9Tgx\nsvpuOgZtw/WsXhn0ZusSuqPRr2zgv7V7edNyMPxB9R71V03Q7LTADFHul7yv\ny34en4Vylv4w1GI4mWKYd8rtP6f4Vt2fjCxnIW4R7dj3PzL+Y5/SodOpFW6F\nqpTk79ToqKjimjnjEkMiyIejKcg1JWBsFFFFABRRXA+N/Fz2rtpWnSbZsYnl\nXquf4QfX1Parp03OVkRUqKEbs2de8aadorNCn+lXY6xRnhT/ALTdvp1rz/U/\nG2takSoufs0R/gt/l/Xr+tc6eTk9TRXpU8PCHmzzqlec/IVmZ2LOxZj1JOSa\nSiitzAKK1rHwzrOpKGttPmKHo7jYp/FsZ/CtG88C6rp+mT31zJbKkK7igclj\n+mP1qHUgna5apzavY5iiiirIOb1E7tQmPvj9KbYf8hK1/wCuyfzFO1IbdQlH\nuD+gpth/yErX/rsn8xWvQ5X8R6hRRRXEeidD4OXdrTn+7Cx/UD+td5XB+DWx\nrMgx96Bh+q13lcWI+M7cP8AUUUVgbhRRTXdY0Z3YKqjJJPAFAA7rGjO7BUUZ\nZmOABXEa38Rba1ZoNKiFzIOPOfiMfTu36VzPi3xbNrdw1tbM0enocBQceb/t\n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\nBdNVVfj5q6jws1Ic1eHCFZobhdT252E36LyUQ0kg628adoDbZa0dUtey6r5M\naQvhhKMwEeYItLMQ5koh7IcLREFRpS3QWwhhpY2Bf1ISCFsnK205cLlCWCkZ\nCkI62xtSXTmXVJYhh1080vRUx/DxEb01pq6m/FeVI5sqq99+Hb01fkPtBldG\n6twZTBHm8HaM4zh2PUgGObBDalArWWe00uxkXUYyqAy6z6T7Bu2C+GsyOrTN\ncd2ZG5WDpp64jRlKJKQWZhkkAzIY7EJVLIyNjfLZ2amzBEwfXRyMM6R4pQkK\nfZdU5yRLiERxKsBTChlDgnFGDkYB9SqBNUSlsQMhOTktoxAYQ1JyTjJTquko\nvW7z6rw2r8/LTCGKj1w7hXTRkEumCOSSKTEq4t/mkWeqaGpHJZB+qliZxBSm\nWUGVhRKaJrJU1Jyrtni+Qx+//swlE2PI14fkRs5MEJ/HbyALALKJxaegTDNZ\ndLye3LzcxDzvhN11emVNi8NRxsCH8rJEluKei65NdQ/W3PWH1W0rYPzuzPTU\nnsKKgy3KvNfbBvZIvqLn6j4rWdDaf+3y3dcaCo2RtpP3DT2QmWkX4qRFUZH6\nlKQjusQU95TbuwJxMI8zRUS21Da3zMNytib4CfM25oEcuFBazCMxxoyiY5LF\n9MRssSCxSJybuJTzWxY66tyLsru5LkuzvdXdlm0a5IYM/fYNqf2u7XCbZot1\na+pP4L0xKqCNSmPjmc0JOLAliE1ISJ4ZzyqIv0wRrVCoZjKiQ0vw7yLYTqMC\nlUZFKS3GS53TKOphRikpTOUkCkvS0zTpqw1zkJbqT9KmjQGOKAUV4xD/TDht\nuAdlIVOIcybCnG/DGvZbKYVyzY4Q1zR5h7ycggY1Ckp8hZWa3xs9lMyXiE1y\nDJj87gk+mHBw8Q6TPJKqSKIkiYb05lDJ9HpSCKHxPyV87qQMvNkUSahOdszb\n4+9u+v1sZcM7rZtuTk7uSv2h946N+dOn/WpV62slyrLfLV+5w5W+1PND1/Vz\n5sCie47PcL5RXFVdV5SQECVGaVPuWlM6mOXOm+p82VteNb/U6bSoo5Tx5RWY\n1h3BvzHfsNcCB3hamqtzVjmRCyZo0y2JUdOhVzvd4o0qh1XKEm2VZVZUA6zV\ndsA27SDs00bo9SafmnU4rNiN0znpcqlTji7VIdS+H0bt+9IUitFbnJFUhiJj\n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\nAaPuMFiE/e/4fWnZufp99n3Svup9Pfs273to3/C+1/ed3qc8uu+rffRnCnqe\njozKtZVAXZ2tDlXVNtWi7kXwwUV7FqEFCyPZmoUWdmGNma0or2Fnl+exc8qz\n2TK8lXvz2QJfNlvoK2Rn+hxssS+OLfLVsLPwJuHN581ms3Na2Ryvh/V6FrEe\nbzz7uue05ysP+SWI/QeSynIPBU/vP6B35pL8peaAqMs9YC1jB/bfuB8P66v9\n+2mPC1Jwv5iYu99Uxt60LYLt6epZj3T3/3UXkh6wROdK91ticqW7IjF0Z2RM\n7o1bImy6G3RbdDt0t+p22m6w7bDd6t6xecvmbbfetnPLzq07t+mkH4n6XF2v\nrRdJa0V1rm41tJ+E9peg78SXJ5D9N9JvEFgGwTL9MiS1PNSCdEtgpsnAZpiS\nWJcpn003RbBpJjNrM8WzDnsxazcVsC9bS1lrzBw2xlrAWk2kDCGfjcDDNZqs\nrAFvPSYomWYV5+q06TbAQ82xSpv6xUqb8milTcQbN1JpY5+vtDGHK23o2Uob\nPFhpA89U2o69mG47eiTd9rxUN+KwPXvYYXvmoMP24rHjmiNHX9CMPP9r9eFn\nn1MffOaQWj+yeQRJhzcfRrqDvoNVB4cOsrqDbgx2Y/DIwd8fDB4UlCJ25jWI\nYxGDEASomoOHYHDLLbfEDd9ZWVM/vDmu4ZAAKhfVD2O3bUfDsFC5MAQCGnj3\n9ff1ua7yGWZKh/nS9pZh3lnSRw605EDrLMHAsI7AOmeJCw6bStuHTRi64iZ9\n4Y+rL3RSfhDdgXVXeyYZSz/e4/P/D0tsqtcKZW5kc3RyZWFtCmVuZG9iago1\nIDAgb2JqCjw8L0NhcEhlaWdodCAwL0ZvbnRCQm94Wy00OSAtMjA2IDE0NDcg\nMTAwMV0vVHlwZS9Gb250RGVzY3JpcHRvci9TdGVtViA4MC9EZXNjZW50IC0y\nMDkvRm9udEZpbGUyIDYgMCBSL0ZsYWdzIDMyL0ZvbnROYW1lL0ZBQUFBSitW\nZXJkYW5hL0FzY2VudCAxMDA1L0l0YWxpY0FuZ2xlIDA+PgplbmRvYmoKNCAw\nIG9iago8PC9MYXN0Q2hhciAxMjEvQmFzZUZvbnQvRkFBQUFKK1ZlcmRhbmEv\nVHlwZS9Gb250L1N1YnR5cGUvVHJ1ZVR5cGUvRW5jb2RpbmcvV2luQW5zaUVu\nY29kaW5nL0ZpcnN0Q2hhciAzMi9XaWR0aHNbMzUxIDM5MyA0NTggODE4IDYz\nNSAxMDc2IDcyNiAyNjggNDU0IDQ1NCA2MzUgODE4IDM2MyA0NTQgMzYzIDQ1\nNCA2MzUgNjM1IDYzNSA2MzUgNjM1IDYzNSA2MzUgNjM1IDYzNSA2MzUgNDU0\nIDQ1NCA4MTggODE4IDgxOCA1NDUgMTAwMCA2ODMgNjg1IDY5OCA3NzAgNjMy\nIDU3NCA3NzUgNzUxIDQyMCA0NTQgNjkyIDU1NiA4NDIgNzQ4IDc4NyA2MDMg\nNzg3IDY5NSA2ODMgNjE2IDczMSA2ODMgOTg4IDY4NSA2MTUgNjg1IDQ1NCA0\nNTQgNDU0IDgxOCA2MzUgNjM1IDYwMCA2MjMgNTIwIDYyMyA1OTUgMzUxIDYy\nMyA2MzIgMjc0IDM0NCA1OTEgMjc0IDk3MiA2MzIgNjA2IDYyMyA2MjMgNDI2\nIDUyMCAzOTQgNjMyIDU5MSA4MTggNTkxIDU5MV0vRm9udERlc2NyaXB0b3Ig\nNSAwIFI+PgplbmRvYmoKMTEgMCBvYmoKMTAwNjAKZW5kb2JqCjEwIDAgb2Jq\nCjw8L0xlbmd0aDEgMTEgMCBSL0xlbmd0aCA2NDk2L0ZpbHRlci9GbGF0ZURl\nY29kZT4+c3RyZWFtCniclVoLeFNVtl77vJKT58mjz7Q9J00fpKGk7za12tA2\nRSxKgVJaINLQFFpeDbRFHkIL2KIF1KICw/ga+WbU0TumilIUmeo41yvjc0bv\n53t0RBxH+41z5+q9c6XJXec0LRQZR0+6z/n3Wmvvvfbaa6+9TlIgAKCHPqCh\nfv4id8GcniEaKe9jaWxdHwgxWuZTAFKE9VOtm7ulK2vnWbD+FZZzq0Kr1x99\nqnEAgH4bgP1i9bqtq7ZmXF8DwL8AYGxobwsEX/OVoXxSIrYvaUeC+Tg7hvV6\nrGe0r+/esvQseyvWu7Fev66zNZBVn34b1rE95KwPbAnRc6hKrON4IG0IrG8T\n3u7YB5As4BgHQp1d3QO7emsBHPcjvzu0qS2U/LdbOrBrK+pUAoQxkduBRd2O\nsoUwk2Qqz3n0/bCFelANlJZjaJbRUgwAtRcuuq5dJElAQPqW4tIizXBGrSW/\nQsJ9UwIE7SVbTgcMhPE5AyREarzPhmrwwXxYBAFohTZYBR2wDjZAJ4RgE3RD\n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\nK4QnGplNqomPzCeLSIC0kjayCt/k15ENpBOzx02km/SQrV6+4c+fJYnnPksW\n5TR9z4sJSSV/+iJL/PKLmaL0jvcdav7LK16mfnfGLHaeIfedeewM9dJBtfjc\n8Qzx7qOl4k+PFog/wXJ0qEA8cihPPHzoavEuLIcO5op3Iu2OoVni0MFaUTzo\nPkgdHJLE+UMrhqj7hoj3o48+ooQPpQ8p+FD4MO9D74f1H4Y+5LyneG2JrEf9\nMzqhRHiaeEd4oQROCCekE3TLk6EnqU8+dYhnP5VEGMsbaxmj698i3jfr3wy9\nSf/Xrjjxq+MF4l+x3HecvPfuTPHd9+zi+x/MEj84bZYn98QfDILSefQPGqHk\n96fV4hvIML4uvu5+nX7tdJI4iuXXO+rEZ0+L4ulej3jr/jrxwL46cf++GeLg\nvmrxFiz7eueI9/Qnizf3zxL39ueIA/1B8ab+enEPFm9/xZUl/djw/t1mcXdf\nnbirt0709s2uKenrnSHuwErvTp8Y2km8O2dXlziDVwTrgs3BlmB3kBOMdjE+\nLkdUcXYxKTFHZGi7aDHniDNzjTkuwwynMSvbkJFpTHcYJLsxTTTYUlL1iUnJ\n+rj4BL3ZYtUbBZNOpzfoeI1Wx6nUOpphdUAonWDsM1Jero+jvHQfTRmhEuaD\nN6sXGCPm5pXo0r3wa3gNoqC2XaEWjeVqkfaoRShTi/WFJGyug7qGqrCF4HNR\nVbjQVTeihoXhAlddmK9f1jRMyK3NSA1TN48QaAgzN49Q+DBXL13WNEKSZHa/\n8k8KiEZIX/+BA7Yp1NzsSg0H6xY1hUOpzeECGdye2gzy11Zd3V1dXa5/cg3z\n8ujBhVXDnzPyvzAEwp87aob/8rny7wzhvzhqSDgo+dprusI7fe3hnY4a1z/t\nynWBJQNlUCzdigbQ1e3qmS7c7ZpUC+D/AdRd7tgKZW5kc3RyZWFtCmVuZG9i\nago5IDAgb2JqCjw8L0NhcEhlaWdodCAwL0ZvbnRCQm94Wy0xMzEgLTIwNiAx\nNDYxIDEwMDFdL1R5cGUvRm9udERlc2NyaXB0b3IvU3RlbVYgODAvRGVzY2Vu\ndCAtMjA5L0ZvbnRGaWxlMiAxMCAwIFIvRmxhZ3MgOTYvRm9udE5hbWUvRkFB\nQUJDK1ZlcmRhbmEtSXRhbGljL0FzY2VudCAxMDA1L0l0YWxpY0FuZ2xlIC0x\nMi45OTQ2MTY1MT4+CmVuZG9iago4IDAgb2JqCjw8L0xhc3RDaGFyIDEyMS9C\nYXNlRm9udC9GQUFBQkMrVmVyZGFuYS1JdGFsaWMvVHlwZS9Gb250L1N1YnR5\ncGUvVHJ1ZVR5cGUvRW5jb2RpbmcvV2luQW5zaUVuY29kaW5nL0ZpcnN0Q2hh\nciAzMi9XaWR0aHNbMzUxIDM5MyA0NTggODE4IDYzNSAxMDc2IDcyNiAyNjgg\nNDU0IDQ1NCA2MzUgODE4IDM2MyA0NTQgMzYzIDQ1NCA2MzUgNjM1IDYzNSA2\nMzUgNjM1IDYzNSA2MzUgNjM1IDYzNSA2MzUgNDU0IDQ1NCA4MTggODE4IDgx\nOCA1NDUgMTAwMCA2ODIgNjg1IDY5OCA3NjUgNjMyIDU3NCA3NzUgNzUxIDQy\nMCA0NTQgNjkyIDU1NiA4NDIgNzQ4IDc4NyA2MDMgNzg3IDY5NSA2ODMgNjE2\nIDczMSA2ODIgOTkwIDY4NSA2MTUgNjg1IDQ1NCA0NTQgNDU0IDgxOCA2MzUg\nNjM1IDYwMCA2MjMgNTIwIDYyMyA1OTUgMzUxIDYyMSA2MzIgMjc0IDM0NCA1\nODYgMjc0IDk3MyA2MzIgNjA2IDYyMyA2MjMgNDI2IDUyMCAzOTQgNjMyIDU5\nMCA4MTggNTkxIDU5MF0vRm9udERlc2NyaXB0b3IgOSAwIFI+PgplbmRvYmoK\nMSAwIG9iago8PC9Hcm91cDw8L1R5cGUvR3JvdXAvUy9UcmFuc3BhcmVuY3kv\nQ1MvRGV2aWNlUkdCPj4vUGFyZW50IDEyIDAgUi9UeXBlL1BhZ2UvQ29udGVu\ndHMgMiAwIFIvUmVzb3VyY2VzPDwvWE9iamVjdDw8L1gxIDMgMCBSPj4vRm9u\ndDw8L0ZBQUFBSiA0IDAgUi9GQUFBQkMgOCAwIFI+Pj4+L01lZGlhQm94WzAg\nMCA1OTUuMjk5OTg3NzkgODQxLjkwMDAyNDQxXT4+CmVuZG9iagoxMiAwIG9i\nago8PC9JVFhUKDIuMS43KS9UeXBlL1BhZ2VzL0NvdW50IDEvS2lkc1sxIDAg\nUl0+PgplbmRvYmoKMTMgMCBvYmoKPDwvVHlwZS9DYXRhbG9nL1BhZ2VzIDEy\nIDAgUj4+CmVuZG9iagoxNCAwIG9iago8PC9Qcm9kdWNlcihpVGV4dCAyLjEu\nNyBieSAxVDNYVCkvTW9kRGF0ZShEOjIwMTgwNTI0MTAxNjM0KzAxJzAwJykv\nQ3JlYXRpb25EYXRlKEQ6MjAxODA1MjQxMDE2MzQrMDEnMDAnKT4+CmVuZG9i\nagp4cmVmCjAgMTUKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDMwMjQwIDAw\nMDAwIG4gCjAwMDAwMDAwMTUgMDAwMDAgbiAKMDAwMDAwMTY3MyAwMDAwMCBu\nIAowMDAwMDIyNDA3IDAwMDAwIG4gCjAwMDAwMjIyMjkgMDAwMDAgbiAKMDAw\nMDAwODMyNSAwMDAwMCBuIAowMDAwMDA4MzA0IDAwMDAwIG4gCjAwMDAwMjk3\nMjAgMDAwMDAgbiAKMDAwMDAyOTUyMiAwMDAwMCBuIAowMDAwMDIyOTQyIDAw\nMDAwIG4gCjAwMDAwMjI5MjAgMDAwMDAgbiAKMDAwMDAzMDQ1OCAwMDAwMCBu\nIAowMDAwMDMwNTIyIDAwMDAwIG4gCjAwMDAwMzA1NjkgMDAwMDAgbiAKdHJh\naWxlcgo8PC9Sb290IDEzIDAgUi9JRCBbPGUzODc4Y2M2YWEzMGI1NDY2NTU4\nNTc0MjhmZGJiYzU5PjwyZjY0NjAzZDRjYzIxYTIwOWZjMGEyMzhlZWQ3NjYy\nOT5dL0luZm8gMTQgMCBSL1NpemUgMTU+PgpzdGFydHhyZWYKMzA2OTIKJSVF\nT0YK\n"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404 Error response (certificate not found)",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "6a37fd6c-b85c-4286-9856-ba4f960fbf75"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.023609"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "22"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "not_found"
+              }
+            }
+          },
+          "422": {
+            "description": "422 Error response (certificate format not valid)",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "3812f0c8-f2ba-471c-bc4b-0ac6b5a4b2f3"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.022686"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "86"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "invalid_certificate_format",
+                "errors": {
+                  "id": [
+                    "Invalid certificate format"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "500 Error response (something wrong with the ACAS server)",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1b932f76-aa78-4f37-ac7d-bd871dcbb38b"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.018729"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "89"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "acas_server_error",
+                "errors": {
+                  "base": [
+                    "An error occured in the ACAS service"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+
+        ]
+      }
+    },
+    "/api/v2/respondents/build_response": {
+      "post": {
+        "tags": [
+          "Response"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "",
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "example": "9dff13af-efe7-430c-99c8-c60d920e628a",
+                  "description": "A unique ID produced by the client to refer to this command"
+                },
+                "data": {
+                  "type": "array",
+                  "example": [
+                    {
+                      "uuid": "422f4333-38ac-467c-a7ed-3fd0687c2177",
+                      "command": "BuildResponse",
+                      "data": {
+                        "additional_information_key": null,
+                        "case_number": "1454321/2017",
+                        "agree_with_employment_dates": false,
+                        "defend_claim": true,
+                        "claimants_name": "Jane Doe",
+                        "agree_with_early_conciliation_details": false,
+                        "disagree_conciliation_reason": "lorem ipsum conciliation",
+                        "employment_start": "2017-01-01",
+                        "employment_end": "2017-12-31",
+                        "disagree_employment": "lorem ipsum employment",
+                        "continued_employment": true,
+                        "agree_with_claimants_description_of_job_or_title": false,
+                        "disagree_claimants_job_or_title": "lorem ipsum job title",
+                        "agree_with_claimants_hours": false,
+                        "queried_hours": 32.0,
+                        "agree_with_earnings_details": false,
+                        "queried_pay_before_tax": 1000.0,
+                        "queried_pay_before_tax_period": "Monthly",
+                        "queried_take_home_pay": 900.0,
+                        "queried_take_home_pay_period": "Monthly",
+                        "agree_with_claimant_notice": false,
+                        "disagree_claimant_notice_reason": "lorem ipsum notice reason",
+                        "agree_with_claimant_pension_benefits": false,
+                        "disagree_claimant_pension_benefits_reason": "lorem ipsum claimant pension",
+                        "defend_claim_facts": "lorem ipsum defence",
+                        "make_employer_contract_claim": true,
+                        "claim_information": "lorem ipsum info",
+                        "email_receipt": "email@recei.pt"
+                      }
+                    },
+                    {
+                      "uuid": "b7e08f29-0504-4395-b10a-5b071686f9c7",
+                      "command": "BuildRespondent",
+                      "data": {
+                        "name": "dodgy_co",
+                        "address_attributes": {
+                          "building": "the_shard",
+                          "street": "downing_street",
+                          "locality": "westminster",
+                          "county": "",
+                          "post_code": "wc1 1aa"
+                        },
+                        "organisation_more_than_one_site": false,
+                        "work_address_attributes": {
+                          "building": "the_shard",
+                          "street": "downing_street",
+                          "locality": "westminster",
+                          "county": "",
+                          "post_code": "wc1 1aa"
+                        },
+                        "contact": "John Smith",
+                        "dx_number": "",
+                        "address_telephone_number": "",
+                        "work_address_telephone_number": "",
+                        "alt_phone_number": "",
+                        "contact_preference": "email",
+                        "email_address": "john@dodgyco.com",
+                        "fax_number": "",
+                        "organisation_employ_gb": 10,
+                        "employment_at_site_number": 5,
+                        "disability": true,
+                        "disability_information": "Lorem ipsum disability",
+                        "acas_certificate_number": "AC123456/78/90",
+                        "acas_exemption_code": null
+                      }
+                    },
+                    {
+                      "uuid": "232315b5-b8f1-4c9e-96b2-f4baf5ab16c1",
+                      "command": "BuildRepresentative",
+                      "data": {
+                        "name": "Jane Doe",
+                        "organisation_name": "repco ltd",
+                        "address_attributes": {
+                          "building": "Rep Building",
+                          "street": "Rep Street",
+                          "locality": "Rep Town",
+                          "county": "Rep County",
+                          "post_code": "WC2 2BB"
+                        },
+                        "address_telephone_number": "0207 987 6543",
+                        "mobile_number": "07987654321",
+                        "representative_type": "Private Individual",
+                        "dx_number": "dx address",
+                        "reference": "Rep Ref",
+                        "contact_preference": "fax",
+                        "email_address": "",
+                        "fax_number": "0207 345 6789"
+                      }
+                    }
+                  ],
+                  "description": "An array of commands to build the response and its various components",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "command": {
+                  "type": "string",
+                  "example": "SerialSequence",
+                  "description": " command",
+                  "enum": [
+                    "SerialSequence"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Response successfully created",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "bcec2a19-c431-4514-bbc3-034dd4a03c55"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.098716"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "833"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "accepted",
+                "meta": {
+                  "BuildResponse": {
+                    "submitted_at": "2018-11-16T12:09:47.286Z",
+                    "reference": "142000032300",
+                    "office_address": "Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR",
+                    "office_phone_number": "0117 929 8261",
+                    "pdf_url": "http://localhost:9000/etapibuckettest/dGY3ewJomf8ygHfKwaCEje6E?response-content-disposition=inline%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20181116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20181116T120947Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=6a4d05bbea58700e7bec2d8eaf15508bf1b7c8df73f7359cd34902804a3b4964"
+                  },
+                  "BuildRespondent": {
+                  },
+                  "BuildRepresentative": {
+                  }
+                },
+                "uuid": "9dff13af-efe7-430c-99c8-c60d920e628a"
+              }
+            }
+          },
+          "400": {
+            "description": "Response not created - this example shows invalid case number due to the office code not being correct",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0596c5a7-64bb-46f8-b6aa-2b640972fc81"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.008967"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "290"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "not_accepted",
+                "uuid": "61a1ae4d-05ce-49d4-b410-e15113b82926",
+                "errors": [
+                  {
+                    "status": 422,
+                    "code": "invalid_office_code",
+                    "title": "Invalid case number",
+                    "detail": "Invalid case number",
+                    "source": "/data/0/case_number",
+                    "command": "BuildResponse",
+                    "uuid": "077f1b1b-5997-471b-9567-b27c31e183ae"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Claim",
+      "description": "A claim is the claim made by the claimant against the respondent (employer)"
+    },
+    {
+      "name": "Claim Reference",
+      "description": "Claim Reference resource"
+    },
+    {
+      "name": "Signed S3 Resource",
+      "description": "Signed S3 resource"
+    },
+    {
+      "name": "Diversity response",
+      "description": "Diversity response resource"
+    },
+    {
+      "name": "Acas Certificate",
+      "description": "Acas Certificate Resource"
+    },
+    {
+      "name": "Response",
+      "description": "A response is the response from the employer who the claim is made against.  It comes from the ET3 form"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+swagger: '2.0'
+info:
+  title: Employment Tribunal API Server
+  description: This server is the central API server for all things employment tribunals.
+  termsOfService: 'http://open-api.io/terms/'
+  contact:
+    name: API Support
+    url: 'http://www.open-api.io/support'
+    email: support@open-api.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 1.0.0
+host: 'localhost:3000'
+schemes:
+- http
+- https
+consumes:
+- application/json
+produces:
+- application/json

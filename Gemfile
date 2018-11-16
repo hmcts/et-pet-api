@@ -55,6 +55,7 @@ group :development, :test do
   gem 'simplecov', '~> 0.16.1'
   gem 'dotenv-rails', '~> 2.4'
   gem 'site_prism', '~> 2.15', '>= 2.15.1'
+  gem 'rspec_api_documentation', '~> 6.1'
 end
 
 group :development do
