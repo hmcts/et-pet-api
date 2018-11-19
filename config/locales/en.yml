@@ -30,4 +30,13 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activemodel:
+    errors:
+      models:
+        build_response_command:
+          attributes:
+            case_number:
+              invalid_office_code: Invalid case number
+
+
+

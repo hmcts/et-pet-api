@@ -10,6 +10,33 @@ The API server for the ET service including ET1 and ET3
 
 This application is to replace the current JADU system as of March 2018
 
+## API Documentation
+
+API documentation is provided semi automatically using a rake task.  This comes from the
+'Rspec API Documentation' gem (https://github.com/zipmark/rspec_api_documentation) which
+allows us to define special documentation specs which provide the example data and the
+response is recorded and documented for us.
+
+At the moment, we can just use this as it comes out but in the future, it may well be used
+as an input to the documentation process if we need more control.
+
+To generate new documentation after you have modified the API in any way, please run
+
+```
+rake docs:build
+```
+
+
+and then look in the docs/api folder - you will see open_api.json which is for use with swagger.
+You can copy and paste this directly into swaggerhub or use a swagger UI (which hopefully, we will get built
+into this app one day so it can be viewed in dev environments)
+
+But, we also have markdown documents which you can just read, see
+
+[docs/api/index.md]
+
+Note: Do not use the rake docs:generate that the gem tells you to - as that will expect things in the wrong place.
+
 ## Design
 
 See [this page](docs/design.md)
