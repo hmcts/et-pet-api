@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 require_relative './claim_file_builder/build_claim_text_file'
 require_relative './claim_file_builder/build_claimants_text_file'
-# This service provides assistance to the ClaimXMLImportService and the future ClaimJSONImportService
-# It takes a built claim and produces all files required to be attached
+# This service takes a built claim and produces all files required to be attached
 #
 class ClaimFileBuilderService
   def initialize(claim,
