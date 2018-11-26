@@ -1,6 +1,6 @@
 class ClaimCreatedHandler
   def handle(claim,
-    file_builder_service: ClaimFileBuilderService,
+    file_builder_service: EtAtosExport::ClaimFileBuilderService,
     export_service: ClaimExportService,
     multiple_claimant_importer_service: ClaimClaimantsFileImporterService)
 
