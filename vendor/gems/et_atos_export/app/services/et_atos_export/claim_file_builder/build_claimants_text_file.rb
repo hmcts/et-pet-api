@@ -16,7 +16,7 @@ module EtAtosExport
       end
 
       def self.render(claim)
-        ApplicationController.render "file_builders/export_claimants.txt.erb", locals: {
+        ApplicationController.render "et_atos_export/file_builders/export_claimants.txt.erb", locals: {
           claim: claim, primary_claimant: claim.primary_claimant,
           secondary_claimants: claim.secondary_claimants,
           primary_respondent: claim.respondents.first

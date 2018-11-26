@@ -15,7 +15,7 @@ module EtAtosExport
       end
 
       def self.render(response)
-        ApplicationController.render "file_builders/export_response.txt.erb", locals: {
+        ApplicationController.render "et_atos_export/file_builders/export_response.txt.erb", locals: {
           response: response,
           respondent: response.respondent,
           representative: response.representative,
