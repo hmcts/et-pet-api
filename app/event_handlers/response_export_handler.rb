@@ -1,6 +1,5 @@
-class ResponseCreatedHandler
+class ResponseExportHandler
   def handle(response)
-    EtAtosExport::ResponseFileBuilderService.new(response).call
     ResponseExportService.new(response).to_be_exported
     response.save
     send_email(response) if response.email_receipt.present?
