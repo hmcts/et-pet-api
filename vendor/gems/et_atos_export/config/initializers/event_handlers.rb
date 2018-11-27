@@ -1,3 +1,3 @@
 Rails.application.config.after_initialize do |app|
-  app.event_service.subscribe('ClaimMultipleClaimantsImported', EtAtosExport::ExportClaimHandler, async: true, in_process: false)
+  app.event_service.subscribe('ClaimMultipleClaimantsImported', EtAtosExport::ExportClaimHandler, async: false, in_process: true)
 end

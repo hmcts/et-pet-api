@@ -1,14 +1,12 @@
 module EtAtosExport
   class ExportClaimHandler
-    def handle(claim,
-      file_builder_service: EtAtosExport::ClaimFileBuilderService,
-      export_service: ClaimExportService)
+    def handle(claim, file_builder_service: EtAtosExport::ClaimFileBuilderService)
 
       file_builder_service.new(claim).call
       rename_csv_file(claim: claim)
       rename_rtf_file(claim: claim)
       claim.save!
-      export_service.new(claim).to_be_exported
+      Rails.application.event_service.publish('ClaimPreparedForAtosExport', claim)
     end
 
     private
