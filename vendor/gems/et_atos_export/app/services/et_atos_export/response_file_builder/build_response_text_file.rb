@@ -1,5 +1,5 @@
 module EtAtosExport
-  module ClaimFileBuilder
+  module ResponseFileBuilder
     module BuildResponseTextFile
       include RenderToFile
       def self.call(response)

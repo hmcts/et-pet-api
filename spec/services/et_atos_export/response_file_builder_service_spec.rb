@@ -10,7 +10,7 @@ module EtAtosExport
 
     # Setup for all
     # Spies for the builders which return nothing
-    let(:response_text_file_builder_spy) { class_spy('::ClaimFileBuilder::BuildResponseTextFile') }
+    let(:response_text_file_builder_spy) { class_spy('::EtAtosExport::ResponseFileBuilder::BuildResponseTextFile') }
 
     describe '#call' do
       let(:response) { build(:response) }

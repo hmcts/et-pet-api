@@ -46,7 +46,6 @@ RSpec.describe ResponseFileBuilderService do
 
     it 'has the correct default builder for the rtf file' do
       # Arrange - Setup a spy on the expected class - and stub its constant
-      class_spy('ResponseFileBuilder::BuildResponseTextFile').as_stubbed_const
       class_spy('ResponseFileBuilder::BuildResponsePdfFile').as_stubbed_const
       expected_class = class_spy('ResponseFileBuilder::BuildResponseRtfFile').as_stubbed_const
       service = described_class.new response
