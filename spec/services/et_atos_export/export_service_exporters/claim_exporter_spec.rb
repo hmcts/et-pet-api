@@ -57,10 +57,10 @@ module EtAtosExport
       context 'with an error injected when second claim out of 3 is processed' do
         subject(:exporter) { described_class.new claim_export_service: claim_export_service_class }
 
-        let(:claim_export_service_class) { class_double ClaimExportService }
-        let(:claim_export_service1) { ClaimExportService.new(claims[0]) }
-        let(:claim_export_service2) { ClaimExportService.new(claims[1]) }
-        let(:claim_export_service3) { ClaimExportService.new(claims[2]) }
+        let(:claim_export_service_class) { class_double ::EtAtosExport::ClaimExportService }
+        let(:claim_export_service1) { ::EtAtosExport::ClaimExportService.new(claims[0]) }
+        let(:claim_export_service2) { ::EtAtosExport::ClaimExportService.new(claims[1]) }
+        let(:claim_export_service3) { ::EtAtosExport::ClaimExportService.new(claims[2]) }
         let(:claims) { create_list(:claim, 3, :ready_for_export, :with_pdf_file, :with_text_file, number_of_claimants: 1) }
 
         # This is just one way of forcing an error.  Each iteration uses the claim export service's :export_pdf method
@@ -87,12 +87,12 @@ module EtAtosExport
       context 'with an error injected when second and fourth claim out of 5 is processed' do
         subject(:exporter) { described_class.new claim_export_service: claim_export_service_class }
 
-        let(:claim_export_service_class) { class_double ClaimExportService }
-        let(:claim_export_service1) { ClaimExportService.new(claims[0]) }
-        let(:claim_export_service2) { ClaimExportService.new(claims[1]) }
-        let(:claim_export_service3) { ClaimExportService.new(claims[2]) }
-        let(:claim_export_service4) { ClaimExportService.new(claims[3]) }
-        let(:claim_export_service5) { ClaimExportService.new(claims[4]) }
+        let(:claim_export_service_class) { class_double ::EtAtosExport::ClaimExportService }
+        let(:claim_export_service1) { ::EtAtosExport::ClaimExportService.new(claims[0]) }
+        let(:claim_export_service2) { ::EtAtosExport::ClaimExportService.new(claims[1]) }
+        let(:claim_export_service3) { ::EtAtosExport::ClaimExportService.new(claims[2]) }
+        let(:claim_export_service4) { ::EtAtosExport::ClaimExportService.new(claims[3]) }
+        let(:claim_export_service5) { ::EtAtosExport::ClaimExportService.new(claims[4]) }
         let(:claims) { create_list(:claim, 5, :ready_for_export, :with_pdf_file, :with_text_file, number_of_claimants: 1) }
 
         # This is just one way of forcing an error.  Each iteration uses the claim export service's :export_pdf and :export_txt methods

@@ -1,6 +1,6 @@
 class ClaimExportHandler
-  def handle(claim, export_service: ClaimExportService)
-    export_service.new(claim).to_be_exported
+  def handle(claim)
+    Export.claims.create resource: claim
     Rails.application.event_service.publish('ClaimQueuedForExport', claim)
   end
 end
