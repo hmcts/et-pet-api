@@ -14,7 +14,7 @@ RSpec.describe EtAtosExport::ResponseFileBuilder::BuildResponseRtfFile do
 
       # Assert
       expect(response.uploaded_files).to include an_object_having_attributes filename: 'et3_atos_export.rtf',
-        file: be_a_stored_file
+                                                                             file: be_a_stored_file
     end
 
     it 'stores an ET3 response file which is a copy of the original' do

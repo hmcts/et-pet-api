@@ -13,7 +13,7 @@ RSpec.describe ResponseFileBuilder::BuildResponsePdfFile do
 
         # Assert
         expect(response.uploaded_files).to include an_object_having_attributes filename: 'et3_atos_export.pdf',
-          file: be_a_stored_file
+                                                                               file: be_a_stored_file
 
       end
 

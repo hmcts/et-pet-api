@@ -13,7 +13,7 @@ RSpec.describe EtAtosExport::ClaimFileBuilder::BuildClaimTextFile do
 
         # Assert
         expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_First_Last.txt',
-          file: be_a_stored_file
+                                                                            file: be_a_stored_file
 
       end
 
@@ -37,7 +37,7 @@ RSpec.describe EtAtosExport::ClaimFileBuilder::BuildClaimTextFile do
 
         # Assert
         expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_First_Last.txt',
-          file: be_a_stored_file
+                                                                            file: be_a_stored_file
 
       end
 

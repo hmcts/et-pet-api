@@ -14,7 +14,7 @@ module ResponseFileBuilder
     def call
       filename = 'et3_atos_export.pdf'
       response.uploaded_files.build filename: filename,
-        file: blob_for_pdf_file(filename)
+                                    file: blob_for_pdf_file(filename)
     end
 
     private
