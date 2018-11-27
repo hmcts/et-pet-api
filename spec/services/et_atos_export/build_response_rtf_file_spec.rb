@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ResponseFileBuilder::BuildResponseRtfFile do
+RSpec.describe EtAtosExport::ResponseFileBuilder::BuildResponseRtfFile do
   subject(:builder) { described_class }
 
   let(:errors) { [] }
