@@ -72,10 +72,10 @@ module EtAtosExport
         subject(:exporter) { described_class.new response_export_service: response_export_service_class }
 
         let(:respondent) { build(:respondent) }
-        let(:response_export_service_class) { class_double ResponseExportService }
-        let(:response_export_service1) { ResponseExportService.new(responses[0]) }
-        let(:response_export_service2) { ResponseExportService.new(responses[1]) }
-        let(:response_export_service3) { ResponseExportService.new(responses[2]) }
+        let(:response_export_service_class) { class_double ::EtAtosExport::ResponseExportService }
+        let(:response_export_service1) { ::EtAtosExport::ResponseExportService.new(responses[0]) }
+        let(:response_export_service2) { ::EtAtosExport::ResponseExportService.new(responses[1]) }
+        let(:response_export_service3) { ::EtAtosExport::ResponseExportService.new(responses[2]) }
         let(:responses) { create_list(:response, 3, :ready_for_export, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent) }
 
         # This is just one way of forcing an error.  Each iteration uses the response export service's :export_txt method
@@ -103,12 +103,12 @@ module EtAtosExport
         subject(:exporter) { described_class.new response_export_service: response_export_service_class }
 
         let(:respondent) { build(:respondent) }
-        let(:response_export_service_class) { class_double ResponseExportService }
-        let(:response_export_service1) { ResponseExportService.new(responses[0]) }
-        let(:response_export_service2) { ResponseExportService.new(responses[1]) }
-        let(:response_export_service3) { ResponseExportService.new(responses[2]) }
-        let(:response_export_service4) { ResponseExportService.new(responses[3]) }
-        let(:response_export_service5) { ResponseExportService.new(responses[4]) }
+        let(:response_export_service_class) { class_double ::EtAtosExport::ResponseExportService }
+        let(:response_export_service1) { ::EtAtosExport::ResponseExportService.new(responses[0]) }
+        let(:response_export_service2) { ::EtAtosExport::ResponseExportService.new(responses[1]) }
+        let(:response_export_service3) { ::EtAtosExport::ResponseExportService.new(responses[2]) }
+        let(:response_export_service4) { ::EtAtosExport::ResponseExportService.new(responses[3]) }
+        let(:response_export_service5) { ::EtAtosExport::ResponseExportService.new(responses[4]) }
         let(:responses) { create_list(:response, 5, :ready_for_export, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent) }
 
         # This is just one way of forcing an error.  Each iteration uses the response export service's :export_pdf and :export_txt methods

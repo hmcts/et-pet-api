@@ -1,14 +1,8 @@
 require 'rails_helper'
-RSpec.describe ResponseExportService do
+RSpec.describe EtAtosExport::ResponseExportService do
   subject(:service) { described_class.new(response) }
 
   let(:response) { create(:response, :example_data, :with_pdf_file, :with_text_file, :with_rtf_file) }
-
-  describe 'to_be_exported' do
-    it 'marks the response as ready to be exported' do
-      expect { service.to_be_exported }.to change(Export.responses, :count).by(1)
-    end
-  end
 
   describe 'export_pdf' do
     it 'returns the pdf file' do

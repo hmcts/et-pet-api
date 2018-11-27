@@ -1,6 +1,6 @@
 class ResponseExportHandler
   def handle(response)
-    ResponseExportService.new(response).to_be_exported
+    Export.responses.create resource: response
     response.save
     send_email(response) if response.email_receipt.present?
   end
