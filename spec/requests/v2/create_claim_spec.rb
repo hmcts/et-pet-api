@@ -104,7 +104,9 @@ RSpec.describe 'Create Claim Request', type: :request do
         # Assert - make sure it is a claim
         expect(result).to be_an_instance_of Claim
       end
+    end
 
+    shared_examples 'a claim exported to ATOS' do
       it 'stores the pdf file with the correct filename in the landing folder' do
         # Assert - look for the correct file in the landing folder - will be async
         expect(staging_folder.all_unzipped_filenames).to include(output_filename_pdf)
@@ -244,6 +246,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, reference: nil) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with no representatives'
@@ -254,6 +257,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
@@ -265,6 +269,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple claimants from json'
@@ -277,6 +282,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple claimants from csv'
@@ -290,6 +296,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
@@ -308,6 +315,7 @@ RSpec.describe 'Create Claim Request', type: :request do
             primary_claimant_factory: :mr_na_o_malley
         end
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
@@ -347,6 +355,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple claimants from json'
@@ -359,6 +368,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple claimants from csv'
@@ -372,6 +382,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with multiple respondents'
@@ -383,6 +394,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple claimants from json'
@@ -395,6 +407,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 0) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple claimants from csv'
@@ -408,6 +421,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with multiple respondents'
@@ -419,6 +433,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple claimants from json'
@@ -431,6 +446,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 1) }
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with multiple claimants'
       include_examples 'a claim with multiple claimants from csv'
@@ -445,13 +461,12 @@ RSpec.describe 'Create Claim Request', type: :request do
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
 
       include_examples 'any claim variation'
+      include_examples 'a claim exported to ATOS'
       include_examples 'a claim with provided reference number'
       include_examples 'a claim with single claimant'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with a representative'
       include_examples 'a claim with an rtf file'
     end
-
   end
-
 end
