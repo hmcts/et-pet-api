@@ -5,7 +5,7 @@
 class ClaimsExportJob < ApplicationJob
   queue_as :export_claims
 
-  def initialize(*args, claims_export_service: ExportService.new)
+  def initialize(*args, claims_export_service: EtAtosExport::ExportService.new)
     super(*args)
     self.claims_export_service = claims_export_service
   end

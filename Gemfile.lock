@@ -32,6 +32,12 @@ PATH
       ruby-mcrypt (~> 0.2)
       savon (~> 2.12)
 
+PATH
+  remote: vendor/gems/et_atos_export
+  specs:
+    et_atos_export (0.1.0)
+      rails (~> 5.2.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -344,6 +350,7 @@ DEPENDENCIES
   database_cleaner (~> 1.6.2)
   dotenv-rails (~> 2.4)
   et_acas_api!
+  et_atos_export!
   et_atos_file_transfer!
   et_fake_acas_server!
   factory_bot (~> 4.8)

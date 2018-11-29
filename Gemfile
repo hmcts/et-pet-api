@@ -35,6 +35,7 @@ gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
 # (and we need it for test environment)
 gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: '4c177ffa4f2b59c2e7749e830f78c4f922da47ad'
+gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 
 # Rubyzip used to produce and test zip files
 gem 'rubyzip', '~> 1.2', '>= 1.2.1'
@@ -81,3 +82,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
+
+gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
