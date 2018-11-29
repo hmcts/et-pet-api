@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ClaimsExportJob do
+RSpec.describe EtAtosExport::ClaimsExportJob do
   describe '#perform' do
     subject(:job) { described_class.new(claims_export_service: export_service_class) }
 

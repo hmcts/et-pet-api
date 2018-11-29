@@ -25,7 +25,7 @@ end
 atos = ExternalSystem.create name: 'ATOS Primary',
   reference: 'atos',
   enabled: true,
-  office_codes: Office.pluck(:code).to_a
+  office_codes: Office.pluck(:code).to_a - [99]
 atos2 = ExternalSystem.create name: 'ATOS Secondary',
   reference: 'atos_secondary',
   enabled: true,

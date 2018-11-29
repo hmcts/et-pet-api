@@ -84,7 +84,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
 
       def force_export_now
-        ClaimsExportJob.perform_now
+        EtAtosExport::ClaimsExportJob.perform_now
       end
     end
 

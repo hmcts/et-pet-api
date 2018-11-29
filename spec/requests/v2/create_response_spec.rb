@@ -14,7 +14,7 @@ RSpec.describe 'Create Response Request', type: :request do
 
     shared_context 'with staging folder visibility' do
       def force_export_now
-        ClaimsExportJob.perform_now
+        EtAtosExport::ClaimsExportJob.perform_now
       end
 
       def formatted_name_for_filename(text)
