@@ -6,7 +6,11 @@ class Response < ApplicationRecord
   has_many :pre_allocated_file_keys, as: :allocated_to, dependent: :destroy, inverse_of: :allocated_to
 
   def office
-    @office ||= Office.find_by(code: reference[0..1])
+    @office ||= Office.find_by(code: office_code)
+  end
+
+  def office_code
+    reference[0..1]
   end
 
   def additional_information_key=(value)

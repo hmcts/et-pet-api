@@ -2,16 +2,18 @@ require 'rails_helper'
 
 module EtAtosExport
   RSpec.describe ExportService do
+    let(:system) { ExternalSystem.where(reference: 'atos').first }
+
     describe '#export' do
-      subject(:service) { described_class.new }
+      subject(:service) { described_class.new(system: system) }
 
       # Setup 2 claims that are ready for export
       let!(:claims) do
-        create_list(:claim, 2, :with_pdf_file, :with_text_file, :ready_for_export)
+        create_list(:claim, 2, :with_pdf_file, :with_text_file, ready_for_export_to: [system.id])
       end
 
       let!(:responses) do
-        create_list(:response, 2, :with_pdf_file, :with_text_file, :with_rtf_file, :ready_for_export)
+        create_list(:response, 2, :with_pdf_file, :with_text_file, :with_rtf_file, ready_for_export_to: [system.id])
       end
 
       it 'produces an EtAtosFileTransfer::ExportedFile' do
@@ -25,6 +27,15 @@ module EtAtosExport
         # Assert
         # ET_Fees_DDMMYYHHMMSS.zip
         expect(EtAtosFileTransfer::ExportedFile.last).to have_attributes filename: matching(/\AET_Fees_(?:\d{12})\.zip\z/)
+      end
+
+      it 'produces and EtAtosFileTransfer::ExportedFile with the correct external_system_id' do
+        # Act
+        service.export
+
+        # Assert
+        # ET_Fees_DDMMYYHHMMSS.zip
+        expect(EtAtosFileTransfer::ExportedFile.last).to have_attributes external_system_id: system.id
       end
 
       it 'produces a zip file that contains the pdf file for each claim' do
@@ -96,7 +107,7 @@ module EtAtosExport
 
       it 'produces only one zip file when called twice' do
         run_twice = lambda do
-          described_class.new.export
+          described_class.new(system: system).export
           service.export
         end
 
@@ -105,7 +116,7 @@ module EtAtosExport
 
       context 'with multiple claimants from a CSV file' do
         let!(:claims) do
-          create_list(:claim, 2, :with_pdf_file, :with_text_file, :ready_for_export, :with_claimants_text_file, :with_claimants_csv_file, number_of_claimants: 11)
+          create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_claimants_text_file, :with_claimants_csv_file, number_of_claimants: 11, ready_for_export_to: [system.id])
         end
 
         it 'produces a zip file that contains an ET1a txt file for each claim' do
@@ -129,7 +140,7 @@ module EtAtosExport
 
       context 'with a single claimant, respondent and representative with an uploaded rtf file' do
         let!(:claims) do
-          create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_rtf_file, :ready_for_export)
+          create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_rtf_file, ready_for_export_to: [system.id])
         end
 
         it 'produces a zip file that contains an rtf file for each claim' do
@@ -143,6 +154,7 @@ module EtAtosExport
       end
 
       context 'with nothing to process', db_clean: true do
+        let(:system) { create(:external_system, :atos) } # rubocop:disable RSpec/LetSetup - as I want to overwrite the original
         # This time, the claims and responses are not marked as to be exported
         let!(:claims) do # rubocop:disable RSpec/LetSetup - as I want to overwrite the original
           create_list(:claim, 2, :with_pdf_file)

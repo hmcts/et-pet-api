@@ -36,6 +36,6 @@ ExternalSystemConfiguration.create external_system_id: atos.id,
 ExternalSystemConfiguration.create external_system_id: atos.id,
   key: 'password', value: ENV.fetch('ATOS_API_PASSWORD', 'password')
 ExternalSystemConfiguration.create external_system_id: atos2.id,
-  key: 'username', value: 'atos'
+  key: 'username', value: 'atos2'
 ExternalSystemConfiguration.create external_system_id: atos2.id,
   key: 'password', value: 'password'

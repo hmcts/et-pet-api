@@ -654,7 +654,8 @@ CREATE TABLE public.exported_files (
     filename character varying,
     content_type character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    external_system_id bigint
 );
 
 
@@ -690,7 +691,7 @@ CREATE TABLE public.exports (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     resource_type character varying,
-    external_system_id bigint
+    external_system_id bigint NOT NULL
 );
 
 
@@ -1772,6 +1773,13 @@ CREATE INDEX index_claims_on_primary_claimant_id ON public.claims USING btree (p
 
 
 --
+-- Name: index_exported_files_on_external_system_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_exported_files_on_external_system_id ON public.exported_files USING btree (external_system_id);
+
+
+--
 -- Name: index_exports_on_external_system_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1867,6 +1875,14 @@ CREATE INDEX index_responses_on_representative_id ON public.responses USING btre
 --
 
 CREATE INDEX index_responses_on_respondent_id ON public.responses USING btree (respondent_id);
+
+
+--
+-- Name: exported_files fk_rails_14a7c09d3f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.exported_files
+    ADD CONSTRAINT fk_rails_14a7c09d3f FOREIGN KEY (external_system_id) REFERENCES public.external_systems(id);
 
 
 --
@@ -2064,6 +2080,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181126123456'),
 ('20181126123517'),
 ('20181126133409'),
-('20181126133537');
+('20181126133537'),
+('20181128123705'),
+('20181128124306'),
+('20181128175719');
 
 
