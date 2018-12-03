@@ -1,26 +1,31 @@
 class BaseCommand
-  attr_reader :uuid, :input_data, :meta, :valid, :async, :output_data
+  include ActiveModel::Model
+  include ActiveModel::Attributes
+  attr_reader :uuid, :command_name
 
-  def initialize(uuid:, data:, async: true, command_service: CommandService)
+  # Creates a new command
+  # @param [String] uuid The unique id of the command
+  # @param [Hash] data The data for the command
+  # @param [Boolean] async If true, the command handler will run in background
+  def initialize(uuid:, data:, async: true, command_service: CommandService,
+    command: self.class.name.try(:demodulize).try(:gsub, /Command\Z/, ''))
     self.uuid = uuid
-    self.input_data = data
-    self.meta = {}
-    self.output_data = {}
-    self.valid = true
-    self.async = async
+    self.command_name = command
     self.command_service = command_service
+    self.async = async
+    super(data)
   end
 
-  def apply(_root_object)
+  # Apply changes to the root object based on the command data - always overriden in sub class
+  # @param [Object] root_object Any object which has changes applied to it by the command
+  # @param [Hash] meta A general purpose hash for use when the caller needs some feedback before the
+  #   command is started. Defaults to empty hash
+  def apply(_root_object, meta: {}) # rubocop:disable Lint/UnusedMethodArgument
     raise 'apply is to be implemented in the subclass'
-  end
-
-  def valid?
-    valid
   end
 
   private
 
-  attr_writer :uuid, :input_data, :meta, :valid, :async, :output_data
-  attr_accessor :command_service
+  attr_writer :uuid, :command_name
+  attr_accessor :command_service, :async
 end

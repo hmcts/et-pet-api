@@ -4,7 +4,7 @@ RSpec.describe ClaimsExportJob do
   describe '#perform' do
     subject(:job) { described_class.new(claims_export_service: export_service_instance) }
 
-    let(:export_service_instance) { instance_spy('ExportService') }
+    let(:export_service_instance) { instance_spy('::EtAtosExport::ExportService') }
 
     it 'delegates its work to the injected ExportService' do
       # Act
@@ -16,7 +16,7 @@ RSpec.describe ClaimsExportJob do
 
     it 'defaults to using the ExportService if not injected' do
       # Arrange
-      export_service_class = class_spy('ExportService', new: export_service_instance).as_stubbed_const
+      export_service_class = class_spy('::EtAtosExport::ExportService', new: export_service_instance).as_stubbed_const
       job = described_class.new
 
       # Act

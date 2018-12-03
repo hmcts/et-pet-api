@@ -89,6 +89,7 @@ RSpec.describe 'Create Response Request', type: :request do
     shared_context 'with background jobs running' do
       before do |example|
         next if example.metadata[:background_jobs] == :disable
+
         run_background_jobs
         sleep 0.1
         force_export_now
@@ -179,6 +180,18 @@ RSpec.describe 'Create Response Request', type: :request do
       end
     end
 
+    shared_examples 'any bad request error variation' do
+      it 'responds with a 400 status', background_jobs: :disable do
+        # Assert - Make sure we get a 400 - to say the commands have not been accepted
+        expect(response).to have_http_status(:bad_request)
+      end
+
+      it 'returns the status  as not accepted', background_jobs: :disable do
+        # Assert - Make sure we get the uuid in the response
+        expect(json_response).to include status: 'not_accepted', uuid: input_factory.uuid
+      end
+    end
+
     shared_examples 'email validation' do
       it 'sends an HTML email to the respondent with the pdf attached' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
@@ -248,6 +261,25 @@ RSpec.describe 'Create Response Request', type: :request do
         end
       end
       it 'marks the pdf as having an rtf file attached'
+    end
+
+    context 'with json for a response with an invalid office code in the case number' do
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response',
+        json_factory: -> { FactoryBot.build(:json_build_response_commands, :invalid_case_number) }
+      include_context 'with background jobs running'
+      include_examples 'any bad request error variation'
+      it 'has the correct error in the case_number field' do
+        expected_uuid = input_factory.data.detect { |d| d.command == 'BuildResponse' }.uuid
+        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                           code: "invalid_office_code",
+                                                                                           title: "Invalid case number",
+                                                                                           detail: "Invalid case number",
+                                                                                           source: "/data/0/case_number",
+                                                                                           command: "BuildResponse",
+                                                                                           uuid: expected_uuid
+      end
     end
   end
 end

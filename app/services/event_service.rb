@@ -5,6 +5,7 @@
 # Note that whilst it uses the 'wisper' gem internally, any code that is written for the handlers will
 # know nothing about wisper and will just have a common 'handle' method. (The chances are we will remove wisper -
 #  it just enabled us to get going quicker)
+require 'wisper'
 class EventService
   include Singleton
 

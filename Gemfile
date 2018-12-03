@@ -35,6 +35,7 @@ gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
 # (and we need it for test environment)
 gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: '4c177ffa4f2b59c2e7749e830f78c4f922da47ad'
+gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 
 # Rubyzip used to produce and test zip files
 gem 'rubyzip', '~> 1.2', '>= 1.2.1'
@@ -55,6 +56,7 @@ group :development, :test do
   gem 'simplecov', '~> 0.16.1'
   gem 'dotenv-rails', '~> 2.4'
   gem 'site_prism', '~> 2.15', '>= 2.15.1'
+  gem 'rspec_api_documentation', '~> 6.1'
 end
 
 group :development do
@@ -62,7 +64,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'rubocop', '~> 0.54'
+  gem 'rubocop', '~> 0.60'
   gem 'rubocop-rspec', '~> 1.24'
 end
 
@@ -80,3 +82,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
+
+gem 'et_atos_export', path: 'vendor/gems/et_atos_export'

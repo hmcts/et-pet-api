@@ -9,6 +9,7 @@ require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_view/railtie"
+require_relative '../app/services/event_service'
 # require "action_cable/engine"
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
@@ -35,5 +36,9 @@ module EtApi
     config.s3_direct_upload_bucket = ENV.fetch('S3_DIRECT_UPLOAD_BUCKET', 'defaultbucket')
 
     config.mailer_time_zone = "London"
+
+    def event_service
+      EventService.instance
+    end
   end
 end

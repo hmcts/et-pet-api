@@ -4,11 +4,7 @@ RSpec.describe BuildDiversityResponseCommand do
   subject(:command) { described_class.new(uuid: uuid, data: data) }
 
   let(:uuid) { SecureRandom.uuid }
-  let(:data) do
-    {
-      claim_type: 'Discrimination'
-    }
-  end
+  let(:data) { build(:json_build_diversity_response_data, :full).to_h.stringify_keys }
   let(:root_object) { DiversityResponse.new }
 
   describe '#apply' do
@@ -17,7 +13,7 @@ RSpec.describe BuildDiversityResponseCommand do
       command.apply(root_object)
 
       # Assert
-      expect(root_object.claim_type).to eql 'Discrimination'
+      expect(root_object.attributes.to_h).to include data
     end
   end
 end
