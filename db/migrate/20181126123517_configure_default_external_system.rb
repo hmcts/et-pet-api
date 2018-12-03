@@ -25,11 +25,11 @@ class ConfigureDefaultExternalSystem < ActiveRecord::Migration[5.2]
     ExternalSystemConfiguration.create external_system_id: atos.id,
       key: 'username', value: ENV.fetch('ATOS_API_USERNAME', 'atos')
     ExternalSystemConfiguration.create external_system_id: atos.id,
-      key: 'password', value: ENV.fetch('ATOS_API_PASSWORD', 'password')
+      key: 'password', value: ENV.fetch('ATOS_API_PASSWORD', 'password'), can_read: false
     ExternalSystemConfiguration.create external_system_id: atos2.id,
       key: 'username', value: 'atos'
     ExternalSystemConfiguration.create external_system_id: atos2.id,
-      key: 'password', value: 'password'
+      key: 'password', value: 'password', can_read: false
   end
 
   def down

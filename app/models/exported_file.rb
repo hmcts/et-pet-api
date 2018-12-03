@@ -5,6 +5,7 @@
 class ExportedFile < ApplicationRecord
   include StoredFileDownload
 
+  belongs_to :external_system
   has_one_attached :file
 
   def file_attributes=(attrs)

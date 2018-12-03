@@ -655,7 +655,7 @@ CREATE TABLE public.exported_files (
     content_type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    external_system_id bigint
+    external_system_id bigint NOT NULL
 );
 
 
@@ -723,6 +723,8 @@ CREATE TABLE public.external_system_configurations (
     external_system_id bigint NOT NULL,
     key character varying NOT NULL,
     value character varying NOT NULL,
+    can_read boolean DEFAULT true NOT NULL,
+    can_write boolean DEFAULT true NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -2083,6 +2085,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181126133537'),
 ('20181128123705'),
 ('20181128124306'),
-('20181128175719');
+('20181128175719'),
+('20181128175720');
 
 
