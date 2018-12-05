@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :claim do
     transient do
       number_of_claimants 1
+      ready_for_export_to []
     end
 
     sequence :reference do |n|
@@ -60,6 +61,13 @@ FactoryBot.define do
         Export.create resource: claim
       end
     end
+
+    after(:create) do |claim, evaluator|
+      evaluator.ready_for_export_to.each do |external_system_id|
+        Export.create resource: claim, external_system_id: external_system_id
+      end
+    end
+
 
     trait :example_data do
       reference "222000000300"

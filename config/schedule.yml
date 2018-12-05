@@ -4,6 +4,6 @@ export_claims_job:
   description: "ClaimsExportJob"
   args:
     -
-      job_class: ClaimsExportJob
+      job_class: EtAtosExport::ClaimsExportJob
       arguments:
         -

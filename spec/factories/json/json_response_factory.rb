@@ -59,6 +59,17 @@ FactoryBot.define do
         ]
       end
     end
+
+    trait :for_default_office do
+      uuid { SecureRandom.uuid }
+      command 'SerialSequence'
+      data do
+        [
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data, :full, :for_default_office)),
+          build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, :full))
+        ]
+      end
+    end
   end
 
   factory :json_response_data, class: ::EtApi::Test::Json::Node do
@@ -102,6 +113,11 @@ FactoryBot.define do
 
     trait :invalid_case_number do
       case_number '6554321/2017'
+    end
+
+    trait :for_default_office do
+      full
+      case_number '9954321/2017'
     end
 
     additional_information_key do

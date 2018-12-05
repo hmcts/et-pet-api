@@ -1,12 +1,14 @@
 module EtAtosExport
   module ExportServiceExporters
     class ResponseExporter
-      def initialize(responses_to_export: Export.responses.includes(:resource),
+      def initialize(system:,
+        responses_to_export: Export.responses.where(external_system_id: system.id).includes(:resource),
         response_export_service: ResponseExportService)
         self.responses_to_export = responses_to_export
         self.response_export_service = response_export_service
         self.exports = []
         self.exceptions = []
+        self.system = system
       end
 
       def export(to:)
@@ -76,7 +78,7 @@ module EtAtosExport
         end
       end
 
-      attr_accessor :response_export_service, :responses_to_export, :exports, :exceptions
+      attr_accessor :response_export_service, :responses_to_export, :exports, :exceptions, :system
     end
   end
 end

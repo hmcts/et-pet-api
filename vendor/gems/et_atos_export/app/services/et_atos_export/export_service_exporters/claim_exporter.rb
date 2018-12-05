@@ -1,11 +1,12 @@
 module EtAtosExport
   module ExportServiceExporters
     class ClaimExporter
-      def initialize(claims_to_export: Export.claims.includes(:resource), claim_export_service: ::EtAtosExport::ClaimExportService)
+      def initialize(system:, claims_to_export: Export.claims.where(external_system_id: system.id).includes(:resource), claim_export_service: ::EtAtosExport::ClaimExportService)
         self.claims_to_export = claims_to_export
         self.claim_export_service = claim_export_service
         self.exports = []
         self.exceptions = []
+        self.system = system
       end
 
       def export(to:)
@@ -80,7 +81,7 @@ module EtAtosExport
         end
       end
 
-      attr_accessor :claim_export_service, :claims_to_export, :exports, :exceptions
+      attr_accessor :claim_export_service, :claims_to_export, :exports, :exceptions, :system
     end
   end
 end

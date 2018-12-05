@@ -14,7 +14,7 @@ RSpec.describe 'Create Response Request', type: :request do
 
     shared_context 'with staging folder visibility' do
       def force_export_now
-        ClaimsExportJob.perform_now
+        EtAtosExport::ClaimsExportJob.perform_now
       end
 
       def formatted_name_for_filename(text)
@@ -27,8 +27,14 @@ RSpec.describe 'Create Response Request', type: :request do
 
       let(:staging_folder) do
         EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-                                       username: Rails.configuration.et_atos_api.username,
-                                       password: Rails.configuration.et_atos_api.password
+          username: 'atos',
+          password: 'password'
+      end
+
+      let(:secondary_staging_folder) do
+        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
+          username: 'atos2',
+          password: 'password'
       end
 
       let(:emails_sent) do
@@ -117,20 +123,6 @@ RSpec.describe 'Create Response Request', type: :request do
         expect(json_response).to include meta: a_hash_including('BuildResponse' => a_hash_including(submitted_at: instance_of(String)))
       end
 
-      it 'returns the office address in the metadata for the response', background_jobs: :disable do
-        # Assert - Make sure we get the reference in the metadata
-        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
-          office_address: 'Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR'
-        )
-      end
-
-      it 'returns the office phone number in the metadata for the response', background_jobs: :disable do
-        # Assert - Make sure we get the reference in the metadata
-        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
-          office_phone_number: '0117 929 8261'
-        )
-      end
-
       it 'returns the expected pdf url which will return 404 when fetched before background jobs run', background_jobs: :disable do
         # Assert - Make sure we get the pdf url in the metadata and it returns a 404 when accessed
         url = json_response.dig(:meta, 'BuildResponse', 'pdf_url')
@@ -144,7 +136,41 @@ RSpec.describe 'Create Response Request', type: :request do
         res = HTTParty.get(url)
         expect(res.code).to be 200
       end
+    end
 
+    shared_examples 'a response with meta for office 22 bristol' do
+      it 'returns the office address in the metadata for the response', background_jobs: :disable do
+        # Assert - Make sure we get the reference in the metadata
+        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
+          office_address: 'Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR'
+        )
+      end
+
+      it 'returns the office phone number in the metadata for the response', background_jobs: :disable do
+        # Assert - Make sure we get the reference in the metadata
+        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
+          office_phone_number: '0117 929 8261'
+        )
+      end
+    end
+
+    shared_examples 'a response with meta for the default office' do
+      it 'returns the office address in the metadata for the response', background_jobs: :disable do
+        # Assert - Make sure we get the reference in the metadata
+        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
+          office_address: 'Alexandra House, 14-22 The Parsonage, Manchester M3 2JA'
+        )
+      end
+
+      it 'returns the office phone number in the metadata for the response', background_jobs: :disable do
+        # Assert - Make sure we get the reference in the metadata
+        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
+          office_phone_number: '0161 833 6100'
+        )
+      end
+    end
+
+    shared_examples 'a response exported to primary ATOS' do
       it 'creates a valid txt file in the correct place in the landing folder' do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
@@ -172,6 +198,42 @@ RSpec.describe 'Create Response Request', type: :request do
         respondent_name = input_respondent_factory.name
         output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
         expect(staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
+          response: input_response_factory,
+          respondent: input_respondent_factory,
+          representative: input_representative_factory,
+          errors: errors
+        ), -> { errors.join("\n") }
+      end
+    end
+
+    shared_examples 'a response exported to secondary ATOS' do
+      it 'creates a valid txt file in the correct place in the landing folder' do
+        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        respondent_name = input_respondent_factory.name
+        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
+        expect(secondary_staging_folder.et3_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors)
+      end
+
+      it 'creates a valid txt file with correct header data' do
+        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        respondent_name = input_respondent_factory.name
+        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
+        expect(secondary_staging_folder.et3_txt_file(output_filename_txt)).to have_correct_contents_for(
+          response: input_response_factory,
+          respondent: input_respondent_factory,
+          representative: input_representative_factory,
+          errors: errors
+        ), -> { errors.join("\n") }
+      end
+
+      it 'creates a valid pdf file the data filled in correctly' do
+        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        respondent_name = input_respondent_factory.name
+        output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
+        expect(secondary_staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
           response: input_response_factory,
           respondent: input_respondent_factory,
           representative: input_representative_factory,
@@ -218,6 +280,8 @@ RSpec.describe 'Create Response Request', type: :request do
         json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
+      include_examples 'a response with meta for office 22 bristol'
+      include_examples 'a response exported to primary ATOS'
       include_examples 'email validation'
     end
 
@@ -228,6 +292,8 @@ RSpec.describe 'Create Response Request', type: :request do
         json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
+      include_examples 'a response with meta for office 22 bristol'
+      include_examples 'a response exported to primary ATOS'
     end
 
     context 'with json for a response without representative to a non existent claim' do
@@ -237,6 +303,20 @@ RSpec.describe 'Create Response Request', type: :request do
         json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
+      include_examples 'a response with meta for office 22 bristol'
+      include_examples 'a response exported to primary ATOS'
+      include_examples 'email validation'
+    end
+
+    context 'with json for a response with representative to a non existent claim to be exported to secondary ATOS' do
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response',
+        json_factory: -> { FactoryBot.build(:json_build_response_commands, :for_default_office) }
+      include_context 'with background jobs running'
+      include_examples 'any response variation'
+      include_examples 'a response with meta for the default office'
+      include_examples 'a response exported to secondary ATOS'
       include_examples 'email validation'
     end
 
@@ -248,6 +328,8 @@ RSpec.describe 'Create Response Request', type: :request do
         json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
+      include_examples 'a response with meta for office 22 bristol'
+      include_examples 'a response exported to primary ATOS'
       include_examples 'email validation'
 
       it 'includes the rtf file in the staging folder' do

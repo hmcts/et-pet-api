@@ -543,7 +543,7 @@ CREATE TABLE public.claims (
     other_outcome character varying,
     send_claim_to_whistleblowing_entity boolean,
     miscellaneous_information text,
-    employment_details jsonb DEFAULT '"{}"'::jsonb NOT NULL,
+    employment_details jsonb DEFAULT '{}'::jsonb NOT NULL,
     is_unfair_dismissal boolean
 );
 
@@ -654,7 +654,8 @@ CREATE TABLE public.exported_files (
     filename character varying,
     content_type character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    external_system_id bigint NOT NULL
 );
 
 
@@ -689,7 +690,8 @@ CREATE TABLE public.exports (
     messages character varying[] DEFAULT '{}'::character varying[],
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    resource_type character varying
+    resource_type character varying,
+    external_system_id bigint NOT NULL
 );
 
 
@@ -710,6 +712,75 @@ CREATE SEQUENCE public.exports_id_seq
 --
 
 ALTER SEQUENCE public.exports_id_seq OWNED BY public.exports.id;
+
+
+--
+-- Name: external_system_configurations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.external_system_configurations (
+    id bigint NOT NULL,
+    external_system_id bigint NOT NULL,
+    key character varying NOT NULL,
+    value character varying NOT NULL,
+    can_read boolean DEFAULT true NOT NULL,
+    can_write boolean DEFAULT true NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: external_system_configurations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.external_system_configurations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: external_system_configurations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.external_system_configurations_id_seq OWNED BY public.external_system_configurations.id;
+
+
+--
+-- Name: external_systems; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.external_systems (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    reference character varying NOT NULL,
+    office_codes integer[] DEFAULT '{}'::integer[],
+    enabled boolean DEFAULT true,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: external_systems_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.external_systems_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: external_systems_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.external_systems_id_seq OWNED BY public.external_systems.id;
 
 
 --
@@ -1203,6 +1274,20 @@ ALTER TABLE ONLY public.exports ALTER COLUMN id SET DEFAULT nextval('public.expo
 
 
 --
+-- Name: external_system_configurations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.external_system_configurations ALTER COLUMN id SET DEFAULT nextval('public.external_system_configurations_id_seq'::regclass);
+
+
+--
+-- Name: external_systems id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.external_systems ALTER COLUMN id SET DEFAULT nextval('public.external_systems_id_seq'::regclass);
+
+
+--
 -- Name: office_post_codes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1423,6 +1508,22 @@ ALTER TABLE ONLY public.exported_files
 
 ALTER TABLE ONLY public.exports
     ADD CONSTRAINT exports_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: external_system_configurations external_system_configurations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.external_system_configurations
+    ADD CONSTRAINT external_system_configurations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: external_systems external_systems_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.external_systems
+    ADD CONSTRAINT external_systems_pkey PRIMARY KEY (id);
 
 
 --
@@ -1674,10 +1775,38 @@ CREATE INDEX index_claims_on_primary_claimant_id ON public.claims USING btree (p
 
 
 --
+-- Name: index_exported_files_on_external_system_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_exported_files_on_external_system_id ON public.exported_files USING btree (external_system_id);
+
+
+--
+-- Name: index_exports_on_external_system_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_exports_on_external_system_id ON public.exports USING btree (external_system_id);
+
+
+--
 -- Name: index_exports_on_resource_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_exports_on_resource_id ON public.exports USING btree (resource_id);
+
+
+--
+-- Name: index_external_system_configurations_on_external_system_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_external_system_configurations_on_external_system_id ON public.external_system_configurations USING btree (external_system_id);
+
+
+--
+-- Name: index_external_systems_on_reference; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_external_systems_on_reference ON public.external_systems USING btree (reference);
 
 
 --
@@ -1748,6 +1877,22 @@ CREATE INDEX index_responses_on_representative_id ON public.responses USING btre
 --
 
 CREATE INDEX index_responses_on_respondent_id ON public.responses USING btree (respondent_id);
+
+
+--
+-- Name: exported_files fk_rails_14a7c09d3f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.exported_files
+    ADD CONSTRAINT fk_rails_14a7c09d3f FOREIGN KEY (external_system_id) REFERENCES public.external_systems(id);
+
+
+--
+-- Name: exports fk_rails_201815efe4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.exports
+    ADD CONSTRAINT fk_rails_201815efe4 FOREIGN KEY (external_system_id) REFERENCES public.external_systems(id);
 
 
 --
@@ -1927,8 +2072,20 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180903102740'),
 ('20180903102828'),
 ('20180903104122'),
+('20180919102125'),
 ('20180919110439'),
 ('20180925162336'),
-('20180925165653');
+('20180925165653'),
+('20181031123357'),
+('20181031123747'),
+('20181126122143'),
+('20181126123456'),
+('20181126123517'),
+('20181126133409'),
+('20181126133537'),
+('20181128123705'),
+('20181128124306'),
+('20181128175719'),
+('20181128175720');
 
 
