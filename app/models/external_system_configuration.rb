@@ -1,0 +1,2 @@
+class ExternalSystemConfiguration < ApplicationRecord
+end

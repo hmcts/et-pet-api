@@ -33,11 +33,8 @@ RSpec.describe ExportedFile, type: :model do
   end
 
   describe '#download_blob_to' do
+    subject(:exported_file) { create(:exported_file, file: fixture_file) }
     it 'downloads a file to the specified location' do
-      # Arrange - Setup with a fixture file and save
-      exported_file.file = fixture_file
-      exported_file.save
-
       Dir.mktmpdir do |dir|
         filename = File.join(dir, 'my_file.pdf')
         # Act - download the blob
@@ -49,10 +46,6 @@ RSpec.describe ExportedFile, type: :model do
     end
 
     it 'downloads the correct file to the specified location' do
-      # Arrange - Setup with a fixture file and save
-      exported_file.file = fixture_file
-      exported_file.save
-
       Dir.mktmpdir do |dir|
         filename = File.join(dir, 'my_file.pdf')
         # Act - download the blob

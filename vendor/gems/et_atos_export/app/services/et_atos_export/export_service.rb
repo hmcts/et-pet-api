@@ -5,13 +5,15 @@ module EtAtosExport
   # Exports all claims that have been marked for needing export
   class ExportService
 
-    def initialize(exported_file: EtAtosFileTransfer::ExportedFile,
+    def initialize(system:,
+      exported_file: EtAtosFileTransfer::ExportedFile,
       claim_exporter: ::EtAtosExport::ExportServiceExporters::ClaimExporter,
       response_exporter: ::EtAtosExport::ExportServiceExporters::ResponseExporter)
-      self.claim_exporter = claim_exporter.new
-      self.response_exporter = response_exporter.new
+      self.claim_exporter = claim_exporter.new(system: system)
+      self.response_exporter = response_exporter.new(system: system)
       self.exported_file = exported_file
       self.exported_count = 0
+      self.system = system
     end
 
     # Exports everything and marks the claims as exported so they cannot be exported again
@@ -29,7 +31,7 @@ module EtAtosExport
 
     private
 
-    attr_accessor :exported_file, :claim_exporter, :response_exporter, :exported_count
+    attr_accessor :exported_file, :claim_exporter, :response_exporter, :exported_count, :system
 
     def export_all(to:)
       claim_exporter.export to: to
@@ -64,7 +66,7 @@ module EtAtosExport
       filename = File.basename(zip_filename)
       File.open(zip_filename) do |file|
         file_attributes = { io: file, filename: filename, content_type: "application/zip" }
-        exported_file.create!(file_attributes: file_attributes, filename: filename)
+        exported_file.create!(file_attributes: file_attributes, filename: filename, external_system_id: system.id)
       end
     end
   end

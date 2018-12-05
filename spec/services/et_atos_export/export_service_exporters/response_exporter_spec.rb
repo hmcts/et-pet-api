@@ -1,16 +1,18 @@
 require 'rails_helper'
 module EtAtosExport
   RSpec.describe ExportServiceExporters::ResponseExporter do
+    let(:system) { ExternalSystem.where(reference: 'atos').first }
+
     describe '#export' do
       context 'with response that has respondent with non alpha numerics in name' do
-        subject(:exporter) { described_class.new }
+        subject(:exporter) { described_class.new(system: system)}
 
         let(:respondent) { build(:respondent, :mr_na_o_malley) }
         let(:response) { build(:response, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent) }
 
         # Create an export record to allow the response to be found
         before do
-          Export.create resource: response
+          Export.create resource: response, external_system_id: system.id
         end
 
         it 'exports a pdf file with the correct name' do
@@ -36,14 +38,14 @@ module EtAtosExport
       end
 
       context 'with response that has claimant with non alpha numerics in name and an underscore' do
-        subject(:exporter) { described_class.new }
+        subject(:exporter) { described_class.new(system: system)}
 
         let(:respondent) { build(:respondent, :mr_na_o_malley, name: "n/a _O'Malley") }
         let(:response) { build(:response, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent) }
 
         # Create an export record to allow the claim to be found
         before do
-          Export.create resource: response
+          Export.create resource: response, external_system_id: system.id
         end
 
         it 'exports a pdf file with the correct name' do
@@ -69,14 +71,14 @@ module EtAtosExport
       end
 
       context 'with an error injected when second response out of 3 is processed' do
-        subject(:exporter) { described_class.new response_export_service: response_export_service_class }
+        subject(:exporter) { described_class.new response_export_service: response_export_service_class, system: system }
 
         let(:respondent) { build(:respondent) }
         let(:response_export_service_class) { class_double ::EtAtosExport::ResponseExportService }
         let(:response_export_service1) { ::EtAtosExport::ResponseExportService.new(responses[0]) }
         let(:response_export_service2) { ::EtAtosExport::ResponseExportService.new(responses[1]) }
         let(:response_export_service3) { ::EtAtosExport::ResponseExportService.new(responses[2]) }
-        let(:responses) { create_list(:response, 3, :ready_for_export, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent) }
+        let(:responses) { create_list(:response, 3, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent, ready_for_export_to: [system.id]) }
 
         # This is just one way of forcing an error.  Each iteration uses the response export service's :export_txt method
         # so we force that to raise an error
@@ -100,7 +102,7 @@ module EtAtosExport
       end
 
       context 'with an error injected when second and fourth response out of 5 is processed' do
-        subject(:exporter) { described_class.new response_export_service: response_export_service_class }
+        subject(:exporter) { described_class.new response_export_service: response_export_service_class, system: system }
 
         let(:respondent) { build(:respondent) }
         let(:response_export_service_class) { class_double ::EtAtosExport::ResponseExportService }
@@ -109,7 +111,7 @@ module EtAtosExport
         let(:response_export_service3) { ::EtAtosExport::ResponseExportService.new(responses[2]) }
         let(:response_export_service4) { ::EtAtosExport::ResponseExportService.new(responses[3]) }
         let(:response_export_service5) { ::EtAtosExport::ResponseExportService.new(responses[4]) }
-        let(:responses) { create_list(:response, 5, :ready_for_export, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent) }
+        let(:responses) { create_list(:response, 5, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent, ready_for_export_to: [system.id]) }
 
         # This is just one way of forcing an error.  Each iteration uses the response export service's :export_pdf and :export_txt methods
         # so we force one of each of those to raise an error.  This will prove that no stray files are left behind if the

@@ -1,5 +1,8 @@
 FactoryBot.define do
   factory :response do
+    transient do
+      ready_for_export_to []
+    end
     date_of_receipt { Time.zone.now }
     case_number '2212345/2016'
     claimants_name 'Joe Strummer'
@@ -71,6 +74,12 @@ FactoryBot.define do
       # Ready for export MUST be in the database and files stored - so we dont do build here
       after(:create) do |response, _evaluator|
         Export.create resource: response
+      end
+    end
+
+    after(:create) do |response, evaluator|
+      evaluator.ready_for_export_to.each do |external_system_id|
+        Export.create resource: response, external_system_id: external_system_id
       end
     end
 

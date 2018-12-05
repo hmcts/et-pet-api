@@ -38,5 +38,11 @@ FactoryBot.define do
       name "n/a Unicode"
       address_telephone_number "\u202d01234 777666\u202d"
     end
+
+    trait :default_office do
+      full
+      association :work_address_attributes, :for_default_office, factory: :json_address_data
+    end
+
   end
 end

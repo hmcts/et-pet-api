@@ -51,5 +51,14 @@ FactoryBot.define do
       post_code 'SW1H 9PP'
     end
 
+    # An address that should route to the default office - only post code is really relevant
+    trait :for_default_office do
+      building '106'
+      street 'Mayfair'
+      locality 'London'
+      county 'Greater London'
+      post_code 'FF1 1AA'
+    end
+
   end
 end
