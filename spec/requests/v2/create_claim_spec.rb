@@ -188,14 +188,14 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
     end
 
-    shared_examples 'a claim with single respondent exported to ATOS' do
+    shared_examples 'a claim with single respondent exported to primary ATOS' do
       it 'has no secondary respondents in the et1 txt file' do
         # Assert - look for the correct file in the landing folder - will be async
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_no_additional_respondents(errors: errors), -> { errors.join("\n") }
       end
     end
 
-    shared_examples 'a claim with multiple respondents exported to ATOS' do
+    shared_examples 'a claim with multiple respondents exported to primary ATOS' do
       it 'has the secondary respondents in the et1 txt file' do
         # Assert - look for the correct file in the landing folder - will be async
         respondents = normalize_json_respondents(input_secondary_respondents_factory.map(&:to_h))
@@ -203,7 +203,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
     end
 
-    shared_examples 'a claim with single claimant exported to ATOS' do
+    shared_examples 'a claim with single claimant exported to primary ATOS' do
       it 'states that no additional claimants have been sent in the txt file' do
         # Assert - look for the correct file in the landing folder - will be async
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_no_additional_claimants_sent(errors: errors), -> { errors.join("\n") }
@@ -215,7 +215,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
     end
 
-    shared_examples 'a claim with multiple claimants exported to ATOS' do
+    shared_examples 'a claim with multiple claimants exported to primary ATOS' do
       it 'states that additional claimants have been sent in the txt file' do
         # Assert - look for the correct file in the landing folder - will be async
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_additional_claimants_sent(errors: errors), -> { errors.join("\n") }
@@ -233,7 +233,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
     end
 
-    shared_examples 'a claim with multiple claimants from json exported to ATOS' do
+    shared_examples 'a claim with multiple claimants from json exported to primary ATOS' do
       it 'stores an ET1a txt file with all of the claimants in the correct format' do
         # Assert
         claimants = normalize_json_claimants(input_secondary_claimants_factory.map(&:to_h))
@@ -241,7 +241,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
     end
 
-    shared_examples 'a claim with multiple claimants from csv exported to ATOS' do
+    shared_examples 'a claim with multiple claimants from csv exported to primary ATOS' do
       it 'stores an ET1a txt file with all of the claimants in the correct format' do
         # Assert
         claimants = normalize_claimants_from_file
@@ -249,14 +249,14 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
     end
 
-    shared_examples 'a claim with no representatives exported to ATOS' do
+    shared_examples 'a claim with no representatives exported to primary ATOS' do
       it 'has no representative in the et1 txt file' do
         # Assert - look for the correct file in the landing folder - will be async
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_no_representative(errors: errors), -> { errors.join("\n") }
       end
     end
 
-    shared_examples 'a claim with a representative exported to ATOS' do
+    shared_examples 'a claim with a representative exported to primary ATOS' do
       it 'has the representative in the et1 txt file' do
         # Assert - look for the correct file in the landing folder - will be async
         rep = normalize_json_representative(input_primary_representative_factory.to_h)
@@ -264,7 +264,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
     end
 
-    shared_examples 'a claim with a csv file exported to ATOS' do
+    shared_examples 'a claim with a csv file exported to primary ATOS' do
       let(:input_csv_file) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimantsFile' }.data.filename }
 
       it 'stores the csv file' do
@@ -277,7 +277,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
     end
 
-    shared_examples 'a claim with an rtf file exported to ATOS' do
+    shared_examples 'a claim with an rtf file exported to primary ATOS' do
       let(:input_rtf_file) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimDetailsFile' }.data.filename }
 
       it 'stores the rtf file with the correct filename and is a copy of the original' do
@@ -297,9 +297,9 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with setup for ATOS'
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
-      include_examples 'a claim with single claimant exported to ATOS'
-      include_examples 'a claim with single respondent exported to ATOS'
-      include_examples 'a claim with no representatives exported to ATOS'
+      include_examples 'a claim with single claimant exported to primary ATOS'
+      include_examples 'a claim with single respondent exported to primary ATOS'
+      include_examples 'a claim with no representatives exported to primary ATOS'
     end
 
     context 'with json for single claimant and respondent (with no work address), no representatives, no reference number' do
@@ -321,9 +321,9 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with single claimant exported to ATOS'
-      include_examples 'a claim with single respondent exported to ATOS'
-      include_examples 'a claim with no representatives exported to ATOS'
+      include_examples 'a claim with single claimant exported to primary ATOS'
+      include_examples 'a claim with single respondent exported to primary ATOS'
+      include_examples 'a claim with no representatives exported to primary ATOS'
     end
 
     context 'with json for multiple claimants, 1 respondent and no representatives' do
@@ -334,10 +334,10 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with multiple claimants exported to ATOS'
-      include_examples 'a claim with multiple claimants from json exported to ATOS'
-      include_examples 'a claim with single respondent exported to ATOS'
-      include_examples 'a claim with no representatives exported to ATOS'
+      include_examples 'a claim with multiple claimants exported to primary ATOS'
+      include_examples 'a claim with multiple claimants from json exported to primary ATOS'
+      include_examples 'a claim with single respondent exported to primary ATOS'
+      include_examples 'a claim with no representatives exported to primary ATOS'
     end
 
     context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded' do
@@ -348,11 +348,11 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with multiple claimants exported to ATOS'
-      include_examples 'a claim with multiple claimants from csv exported to ATOS'
-      include_examples 'a claim with single respondent exported to ATOS'
-      include_examples 'a claim with no representatives exported to ATOS'
-      include_examples 'a claim with a csv file exported to ATOS'
+      include_examples 'a claim with multiple claimants exported to primary ATOS'
+      include_examples 'a claim with multiple claimants from csv exported to primary ATOS'
+      include_examples 'a claim with single respondent exported to primary ATOS'
+      include_examples 'a claim with no representatives exported to primary ATOS'
+      include_examples 'a claim with a csv file exported to primary ATOS'
     end
 
     context 'with json for single claimant, respondent and representative' do
@@ -363,9 +363,9 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with single claimant exported to ATOS'
-      include_examples 'a claim with single respondent exported to ATOS'
-      include_examples 'a claim with a representative exported to ATOS'
+      include_examples 'a claim with single claimant exported to primary ATOS'
+      include_examples 'a claim with single respondent exported to primary ATOS'
+      include_examples 'a claim with a representative exported to primary ATOS'
     end
 
     context 'with json for single claimant, respondent and representative with non alphanumerics in names' do
@@ -383,9 +383,9 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with single claimant exported to ATOS'
-      include_examples 'a claim with single respondent exported to ATOS'
-      include_examples 'a claim with a representative exported to ATOS'
+      include_examples 'a claim with single claimant exported to primary ATOS'
+      include_examples 'a claim with single respondent exported to primary ATOS'
+      include_examples 'a claim with a representative exported to primary ATOS'
     end
 
     context 'with json for single claimant, respondent and representative with unicode chars in phone number' do
@@ -425,10 +425,10 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with multiple claimants exported to ATOS'
-      include_examples 'a claim with multiple claimants from json exported to ATOS'
-      include_examples 'a claim with single respondent exported to ATOS'
-      include_examples 'a claim with a representative exported to ATOS'
+      include_examples 'a claim with multiple claimants exported to primary ATOS'
+      include_examples 'a claim with multiple claimants from json exported to primary ATOS'
+      include_examples 'a claim with single respondent exported to primary ATOS'
+      include_examples 'a claim with a representative exported to primary ATOS'
     end
 
     context 'with json for multiple claimants, single respondent and representative - with csv file uploaded' do
@@ -439,11 +439,11 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with multiple claimants exported to ATOS'
-      include_examples 'a claim with multiple claimants from csv exported to ATOS'
-      include_examples 'a claim with single respondent exported to ATOS'
-      include_examples 'a claim with a representative exported to ATOS'
-      include_examples 'a claim with a csv file exported to ATOS'
+      include_examples 'a claim with multiple claimants exported to primary ATOS'
+      include_examples 'a claim with multiple claimants from csv exported to primary ATOS'
+      include_examples 'a claim with single respondent exported to primary ATOS'
+      include_examples 'a claim with a representative exported to primary ATOS'
+      include_examples 'a claim with a csv file exported to primary ATOS'
     end
 
     context 'with json for single claimant and multiple respondents but no representatives' do
@@ -454,9 +454,9 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with single claimant exported to ATOS'
-      include_examples 'a claim with multiple respondents exported to ATOS'
-      include_examples 'a claim with no representatives exported to ATOS'
+      include_examples 'a claim with single claimant exported to primary ATOS'
+      include_examples 'a claim with multiple respondents exported to primary ATOS'
+      include_examples 'a claim with no representatives exported to primary ATOS'
     end
 
     context 'with json for multiple claimant, multiple respondents but no representatives' do
@@ -467,10 +467,10 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with multiple claimants exported to ATOS'
-      include_examples 'a claim with multiple claimants from json exported to ATOS'
-      include_examples 'a claim with multiple respondents exported to ATOS'
-      include_examples 'a claim with no representatives exported to ATOS'
+      include_examples 'a claim with multiple claimants exported to primary ATOS'
+      include_examples 'a claim with multiple claimants from json exported to primary ATOS'
+      include_examples 'a claim with multiple respondents exported to primary ATOS'
+      include_examples 'a claim with no representatives exported to primary ATOS'
     end
 
     context 'with json for multiple claimant, multiple respondents but no representatives - with csv file uploaded' do
@@ -481,11 +481,11 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with multiple claimants exported to ATOS'
-      include_examples 'a claim with multiple claimants from csv exported to ATOS'
-      include_examples 'a claim with multiple respondents exported to ATOS'
-      include_examples 'a claim with no representatives exported to ATOS'
-      include_examples 'a claim with a csv file exported to ATOS'
+      include_examples 'a claim with multiple claimants exported to primary ATOS'
+      include_examples 'a claim with multiple claimants from csv exported to primary ATOS'
+      include_examples 'a claim with multiple respondents exported to primary ATOS'
+      include_examples 'a claim with no representatives exported to primary ATOS'
+      include_examples 'a claim with a csv file exported to primary ATOS'
     end
 
     context 'with json for single claimant, multiple respondents and a representative' do
@@ -496,9 +496,9 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with single claimant exported to ATOS'
-      include_examples 'a claim with multiple respondents exported to ATOS'
-      include_examples 'a claim with a representative exported to ATOS'
+      include_examples 'a claim with single claimant exported to primary ATOS'
+      include_examples 'a claim with multiple respondents exported to primary ATOS'
+      include_examples 'a claim with a representative exported to primary ATOS'
     end
 
     context 'with json for multiple claimants, multiple respondents and a representative' do
@@ -509,10 +509,10 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with multiple claimants exported to ATOS'
-      include_examples 'a claim with multiple claimants from json exported to ATOS'
-      include_examples 'a claim with multiple respondents exported to ATOS'
-      include_examples 'a claim with a representative exported to ATOS'
+      include_examples 'a claim with multiple claimants exported to primary ATOS'
+      include_examples 'a claim with multiple claimants from json exported to primary ATOS'
+      include_examples 'a claim with multiple respondents exported to primary ATOS'
+      include_examples 'a claim with a representative exported to primary ATOS'
     end
 
     context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded' do
@@ -523,11 +523,11 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with multiple claimants exported to ATOS'
-      include_examples 'a claim with multiple claimants from csv exported to ATOS'
-      include_examples 'a claim with multiple respondents exported to ATOS'
-      include_examples 'a claim with a representative exported to ATOS'
-      include_examples 'a claim with a csv file exported to ATOS'
+      include_examples 'a claim with multiple claimants exported to primary ATOS'
+      include_examples 'a claim with multiple claimants from csv exported to primary ATOS'
+      include_examples 'a claim with multiple respondents exported to primary ATOS'
+      include_examples 'a claim with a representative exported to primary ATOS'
+      include_examples 'a claim with a csv file exported to primary ATOS'
     end
 
     context 'with json for single claimant, single respondent and representative - with rtf file uploaded' do
@@ -539,10 +539,10 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
-      include_examples 'a claim with single claimant exported to ATOS'
-      include_examples 'a claim with single respondent exported to ATOS'
-      include_examples 'a claim with a representative exported to ATOS'
-      include_examples 'a claim with an rtf file exported to ATOS'
+      include_examples 'a claim with single claimant exported to primary ATOS'
+      include_examples 'a claim with single respondent exported to primary ATOS'
+      include_examples 'a claim with a representative exported to primary ATOS'
+      include_examples 'a claim with an rtf file exported to primary ATOS'
     end
 
     context 'with json for single claimant, single respondent with postcode that routes to default office' do
