@@ -1,6 +1,6 @@
 module EtApi
   module Test
-    class DcdInterface
+    class CcdInterface
 
     end
   end
