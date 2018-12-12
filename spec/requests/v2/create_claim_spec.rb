@@ -181,20 +181,20 @@ RSpec.describe 'Create Claim Request', type: :request do
 
       it 'has the correct structure in the ccd data' do
         # Assert - look for the correct structure
-        expect(ccd_interface.et1_claim(reference: output_reference)).to have_correct_structure(errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_correct_structure
       end
 
       it 'has the primary claimant in the ccd data' do
         # Assert - look for the correct file in the landing folder - will be async
         #
         claimant = normalize_json_claimant(input_primary_claimant_factory.to_h)
-        expect(ccd_interface.et1_claim(reference: output_reference)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_claimant_for(claimant)
       end
 
       it 'has the primary respondent in the ccd data' do
         # Assert - look for the correct file in the landing folder - will be async
         respondent = normalize_json_respondent(input_factory.data.detect { |command_factory| command_factory.command == 'BuildPrimaryRespondent' }.data.to_h)
-        expect(ccd_interface.et1_claim(reference: output_reference)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_respondent_for(respondent)
       end
     end
 
@@ -241,7 +241,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     shared_examples 'a claim with single respondent exported to CCD' do
       it 'has no secondary respondents in the ccd data' do
         # Assert - look for the correct file in the landing folder - will be async
-        expect(ccd_interface.et1_claim(reference: output_reference)).to have_no_additional_respondents(errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_no_additional_respondents
       end
     end
 
@@ -276,7 +276,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     shared_examples 'a claim with single claimant exported to CCD' do
       it 'states that there is only one claimant in the ccd data' do
         # Assert - look for the correct file in the ccd data - will be async
-        expect(ccd_interface.et1_claim(reference: output_reference)).to have_no_additional_claimants_sent(errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_no_additional_claimants_sent
       end
     end
 
@@ -347,7 +347,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     shared_examples 'a claim with no representatives exported to CCD' do
       it 'has no representative in the ccd data' do
         # Assert - look for no representative in the ccd data - will be async
-        expect(ccd_interface.et1_claim(reference: output_reference)).to have_no_representative(errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_no_representative
       end
     end
 

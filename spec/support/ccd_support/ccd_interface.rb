@@ -33,10 +33,11 @@ module EtApi
           ::EtApi::Test::Ccd::Et1Claim.new(reference: reference, interface: self)
         end
 
-        private
-
         attr_accessor :idam_user_token_exchange_url, :idam_service_token_exchange_url, :create_case_url
         attr_accessor :user_role, :user_id, :jurisdiction_id, :case_type_id, :initiate_case_event_id, :initiate_case_url
+
+        private
+
 
         def init_stubs
           WebMock.stub_request(:any, /fakeccd\.com/).to_rack(EtFakeCcdServer::Server)
