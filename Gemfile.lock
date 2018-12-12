@@ -190,7 +190,7 @@ GEM
       safe_shell (>= 1.0.3, < 2.0)
     pg (1.0.0)
     powerpack (0.1.2)
-    public_suffix (3.0.2)
+    public_suffix (3.0.3)
     puma (3.11.3)
     rack (2.0.6)
     rack-protection (2.0.3)
@@ -330,7 +330,7 @@ GEM
     wasabi (3.5.0)
       httpi (~> 2.0)
       nokogiri (>= 1.4.2)
-    webmock (3.4.1)
+    webmock (3.4.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -378,7 +378,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
   unicorn
-  webmock (~> 3.4, >= 3.4.1)
+  webmock (~> 3.4)
   wisper (= 2.0.0)
 
 BUNDLED WITH
