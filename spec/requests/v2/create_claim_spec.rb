@@ -101,7 +101,15 @@ RSpec.describe 'Create Claim Request', type: :request do
     end
 
     shared_context 'with setup for CCD' do
-      let(:ccd_interface) { EtApi::Test::DcdInterface.new }
+      # ccd_test 'system' is defined in the seed data
+      let(:ccd_system) { create(:external_system, :ccd_local_test) }
+      let(:ccd_config) do
+        ccd_system.configurations.inject({}) do |acc, configuration|
+          acc[configuration.key.to_sym] = configuration.value
+          acc
+        end
+      end
+      let(:ccd_interface) { EtApi::Test::Ccd::Interface.new(ccd_config) }
     end
 
     shared_examples 'any claim variation' do
@@ -168,25 +176,25 @@ RSpec.describe 'Create Claim Request', type: :request do
     shared_examples 'a claim exported to CCD' do
       it 'stores the pdf file with the correct filename in CCD' do
         # Assert - look for the correct file in the ccd data - will be async
-        expect(ccd_interface.et1_claim).to have_pdf_file
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_pdf_file
       end
 
       it 'has the correct structure in the ccd data' do
         # Assert - look for the correct structure
-        expect(ccd_interface.et1_claim).to have_correct_structure(errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_correct_structure(errors: errors), -> { errors.join("\n") }
       end
 
       it 'has the primary claimant in the ccd data' do
         # Assert - look for the correct file in the landing folder - will be async
         #
         claimant = normalize_json_claimant(input_primary_claimant_factory.to_h)
-        expect(ccd_interface.et1_claim).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
       end
 
       it 'has the primary respondent in the ccd data' do
         # Assert - look for the correct file in the landing folder - will be async
         respondent = normalize_json_respondent(input_factory.data.detect { |command_factory| command_factory.command == 'BuildPrimaryRespondent' }.data.to_h)
-        expect(ccd_interface.et1_claim).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
       end
     end
 
@@ -233,7 +241,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     shared_examples 'a claim with single respondent exported to CCD' do
       it 'has no secondary respondents in the ccd data' do
         # Assert - look for the correct file in the landing folder - will be async
-        expect(ccd_interface.et1_claim).to have_no_additional_respondents(errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_no_additional_respondents(errors: errors), -> { errors.join("\n") }
       end
     end
 
@@ -268,7 +276,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     shared_examples 'a claim with single claimant exported to CCD' do
       it 'states that there is only one claimant in the ccd data' do
         # Assert - look for the correct file in the ccd data - will be async
-        expect(ccd_interface.et1_claim).to have_no_additional_claimants_sent(errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_no_additional_claimants_sent(errors: errors), -> { errors.join("\n") }
       end
     end
 
@@ -339,7 +347,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     shared_examples 'a claim with no representatives exported to CCD' do
       it 'has no representative in the ccd data' do
         # Assert - look for no representative in the ccd data - will be async
-        expect(ccd_interface.et1_claim).to have_no_representative(errors: errors), -> { errors.join("\n") }
+        expect(ccd_interface.et1_claim(reference: output_reference)).to have_no_representative(errors: errors), -> { errors.join("\n") }
       end
     end
 
