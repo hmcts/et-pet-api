@@ -84,14 +84,33 @@ class EventService
     include Singleton
     include Wisper::Publisher
 
-    def publish(*)
-      super
+    def publish(event, *args)
+      # Check for lazy evaluated arguments (procs) and replace them before calling publish
+      args = replace_lazy_args(args) if should_publish?(event)
+      super(event, *args)
     end
 
     def unsubscribe(*listeners)
       @local_registrations.delete_if do |registration|
         listeners.include?(registration.listener)
       end
+    end
+
+    private
+
+    def replace_lazy_args(args)
+      return args unless args.any? { |arg| arg.is_a?(Proc) }
+      args.map do |arg|
+        if arg.is_a?(Proc)
+          arg.call
+        else
+          arg
+        end
+      end
+    end
+
+    def should_publish?(event)
+      registrations.any? { |r| r.on.include?(event) }
     end
   end
 end
