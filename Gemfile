@@ -82,3 +82,7 @@ gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
 
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
+#gem 'et_ccd_export', path: 'vendor/gems/et_ccd_export'
+gem 'et_ccd_export', git: 'git@github.com:ministryofjustice/et_ccd_export.git', branch: 'RST-1535'
+#gem 'et_fake_ccd_server', path: 'vendor/gems/et_fake_ccd_server'
+gem 'et_fake_ccd_server', git: 'git@github.com:ministryofjustice/et_fake_ccd_server.git', branch: 'RST-1535'
