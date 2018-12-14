@@ -107,7 +107,7 @@ GEM
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.2)
     builder (3.2.3)
-    byebug (10.0.1)
+    byebug (10.0.2)
     capybara (3.2.1)
       addressable
       mini_mime (>= 0.1.3)
