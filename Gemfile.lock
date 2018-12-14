@@ -38,6 +38,12 @@ PATH
     et_atos_export (0.1.0)
       rails (~> 5.2.1)
 
+PATH
+  remote: vendor/gems/et_ccd_export
+  specs:
+    et_ccd_export (0.1.0)
+      rails (~> 5.2.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -352,6 +358,7 @@ DEPENDENCIES
   et_acas_api!
   et_atos_export!
   et_atos_file_transfer!
+  et_ccd_export!
   et_fake_acas_server!
   factory_bot (~> 4.8)
   faker (~> 1.8, >= 1.8.7)
