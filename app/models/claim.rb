@@ -11,8 +11,12 @@ class Claim < ApplicationRecord
 
   has_many :secondary_claimants, dependent: :destroy, class_name: 'Claimant',
                                  through: :claim_claimants, source: :claimant
-  has_many :respondents, through: :claim_respondents
-  has_many :representatives, through: :claim_representatives
+  belongs_to :primary_respondent, class_name: 'Respondent', inverse_of: false, optional: true
+  has_many :secondary_respondents, dependent: :destroy, class_name: 'Respondent',
+                                   through: :claim_respondents, source: :respondent
+  belongs_to :primary_representative, class_name: 'Representative', inverse_of: false, optional: true
+  has_many :secondary_representatives, class_name: 'Representative',
+                                       through: :claim_representatives, source: :representative
   has_many :uploaded_files, through: :claim_uploaded_files
 
   before_save :cache_claimant_count
@@ -21,8 +25,6 @@ class Claim < ApplicationRecord
 
   accepts_nested_attributes_for :secondary_claimants
   accepts_nested_attributes_for :primary_claimant
-  accepts_nested_attributes_for :respondents
-  accepts_nested_attributes_for :representatives
   accepts_nested_attributes_for :uploaded_files
 
   # A claim can only have one pdf file - this is it

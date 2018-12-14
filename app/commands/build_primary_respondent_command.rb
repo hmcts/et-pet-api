@@ -19,8 +19,6 @@ class BuildPrimaryRespondentCommand < BaseCommand
   attribute :acas_exemption_code, :string
 
   def apply(root_object, **_args)
-    # @TODO (RST-1451) There is no concept of primary respondent yet - so it will just add one -
-    # therefore this must be first command
-    root_object.respondents.build(attributes)
+    root_object.build_primary_respondent(attributes)
   end
 end

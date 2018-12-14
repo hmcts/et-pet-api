@@ -15,7 +15,7 @@ RSpec.describe BuildPrimaryRespondentCommand do
         command.apply(root_object)
 
         # Assert
-        expect(root_object.respondents.first).to have_attributes(data.except(:address_attributes, :work_address_attributes)).
+        expect(root_object.primary_respondent).to have_attributes(data.except(:address_attributes, :work_address_attributes)).
           and(have_attributes(address: an_object_having_attributes(data[:address_attributes]))).
           and(have_attributes(work_address: an_object_having_attributes(data[:work_address_attributes])))
       end
@@ -29,7 +29,7 @@ RSpec.describe BuildPrimaryRespondentCommand do
         command.apply(root_object)
 
         # Assert
-        expect(root_object.respondents.first).to have_attributes(data).
+        expect(root_object.primary_respondent).to have_attributes(data).
           and(have_attributes(address: nil)).
           and(have_attributes(work_address: nil))
       end
