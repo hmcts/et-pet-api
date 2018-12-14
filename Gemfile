@@ -84,5 +84,3 @@ gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
 
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
-
-gem 'et_ccd_export', path: 'vendor/gems/et_ccd_export'
