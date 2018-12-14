@@ -41,3 +41,39 @@ ExternalSystemConfiguration.create external_system_id: atos2.id,
   key: 'username', value: 'atos2'
 ExternalSystemConfiguration.create external_system_id: atos2.id,
   key: 'password', value: 'password', can_read: false
+
+ccd = ExternalSystem.create name: 'CCD',
+  reference: 'ccd_test',
+  enabled: true,
+  office_codes: Office.pluck(:code).to_a
+ExternalSystemConfiguration.create external_system_id: ccd.id,
+  key: 'idam_user_token_exchange_url',
+  value: 'http://localhost:4501/testing-support/lease'
+ExternalSystemConfiguration.create external_system_id: ccd.id,
+  key: 'idam_service_token_exchange_url',
+  value: 'http://localhost:4502/testing-support/lease'
+ExternalSystemConfiguration.create external_system_id: ccd.id,
+  key: 'create_case_url',
+  value: 'http://localhost:4452/caseworkers/{uid}/jurisdictions/{jid}/case-types/{ctid}/cases'
+ExternalSystemConfiguration.create external_system_id: ccd.id,
+  key: 'initiate_case_url',
+  value: 'http://localhost:4452/caseworkers/{uid}/jurisdictions/{jid}/case-types/{ctid}/event-triggers/{etid}/token'
+ExternalSystemConfiguration.create external_system_id: ccd.id,
+  key: 'user_id',
+  value: '38'
+ExternalSystemConfiguration.create external_system_id: ccd.id,
+  key: 'user_role',
+  value: 'caseworker-publiclaw'
+ExternalSystemConfiguration.create external_system_id: ccd.id,
+  key: 'jurisdiction_id',
+  value: 'PUBLICLAW'
+ExternalSystemConfiguration.create external_system_id: ccd.id,
+  key: 'case_type_id',
+  value: 'TRIB_MVP_3_TYPE'
+ExternalSystemConfiguration.create external_system_id: ccd.id,
+  key: 'initiate_case_event_id',
+  value: 'initiateCase'
+
+
+
+
