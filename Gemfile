@@ -72,7 +72,7 @@ group :test do
   gem 'database_cleaner', '~> 1.6.2'
   gem 'factory_bot', '~> 4.8'
   gem 'rspec-eventually', '~> 0.2.2'
-  gem 'faker', '~> 1.8', '>= 1.8.7'
+  gem 'faker', '~> 1.9'
   gem 'webmock', '~> 3.4'
   gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'ba78be596b80a6006b543a03f1b40ff6b130d5fc'
 end
