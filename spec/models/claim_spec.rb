@@ -7,6 +7,22 @@ RSpec.describe Claim, type: :model do
 
   let(:claim) { described_class.new }
 
+  describe '#primary_claimant' do
+    it 'returns claim - claimant built in memory' do
+      # Arrange
+      claim.build_primary_claimant title: 'Mr',
+                                   first_name: 'Fred',
+                                   last_name: 'Bloggs',
+                                   address_attributes: example_address_attrs
+
+      # Act
+      result = claim.primary_claimant
+
+      # Assert
+      expect(result).to have_attributes first_name: 'Fred', last_name: 'Bloggs'
+    end
+  end
+
   describe '#secondary_claimants' do
     it 'returns claim - claimants built in memory' do
       # Arrange
@@ -27,44 +43,72 @@ RSpec.describe Claim, type: :model do
     end
   end
 
-  describe '#respondents' do
-    it 'returns respondents built in memory' do
+  describe '#primary_respondent' do
+    it 'returns respondent built in memory' do
       # Arrange
-      claim.respondents_attributes = [
-        {
-          name: 'Fred Bloggs',
-          address_attributes: example_address_attrs,
-          work_address_telephone_number: '03333 423554',
-          address_telephone_number: '02222 321654',
-          acas_number: 'AC123456/78/90',
-          work_address_attributes: example_address_attrs,
-          alt_phone_number: '03333 423554'
-        }
-      ]
+      claim.build_primary_respondent name: 'Fred Bloggs',
+                                     address_attributes: example_address_attrs,
+                                     work_address_telephone_number: '03333 423554',
+                                     address_telephone_number: '02222 321654',
+                                     acas_number: 'AC123456/78/90',
+                                     work_address_attributes: example_address_attrs,
+                                     alt_phone_number: '03333 423554'
+
 
       # Assert - Validate the results
-      expect(claim.respondents).to contain_exactly an_object_having_attributes name: 'Fred Bloggs'
+      expect(claim.primary_respondent).to have_attributes name: 'Fred Bloggs'
     end
   end
 
-  describe '#representatives' do
+  describe '#secondary_respondents' do
+    it 'returns respondents built in memory' do
+      # Arrange
+      claim.secondary_respondents.build name: 'Fred Bloggs',
+                                        address_attributes: example_address_attrs,
+                                        work_address_telephone_number: '03333 423554',
+                                        address_telephone_number: '02222 321654',
+                                        acas_number: 'AC123456/78/90',
+                                        work_address_attributes: example_address_attrs,
+                                        alt_phone_number: '03333 423554'
+
+
+      # Assert - Validate the results
+      expect(claim.secondary_respondents).to contain_exactly an_object_having_attributes name: 'Fred Bloggs'
+    end
+  end
+
+  describe '#primary_representative' do
+    it 'returns representative built in memory' do
+      # Arrange
+      claim.build_primary_representative name: 'Solicitor Name',
+                                         organisation_name: 'Solicitors Are Us Fake Company',
+                                         address_attributes: example_address_attrs,
+                                         address_telephone_number: '01111 123456',
+                                         mobile_number: '02222 654321',
+                                         email_address: 'solicitor.test@digital.justice.gov.uk',
+                                         representative_type: 'Solicitor',
+                                         dx_number: 'dx1234567890'
+      # Act
+      rep = claim.primary_representative
+
+      # Assert
+      expect(rep).to have_attributes name: 'Solicitor Name'
+    end
+  end
+
+  describe '#secondary_representatives' do
     it 'returns representatives built in memory' do
       # Arrange
-      claim.representatives_attributes = [
-        {
-          name: 'Solicitor Name',
-          organisation_name: 'Solicitors Are Us Fake Company',
-          address_attributes: example_address_attrs,
-          address_telephone_number: '01111 123456',
-          mobile_number: '02222 654321',
-          email_address: 'solicitor.test@digital.justice.gov.uk',
-          representative_type: 'Solicitor',
-          dx_number: 'dx1234567890'
-        }
-      ]
-
+      claim.secondary_representatives.build name: 'Solicitor Name',
+                                            organisation_name: 'Solicitors Are Us Fake Company',
+                                            address_attributes: example_address_attrs,
+                                            address_telephone_number: '01111 123456',
+                                            mobile_number: '02222 654321',
+                                            email_address: 'solicitor.test@digital.justice.gov.uk',
+                                            representative_type: 'Solicitor',
+                                            dx_number: 'dx1234567890'
       # Act
-      reps = claim.representatives
+      reps = claim.secondary_representatives
 
       # Assert
       expect(reps).to contain_exactly an_object_having_attributes name: 'Solicitor Name'

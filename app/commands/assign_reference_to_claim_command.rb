@@ -23,7 +23,7 @@ class AssignReferenceToClaimCommand < BaseCommand
   end
 
   def assign_office_code_for(claim)
-    resp = claim.respondents.first
+    resp = claim.primary_respondent
     postcode_for_reference = resp.work_address.try(:post_code) || resp.address.try(:post_code)
     office = office_service.lookup_postcode(postcode_for_reference)
     claim.office_code = office.code

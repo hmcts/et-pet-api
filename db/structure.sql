@@ -544,7 +544,9 @@ CREATE TABLE public.claims (
     send_claim_to_whistleblowing_entity boolean,
     miscellaneous_information text,
     employment_details jsonb DEFAULT '{}'::jsonb NOT NULL,
-    is_unfair_dismissal boolean
+    is_unfair_dismissal boolean,
+    primary_respondent_id bigint,
+    primary_representative_id bigint
 );
 
 
@@ -1775,6 +1777,20 @@ CREATE INDEX index_claims_on_primary_claimant_id ON public.claims USING btree (p
 
 
 --
+-- Name: index_claims_on_primary_representative_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claims_on_primary_representative_id ON public.claims USING btree (primary_representative_id);
+
+
+--
+-- Name: index_claims_on_primary_respondent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claims_on_primary_respondent_id ON public.claims USING btree (primary_respondent_id);
+
+
+--
 -- Name: index_exported_files_on_external_system_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2086,6 +2102,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181128123705'),
 ('20181128124306'),
 ('20181128175719'),
-('20181128175720');
+('20181128175720'),
+('20181214120957'),
+('20181214121017'),
+('20181214121108'),
+('20181214121203');
 
 
