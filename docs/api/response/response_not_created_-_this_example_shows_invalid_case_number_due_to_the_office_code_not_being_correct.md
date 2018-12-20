@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "61a1ae4d-05ce-49d4-b410-e15113b82926",
+  "uuid": "2fb7b102-65fc-44f8-a3b5-3e94c2ec2961",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "077f1b1b-5997-471b-9567-b27c31e183ae",
+      "uuid": "e463bea1-3128-4d5a-846f-9f1f6b4cde6c",
       "command": "BuildResponse",
       "data": {
         "additional_information_key": null,
@@ -64,11 +64,13 @@ Cookie: </pre>
         "defend_claim_facts": "lorem ipsum defence",
         "make_employer_contract_claim": true,
         "claim_information": "lorem ipsum info",
-        "email_receipt": "email@recei.pt"
+        "email_receipt": "email@recei.pt",
+        "pdf_template_reference": "et3-v1-en",
+        "email_template_reference": "et3-v1-en"
       }
     },
     {
-      "uuid": "223e8747-06ac-4604-91e9-95efdbe60041",
+      "uuid": "fad4b97c-9379-4022-80dd-1112d4aaa775",
       "command": "BuildRespondent",
       "data": {
         "name": "dodgy_co",
@@ -109,11 +111,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/respondents/build_response&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;61a1ae4d-05ce-49d4-b410-e15113b82926&quot;,
+  &quot;uuid&quot;: &quot;2fb7b102-65fc-44f8-a3b5-3e94c2ec2961&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;077f1b1b-5997-471b-9567-b27c31e183ae&quot;,
+      &quot;uuid&quot;: &quot;e463bea1-3128-4d5a-846f-9f1f6b4cde6c&quot;,
       &quot;command&quot;: &quot;BuildResponse&quot;,
       &quot;data&quot;: {
         &quot;additional_information_key&quot;: null,
@@ -143,11 +145,13 @@ Cookie: </pre>
         &quot;defend_claim_facts&quot;: &quot;lorem ipsum defence&quot;,
         &quot;make_employer_contract_claim&quot;: true,
         &quot;claim_information&quot;: &quot;lorem ipsum info&quot;,
-        &quot;email_receipt&quot;: &quot;email@recei.pt&quot;
+        &quot;email_receipt&quot;: &quot;email@recei.pt&quot;,
+        &quot;pdf_template_reference&quot;: &quot;et3-v1-en&quot;,
+        &quot;email_template_reference&quot;: &quot;et3-v1-en&quot;
       }
     },
     {
-      &quot;uuid&quot;: &quot;223e8747-06ac-4604-91e9-95efdbe60041&quot;,
+      &quot;uuid&quot;: &quot;fad4b97c-9379-4022-80dd-1112d4aaa775&quot;,
       &quot;command&quot;: &quot;BuildRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -195,8 +199,8 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 0596c5a7-64bb-46f8-b6aa-2b640972fc81
-X-Runtime: 0.008967
+X-Request-Id: 6c5ecaef-5646-4c6b-b57c-13f79ac2dab9
+X-Runtime: 0.015087
 Content-Length: 290</pre>
 
 #### Status
@@ -205,4 +209,4 @@ Content-Length: 290</pre>
 
 #### Body
 
-<pre>{"status":"not_accepted","uuid":"61a1ae4d-05ce-49d4-b410-e15113b82926","errors":[{"status":422,"code":"invalid_office_code","title":"Invalid case number","detail":"Invalid case number","source":"/data/0/case_number","command":"BuildResponse","uuid":"077f1b1b-5997-471b-9567-b27c31e183ae"}]}</pre>
+<pre>{"status":"not_accepted","uuid":"2fb7b102-65fc-44f8-a3b5-3e94c2ec2961","errors":[{"status":422,"code":"invalid_office_code","title":"Invalid case number","detail":"Invalid case number","source":"/data/0/case_number","command":"BuildResponse","uuid":"e463bea1-3128-4d5a-846f-9f1f6b4cde6c"}]}</pre>

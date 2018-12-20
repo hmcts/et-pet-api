@@ -5,7 +5,8 @@ begin
     t.pattern = 'spec/documentation/**/*_spec.rb'
     t.rspec_opts = ["--format RspecApiDocumentation::ApiFormatter --exclude-pattern anything/**/*"]
   end
-rescue LoadError
+rescue LoadError => ex
   puts "Documentation rake task not available in this environment"
+  puts ex.message
 end
 
