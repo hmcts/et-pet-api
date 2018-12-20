@@ -3,10 +3,10 @@
 require 'csv'
 OfficePostCode.delete_all
 Office.delete_all
-ExternalSystem.delete_all
-ExternalSystemConfiguration.delete_all
 ExportedFile.delete_all
 Export.delete_all
+ExternalSystem.delete_all
+ExternalSystemConfiguration.delete_all
 offices = CSV.read('db/offices.csv', headers: true)
 post_codes = CSV.read('db/office_post_codes.csv', headers: true)
 offices.each do |office_row|
