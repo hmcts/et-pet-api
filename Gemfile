@@ -44,7 +44,7 @@ gem 'rubyzip', '~> 1.2', '>= 1.2.1'
 gem 'pdf-forms', '~> 1.1', '>= 1.1.1'
 
 # AWS SDK gem
-gem 'aws-sdk-s3', '~> 1.13'
+gem 'aws-sdk-s3', '~> 1.30'
 
 # For general easy http access - mainly for test but used in app too
 gem 'httparty', '~> 0.16.2'
