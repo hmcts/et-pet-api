@@ -8,7 +8,14 @@ module EtApi
       module Et3PdfFileSection
         class Base < ::EtApi::Test::FileObjects::BasePdfFile
 
+          def initialize(*args, template:)
+            super(*args)
+            self.template = template
+          end
+
           private
+
+          attr_accessor :template
 
           def i18n_section
             self.class.name.demodulize.underscore.gsub(/_section\z/, '')
@@ -16,7 +23,7 @@ module EtApi
 
           def mapped_field_values
             return @mapped_field_values if defined?(@mapped_field_values)
-            lookup = t("response_pdf_fields.#{i18n_section}", locale: 'en')
+            lookup = t("response_pdf_fields.#{i18n_section}", locale: template)
             @mapped_field_values = lookup.inject({}) do |acc, (key, value)|
               acc[key.to_sym] = mapped_value(value, key: key)
               acc

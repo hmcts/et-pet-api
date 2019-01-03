@@ -197,7 +197,7 @@ RSpec.describe 'Create Response Request', type: :request do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         respondent_name = input_respondent_factory.name
         output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
-        expect(staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
+        expect(staging_folder.et3_pdf_file(output_filename_pdf, template: input_response_factory.pdf_template_reference)).to have_correct_contents_for(
           response: input_response_factory,
           respondent: input_respondent_factory,
           representative: input_representative_factory,
@@ -233,7 +233,7 @@ RSpec.describe 'Create Response Request', type: :request do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         respondent_name = input_respondent_factory.name
         output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
-        expect(secondary_staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
+        expect(secondary_staging_folder.et3_pdf_file(output_filename_pdf, template: input_response_factory.pdf_template_reference)).to have_correct_contents_for(
           response: input_response_factory,
           respondent: input_respondent_factory,
           representative: input_representative_factory,
@@ -278,6 +278,18 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
         json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) }
+      include_context 'with background jobs running'
+      include_examples 'any response variation'
+      include_examples 'a response with meta for office 22 bristol'
+      include_examples 'a response exported to primary ATOS'
+      include_examples 'email validation'
+    end
+
+    context 'with json for a response using welsh pdf template with representative to a non existent claim' do
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response',
+        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
