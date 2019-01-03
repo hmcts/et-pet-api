@@ -51,21 +51,16 @@ module EtApi
       private
 
       def t(*args)
-        ::EtFullSystem::Test::Messaging.instance.t(*args)
-      end
-
-      def factory_translate(value, *args)
-        return value unless value.is_a?(Symbol)
-        t(value, *args)
+        ::EtApi::Test::Messaging.instance.t(*args)
       end
 
       class_methods do
         def t(*args)
-          ::EtFullSystem::Test::Messaging.instance.t(*args)
+          ::EtApi::Test::Messaging.instance.t(*args)
         end
 
         def factory_translate(*args)
-          ::EtFullSystem::Test::Messaging.instance.factory_translate(*args)
+          ::EtApi::Test::Messaging.instance.factory_translate(*args)
         end
       end
     end

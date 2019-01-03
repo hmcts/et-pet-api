@@ -7,6 +7,9 @@ en:
         field_name: 'date_received'
       rtf:
         field_name: 'RTF'
+        select_values:
+          true: 'Additional RTF'
+        unselected_value: ''
     claimant:
       claimants_name:
         field_name: '1.1'
@@ -48,8 +51,8 @@ en:
       multi_site_gb:
         field_name: '2.8'
         select_values:
-          no: 'no'
-          yes: 'yes'
+          false: 'no'
+          true: 'yes'
         unselected_value: 'Off'
       employment_at_site_number:
         field_name: '2.9'
@@ -57,17 +60,17 @@ en:
       agree:
         field_name: 'new 3.1'
         select_values:
-          no: 'No'
-          yes: 'Yes'
+          false: 'No'
+          true: 'Yes'
         unselected_value: 'Off'
       disagree_explanation:
         field_name: 'new 3.1 If no, please explain why'
     employment_details:
       agree_with_dates:
         field_name: '3.1'
-        selected_values:
-          no: 'no'
-          yes: 'yes'
+        select_values:
+          false: 'no'
+          true: 'yes'
         unselected_value: 'Off'
       employment_start:
         field_name: '3.1 employment started'
@@ -77,52 +80,52 @@ en:
         field_name: '3.1 disagree'
       continuing:
         field_name: '3.2'
-        selected_values:
+        select_values:
           no: 'no'
           yes: 'yes'
         unselected_value: 'Off'
       agree_with_job_title:
         field_name: '3.3'
-        selected_values:
-          no: 'no'
-          yes: 'yes'
+        select_values:
+          false: 'no'
+          true: 'yes'
         unselected_value: 'Off'
       correct_job_title:
         field_name: '3.3 if no'
     earnings:
       agree_with_hours:
         field_name: '4.1'
-        selected_values:
-          no: 'no'
-          yes: 'yes'
+        select_values:
+          false: 'no'
+          true: 'yes'
         unselected_value: 'Off'
       correct_hours:
         field_name: '4.1 if no'
       agree_with_earnings:
         field_name: '4.2'
-        selected_values:
-          no: 'no'
-          yes: 'yes'
+        select_values:
+          false: 'no'
+          true: 'yes'
         unselected_value: 'Off'
       correct_pay_before_tax:
         field_name: '4.2 pay before tax'
       correct_pay_before_tax_period:
         field_name: '4.2 pay before tax tick box'
-        selected_values:
-          monthly: 'monthly'
-          weekly: 'weekly'
+        select_values:
+          Monthly: 'monthly'
+          Weekly: 'weekly'
         unselected_value: 'Off'
       correct_take_home_pay:
         field_name: '4.2 normal take-home pay'
       correct_take_home_pay_period:
         field_name: '4.2 normal take-home pay tick box'
-        selected_values:
-          monthly: 'monthly'
-          weekly: 'weekly'
+        select_values:
+          Monthly: 'monthly'
+          Weekly: 'weekly'
         unselected_value: 'Off'
       agree_with_notice_period:
         field_name: '4.3 tick box'
-        selected_values:
+        select_values:
           no: 'no'
           yes: 'yes'
         unselected_value: 'Off'
@@ -130,7 +133,7 @@ en:
         field_name: '4.3 if no'
       agree_with_pension_benefits:
         field_name: '4.4 tick box'
-        selected_values:
+        select_values:
           no: 'no'
           yes: 'yes'
         unselected_value: 'Off'
@@ -139,7 +142,7 @@ en:
     response:
       defend_claim:
         field_name: '5.1 tick box'
-        selected_values:
+        select_values:
           no: 'no'
           yes: 'yes'
         unselected_value: 'Off'
@@ -148,7 +151,7 @@ en:
     contract_claim:
       make_employer_contract_claim:
         field_name: '6.2 tick box'
-        selected_values:
+        select_values:
           yes: 'yes'
         unselected_value: 'Off'
       information:
@@ -179,10 +182,11 @@ en:
         field_name: '7.7'
       contact_preference:
         field_name: '7.8 tick box'
-        selected_values:
+        select_values:
           email: 'email'
           fax: 'fax'
           post: 'post'
+        unselected_value: 'Off'
       email_address:
         field_name: '7.9'
       fax_number:
@@ -190,7 +194,7 @@ en:
     disability:
       has_disability:
         field_name: '8.1 tick box'
-        selected_values:
+        select_values:
           no: 'no'
           yes: 'yes'
         unselected_value: 'Off'

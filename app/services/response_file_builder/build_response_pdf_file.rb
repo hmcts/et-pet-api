@@ -93,7 +93,7 @@ module ResponseFileBuilder
     end
 
     def apply_acas_pdf_fields(result)
-      result['new 3.1'] = response.agree_with_early_conciliation_details ? 'Yes' : 'No'
+      result['new 3.1'] = tri_state_value_for(response.agree_with_early_conciliation_details, yes: 'Yes', no: 'No')
       result['new 3.1 If no, please explain why'] = response.disagree_conciliation_reason
     end
 
@@ -102,7 +102,7 @@ module ResponseFileBuilder
       result['3.1 employment started'] = response.employment_start.try(:strftime, '%d/%m/%Y')
       result['3.1 employment end'] = response.employment_end.try(:strftime, '%d/%m/%Y')
       result['3.1 disagree'] = response.disagree_employment
-      result['3.2'] = response.continued_employment ? 'yes' : 'no'
+      result['3.2'] = tri_state_value_for(response.continued_employment)
       result['3.3'] = tri_state_value_for(response.agree_with_claimants_description_of_job_or_title)
       result['3.3 if no'] = response.disagree_claimants_job_or_title ? 'yes' : 'no'
     end
