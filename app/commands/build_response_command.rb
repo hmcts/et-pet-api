@@ -27,6 +27,7 @@ class BuildResponseCommand < BaseCommand
   attribute :claim_information, :string
   attribute :email_receipt, :string
   attribute :additional_information_key, :string
+  attribute :pdf_template_reference, :string
 
   validate :validate_office_code_in_case_number
 

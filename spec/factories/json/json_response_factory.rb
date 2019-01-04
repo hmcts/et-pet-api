@@ -106,7 +106,6 @@ FactoryBot.define do
       claim_information { "lorem ipsum info" }
       email_receipt { "email@recei.pt" }
       pdf_template_reference { "et3-v1-en" }
-      email_template_reference { "et3-v1-en" }
     end
 
     trait :invalid_case_number do
