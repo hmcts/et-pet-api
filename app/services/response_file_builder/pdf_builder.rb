@@ -3,7 +3,7 @@ module ResponseFileBuilder
     extend ActiveSupport::Concern
 
     def builder
-      @builder ||= PdfForms.new('pdftk')
+      @builder ||= PdfForms.new('pdftk', utf8_fields: true)
     end
 
     def fill_in_pdf_form(template_path:, data:, to:)

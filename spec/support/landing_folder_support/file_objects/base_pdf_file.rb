@@ -22,7 +22,7 @@ module EtApi
         end
 
         def form
-          @form ||= PdfForms.new('pdftk').read(tempfile.path)
+          @form ||= PdfForms.new('pdftk', utf8_fields: true).read(tempfile.path)
         end
 
         def unescape(val)

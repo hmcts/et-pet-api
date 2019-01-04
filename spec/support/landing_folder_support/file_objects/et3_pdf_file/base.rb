@@ -73,6 +73,10 @@ module EtApi
           def decimal_for(number)
             number.to_s
           end
+
+          def encode_value_for_pdftk(value)
+            value.gsub(/â/, '&#226;')
+          end
         end
       end
     end

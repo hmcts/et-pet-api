@@ -240,8 +240,8 @@ et3-v1-cy:
       make_employer_contract_claim:
         field_name: 'Check Box1'
         select_values:
-          yes: 'Yes'
-        unselected_value: 'Off'
+          true: 'Yes'
+          false: 'Off'
       information:
         field_name: 'gweler y Canllaw am ragor o wybodaeth ynghylch pa fanylion y dylech eu cynnwys'
     representative:

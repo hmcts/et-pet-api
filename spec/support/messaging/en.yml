@@ -9,7 +9,7 @@ et3-v1-en:
         field_name: 'RTF'
         select_values:
           true: 'Additional RTF'
-        unselected_value: ''
+          false: ''
     claimant:
       claimants_name:
         field_name: '1.1'
@@ -152,8 +152,8 @@ et3-v1-en:
       make_employer_contract_claim:
         field_name: '6.2 tick box'
         select_values:
-          yes: 'yes'
-        unselected_value: 'Off'
+          true: 'yes'
+          false: 'Off'
       information:
         field_name: '6.3'
     representative:
