@@ -7,6 +7,7 @@ module EtApi
       # Represents the ET3 PDF file and provides assistance in validating its contents
       module Et3PdfFileSection
         class Base < ::EtApi::Test::FileObjects::BasePdfFile
+          UndefinedField = Object.new
 
           def initialize(*args, template:)
             super(*args)
@@ -25,7 +26,8 @@ module EtApi
             return @mapped_field_values if defined?(@mapped_field_values)
             lookup = t("response_pdf_fields.#{i18n_section}", locale: template)
             @mapped_field_values = lookup.inject({}) do |acc, (key, value)|
-              acc[key.to_sym] = mapped_value(value, key: key)
+              v = mapped_value(value, key: key)
+              acc[key.to_sym] = v unless v === UndefinedField
               acc
             end
           end
@@ -33,9 +35,12 @@ module EtApi
           def mapped_value(value,  key:)
             if value.is_a?(Hash) && !value.key?(:field_name)
               value.inject({}) do |acc, (inner_key, inner_value)|
-                acc[inner_key] = mapped_value(inner_value, key: inner_key)
+                v = mapped_value(inner_value, key: inner_key)
+                acc[inner_key] = v unless v === UndefinedField
                 acc
               end
+            elsif value.is_a?(Hash) && value[:field_name] === false
+              UndefinedField
             else
               field_value_for(value, key: key)
             end
@@ -43,7 +48,7 @@ module EtApi
 
           def field_value_for(value, key:)
             if value.key?(:select_values)
-              raw = field_values[value[:field_name]]
+              raw = raw_value_from_pdf(value)
               ret = value[:select_values].detect { |(key, v)|  v == raw }.try(:first)
               return true if ret == :true
               return false if ret == :false
@@ -53,6 +58,10 @@ module EtApi
             else
               field_values[value[:field_name]]
             end
+          end
+
+          def raw_value_from_pdf(value)
+            value[:field_name].is_a?(Array) ? value[:field_name].map { |f| field_values[f] } : field_values[value[:field_name]]
           end
 
 
