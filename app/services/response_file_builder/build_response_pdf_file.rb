@@ -63,11 +63,6 @@ module ResponseFileBuilder
       result
     end
 
-    def tri_state_value_for(value, yes: 'yes', no: 'no', off: 'Off')
-      return off if value.nil?
-      value ? yes : no
-    end
-
     def apply_field(result, field_value, *path)
       field_def = yaml_data.dig(*path)
       raise "Field #{path} does not exist in the file #{yaml_file}" unless field_def
@@ -131,7 +126,7 @@ module ResponseFileBuilder
     end
 
     def apply_acas_pdf_fields(result)
-      apply_field result, response.agree_with_early_conciliation_details, :acas, :agree
+      apply_field result, response.agree_with_early_conciliation_details?, :acas, :agree
       apply_field result, response.disagree_conciliation_reason, :acas, :disagree_explanation
     end
 
@@ -140,7 +135,7 @@ module ResponseFileBuilder
       apply_field result, response.employment_start.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_start
       apply_field result, response.employment_end.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_end
       apply_field result, response.disagree_employment, :employment_details, :disagree_with_dates_reason
-      apply_field result, response.continued_employment, :employment_details, :continuing
+      apply_field result, response.continued_employment?, :employment_details, :continuing
       apply_field result, response.agree_with_claimants_description_of_job_or_title, :employment_details, :agree_with_job_title
       apply_field result, response.disagree_claimants_job_or_title ? 'yes' : 'no', :employment_details, :correct_job_title
     end
