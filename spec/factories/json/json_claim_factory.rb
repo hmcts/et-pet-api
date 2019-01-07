@@ -4,22 +4,22 @@ require 'securerandom'
 FactoryBot.define do
   factory :json_build_claim_commands, class: ::EtApi::Test::Json::Document do
     transient do
-      number_of_secondary_claimants 0
-      number_of_secondary_respondents 1
-      number_of_representatives 1
-      has_pdf_file true
-      has_csv_file false
-      has_rtf_file false
-      primary_respondent_factory :full
-      primary_claimant_factory :mr_first_last
-      case_type 'Single'
+      number_of_secondary_claimants { 0 }
+      number_of_secondary_respondents { 1 }
+      number_of_representatives { 1 }
+      has_pdf_file { true }
+      has_csv_file { false }
+      has_rtf_file { false }
+      primary_respondent_factory { :full }
+      primary_claimant_factory { :mr_first_last }
+      case_type { 'Single' }
       sequence :reference do |idx|
         "#{2220000000 + idx}00"
       end
     end
 
     uuid { SecureRandom.uuid }
-    command 'SerialSequence'
+    command { 'SerialSequence' }
     data do
 
       a = [
@@ -39,37 +39,37 @@ FactoryBot.define do
     end
 
     trait :with_csv do
-      case_type 'Multiple'
-      has_csv_file true
+      case_type { 'Multiple' }
+      has_csv_file { true }
     end
 
     trait :with_rtf do
-      has_rtf_file true
+      has_rtf_file { true }
     end
 
   end
 
   factory :json_claim_data, class: ::EtApi::Test::Json::Node do
     trait :minimal do
-      reference nil
-      submission_reference 'J704-ZK5E'
-      submission_channel 'Web'
-      case_type 'Single'
-      jurisdiction '2'
-      office_code '22'
+      reference { nil }
+      submission_reference { 'J704-ZK5E' }
+      submission_channel { 'Web' }
+      case_type { 'Single' }
+      jurisdiction { '2' }
+      office_code { '22' }
       date_of_receipt { Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S%z') }
 
-      other_known_claimant_names ""
-      discrimination_claims []
-      pay_claims []
-      desired_outcomes []
-      other_claim_details ""
-      claim_details ""
-      other_outcome ""
-      send_claim_to_whistleblowing_entity false
-      miscellaneous_information ''
-      employment_details({})
-      is_unfair_dismissal false
+      other_known_claimant_names { "" }
+      discrimination_claims { [] }
+      pay_claims { [] }
+      desired_outcomes { [] }
+      other_claim_details { "" }
+      claim_details { "" }
+      other_outcome { "" }
+      send_claim_to_whistleblowing_entity { false }
+      miscellaneous_information { '' }
+      employment_details { {} }
+      is_unfair_dismissal { false }
 
     end
     trait :full do
