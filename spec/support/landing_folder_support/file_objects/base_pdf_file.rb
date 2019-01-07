@@ -14,9 +14,9 @@ module EtApi
           @field_values ||= form.fields.inject({}) do |acc, field|
             acc[field.name] = if field.type == "Button" && field.options.present?
                                 field.options.include?(field.value) ? unescape(field.value) : nil
-            else
-              unescape(field.value)
-            end
+                              else
+                                unescape(field.value)
+                              end
             acc
           end
         end
