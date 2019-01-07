@@ -137,7 +137,7 @@ module ResponseFileBuilder
       apply_field result, response.disagree_employment, :employment_details, :disagree_with_dates_reason
       apply_field result, response.continued_employment?, :employment_details, :continuing
       apply_field result, response.agree_with_claimants_description_of_job_or_title, :employment_details, :agree_with_job_title
-      apply_field result, response.disagree_claimants_job_or_title ? 'yes' : 'no', :employment_details, :correct_job_title
+      apply_field result, response.disagree_claimants_job_or_title, :employment_details, :correct_job_title
     end
 
     def apply_earnings_pdf_fields(result)

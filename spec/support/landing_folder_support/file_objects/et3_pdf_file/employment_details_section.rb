@@ -12,7 +12,7 @@ module EtApi
               disagree_with_dates_reason: response[:disagree_employment] || '',
               continuing: response[:continued_employment].present?,
               agree_with_job_title: response[:agree_with_claimants_description_of_job_or_title],
-              correct_job_title: response[:disagree_claimants_job_or_title] ? 'yes' : 'no'
+              correct_job_title: response[:disagree_claimants_job_or_title] || ''
             }
             expect(mapped_field_values).to include(expected_values)
           end

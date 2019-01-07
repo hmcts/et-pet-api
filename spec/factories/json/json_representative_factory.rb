@@ -23,7 +23,7 @@ FactoryBot.define do
       dx_number 'dx address'
       reference 'Rep Ref'
       contact_preference 'fax'
-      email_address ''
+      email_address 'test@email.com'
       fax_number '0207 345 6789'
     end
   end
