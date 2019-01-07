@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :claim do
     transient do
-      number_of_claimants 1
-      ready_for_export_to []
+      number_of_claimants { 1 }
+      ready_for_export_to { [] }
     end
 
     sequence :reference do |n|
@@ -13,10 +13,10 @@ FactoryBot.define do
       "J704-ZK5E#{n}"
     end
 
-    submission_channel 'Web'
-    case_type 'Single'
-    jurisdiction 2
-    office_code 22
+    submission_channel { 'Web' }
+    case_type { 'Single' }
+    jurisdiction { 2 }
+    office_code { 22 }
     date_of_receipt { Time.zone.now }
 
     after(:build) do |claim, evaluator|
@@ -70,11 +70,11 @@ FactoryBot.define do
 
 
     trait :example_data do
-      reference "222000000300"
+      reference { "222000000300" }
       date_of_receipt { Time.zone.parse('29/3/2018') }
-      number_of_claimants 0
+      number_of_claimants { 0 }
       primary_claimant { build(:claimant, :example_data) }
-      secondary_claimants []
+      secondary_claimants { [] }
       primary_respondent { build(:respondent, :example_data) }
       primary_representative { build(:representative, :example_data) }
       uploaded_files { [build(:uploaded_file, :example_data)] }
