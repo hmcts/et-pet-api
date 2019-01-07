@@ -41,7 +41,7 @@ gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 gem 'rubyzip', '~> 1.2', '>= 1.2.1'
 
 # Pdf forms to test pdf content and also to produce them
-gem 'pdf-forms', '~> 1.1', '>= 1.1.1'
+gem 'pdf-forms', '~> 1.2'
 
 # AWS SDK gem
 gem 'aws-sdk-s3', '~> 1.13'
