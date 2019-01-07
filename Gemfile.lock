@@ -148,10 +148,10 @@ GEM
     httpi (2.4.3)
       rack
       socksify
-    i18n (1.2.0)
+    i18n (1.5.1)
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.1)
-    jbuilder (2.7.0)
+    jbuilder (2.8.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
     jmespath (1.4.0)
@@ -356,7 +356,7 @@ DEPENDENCIES
   factory_bot (~> 4.11)
   faker (~> 1.9)
   httparty (~> 0.16.2)
-  jbuilder (~> 2.5)
+  jbuilder (~> 2.8)
   listen (>= 3.0.5, < 3.2)
   pdf-forms (~> 1.2)
   pg (>= 0.18, < 2.0)
