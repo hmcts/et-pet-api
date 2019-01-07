@@ -17,7 +17,7 @@ RSpec.describe ResponseFileBuilder::BuildResponsePdfFile do
 
       end
 
-      it 'stores an ET3 pdf file with the correct contents' do
+      it 'stores an ET3 pdf file from the english v1 template with the correct contents' do
         # Act
         builder.call(response)
         response.save!
@@ -28,7 +28,7 @@ RSpec.describe ResponseFileBuilder::BuildResponsePdfFile do
           full_path = File.join(dir, 'et3_atos_export.pdf')
           uploaded_file.download_blob_to(full_path)
           File.open full_path do |file|
-            et3_file = EtApi::Test::FileObjects::Et3PdfFile.new(file)
+            et3_file = EtApi::Test::FileObjects::Et3PdfFile.new(file, template: 'et3-v1-en')
             expect(et3_file).to have_correct_contents_from_db_for(errors: errors, response: response), -> { errors.join("\n") }
           end
         end
@@ -69,6 +69,27 @@ RSpec.describe ResponseFileBuilder::BuildResponsePdfFile do
           response.save!
 
           expect(HTTParty.get(original_url).code).to be 200
+        end
+      end
+    end
+
+    context 'using an alternative pdf template' do
+      let(:response) { build(:response, :example_data, :with_representative) }
+
+      it 'stores an ET3 pdf file from the welsh v1 template with the correct contents' do
+        # Act
+        builder.call(response, template_reference: 'et3-v1-cy')
+        response.save!
+
+        # Assert
+        uploaded_file = response.uploaded_files.where(filename: 'et3_atos_export.pdf').first
+        Dir.mktmpdir do |dir|
+          full_path = File.join(dir, 'et3_atos_export.pdf')
+          uploaded_file.download_blob_to(full_path)
+          File.open full_path do |file|
+            et3_file = EtApi::Test::FileObjects::Et3PdfFile.new(file, template: 'et3-v1-cy')
+            expect(et3_file).to have_correct_contents_from_db_for(errors: errors, response: response), -> { errors.join("\n") }
+          end
         end
       end
     end

@@ -1047,7 +1047,8 @@ CREATE TABLE public.responses (
     claim_information character varying,
     email_receipt character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    pdf_template_reference character varying NOT NULL
 );
 
 
@@ -2106,6 +2107,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181214120957'),
 ('20181214121017'),
 ('20181214121108'),
-('20181214121203');
+('20181214121203'),
+('20190104181613'),
+('20190104181652'),
+('20190107093812');
 
 

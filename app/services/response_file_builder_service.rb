@@ -9,7 +9,7 @@ class ResponseFileBuilderService
   end
 
   def call
-    response_pdf_file_builder.call(response)
+    response_pdf_file_builder.call(response, template_reference: response.pdf_template_reference)
   end
 
   private
