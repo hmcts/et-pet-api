@@ -64,8 +64,8 @@ module EtApi
         EtApi::Test::FileObjects::Et3TxtFile.new extract_to_tempfile(filename)
       end
 
-      def et3_pdf_file(filename)
-        EtApi::Test::FileObjects::Et3PdfFile.new extract_to_tempfile(filename)
+      def et3_pdf_file(filename, template: 'et3-v1-en')
+        EtApi::Test::FileObjects::Et3PdfFile.new extract_to_tempfile(filename), template: template
       end
 
       private
