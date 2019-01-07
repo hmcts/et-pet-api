@@ -4,7 +4,7 @@ module EtApi
     module FileObjects
       module Et3PdfFileSection
         class EarningsSection < ::EtApi::Test::FileObjects::Et3PdfFileSection::Base
-          def has_contents_for?(response:)
+          def has_contents_for?(response:) # rubocop:disable Naming/PredicateName
             expected_values = {
               agree_with_hours: response[:agree_with_claimants_hours],
               correct_hours: decimal_for(response[:queried_hours]),

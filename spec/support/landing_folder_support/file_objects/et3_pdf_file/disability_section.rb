@@ -4,7 +4,7 @@ module EtApi
     module FileObjects
       module Et3PdfFileSection
         class DisabilitySection < ::EtApi::Test::FileObjects::Et3PdfFileSection::Base
-          def has_contents_for?(respondent:)
+          def has_contents_for?(respondent:) # rubocop:disable Naming/PredicateName
             expected_values = {
               has_disability: respondent[:disability],
               information: respondent[:disability_information] || ''

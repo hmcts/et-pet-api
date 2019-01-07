@@ -4,7 +4,7 @@ module EtApi
     module FileObjects
       module Et3PdfFileSection
         class AcasSection < ::EtApi::Test::FileObjects::Et3PdfFileSection::Base
-          def has_contents_for?(response:)
+          def has_contents_for?(response:) # rubocop:disable Naming/PredicateName
             expected_values = {
               agree: response[:agree_with_early_conciliation_details].present?,
               disagree_explanation: response[:disagree_conciliation_reason] || ''

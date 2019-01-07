@@ -1,5 +1,5 @@
 module ResponseFileBuilder
-  class BuildResponsePdfFile
+  class BuildResponsePdfFile # rubocop:disable Metrics/ClassLength
     include PdfBuilder
 
     def self.call(response, template_reference: 'et3-v1-en')

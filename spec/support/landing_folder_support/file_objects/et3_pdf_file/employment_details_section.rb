@@ -4,7 +4,7 @@ module EtApi
     module FileObjects
       module Et3PdfFileSection
         class EmploymentDetailsSection < ::EtApi::Test::FileObjects::Et3PdfFileSection::Base
-          def has_contents_for?(response:)
+          def has_contents_for?(response:) # rubocop:disable Naming/PredicateName
             expected_values = {
               agree_with_dates: response[:agree_with_employment_dates],
               employment_start: response[:employment_start].nil? ? '' : date_for(response[:employment_start]),

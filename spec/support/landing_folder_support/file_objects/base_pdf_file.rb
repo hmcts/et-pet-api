@@ -4,7 +4,7 @@ module EtApi
   module Test
     module FileObjects
       # A base class for all pdf files
-      class BasePdfFile < Base # rubocop:disable Metrics/ClassLength
+      class BasePdfFile < Base
         include EtApi::Test::I18n
         include ::RSpec::Matchers
 
@@ -12,10 +12,10 @@ module EtApi
 
         def field_values
           @field_values ||= form.fields.inject({}) do |acc, field|
-            if field.type == "Button" && field.options.present?
-              acc[field.name] = field.options.include?(field.value) ? unescape(field.value) : nil
+            acc[field.name] = if field.type == "Button" && field.options.present?
+                                field.options.include?(field.value) ? unescape(field.value) : nil
             else
-              acc[field.name] = unescape(field.value)
+              unescape(field.value)
             end
             acc
           end
@@ -27,6 +27,7 @@ module EtApi
 
         def unescape(val)
           return val if val.nil?
+
           CGI.unescape_html(val)
         end
       end

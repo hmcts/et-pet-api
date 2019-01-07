@@ -24,22 +24,23 @@ module EtApi
 
           def mapped_field_values
             return @mapped_field_values if defined?(@mapped_field_values)
+
             lookup = t("response_pdf_fields.#{i18n_section}", locale: template)
             @mapped_field_values = lookup.inject({}) do |acc, (key, value)|
               v = mapped_value(value, key: key)
-              acc[key.to_sym] = v unless v === UndefinedField
+              acc[key.to_sym] = v unless v === UndefinedField # rubocop:disable Style/CaseEquality
               acc
             end
           end
 
-          def mapped_value(value,  key:)
+          def mapped_value(value, key:)
             if value.is_a?(Hash) && !value.key?(:field_name)
               value.inject({}) do |acc, (inner_key, inner_value)|
                 v = mapped_value(inner_value, key: inner_key)
-                acc[inner_key] = v unless v === UndefinedField
+                acc[inner_key] = v unless v == UndefinedField
                 acc
               end
-            elsif value.is_a?(Hash) && value[:field_name] === false
+            elsif value.is_a?(Hash) && value[:field_name] == false
               UndefinedField
             else
               field_value_for(value, key: key)
@@ -49,7 +50,7 @@ module EtApi
           def field_value_for(value, key:)
             if value.key?(:select_values)
               raw = raw_value_from_pdf(value)
-              ret = value[:select_values].detect { |(key, v)|  v == raw }.try(:first)
+              ret = value[:select_values].detect { |(_, v)| v == raw }.try(:first)
               return true if ret == :true
               return false if ret == :false
               return ret.to_s if ret
