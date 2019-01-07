@@ -31,7 +31,7 @@ Rails:
 # Allow long lines in specs, as it's almost impossible to fit RSpec's
 # expectations into 80 characters.
 Metrics/LineLength:
-  Max: 120
+  Max: 180
   Exclude:
     - 'features/**/*'
     - 'spec/**/*'
@@ -61,6 +61,7 @@ Layout/TrailingBlankLines:
   Enabled: true
 # Don't worry about long methods in specs.
 Metrics/MethodLength:
+  Max: 15
   Exclude:
     - 'spec/**/*'
     - 'app/models/ability.rb'

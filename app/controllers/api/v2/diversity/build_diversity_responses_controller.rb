@@ -9,7 +9,7 @@ module Api
           root_object = ::DiversityResponse.new
           result = CommandService.dispatch command: p[:command],
                                            uuid: p[:uuid],
-                                           data: p[:data],
+                                           data: p[:data].to_h,
                                            root_object: root_object
           root_object.save! if result.valid?
           EventService.publish('DiversityResponseCreated', root_object)
