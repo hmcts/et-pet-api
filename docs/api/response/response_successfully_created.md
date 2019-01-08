@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "97825242-61af-4691-88a4-30df9bc363f1",
+  "uuid": "33690611-ac31-46ef-af11-8d3fa9bd34c5",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "01a5552b-f808-43dd-8552-a332b4623bb7",
+      "uuid": "576eb9b0-ac78-4e22-8ab6-bd075f5b2f47",
       "command": "BuildResponse",
       "data": {
         "additional_information_key": null,
@@ -65,11 +65,12 @@ Cookie: </pre>
         "make_employer_contract_claim": true,
         "claim_information": "lorem ipsum info",
         "email_receipt": "email@recei.pt",
-        "pdf_template_reference": "et3-v1-en"
+        "pdf_template_reference": "et3-v1-en",
+        "email_template_reference": "et3-v1-en"
       }
     },
     {
-      "uuid": "10cdc975-2d83-4831-9311-a2344587aaae",
+      "uuid": "1c5045a9-32fd-493c-8aa0-7fc072bca45f",
       "command": "BuildRespondent",
       "data": {
         "name": "dodgy_co",
@@ -110,11 +111,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/respondents/build_response&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;97825242-61af-4691-88a4-30df9bc363f1&quot;,
+  &quot;uuid&quot;: &quot;33690611-ac31-46ef-af11-8d3fa9bd34c5&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;01a5552b-f808-43dd-8552-a332b4623bb7&quot;,
+      &quot;uuid&quot;: &quot;576eb9b0-ac78-4e22-8ab6-bd075f5b2f47&quot;,
       &quot;command&quot;: &quot;BuildResponse&quot;,
       &quot;data&quot;: {
         &quot;additional_information_key&quot;: null,
@@ -145,11 +146,12 @@ Cookie: </pre>
         &quot;make_employer_contract_claim&quot;: true,
         &quot;claim_information&quot;: &quot;lorem ipsum info&quot;,
         &quot;email_receipt&quot;: &quot;email@recei.pt&quot;,
-        &quot;pdf_template_reference&quot;: &quot;et3-v1-en&quot;
+        &quot;pdf_template_reference&quot;: &quot;et3-v1-en&quot;,
+        &quot;email_template_reference&quot;: &quot;et3-v1-en&quot;
       }
     },
     {
-      &quot;uuid&quot;: &quot;10cdc975-2d83-4831-9311-a2344587aaae&quot;,
+      &quot;uuid&quot;: &quot;1c5045a9-32fd-493c-8aa0-7fc072bca45f&quot;,
       &quot;command&quot;: &quot;BuildRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -197,8 +199,8 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 1aed5cf4-f1ee-44c8-b589-be47bc1de71b
-X-Runtime: 0.111545
+X-Request-Id: 2974887d-5538-43ba-a072-254b4c922159
+X-Runtime: 0.248249
 Content-Length: 812</pre>
 
 #### Status
@@ -207,4 +209,4 @@ Content-Length: 812</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"BuildResponse":{"submitted_at":"2019-01-07T09:47:27.840Z","reference":"142000018000","office_address":"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR","office_phone_number":"0117 929 8261","pdf_url":"http://localhost:9000/etapibuckettest/pDDU1dtVFBWFjKSiKc4mGJsy?response-content-disposition=attachment%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190107%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190107T094727Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=ca994c040fe3d3261d58901727c3f074e661bc38bed8720b99db40b35f503351"},"BuildRespondent":{}},"uuid":"97825242-61af-4691-88a4-30df9bc363f1"}</pre>
+<pre>{"status":"accepted","meta":{"BuildResponse":{"submitted_at":"2019-01-08T18:01:26.000Z","reference":"142000441500","office_address":"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR","office_phone_number":"0117 929 8261","pdf_url":"http://localhost:9000/etapibuckettest/KNHKhHd8WEJcrkBZ2nWwKA6X?response-content-disposition=attachment%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190108%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190108T180126Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=ed24bac4eae29bf07e0f17b5909d09c68efc17ff0ad97b6c79fa20bbf24e6db9"},"BuildRespondent":{}},"uuid":"33690611-ac31-46ef-af11-8d3fa9bd34c5"}</pre>
