@@ -28,6 +28,7 @@ class BuildResponseCommand < BaseCommand
   attribute :email_receipt, :string
   attribute :additional_information_key, :string
   attribute :pdf_template_reference, :string, default: 'et3-v1-en'
+  attribute :email_template_reference, :string, default: 'et3-v1-en'
 
   validate :validate_office_code_in_case_number
 

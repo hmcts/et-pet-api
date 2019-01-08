@@ -6,11 +6,15 @@ module EtApi
       end
 
       def new_response_html_email_for(reference:, template_reference:)
-        EtApi::Test::EmailObjects::NewResponseEmailHtml.find(reference: reference, template_reference: template_reference)
+        email = EtApi::Test::EmailObjects::NewResponseEmailHtml.find(reference: reference, template_reference: template_reference)
+        raise "No HTML response (ET3) email has been sent for reference #{reference} using template reference #{template_reference}" unless email.present?
+        email
       end
 
       def new_response_text_email_for(reference:, template_reference:)
-        EtApi::Test::EmailObjects::NewResponseEmailText.find(reference: reference, template_reference: template_reference)
+        email = EtApi::Test::EmailObjects::NewResponseEmailText.find(reference: reference, template_reference: template_reference)
+        raise "No text response (ET3) email has been sent for reference #{reference} using template reference #{template_reference}" unless email.present?
+        email
       end
 
       private
