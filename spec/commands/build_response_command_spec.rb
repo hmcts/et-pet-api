@@ -105,7 +105,7 @@ RSpec.describe BuildResponseCommand do
         command.valid?
 
         # Assert
-        expect(command.errors.details[:case_number]).to include(error: :invalid_office_code, command: 'BuildResponse', uuid: uuid)
+        expect(command.errors.details[:case_number]).to include(error: :invalid_office_code)
       end
     end
 
@@ -123,6 +123,23 @@ RSpec.describe BuildResponseCommand do
         # Assert
         expect(result).to be true
       end
+    end
+
+    context 'with invalid pdf_template_reference' do
+      let(:data) do
+        {
+          pdf_template_reference: '../../../etc/password'
+        }
+      end
+
+      it 'contains the correct error key in the pdf_template_reference attributes' do
+        # Act
+        command.valid?
+
+        # Assert
+        expect(command.errors.details[:pdf_template_reference]).to include(error: :inclusion, value: data[:pdf_template_reference])
+      end
+
     end
   end
 end
