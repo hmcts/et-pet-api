@@ -311,3 +311,10 @@ et3-v1-cy:
           - 'Off'
       information:
         field_name: 'gynnwys ar gyfer unrhyw wrandawiadau a'
+  response_email:
+    reference: 'Eich cyfeirnod yw: %{reference}. Dylech ei ddyfynnu ar bob gohebiaeth.'
+    submission_date: 'Dyddiad cyflwyno: %{submission_date}'
+    office_address: 'Cyfeiriad y swyddfa: %{address}'
+    office_telephone: 'Rhif ffôn: %{telephone}'
+    office_name: 'Diolch am gyflwyno eich ymateb. Mae wedi cael ei anfon i’r swyddfa ym %{office_name} a byddant yn cysylltu â chi maes o law.'
+    subject: 'E-bost yn cadarnhau bod eich ymateb i’r hawliad Tribiwnlys Cyflogaeth ar-lein wedi cyrraedd'

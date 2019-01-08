@@ -5,12 +5,12 @@ module EtApi
         self.deliveries = deliveries
       end
 
-      def new_response_html_email_for(reference:)
-        EtApi::Test::EmailObjects::NewResponseEmailHtml.find(reference: reference)
+      def new_response_html_email_for(reference:, template_reference:)
+        EtApi::Test::EmailObjects::NewResponseEmailHtml.find(reference: reference, template_reference: template_reference)
       end
 
-      def new_response_text_email_for(reference:)
-        EtApi::Test::EmailObjects::NewResponseEmailText.find(reference: reference)
+      def new_response_text_email_for(reference:, template_reference:)
+        EtApi::Test::EmailObjects::NewResponseEmailText.find(reference: reference, template_reference: template_reference)
       end
 
       private

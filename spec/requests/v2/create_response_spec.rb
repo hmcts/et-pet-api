@@ -254,16 +254,30 @@ RSpec.describe 'Create Response Request', type: :request do
       end
     end
 
-    shared_examples 'email validation' do
-      it 'sends an HTML email to the respondent with the pdf attached' do
+    shared_examples 'email validation using standard template' do
+      it 'sends an HTML email to the respondent with the pdf attached using the standard template' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        email_sent = emails_sent.new_response_html_email_for(reference: reference)
+        email_sent = emails_sent.new_response_html_email_for(reference: reference, template_reference: 'et3-v1-en')
         expect(email_sent).to have_correct_content_for(input_response_factory, reference: reference)
       end
 
-      it 'sends a plain text email to the respondent with the pdf attached' do
+      it 'sends a plain text email to the respondent with the pdf attached using the standard template' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        email_sent = emails_sent.new_response_text_email_for(reference: reference)
+        email_sent = emails_sent.new_response_text_email_for(reference: reference, template_reference: 'et3-v1-en')
+        expect(email_sent).to have_correct_content_for(input_response_factory, reference: reference)
+      end
+    end
+
+    shared_examples 'email validation using welsh template' do
+      it 'sends an HTML email to the respondent with the pdf attached using the welsh template' do
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        email_sent = emails_sent.new_response_html_email_for(reference: reference, template_reference: 'et3-v1-cy')
+        expect(email_sent).to have_correct_content_for(input_response_factory, reference: reference)
+      end
+
+      it 'sends a plain text email to the respondent with the pdf attached using the welsh template' do
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        email_sent = emails_sent.new_response_text_email_for(reference: reference, template_reference: 'et3-v1-cy')
         expect(email_sent).to have_correct_content_for(input_response_factory, reference: reference)
       end
     end
@@ -282,19 +296,19 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to primary ATOS'
-      include_examples 'email validation'
+      include_examples 'email validation using standard template'
     end
 
-    context 'with json for a response using welsh pdf template with representative to a non existent claim' do
+    context 'with json for a response using welsh pdf and email templates with representative to a non existent claim' do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf) }
+        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf, :with_welsh_email) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to primary ATOS'
-      include_examples 'email validation'
+      include_examples 'email validation using welsh template'
     end
 
     context 'with json for a response (minimum data) with representative (minimum data) to a non existent claim' do
@@ -317,7 +331,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to primary ATOS'
-      include_examples 'email validation'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for a response with representative to a non existent claim to be exported to secondary ATOS' do
@@ -329,7 +343,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any response variation'
       include_examples 'a response with meta for the default office'
       include_examples 'a response exported to secondary ATOS'
-      include_examples 'email validation'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for a response with an rtf upload' do
@@ -342,7 +356,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to primary ATOS'
-      include_examples 'email validation'
+      include_examples 'email validation using standard template'
 
       it 'includes the rtf file in the staging folder' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)

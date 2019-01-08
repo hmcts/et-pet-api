@@ -200,3 +200,11 @@ et3-v1-en:
         unselected_value: 'Off'
       information:
         field_name: '8.1 if yes'
+  response_email:
+    reference: 'This is your reference number: %{reference} which should be quoted on all correspondence.'
+    submission_date: 'Submission date: %{submission_date}'
+    office_address: 'Office address: %{address}'
+    office_telephone: 'Telephone: %{telephone}'
+    office_name: 'Thank you for your submission. It has been forwarded to the %{office_name} office which will contact you in due course.'
+    subject: 'Your Response to Employment Tribunal claim online form receipt'
+
