@@ -26,15 +26,19 @@ class SerialSequenceCommand < BaseCommand
     data.each do |command|
       next if command.valid?
 
-      command.errors.details.each_pair do |attr, command_errors|
-        messages = command.errors.messages[attr]
-        command_errors.each_with_index do |error, idx|
-          extra_error_details = {
-            uuid: command.uuid,
-            command: command.command_name
-          }
-          errors.add(:"data[#{idx}].#{attr}", messages[idx], error.merge(extra_error_details))
-        end
+      validate_command(command)
+    end
+  end
+
+  def validate_command(command)
+    command.errors.details.each_pair do |attr, command_errors|
+      messages = command.errors.messages[attr]
+      command_errors.each_with_index do |error, idx|
+        extra_error_details = {
+          uuid: command.uuid,
+          command: command.command_name
+        }
+        errors.add(:"data[#{idx}].#{attr}", messages[idx], error.merge(extra_error_details))
       end
     end
   end
