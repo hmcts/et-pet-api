@@ -141,5 +141,22 @@ RSpec.describe BuildResponseCommand do
       end
 
     end
+
+    context 'with invalid email_template_reference' do
+      let(:data) do
+        {
+          email_template_reference: '../../../etc/password'
+        }
+      end
+
+      it 'contains the correct error key in the email_template_reference attributes' do
+        # Act
+        command.valid?
+
+        # Assert
+        expect(command.errors.details[:email_template_reference]).to include(error: :inclusion, value: data[:email_template_reference])
+      end
+
+    end
   end
 end
