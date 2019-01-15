@@ -342,8 +342,8 @@ RSpec.describe 'Create Claim Request', type: :request do
             number_of_secondary_claimants: 0,
             number_of_secondary_respondents: 0,
             number_of_representatives: 1,
-            primary_respondent_factory: :mr_na_o_leary,
-            primary_claimant_factory: :mr_na_o_malley
+            primary_respondent_traits: [:mr_na_o_leary],
+            primary_claimant_traits: [:mr_na_o_malley]
         end
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
@@ -361,8 +361,8 @@ RSpec.describe 'Create Claim Request', type: :request do
             number_of_secondary_claimants: 0,
             number_of_secondary_respondents: 0,
             number_of_representatives: 1,
-            primary_respondent_factory: :mr_na_unicode,
-            primary_claimant_factory: :mr_na_unicode
+            primary_respondent_traits: [:mr_na_unicode],
+            primary_claimant_traits: [:mr_na_unicode]
         end
       it 'has the primary claimant in the et1 txt file with the unicode stripped' do
         # Assert - look for the correct file in the landing folder - will be async
@@ -504,7 +504,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       # Uses respondent address with post code 'FF1 1AA'
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_factory: :default_office, reference: nil) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:default_office], reference: nil) }
       include_examples 'any claim variation'
       include_examples 'a claim exported to secondary ATOS'
     end
