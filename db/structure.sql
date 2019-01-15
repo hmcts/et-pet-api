@@ -1048,7 +1048,8 @@ CREATE TABLE public.responses (
     email_receipt character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    pdf_template_reference character varying NOT NULL
+    pdf_template_reference character varying NOT NULL,
+    email_template_reference character varying NOT NULL
 );
 
 
@@ -2110,6 +2111,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181214121203'),
 ('20190104181613'),
 ('20190104181652'),
-('20190107093812');
+('20190107093812'),
+('20190108161050'),
+('20190108161126'),
+('20190108161211');
 
 

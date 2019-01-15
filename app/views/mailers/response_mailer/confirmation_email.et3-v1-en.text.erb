@@ -1,4 +1,5 @@
-  Thank you for your submission. It has been forwarded to the <%= @office.name %> office which will contact you in due course.
+<% message.subject = 'Your Response to Employment Tribunal claim online form receipt' %>
+Thank you for your submission. It has been forwarded to the <%= @office.name %> office which will contact you in due course.
   Office address: <%= @office.address %>
   Telephone: <%= @office.telephone %>
   This is your reference number: <%= @response.reference %> which should be quoted on all correspondence.

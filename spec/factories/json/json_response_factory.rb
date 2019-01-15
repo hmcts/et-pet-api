@@ -5,6 +5,7 @@ FactoryBot.define do
   factory :json_build_response_commands, class: ::EtApi::Test::Json::Document do
     transient do
       pdf_template { 'et3-v1-en' }
+      email_template { 'et3-v1-en' }
       response_traits { [:full] }
       respondent_traits { [:full] }
       representative_traits { nil }
@@ -16,6 +17,10 @@ FactoryBot.define do
 
     trait :with_welsh_pdf do
       pdf_template { 'et3-v1-cy' }
+    end
+
+    trait :with_welsh_email do
+      email_template { 'et3-v1-cy' }
     end
 
     trait :with_representative do
@@ -56,7 +61,8 @@ FactoryBot.define do
 
     after(:build) do |doc, evaluator|
       if evaluator.response_traits
-        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse', data: build(:json_response_data, *evaluator.response_traits, pdf_template_reference: evaluator.pdf_template))
+        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse',
+          data: build(:json_response_data, *evaluator.response_traits, pdf_template_reference: evaluator.pdf_template, email_template_reference: evaluator.email_template))
       end
       if evaluator.respondent_traits
         doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, *evaluator.respondent_traits))
@@ -106,6 +112,7 @@ FactoryBot.define do
       claim_information { "lorem ipsum info" }
       email_receipt { "email@recei.pt" }
       pdf_template_reference { "et3-v1-en" }
+      email_template_reference { "et3-v1-en" }
     end
 
     trait :invalid_case_number do
