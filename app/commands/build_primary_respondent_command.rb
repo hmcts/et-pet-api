@@ -18,6 +18,8 @@ class BuildPrimaryRespondentCommand < BaseCommand
   attribute :acas_certificate_number, :string
   attribute :acas_exemption_code, :string
 
+  validates :address_attributes, presence: true
+
   def apply(root_object, **_args)
     root_object.build_primary_respondent(attributes)
   end

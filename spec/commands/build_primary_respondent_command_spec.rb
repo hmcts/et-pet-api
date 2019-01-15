@@ -54,5 +54,19 @@ RSpec.describe BuildPrimaryRespondentCommand do
           and(have_attributes(work_address: nil))
       end
     end
+
+    context 'with both addresses set to empty hash' do
+      let(:data) { build(:json_respondent_data, :no_addresses).as_json }
+
+      it 'applies the data to the root object' do
+        # Act
+        command.apply(root_object)
+
+        # Assert
+        expect(root_object.primary_respondent).to have_attributes(data.except(:address_attributes, :work_address_attributes)).
+          and(have_attributes(address: nil)).
+          and(have_attributes(work_address: nil))
+      end
+    end
   end
 end

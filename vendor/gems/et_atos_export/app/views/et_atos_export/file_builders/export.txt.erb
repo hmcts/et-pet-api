@@ -45,11 +45,11 @@ Respondent Postcode: <%= address.post_code %>
 Respondent Phone: <%= primary_respondent.address_telephone_number %>
 ~2.3 If you worked at an address different from the one you have given at 2.2, please give the full address:
 <% primary_respondent.work_address.tap do |address| %>
-Alternative Respondent Address1: <%= address.building %>
-Alternative Respondent Address2: <%= address.street %>
-Alternative Respondent Address3: <%= address.locality %>
-Alternative Respondent Address4: <%= address.county %>
-Alternative Postcode: <%= address.post_code %>
+Alternative Respondent Address1: <%= address&.building %>
+Alternative Respondent Address2: <%= address&.street %>
+Alternative Respondent Address3: <%= address&.locality %>
+Alternative Respondent Address4: <%= address&.county %>
+Alternative Postcode: <%= address&.post_code %>
 <% end %>
 Alternative Phone: <%= primary_respondent.work_address_telephone_number %>
 
