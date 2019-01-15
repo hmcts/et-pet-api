@@ -15,7 +15,7 @@ RSpec.describe BuildSecondaryRespondentsCommand do
       command.apply(root_object)
 
       # Assert
-      expect(root_object.respondents).to contain_exactly(an_object_having_attributes(respondent1.except('address_attributes', 'work_address_attributes')),
+      expect(root_object.secondary_respondents).to contain_exactly(an_object_having_attributes(respondent1.except('address_attributes', 'work_address_attributes')),
         an_object_having_attributes(respondent2.except('address_attributes', 'work_address_attributes')))
     end
   end

@@ -75,8 +75,8 @@ FactoryBot.define do
       number_of_claimants 0
       primary_claimant { build(:claimant, :example_data) }
       secondary_claimants []
-      respondents { [build(:respondent, :example_data)] }
-      representatives { [build(:representative, :example_data)] }
+      primary_respondent { build(:respondent, :example_data) }
+      primary_representative { build(:representative, :example_data) }
       uploaded_files { [build(:uploaded_file, :example_data)] }
     end
 

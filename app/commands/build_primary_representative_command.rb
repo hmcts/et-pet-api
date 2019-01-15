@@ -12,8 +12,6 @@ class BuildPrimaryRepresentativeCommand < BaseCommand
   attribute :fax_number, :string
 
   def apply(root_object, **_args)
-    # @TODO (RST-1452) There is no concept of primary representative yet - so it will just add one -
-    # therefore this must be first command
-    root_object.representatives.build(attributes)
+    root_object.build_primary_representative(attributes)
   end
 end

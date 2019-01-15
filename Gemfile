@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.0'
+gem 'rails', '~> 5.2.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'unicorn'
@@ -34,7 +34,7 @@ gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
 # (and we need it for test environment)
-gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: 'b977972d7b5703c114911ae21e3aa060dee030e4'
+gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: 'ce37fed9148721b84fd970d4cd698475370c0b85'
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 
 # Rubyzip used to produce and test zip files
@@ -52,7 +52,7 @@ gem 'httparty', '~> 0.16.2'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails', '~> 3.7'
+  gem 'rspec-rails', '~> 3.8'
   gem 'simplecov', '~> 0.16.1'
   gem 'dotenv-rails', '~> 2.4'
   gem 'site_prism', '~> 2.15', '>= 2.15.1'
@@ -64,16 +64,16 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'rubocop', '~> 0.60'
-  gem 'rubocop-rspec', '~> 1.24'
+  gem 'rubocop', '~> 0.61'
+  gem 'rubocop-rspec', '~> 1.30'
 end
 
 group :test do
   gem 'database_cleaner', '~> 1.6.2'
-  gem 'factory_bot', '~> 4.8'
+  gem 'factory_bot', '~> 4.11'
   gem 'rspec-eventually', '~> 0.2.2'
-  gem 'faker', '~> 1.8', '>= 1.8.7'
-  gem 'webmock', '~> 3.4', '>= 3.4.1'
+  gem 'faker', '~> 1.9'
+  gem 'webmock', '~> 3.4'
   gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'ba78be596b80a6006b543a03f1b40ff6b130d5fc'
 end
 

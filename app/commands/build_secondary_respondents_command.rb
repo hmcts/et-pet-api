@@ -7,7 +7,7 @@ class BuildSecondaryRespondentsCommand < BaseCommand
 
   def apply(root_object, **_args)
     secondary_respondents.each do |respondent|
-      root_object.respondents.build(respondent)
+      root_object.secondary_respondents.build(respondent)
     end
   end
 end
