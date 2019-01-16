@@ -1,7 +1,6 @@
 class AddressHashType < ::ActiveModel::Type::Value
   def assert_valid_value(value)
-    return if value.blank?
-    return if value.respond_to?(:keys) && value.stringify_keys.keys == ['building', 'street', 'locality', 'county', 'post_code']
+    return if value.blank? || value.respond_to?(:keys)
 
     raise ArgumentError, "'#{value}' is not a valid Address Hash"
   end
