@@ -61,7 +61,6 @@ FactoryBot.define do
       end
     end
 
-
     trait :example_data do
       reference { "222000000300" }
       date_of_receipt { Time.zone.parse('29/3/2018') }

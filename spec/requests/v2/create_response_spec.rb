@@ -27,14 +27,14 @@ RSpec.describe 'Create Response Request', type: :request do
 
       let(:staging_folder) do
         EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-          username: 'atos',
-          password: 'password'
+                                       username: 'atos',
+                                       password: 'password'
       end
 
       let(:secondary_staging_folder) do
         EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-          username: 'atos2',
-          password: 'password'
+                                       username: 'atos2',
+                                       password: 'password'
       end
 
       let(:emails_sent) do

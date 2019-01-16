@@ -7,8 +7,9 @@ RSpec.describe BuildRepresentativeCommand do
   let(:root_object) { Response.new }
 
   describe '#apply' do
-    context 'full data set' do
+    context 'with full data set' do
       let(:data) { build(:json_representative_data, :full).as_json }
+
       it 'applies the data to the root object' do
         # Act
         command.apply(root_object)
@@ -19,8 +20,9 @@ RSpec.describe BuildRepresentativeCommand do
       end
     end
 
-    context 'minimal data set' do
+    context 'with minimal data set' do
       let(:data) { build(:json_representative_data, :minimal).as_json.except(:address_attributes) }
+
       it 'applies the data to the root object' do
         # Act
         command.apply(root_object)
@@ -33,7 +35,7 @@ RSpec.describe BuildRepresentativeCommand do
   end
 
   describe '#valid?' do
-    context 'address attributes' do
+    describe 'address attributes' do
       context 'with valid address_attributes' do
         let(:data) { build(:json_representative_data, :full).as_json }
 

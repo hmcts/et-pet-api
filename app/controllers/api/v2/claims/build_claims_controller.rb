@@ -8,8 +8,8 @@ module Api
           p = build_claims_params
           root_object = ::Claim.new
           command = CommandService.command_for command: p[:command],
-                                           uuid: p[:uuid],
-                                           data: sub_commands(p)
+                                               uuid: p[:uuid],
+                                               data: sub_commands(p)
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object
             # This is a bit of a frig - because we are not expecting the caller to

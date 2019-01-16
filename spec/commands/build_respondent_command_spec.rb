@@ -7,7 +7,7 @@ RSpec.describe BuildRespondentCommand do
   let(:root_object) { Response.new }
 
   describe '#apply' do
-    context 'full data set' do
+    context 'with full data set' do
       let(:data) { build(:json_respondent_data, :full).as_json }
 
       it 'applies the data to the root object' do
@@ -20,7 +20,8 @@ RSpec.describe BuildRespondentCommand do
           and(have_attributes(work_address: an_object_having_attributes(data[:work_address_attributes])))
       end
     end
-    context 'partial data set' do
+
+    context 'with partial data set' do
       let(:data) { build(:json_respondent_data, :minimal).as_json.except(:work_address_attributes, :address_attributes) }
 
       it 'applies the data to the root object' do
@@ -36,7 +37,7 @@ RSpec.describe BuildRespondentCommand do
   end
 
   describe '#valid?' do
-    context 'address attributes' do
+    describe 'address attributes' do
       context 'with valid address_attributes' do
         let(:data) { build(:json_respondent_data, :full).as_json }
 
@@ -96,9 +97,9 @@ RSpec.describe BuildRespondentCommand do
           expect(command.errors.details[:address_attributes]).to include(error: :invalid_address)
         end
       end
-
     end
-    context 'work_address attributes' do
+
+    describe 'work_address attributes' do
       context 'with valid address_attributes' do
         let(:data) { build(:json_respondent_data, :full).as_json }
 

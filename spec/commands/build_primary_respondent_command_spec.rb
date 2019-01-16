@@ -71,7 +71,7 @@ RSpec.describe BuildPrimaryRespondentCommand do
   end
 
   describe '#valid?' do
-    context 'address attributes' do
+    describe 'address attributes' do
       context 'with valid address_attributes' do
         let(:data) { build(:json_respondent_data, :full).as_json }
 
@@ -131,9 +131,9 @@ RSpec.describe BuildPrimaryRespondentCommand do
           expect(command.errors.details[:address_attributes]).to include(error: :invalid_address)
         end
       end
-
     end
-    context 'work_address attributes' do
+
+    describe 'work_address attributes' do
       context 'with valid address_attributes' do
         let(:data) { build(:json_respondent_data, :full).as_json }
 
