@@ -397,7 +397,7 @@ RSpec.describe 'Create Response Request', type: :request do
         json_factory: -> { FactoryBot.build(:json_build_response_commands, representative_traits: [:full, :invalid_address_keys]) }
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
-      it 'has the correct error in the case_number field' do
+      it 'has the correct error in the address_attributes field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildRepresentative' }.uuid
         expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
                                                                                            code: "invalid_address",
@@ -405,6 +405,25 @@ RSpec.describe 'Create Response Request', type: :request do
                                                                                            detail: "Invalid address",
                                                                                            source: "/data/2/address_attributes",
                                                                                            command: "BuildRepresentative",
+                                                                                           uuid: expected_uuid
+      end
+    end
+
+    context 'with json for a response with an invalid address in the respondent data' do
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response',
+        json_factory: -> { FactoryBot.build(:json_build_response_commands, respondent_traits: [:full, :invalid_address_keys]) }
+      include_context 'with background jobs running'
+      include_examples 'any bad request error variation'
+      it 'has the correct error in the address_attributes field' do
+        expected_uuid = input_factory.data.detect { |d| d.command == 'BuildRespondent' }.uuid
+        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                           code: "invalid_address",
+                                                                                           title: "Invalid address",
+                                                                                           detail: "Invalid address",
+                                                                                           source: "/data/1/address_attributes",
+                                                                                           command: "BuildRespondent",
                                                                                            uuid: expected_uuid
       end
     end
