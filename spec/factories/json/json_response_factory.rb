@@ -68,7 +68,7 @@ FactoryBot.define do
         doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, *evaluator.respondent_traits))
       end
       if evaluator.representative_traits
-        build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, *evaluator.representative_traits))
+        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, *evaluator.representative_traits))
       end
     end
 

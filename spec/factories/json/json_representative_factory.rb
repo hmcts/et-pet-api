@@ -4,7 +4,7 @@ require 'securerandom'
 FactoryBot.define do
   factory :json_representative_data, class: ::EtApi::Test::Json::Node do
     trait :minimal do
-
+      association :address_attributes, :rep_address, factory: :json_address_data
     end
 
     trait :full do
@@ -16,7 +16,6 @@ FactoryBot.define do
       minimal
       name { 'Jane Doe' }
       organisation_name { 'repco ltd' }
-      association :address_attributes, :rep_address, factory: :json_address_data
       address_telephone_number { '0207 987 6543' }
       mobile_number { '07987654321' }
       representative_type { 'Private Individual' }
