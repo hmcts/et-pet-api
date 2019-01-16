@@ -26,5 +26,9 @@ FactoryBot.define do
       email_address { 'test@email.com' }
       fax_number { '0207 345 6789' }
     end
+
+    trait :invalid_address_keys do
+      association :address_attributes, :invalid_keys, factory: :json_address_data
+    end
   end
 end

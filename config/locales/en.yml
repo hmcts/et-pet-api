@@ -47,6 +47,11 @@ en:
             address_attributes:
               invalid_address: Invalid address
               blank: Missing address
+        build_primary_representative_command:
+          attributes:
+            address_attributes:
+              invalid_address: Invalid address
+              blank: Missing address
 
 
 

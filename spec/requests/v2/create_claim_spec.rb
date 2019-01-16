@@ -567,5 +567,23 @@ RSpec.describe 'Create Claim Request', type: :request do
           uuid: expected_uuid
       end
     end
+
+    context 'with json creating an error for single claimant, respondent and representative (invalid address)' do
+      include_context 'with fake sidekiq'
+      include_context 'with setup for claims',
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_representative_traits: [:full, :invalid_address_keys]) }
+      include_examples 'any bad request error variation'
+
+      it 'has the correct error in the address_attributes field' do
+        expected_uuid = input_factory.data.detect { |d| d.command == 'BuildPrimaryRepresentative' }.uuid
+        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
+          code: "invalid_address",
+          title: "Invalid address",
+          detail: "Invalid address",
+          source: "/data/5/address_attributes",
+          command: "BuildPrimaryRepresentative",
+          uuid: expected_uuid
+      end
+    end
   end
 end
