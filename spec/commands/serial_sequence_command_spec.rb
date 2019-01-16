@@ -147,6 +147,50 @@ RSpec.describe SerialSequenceCommand do
       end
     end
 
+    context 'when the second command returns an invalid result' do
+      let(:data) do
+        [
+          {
+            command: 'Dummy1',
+            uuid: 'fakeuuid1',
+            data: { my_attribute: :dontcare }
+          }.with_indifferent_access,
+          {
+            command: 'Dummy2',
+            uuid: 'fakeuuid2',
+            data: {}
+          }.with_indifferent_access
+        ]
+      end
+
+      it 'is invalid' do
+        # Act - Call the method
+        #
+        result = command.valid?(root_object)
+
+        # Assert
+        expect(result).to be false
+      end
+
+      it 'reports the errors in a nested indexed format' do
+        # Act - Call the method
+        #
+        command.valid?(root_object)
+
+        # Assert
+        expect(command.errors.details[:'data[1].my_attribute']).to include(error: :blank, command: 'Dummy2', uuid: 'fakeuuid2')
+      end
+
+      it 'reports the error message in a nested indexed format' do
+        # Act - Call the method
+        #
+        command.valid?(root_object)
+
+        # Assert
+        expect(command.errors.messages[:'data[1].my_attribute']).to include('It is blank')
+      end
+    end
+
     context 'when both commands returns a valid result' do
       let(:data) do
         [

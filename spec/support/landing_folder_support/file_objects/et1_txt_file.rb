@@ -211,11 +211,11 @@ module EtApi
                                      post_code: end_with(address[:post_code])
                                    },
                                    work_address: {
-                                     building: end_with(work_address[:building]),
-                                     street: end_with(work_address[:street]),
-                                     locality: end_with(work_address[:locality]),
-                                     county: end_with(work_address[:county]),
-                                     post_code: end_with(work_address[:post_code])
+                                     building: end_with(work_address[:building] || ''),
+                                     street: end_with(work_address[:street] || ''),
+                                     locality: end_with(work_address[:locality] || ''),
+                                     county: end_with(work_address[:county] || ''),
+                                     post_code: end_with(work_address[:post_code] || '')
                                    },
                                    work_address_telephone_number: end_with(respondent[:work_address_telephone_number]),
                                    address_telephone_number: end_with(respondent[:address_telephone_number])

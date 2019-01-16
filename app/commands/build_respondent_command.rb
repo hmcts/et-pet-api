@@ -15,9 +15,12 @@ class BuildRespondentCommand < BaseCommand
   attribute :acas_exemption_code, :string
 
   attribute :name, :string
-  attribute :address_attributes, default: {}
-  attribute :work_address_attributes, default: {}
+  attribute :address_attributes, :address_hash, default: {}
+  attribute :work_address_attributes, :address_hash, default: {}
   attribute :organisation_more_than_one_site, :boolean
+
+  validates :address_attributes, presence: true, address: true
+  validates :work_address_attributes, address: { allow_empty: true }
 
   def apply(root_object, **_args)
     root_object.build_respondent(attributes)

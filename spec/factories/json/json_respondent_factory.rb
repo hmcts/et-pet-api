@@ -28,6 +28,23 @@ FactoryBot.define do
       acas_exemption_code { nil }
     end
 
+    trait :no_work_address do
+      work_address_attributes { {} }
+    end
+
+    trait :no_addresses do
+      work_address_attributes { {} }
+      address_attributes { {} }
+    end
+
+    trait :invalid_address_keys do
+      association :address_attributes, :invalid_keys, factory: :json_address_data
+    end
+
+    trait :invalid_work_address_keys do
+      association :work_address_attributes, :invalid_keys, factory: :json_address_data
+    end
+
     trait :mr_na_o_leary do
       full
       name { "n/a O'Leary" }

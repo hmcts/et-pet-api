@@ -55,19 +55,11 @@ FactoryBot.define do
       end
     end
 
-    trait :ready_for_export do
-      # Ready for export MUST be in the database and files stored - so we dont do build here
-      after(:create) do |claim, _evaluator|
-        Export.create resource: claim
-      end
-    end
-
     after(:create) do |claim, evaluator|
       evaluator.ready_for_export_to.each do |external_system_id|
         Export.create resource: claim, external_system_id: external_system_id
       end
     end
-
 
     trait :example_data do
       reference { "222000000300" }

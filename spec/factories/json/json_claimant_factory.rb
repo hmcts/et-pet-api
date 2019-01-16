@@ -31,6 +31,10 @@ FactoryBot.define do
       special_needs { nil }
     end
 
+    trait :invalid_address_keys do
+      association :address_attributes, :invalid_keys, factory: :json_address_data
+    end
+
     trait :tamara_swift do
       title { "Mrs" }
       first_name { "tamara" }

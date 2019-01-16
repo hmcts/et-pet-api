@@ -14,7 +14,6 @@ FactoryBot.define do
     command { 'SerialSequence' }
     data { [] }
 
-
     trait :with_welsh_pdf do
       pdf_template { 'et3-v1-cy' }
     end
@@ -60,18 +59,19 @@ FactoryBot.define do
     end
 
     after(:build) do |doc, evaluator|
-      if evaluator.response_traits
-        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse',
-          data: build(:json_response_data, *evaluator.response_traits, pdf_template_reference: evaluator.pdf_template, email_template_reference: evaluator.email_template))
-      end
-      if evaluator.respondent_traits
-        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, *evaluator.respondent_traits))
-      end
-      if evaluator.representative_traits
-        build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, *evaluator.representative_traits))
+      evaluator.instance_eval do
+        if response_traits
+          doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse',
+                                           data: build(:json_response_data, *response_traits, pdf_template_reference: pdf_template, email_template_reference: email_template))
+        end
+        if respondent_traits
+          doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, *respondent_traits))
+        end
+        if representative_traits
+          doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, *representative_traits))
+        end
       end
     end
-
   end
 
   factory :json_response_data, class: ::EtApi::Test::Json::Node do
@@ -126,6 +126,7 @@ FactoryBot.define do
 
     additional_information_key do
       next if rtf_file_path.nil?
+
       config = {
         region: ENV.fetch('AWS_REGION', 'us-east-1'),
         access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID', 'accessKey1'),
