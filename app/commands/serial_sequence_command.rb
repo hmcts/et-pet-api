@@ -31,6 +31,7 @@ class SerialSequenceCommand < BaseCommand
   end
 
   def validate_command(command)
+    pos = data.index {|c| c.uuid == command.uuid }
     command.errors.details.each_pair do |attr, command_errors|
       messages = command.errors.messages[attr]
       command_errors.each_with_index do |error, idx|
@@ -38,7 +39,7 @@ class SerialSequenceCommand < BaseCommand
           uuid: command.uuid,
           command: command.command_name
         }
-        errors.add(:"data[#{idx}].#{attr}", messages[idx], error.merge(extra_error_details))
+        errors.add(:"data[#{pos}].#{attr}", messages[idx], error.merge(extra_error_details))
       end
     end
   end

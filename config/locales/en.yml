@@ -37,6 +37,17 @@ en:
           attributes:
             case_number:
               invalid_office_code: Invalid case number
+        build_primary_claimant_command:
+          attributes:
+            address_attributes:
+              invalid_address: Invalid address
+              blank: Missing address
+        build_primary_respondent_command:
+          attributes:
+            address_attributes:
+              invalid_address: Invalid address
+              blank: Missing address
+
 
 
 
