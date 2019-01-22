@@ -443,9 +443,9 @@ RSpec.describe 'Create Claim Request', type: :request do
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, reference: nil, primary_respondent_traits: [:full, :no_work_address]) }
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
-      include_examples 'a claim with single claimant'
-      include_examples 'a claim with single respondent'
-      include_examples 'a claim with no representatives'
+      include_examples 'a claim with single claimant exported to primary ATOS'
+      include_examples 'a claim with single respondent exported to primary ATOS'
+      include_examples 'a claim with no representatives exported to primary ATOS'
     end
 
     context 'with json for single claimant and respondent but no representatives' do

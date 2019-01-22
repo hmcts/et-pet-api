@@ -45,18 +45,6 @@ class Claim < ApplicationRecord
     secondary_claimants.length.positive?
   end
 
-  def primary_respondent
-    respondents.first
-  end
-
-  def secondary_respondents
-    respondents.to_a.drop(1)
-  end
-
-  def primary_representative
-    representatives.first
-  end
-
   private
 
   def cache_claimant_count
