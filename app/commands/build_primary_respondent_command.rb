@@ -1,7 +1,7 @@
 class BuildPrimaryRespondentCommand < BaseCommand
   attribute :name, :string
-  attribute :address_attributes, default: {}
-  attribute :work_address_attributes, default: {}
+  attribute :address_attributes, :address_hash, default: {}
+  attribute :work_address_attributes, :address_hash, default: {}
   attribute :organisation_more_than_one_site, :boolean
   attribute :contact, :string
   attribute :dx_number, :string
@@ -17,6 +17,9 @@ class BuildPrimaryRespondentCommand < BaseCommand
   attribute :disability_information, :string
   attribute :acas_certificate_number, :string
   attribute :acas_exemption_code, :string
+
+  validates :address_attributes, presence: true, address: true
+  validates :work_address_attributes, address: { allow_empty: true }
 
   def apply(root_object, **_args)
     root_object.build_primary_respondent(attributes)

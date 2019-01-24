@@ -1,0 +1,12 @@
+<% message.subject = 'E-bost yn cadarnhau bod eich ymateb i’r hawliad Tribiwnlys Cyflogaeth ar-lein wedi cyrraedd' %>
+  Diolch am gyflwyno eich ymateb. Mae wedi cael ei anfon i’r swyddfa ym <%= @office.name %> a byddant yn cysylltu â chi maes o law.
+  Cyfeiriad y swyddfa: <%= @office.address %>
+  Rhif ffôn: <%= @office.telephone %>
+  Eich cyfeirnod yw: <%= @response.reference %>. Dylech ei ddyfynnu ar bob gohebiaeth.
+  Dyddiad cyflwyno: <%= @response.date_of_receipt.in_time_zone(Rails.configuration.mailer_time_zone).strftime('%d/%m/%Y') %>
+  Our national enquiry line can be contacted on:
+    Rhif ffôn i siaradwyr Cymraeg: 0300 303 517
+    Rhif ffôn ar gyfer ymholiadau yn Saesneg: 0300 123 1024
+    Yr Alban: 0141 354 8574
+    Minicom/Ffôn Testun: 01509 221564
+Gallant hefyd roi gwybodaeth gyffredinol i chi ynglŷn â phrosesaur tribiwnlys cyflogaeth.

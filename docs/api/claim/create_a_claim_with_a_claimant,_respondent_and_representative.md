@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "0da6554d-a0ae-401d-8b88-a5b67b43e195",
+  "uuid": "d7157dbf-6f43-4fc8-ad20-738d4fe6c843",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "e310de01-8792-47ba-ae56-a8ec7244deb9",
+      "uuid": "51baa6d4-8090-488d-9655-2acc2114bd3a",
       "command": "BuildClaim",
       "data": {
         "reference": "222000000100",
@@ -43,7 +43,7 @@ Cookie: </pre>
         "case_type": "Single",
         "jurisdiction": "2",
         "office_code": "22",
-        "date_of_receipt": "2018-11-16T12:09:45+0000",
+        "date_of_receipt": "2019-01-08T18:01:22+0000",
         "other_known_claimant_names": "",
         "discrimination_claims": [
 
@@ -65,7 +65,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "0d5b3bc3-b910-42a4-b781-f02f475bb947",
+      "uuid": "fc16d9d0-761f-4038-940b-f7fecb34d468",
       "command": "BuildPrimaryRespondent",
       "data": {
         "name": "dodgy_co",
@@ -101,7 +101,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "d32d67d5-ce6d-4a75-b935-407c2ffa8047",
+      "uuid": "33a4c433-7ad4-48ce-948a-036e2e1413d7",
       "command": "BuildPrimaryClaimant",
       "data": {
         "title": "Mr",
@@ -125,7 +125,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "b98eeb75-eff4-43bb-93bd-80908994c251",
+      "uuid": "4e05ccb0-2197-4e30-9300-d7f2a7d39f40",
       "command": "BuildSecondaryClaimants",
       "data": [
         {
@@ -151,7 +151,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "1051704b-04a6-4f9b-8fbe-bd7104d35b7e",
+      "uuid": "3d90279b-cf3b-4a33-8dee-23d7820e1cd3",
       "command": "BuildSecondaryRespondents",
       "data": [
         {
@@ -189,7 +189,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "9ab2f05f-efda-4f2f-812f-986286c055b9",
+      "uuid": "fca79f54-ecb6-4c0c-a55d-3f35dac83925",
       "command": "BuildPrimaryRepresentative",
       "data": {
         "name": "Jane Doe",
@@ -207,15 +207,15 @@ Cookie: </pre>
         "dx_number": "dx address",
         "reference": "Rep Ref",
         "contact_preference": "fax",
-        "email_address": "",
+        "email_address": "test@email.com",
         "fax_number": "0207 345 6789"
       }
     },
     {
-      "uuid": "ba007f46-bf2d-4ab8-9feb-717aac3600a9",
+      "uuid": "ed39d479-da6c-42a3-abb2-6c8abc944991",
       "command": "BuildPdfFile",
       "data": {
-        "data_url": "http://localhost:9000/etapibuckettest/4aMcZDSL8sbbPLQ7vqvAZCVn?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20181116%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20181116T120946Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=5e5bd8525d15c8075461956d3f6720225a5278a7864d4e8fe298b1eb0ebefbe5",
+        "data_url": "http://localhost:9000/etapibuckettest/UaJ3uvFPSaL9J3iLJXNLWNit?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20190108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190108T180124Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=03cc2426d232d0b1b5253db1c14bf80566bd7523a7e3e552320cbd85597e3c60",
         "filename": "et1_first_last.pdf",
         "checksum": "ee2714b8b731a8c1e95dffaa33f89728",
         "data_from_key": null
@@ -227,11 +227,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/claims/build_claim&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;0da6554d-a0ae-401d-8b88-a5b67b43e195&quot;,
+  &quot;uuid&quot;: &quot;d7157dbf-6f43-4fc8-ad20-738d4fe6c843&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;e310de01-8792-47ba-ae56-a8ec7244deb9&quot;,
+      &quot;uuid&quot;: &quot;51baa6d4-8090-488d-9655-2acc2114bd3a&quot;,
       &quot;command&quot;: &quot;BuildClaim&quot;,
       &quot;data&quot;: {
         &quot;reference&quot;: &quot;222000000100&quot;,
@@ -240,7 +240,7 @@ Cookie: </pre>
         &quot;case_type&quot;: &quot;Single&quot;,
         &quot;jurisdiction&quot;: &quot;2&quot;,
         &quot;office_code&quot;: &quot;22&quot;,
-        &quot;date_of_receipt&quot;: &quot;2018-11-16T12:09:45+0000&quot;,
+        &quot;date_of_receipt&quot;: &quot;2019-01-08T18:01:22+0000&quot;,
         &quot;other_known_claimant_names&quot;: &quot;&quot;,
         &quot;discrimination_claims&quot;: [
 
@@ -262,7 +262,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;0d5b3bc3-b910-42a4-b781-f02f475bb947&quot;,
+      &quot;uuid&quot;: &quot;fc16d9d0-761f-4038-940b-f7fecb34d468&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -298,7 +298,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;d32d67d5-ce6d-4a75-b935-407c2ffa8047&quot;,
+      &quot;uuid&quot;: &quot;33a4c433-7ad4-48ce-948a-036e2e1413d7&quot;,
       &quot;command&quot;: &quot;BuildPrimaryClaimant&quot;,
       &quot;data&quot;: {
         &quot;title&quot;: &quot;Mr&quot;,
@@ -322,7 +322,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;b98eeb75-eff4-43bb-93bd-80908994c251&quot;,
+      &quot;uuid&quot;: &quot;4e05ccb0-2197-4e30-9300-d7f2a7d39f40&quot;,
       &quot;command&quot;: &quot;BuildSecondaryClaimants&quot;,
       &quot;data&quot;: [
         {
@@ -348,7 +348,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;1051704b-04a6-4f9b-8fbe-bd7104d35b7e&quot;,
+      &quot;uuid&quot;: &quot;3d90279b-cf3b-4a33-8dee-23d7820e1cd3&quot;,
       &quot;command&quot;: &quot;BuildSecondaryRespondents&quot;,
       &quot;data&quot;: [
         {
@@ -386,7 +386,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;9ab2f05f-efda-4f2f-812f-986286c055b9&quot;,
+      &quot;uuid&quot;: &quot;fca79f54-ecb6-4c0c-a55d-3f35dac83925&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRepresentative&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;Jane Doe&quot;,
@@ -404,15 +404,15 @@ Cookie: </pre>
         &quot;dx_number&quot;: &quot;dx address&quot;,
         &quot;reference&quot;: &quot;Rep Ref&quot;,
         &quot;contact_preference&quot;: &quot;fax&quot;,
-        &quot;email_address&quot;: &quot;&quot;,
+        &quot;email_address&quot;: &quot;test@email.com&quot;,
         &quot;fax_number&quot;: &quot;0207 345 6789&quot;
       }
     },
     {
-      &quot;uuid&quot;: &quot;ba007f46-bf2d-4ab8-9feb-717aac3600a9&quot;,
+      &quot;uuid&quot;: &quot;ed39d479-da6c-42a3-abb2-6c8abc944991&quot;,
       &quot;command&quot;: &quot;BuildPdfFile&quot;,
       &quot;data&quot;: {
-        &quot;data_url&quot;: &quot;http://localhost:9000/etapibuckettest/4aMcZDSL8sbbPLQ7vqvAZCVn?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&amp;response-content-type=application%2Fpdf&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=accessKey1%2F20181116%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20181116T120946Z&amp;X-Amz-Expires=300&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=5e5bd8525d15c8075461956d3f6720225a5278a7864d4e8fe298b1eb0ebefbe5&quot;,
+        &quot;data_url&quot;: &quot;http://localhost:9000/etapibuckettest/UaJ3uvFPSaL9J3iLJXNLWNit?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&amp;response-content-type=application%2Fpdf&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=accessKey1%2F20190108%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20190108T180124Z&amp;X-Amz-Expires=300&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=03cc2426d232d0b1b5253db1c14bf80566bd7523a7e3e552320cbd85597e3c60&quot;,
         &quot;filename&quot;: &quot;et1_first_last.pdf&quot;,
         &quot;checksum&quot;: &quot;ee2714b8b731a8c1e95dffaa33f89728&quot;,
         &quot;data_from_key&quot;: null
@@ -431,8 +431,8 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 7f6a249f-f7b8-4b93-b8db-ed9b45d645b5
-X-Runtime: 0.332501
+X-Request-Id: 1ce8ebf6-dcec-44ca-8de4-b7fbb0c4a0c4
+X-Runtime: 0.608158
 Content-Length: 248</pre>
 
 #### Status

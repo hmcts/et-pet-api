@@ -13,7 +13,7 @@ class BaseCommand
     self.command_name = command
     self.command_service = command_service
     self.async = async
-    super(data)
+    super(with_extra_attrs_ignored(data))
   end
 
   # Apply changes to the root object based on the command data - always overriden in sub class
@@ -28,4 +28,9 @@ class BaseCommand
 
   attr_writer :uuid, :command_name
   attr_accessor :command_service, :async
+
+  def with_extra_attrs_ignored(data)
+    attrs_defined = self.class._default_attributes.keys.map(&:to_s)
+    data.stringify_keys.slice(*attrs_defined)
+  end
 end

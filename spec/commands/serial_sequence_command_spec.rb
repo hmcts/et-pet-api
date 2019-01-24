@@ -11,7 +11,7 @@ RSpec.describe SerialSequenceCommand do
         validate :check_not_blank
 
         def check_not_blank
-          errors.add :my_attribute, "It is blank", error: :blank, command: 'MyCommand', uuid: 'fakeuuid' if my_attribute.blank?
+          errors.add :my_attribute, "It is blank", error: :blank if my_attribute.blank?
         end
       end
     end
@@ -108,12 +108,12 @@ RSpec.describe SerialSequenceCommand do
         [
           {
             command: 'Dummy1',
-            uuid: SecureRandom.uuid,
+            uuid: 'fakeuuid1',
             data: {}
           }.with_indifferent_access,
           {
             command: 'Dummy2',
-            uuid: SecureRandom.uuid,
+            uuid: 'fakeuuid2',
             data: { my_attribute: :dontcare }
           }.with_indifferent_access
         ]
@@ -134,7 +134,7 @@ RSpec.describe SerialSequenceCommand do
         command.valid?(root_object)
 
         # Assert
-        expect(command.errors.details[:'data[0].my_attribute']).to include(error: :blank, command: 'MyCommand', uuid: 'fakeuuid')
+        expect(command.errors.details[:'data[0].my_attribute']).to include(error: :blank, command: 'Dummy1', uuid: 'fakeuuid1')
       end
 
       it 'reports the error message in a nested indexed format' do
@@ -144,6 +144,50 @@ RSpec.describe SerialSequenceCommand do
 
         # Assert
         expect(command.errors.messages[:'data[0].my_attribute']).to include('It is blank')
+      end
+    end
+
+    context 'when the second command returns an invalid result' do
+      let(:data) do
+        [
+          {
+            command: 'Dummy1',
+            uuid: 'fakeuuid1',
+            data: { my_attribute: :dontcare }
+          }.with_indifferent_access,
+          {
+            command: 'Dummy2',
+            uuid: 'fakeuuid2',
+            data: {}
+          }.with_indifferent_access
+        ]
+      end
+
+      it 'is invalid' do
+        # Act - Call the method
+        #
+        result = command.valid?(root_object)
+
+        # Assert
+        expect(result).to be false
+      end
+
+      it 'reports the errors in a nested indexed format' do
+        # Act - Call the method
+        #
+        command.valid?(root_object)
+
+        # Assert
+        expect(command.errors.details[:'data[1].my_attribute']).to include(error: :blank, command: 'Dummy2', uuid: 'fakeuuid2')
+      end
+
+      it 'reports the error message in a nested indexed format' do
+        # Act - Call the method
+        #
+        command.valid?(root_object)
+
+        # Assert
+        expect(command.errors.messages[:'data[1].my_attribute']).to include('It is blank')
       end
     end
 

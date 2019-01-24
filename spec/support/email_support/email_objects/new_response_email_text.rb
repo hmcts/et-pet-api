@@ -6,67 +6,62 @@ module EtApi
       class NewResponseEmailText < Base
         include RSpec::Matchers
         include EtApi::Test::OfficeHelper
+        include EtApi::Test::I18n
 
-        def self.find(repo: ActionMailer::Base.deliveries, reference:)
-          instances = repo.map { |delivery| new(delivery) }
-          instances.detect { |instance| instance.has_correct_subject? && instance.reference == reference }
+        def self.find(repo: ActionMailer::Base.deliveries, reference:, template_reference:)
+          instances = repo.map { |delivery| new(delivery, template_reference: template_reference) }
+          instances.detect { |instance| instance.has_correct_subject? && instance.has_reference?(reference) }
         end
 
-        def initialize(*)
-          super
+        def initialize(*args, template_reference:)
+          super(*args)
           multipart = mail.parts.detect { |p| p.content_type =~ %r{multipart/alternative} }
           part = multipart.parts.detect { |p| p.content_type =~ %r{text/plain} }
           self.body = part.nil? ? '' : part.body.to_s
           self.lines = body.lines.map { |l| l.to_s.strip }
+          self.template_reference = template_reference
         end
 
-        # The reference number coming from inside the email
-        def reference
-          reference_line.split(':').last.strip.tr(' which should be quoted on all correspondence.', '')
+        def has_reference?(reference)
+          lines.any? {|l| l.strip == t('response_email.reference', locale: template_reference, reference: reference)}
         end
 
-        def submission_date
-          submission_date_line.gsub(/\A.*?:/, '').strip
-        end
-
-        def office_address
-          office_address_line.split(':').last.strip
-        end
-
-        def office_telephone
-          office_telephone_line.split(':').last.strip
+        def assert_reference(reference)
+          raise Capybara::ElementNotFound.new("Reference line incorrect for #{reference}") unless has_reference?(reference)
         end
 
         def has_correct_subject? # rubocop:disable Naming/PredicateName
-          mail.subject == 'Your Response to Employment Tribunal claim online form receipt'
+          mail.subject == t('response_email.subject', locale: template_reference)
         end
 
         def has_correct_to_address_for?(input_data) # rubocop:disable Naming/PredicateName
           mail.to.include?(input_data.email_receipt)
         end
 
-        def office_name
-          re = /It has been forwarded to the (.*) office/
-          office_name_line.match(re)[1]
-        end
-
         def has_correct_content_for?(input_data, reference:) # rubocop:disable Naming/PredicateName
           office = office_for(case_number: input_data.case_number)
           aggregate_failures 'validating content' do
-            expect(self.reference).to eql reference
+            assert_reference(reference)
             expect(has_correct_subject?).to be true
             expect(has_correct_to_address_for?(input_data)).to be true
-            expect(office_name).to eql office.name
-            expect(office_address).to eql office.address
-            expect(office_telephone).to eql office.telephone
-            now = Time.zone.now
-            expect(submission_date).to eql(now.strftime('%d/%m/%Y')).or(eql((now - 1.minute).strftime('%d/%m/%Y')))
+            assert_office_name(office.name)
+            assert_office_address(office.address)
+            assert_office_telephone(office.telephone)
+            assert_submission_date
             expect(attached_pdf_for(reference: reference)).to be_present
           end
           true
         end
 
         private
+
+        def assert_submission_date
+          now = Time.zone.now
+
+          return if has_submission_date_line?(now.strftime('%d/%m/%Y'))
+          assert_submission_date_line((now - 1.minute).strftime('%d/%m/%Y'))
+        end
+
 
         def attached_pdf_for(reference:)
           mail.parts.attachments.detect { |a| a.filename == "#{reference}.pdf" }
@@ -76,23 +71,34 @@ module EtApi
           lines.detect { |l| l.starts_with?('This is your reference number:') }
         end
 
-        def office_name_line
-          lines.detect { |l| l.starts_with?('Thank you for your submission. It has been forwarded to the ') }
+        def assert_office_name(office_name)
+          return if lines.any? { |l| l.strip == t('response_email.office_name', office_name: office_name, locale: template_reference) }
+          raise Capybara::ElementNotFound.new("The office name line was not found for #{office_name}")
         end
 
-        def office_address_line
-          lines.detect { |l| l.starts_with?('Office address:') }
+        def assert_office_address(office_address)
+          return if lines.any? { |l| l.strip == t('response_email.office_address', address: office_address, locale: template_reference) }
+          raise Capybara::ElementNotFound.new("The office address line was not found for #{office_address}")
         end
 
-        def office_telephone_line
-          lines.detect { |l| l.starts_with?('Telephone:') }
+        def assert_office_telephone(telephone)
+          return if lines.any? { |l| l.strip == t('response_email.office_telephone', telephone: telephone, locale: template_reference) }
+          raise Capybara::ElementNotFound.new("The office telephone line was not found for #{telephone}")
         end
 
-        def submission_date_line
-          lines.detect { |l| l.starts_with?('Submission date:') }
+        def assert_submission_date_line(submission_date)
+          return if lines.any? { |l| l.strip == t('response_email.submission_date', submission_date: submission_date, locale: template_reference) }
+          raise Capybara::ElementNotFound.new("The submission date line was not found for #{submission_date}")
         end
 
-        attr_accessor :body, :lines
+        def has_submission_date_line?(submission_date)
+          assert_submission_date_line(submission_date)
+          true
+        rescue Capybara::ElementNotFound
+          false
+        end
+
+        attr_accessor :body, :lines, :template_reference
       end
     end
   end

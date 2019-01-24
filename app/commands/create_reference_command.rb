@@ -1,5 +1,5 @@
 class CreateReferenceCommand < BaseCommand
-  attribute :post_code, :string
+  attribute :post_code, :stripped_string
 
   def apply(root_object, **_args)
     root_object

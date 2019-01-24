@@ -11,8 +11,6 @@ gem 'rails', '~> 5.2.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'unicorn'
-# Use Puma as the app server
-gem 'puma', '~> 3.7'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
@@ -41,10 +39,10 @@ gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 gem 'rubyzip', '~> 1.2', '>= 1.2.1'
 
 # Pdf forms to test pdf content and also to produce them
-gem 'pdf-forms', '~> 1.1', '>= 1.1.1'
+gem 'pdf-forms', '~> 1.2'
 
 # AWS SDK gem
-gem 'aws-sdk-s3', '~> 1.13'
+gem 'aws-sdk-s3', '~> 1.30'
 
 # For general easy http access - mainly for test but used in app too
 gem 'httparty', '~> 0.16.2'
@@ -55,7 +53,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.8'
   gem 'simplecov', '~> 0.16.1'
   gem 'dotenv-rails', '~> 2.4'
-  gem 'site_prism', '~> 2.15', '>= 2.15.1'
+  gem 'site_prism', '~> 3.0'
   gem 'rspec_api_documentation', '~> 6.1'
 end
 

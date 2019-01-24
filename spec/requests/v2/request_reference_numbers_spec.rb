@@ -1,11 +1,7 @@
 require 'rails_helper'
 require 'securerandom'
 RSpec.describe "V2 RequestReferenceNumbers", type: :request do
-  # content type "application/x-www-form-urlencoded"
-  # body "postcode=SW1H%209ST"
-  # accept application/json
-  #
-  describe "POST /api/v1/fgr-et-office" do
+  describe "POST /api/v2/references/create_reference" do
     let(:default_headers) do
       {
         'Accept': 'application/json',
@@ -55,6 +51,33 @@ RSpec.describe "V2 RequestReferenceNumbers", type: :request do
         async: false,
         data: {
           post_code: 'SW1H 209ST'
+        }
+      }
+      post '/api/v2/references/create_reference', params: json_data.to_json, headers: default_headers
+
+      # Assert - Make sure the response contains the correct data
+      # apart from the fgr which is tested independently.
+      expect(json_response).to include 'status' => 'created',
+                                       'uuid' => uuid,
+                                       'data' => a_hash_including(
+                                         'office' => a_hash_including(
+                                           'code' => '22',
+                                           'name' => 'London Central',
+                                           'address' => 'Victory House, 30-34 Kingsway, London WC2B 6EX',
+                                           'telephone' => '020 7273 8603'
+                                         ),
+                                         'reference' => an_instance_of(String)
+                                       )
+    end
+
+    it "returns the correct office if the office is found when it has spaces around post code" do
+      # Act - Send a valid post code which should be found
+      json_data = {
+        uuid: uuid,
+        command: 'CreateReference',
+        async: false,
+        data: {
+          post_code: ' SW1H 209ST '
         }
       }
       post '/api/v2/references/create_reference', params: json_data.to_json, headers: default_headers

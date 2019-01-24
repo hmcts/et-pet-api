@@ -27,14 +27,14 @@ RSpec.describe 'Create Response Request', type: :request do
 
       let(:staging_folder) do
         EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-          username: 'atos',
-          password: 'password'
+                                       username: 'atos',
+                                       password: 'password'
       end
 
       let(:secondary_staging_folder) do
         EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-          username: 'atos2',
-          password: 'password'
+                                       username: 'atos2',
+                                       password: 'password'
       end
 
       let(:emails_sent) do
@@ -197,7 +197,7 @@ RSpec.describe 'Create Response Request', type: :request do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         respondent_name = input_respondent_factory.name
         output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
-        expect(staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
+        expect(staging_folder.et3_pdf_file(output_filename_pdf, template: input_response_factory.pdf_template_reference)).to have_correct_contents_for(
           response: input_response_factory,
           respondent: input_respondent_factory,
           representative: input_representative_factory,
@@ -233,7 +233,7 @@ RSpec.describe 'Create Response Request', type: :request do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         respondent_name = input_respondent_factory.name
         output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
-        expect(secondary_staging_folder.et3_pdf_file(output_filename_pdf)).to have_correct_contents_for(
+        expect(secondary_staging_folder.et3_pdf_file(output_filename_pdf, template: input_response_factory.pdf_template_reference)).to have_correct_contents_for(
           response: input_response_factory,
           respondent: input_respondent_factory,
           representative: input_representative_factory,
@@ -254,16 +254,30 @@ RSpec.describe 'Create Response Request', type: :request do
       end
     end
 
-    shared_examples 'email validation' do
-      it 'sends an HTML email to the respondent with the pdf attached' do
+    shared_examples 'email validation using standard template' do
+      it 'sends an HTML email to the respondent with the pdf attached using the standard template' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        email_sent = emails_sent.new_response_html_email_for(reference: reference)
+        email_sent = emails_sent.new_response_html_email_for(reference: reference, template_reference: 'et3-v1-en')
         expect(email_sent).to have_correct_content_for(input_response_factory, reference: reference)
       end
 
-      it 'sends a plain text email to the respondent with the pdf attached' do
+      it 'sends a plain text email to the respondent with the pdf attached using the standard template' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        email_sent = emails_sent.new_response_text_email_for(reference: reference)
+        email_sent = emails_sent.new_response_text_email_for(reference: reference, template_reference: 'et3-v1-en')
+        expect(email_sent).to have_correct_content_for(input_response_factory, reference: reference)
+      end
+    end
+
+    shared_examples 'email validation using welsh template' do
+      it 'sends an HTML email to the respondent with the pdf attached using the welsh template' do
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        email_sent = emails_sent.new_response_html_email_for(reference: reference, template_reference: 'et3-v1-cy')
+        expect(email_sent).to have_correct_content_for(input_response_factory, reference: reference)
+      end
+
+      it 'sends a plain text email to the respondent with the pdf attached using the welsh template' do
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        email_sent = emails_sent.new_response_text_email_for(reference: reference, template_reference: 'et3-v1-cy')
         expect(email_sent).to have_correct_content_for(input_response_factory, reference: reference)
       end
     end
@@ -282,7 +296,19 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to primary ATOS'
-      include_examples 'email validation'
+      include_examples 'email validation using standard template'
+    end
+
+    context 'with json for a response using welsh pdf and email templates with representative to a non existent claim' do
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response',
+        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf, :with_welsh_email) }
+      include_context 'with background jobs running'
+      include_examples 'any response variation'
+      include_examples 'a response with meta for office 22 bristol'
+      include_examples 'a response exported to primary ATOS'
+      include_examples 'email validation using welsh template'
     end
 
     context 'with json for a response (minimum data) with representative (minimum data) to a non existent claim' do
@@ -305,7 +331,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to primary ATOS'
-      include_examples 'email validation'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for a response with representative to a non existent claim to be exported to secondary ATOS' do
@@ -317,7 +343,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any response variation'
       include_examples 'a response with meta for the default office'
       include_examples 'a response exported to secondary ATOS'
-      include_examples 'email validation'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for a response with an rtf upload' do
@@ -330,7 +356,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to primary ATOS'
-      include_examples 'email validation'
+      include_examples 'email validation using standard template'
 
       it 'includes the rtf file in the staging folder' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
@@ -360,6 +386,44 @@ RSpec.describe 'Create Response Request', type: :request do
                                                                                            detail: "Invalid case number",
                                                                                            source: "/data/0/case_number",
                                                                                            command: "BuildResponse",
+                                                                                           uuid: expected_uuid
+      end
+    end
+
+    context 'with json for a response with an invalid address in the representative data' do
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response',
+        json_factory: -> { FactoryBot.build(:json_build_response_commands, representative_traits: [:full, :invalid_address_keys]) }
+      include_context 'with background jobs running'
+      include_examples 'any bad request error variation'
+      it 'has the correct error in the address_attributes field' do
+        expected_uuid = input_factory.data.detect { |d| d.command == 'BuildRepresentative' }.uuid
+        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                           code: "invalid_address",
+                                                                                           title: "Invalid address",
+                                                                                           detail: "Invalid address",
+                                                                                           source: "/data/2/address_attributes",
+                                                                                           command: "BuildRepresentative",
+                                                                                           uuid: expected_uuid
+      end
+    end
+
+    context 'with json for a response with an invalid address in the respondent data' do
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response',
+        json_factory: -> { FactoryBot.build(:json_build_response_commands, respondent_traits: [:full, :invalid_address_keys]) }
+      include_context 'with background jobs running'
+      include_examples 'any bad request error variation'
+      it 'has the correct error in the address_attributes field' do
+        expected_uuid = input_factory.data.detect { |d| d.command == 'BuildRespondent' }.uuid
+        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                           code: "invalid_address",
+                                                                                           title: "Invalid address",
+                                                                                           detail: "Invalid address",
+                                                                                           source: "/data/1/address_attributes",
+                                                                                           command: "BuildRespondent",
                                                                                            uuid: expected_uuid
       end
     end

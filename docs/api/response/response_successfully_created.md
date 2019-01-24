@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "9dff13af-efe7-430c-99c8-c60d920e628a",
+  "uuid": "33690611-ac31-46ef-af11-8d3fa9bd34c5",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "422f4333-38ac-467c-a7ed-3fd0687c2177",
+      "uuid": "576eb9b0-ac78-4e22-8ab6-bd075f5b2f47",
       "command": "BuildResponse",
       "data": {
         "additional_information_key": null,
@@ -64,11 +64,13 @@ Cookie: </pre>
         "defend_claim_facts": "lorem ipsum defence",
         "make_employer_contract_claim": true,
         "claim_information": "lorem ipsum info",
-        "email_receipt": "email@recei.pt"
+        "email_receipt": "email@recei.pt",
+        "pdf_template_reference": "et3-v1-en",
+        "email_template_reference": "et3-v1-en"
       }
     },
     {
-      "uuid": "b7e08f29-0504-4395-b10a-5b071686f9c7",
+      "uuid": "1c5045a9-32fd-493c-8aa0-7fc072bca45f",
       "command": "BuildRespondent",
       "data": {
         "name": "dodgy_co",
@@ -102,29 +104,6 @@ Cookie: </pre>
         "acas_certificate_number": "AC123456/78/90",
         "acas_exemption_code": null
       }
-    },
-    {
-      "uuid": "232315b5-b8f1-4c9e-96b2-f4baf5ab16c1",
-      "command": "BuildRepresentative",
-      "data": {
-        "name": "Jane Doe",
-        "organisation_name": "repco ltd",
-        "address_attributes": {
-          "building": "Rep Building",
-          "street": "Rep Street",
-          "locality": "Rep Town",
-          "county": "Rep County",
-          "post_code": "WC2 2BB"
-        },
-        "address_telephone_number": "0207 987 6543",
-        "mobile_number": "07987654321",
-        "representative_type": "Private Individual",
-        "dx_number": "dx address",
-        "reference": "Rep Ref",
-        "contact_preference": "fax",
-        "email_address": "",
-        "fax_number": "0207 345 6789"
-      }
     }
   ]
 }</pre>
@@ -132,11 +111,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/respondents/build_response&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;9dff13af-efe7-430c-99c8-c60d920e628a&quot;,
+  &quot;uuid&quot;: &quot;33690611-ac31-46ef-af11-8d3fa9bd34c5&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;422f4333-38ac-467c-a7ed-3fd0687c2177&quot;,
+      &quot;uuid&quot;: &quot;576eb9b0-ac78-4e22-8ab6-bd075f5b2f47&quot;,
       &quot;command&quot;: &quot;BuildResponse&quot;,
       &quot;data&quot;: {
         &quot;additional_information_key&quot;: null,
@@ -166,11 +145,13 @@ Cookie: </pre>
         &quot;defend_claim_facts&quot;: &quot;lorem ipsum defence&quot;,
         &quot;make_employer_contract_claim&quot;: true,
         &quot;claim_information&quot;: &quot;lorem ipsum info&quot;,
-        &quot;email_receipt&quot;: &quot;email@recei.pt&quot;
+        &quot;email_receipt&quot;: &quot;email@recei.pt&quot;,
+        &quot;pdf_template_reference&quot;: &quot;et3-v1-en&quot;,
+        &quot;email_template_reference&quot;: &quot;et3-v1-en&quot;
       }
     },
     {
-      &quot;uuid&quot;: &quot;b7e08f29-0504-4395-b10a-5b071686f9c7&quot;,
+      &quot;uuid&quot;: &quot;1c5045a9-32fd-493c-8aa0-7fc072bca45f&quot;,
       &quot;command&quot;: &quot;BuildRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -204,29 +185,6 @@ Cookie: </pre>
         &quot;acas_certificate_number&quot;: &quot;AC123456/78/90&quot;,
         &quot;acas_exemption_code&quot;: null
       }
-    },
-    {
-      &quot;uuid&quot;: &quot;232315b5-b8f1-4c9e-96b2-f4baf5ab16c1&quot;,
-      &quot;command&quot;: &quot;BuildRepresentative&quot;,
-      &quot;data&quot;: {
-        &quot;name&quot;: &quot;Jane Doe&quot;,
-        &quot;organisation_name&quot;: &quot;repco ltd&quot;,
-        &quot;address_attributes&quot;: {
-          &quot;building&quot;: &quot;Rep Building&quot;,
-          &quot;street&quot;: &quot;Rep Street&quot;,
-          &quot;locality&quot;: &quot;Rep Town&quot;,
-          &quot;county&quot;: &quot;Rep County&quot;,
-          &quot;post_code&quot;: &quot;WC2 2BB&quot;
-        },
-        &quot;address_telephone_number&quot;: &quot;0207 987 6543&quot;,
-        &quot;mobile_number&quot;: &quot;07987654321&quot;,
-        &quot;representative_type&quot;: &quot;Private Individual&quot;,
-        &quot;dx_number&quot;: &quot;dx address&quot;,
-        &quot;reference&quot;: &quot;Rep Ref&quot;,
-        &quot;contact_preference&quot;: &quot;fax&quot;,
-        &quot;email_address&quot;: &quot;&quot;,
-        &quot;fax_number&quot;: &quot;0207 345 6789&quot;
-      }
     }
   ]
 }&#39; -X POST \
@@ -241,9 +199,9 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: bcec2a19-c431-4514-bbc3-034dd4a03c55
-X-Runtime: 0.098716
-Content-Length: 833</pre>
+X-Request-Id: 2974887d-5538-43ba-a072-254b4c922159
+X-Runtime: 0.248249
+Content-Length: 812</pre>
 
 #### Status
 
@@ -251,4 +209,4 @@ Content-Length: 833</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"BuildResponse":{"submitted_at":"2018-11-16T12:09:47.286Z","reference":"142000032300","office_address":"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR","office_phone_number":"0117 929 8261","pdf_url":"http://localhost:9000/etapibuckettest/dGY3ewJomf8ygHfKwaCEje6E?response-content-disposition=inline%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20181116%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20181116T120947Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=6a4d05bbea58700e7bec2d8eaf15508bf1b7c8df73f7359cd34902804a3b4964"},"BuildRespondent":{},"BuildRepresentative":{}},"uuid":"9dff13af-efe7-430c-99c8-c60d920e628a"}</pre>
+<pre>{"status":"accepted","meta":{"BuildResponse":{"submitted_at":"2019-01-08T18:01:26.000Z","reference":"142000441500","office_address":"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR","office_phone_number":"0117 929 8261","pdf_url":"http://localhost:9000/etapibuckettest/KNHKhHd8WEJcrkBZ2nWwKA6X?response-content-disposition=attachment%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190108%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190108T180126Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=ed24bac4eae29bf07e0f17b5909d09c68efc17ff0ad97b6c79fa20bbf24e6db9"},"BuildRespondent":{}},"uuid":"33690611-ac31-46ef-af11-8d3fa9bd34c5"}</pre>
