@@ -19,7 +19,7 @@ module EtAtosExport
     end
 
     def rename_rtf_file(claim:)
-      file = claim.uploaded_files.detect { |f| f.filename.ends_with?('.rtf') }
+      file = claim.rtf_file
       return if file.nil?
       claimant = claim.primary_claimant
       file.filename = "et1_attachment_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.rtf"

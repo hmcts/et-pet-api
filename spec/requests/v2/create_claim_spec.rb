@@ -345,6 +345,20 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim with a csv file'
     end
 
+    context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded but uppercased filename' do
+      include_context 'with fake sidekiq'
+      include_context 'with setup for claims',
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0) }
+      include_examples 'any claim variation'
+      include_examples 'a claim exported to primary ATOS'
+      include_examples 'a claim with provided reference number'
+      include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple claimants from csv'
+      include_examples 'a claim with single respondent'
+      include_examples 'a claim with no representatives'
+      include_examples 'a claim with a csv file'
+    end
+
     context 'with json for single claimant, respondent and representative' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
@@ -513,6 +527,20 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
+
+      include_examples 'any claim variation'
+      include_examples 'a claim exported to primary ATOS'
+      include_examples 'a claim with provided reference number'
+      include_examples 'a claim with single claimant'
+      include_examples 'a claim with single respondent'
+      include_examples 'a claim with a representative'
+      include_examples 'a claim with an rtf file'
+    end
+
+    context 'with json for single claimant, single respondent and representative - with rtf file uploaded with uppercased extension' do
+      include_context 'with fake sidekiq'
+      include_context 'with setup for claims',
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
 
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'

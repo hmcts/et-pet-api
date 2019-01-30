@@ -8,8 +8,8 @@ FactoryBot.define do
       number_of_secondary_respondents { 1 }
       number_of_representatives { 1 }
       has_pdf_file { true }
-      has_csv_file { false }
-      has_rtf_file { false }
+      csv_file_trait { nil }
+      rtf_file_trait { false }
       case_type { 'Single' }
       sequence :reference do |idx|
         "#{2220000000 + idx}00"
@@ -28,11 +28,20 @@ FactoryBot.define do
 
     trait :with_csv do
       case_type { 'Multiple' }
-      has_csv_file { true }
+      csv_file_trait { :simple_user_with_csv_group_claims }
+    end
+
+    trait :with_csv_uppercased do
+      case_type { 'Multiple' }
+      csv_file_trait { :simple_user_with_csv_group_claims_uppercased }
     end
 
     trait :with_rtf do
-      has_rtf_file { true }
+      rtf_file_trait { :simple_user_with_rtf }
+    end
+
+    trait :with_rtf_uppercased do
+      rtf_file_trait { :simple_user_with_rtf_uppercased }
     end
 
     after(:build) do |doc, evaluator|
@@ -45,8 +54,8 @@ FactoryBot.define do
 
         doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildPrimaryRepresentative', data: build(:json_representative_data, *primary_representative_traits)) if number_of_representatives > 0
         doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildPdfFile', data: build(:json_file_data, :et1_first_last_pdf)) if has_pdf_file
-        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildClaimantsFile', data: build(:json_file_data, :simple_user_with_csv_group_claims)) if has_csv_file
-        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildClaimDetailsFile', data: build(:json_file_data, :simple_user_with_rtf)) if has_rtf_file
+        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildClaimantsFile', data: build(:json_file_data, csv_file_trait)) if csv_file_trait
+        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildClaimDetailsFile', data: build(:json_file_data, rtf_file_trait)) if rtf_file_trait
       end
     end
 
