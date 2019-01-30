@@ -44,6 +44,9 @@ gem 'pdf-forms', '~> 1.2'
 # AWS SDK gem
 gem 'aws-sdk-s3', '~> 1.30'
 
+# Azure
+gem 'azure-storage', '~> 0.15.0.preview', require: false
+
 # For general easy http access - mainly for test but used in app too
 gem 'httparty', '~> 0.16.2'
 

@@ -15,6 +15,14 @@ amazon:
   bucket: <%= ENV.fetch('S3_UPLOAD_BUCKET', '') %>
   <%= "endpoint: #{ENV.fetch('AWS_ENDPOINT')}" if ENV.key?('AWS_ENDPOINT') %>
   <%= "force_path_style: true" if ENV.fetch('AWS_S3_FORCE_PATH_STYLE', 'false') == 'true' %>
+azure:
+  service: AzureStorage
+  storage_account_name: <%= ENV.fetch('AZURE_STORAGE_ACCOUNT', 'devstoreaccount1') %>
+  storage_access_key: <%= ENV.fetch('AZURE_STORAGE_ACCESS_KEY', 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==') %>
+  container: <%= ENV.fetch('AZURE_STORAGE_CONTAINER', 'et_api_container') %>
+  <%= "use_path_style_uri: true" if ENV.fetch('AZURE_STORAGE_BLOB_FORCE_PATH_STYLE', 'false') == 'true' %>
+  <%= "storage_blob_host: '#{ENV['AZURE_STORAGE_BLOB_HOST']}'" if ENV.key?('AZURE_STORAGE_BLOB_HOST') %>
+
 
 # Remember not to checkin your GCS keyfile to a repository
 # google:
