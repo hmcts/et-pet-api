@@ -278,7 +278,7 @@ RSpec.describe 'Create Claim Request', type: :request do
         # Assert - look for the correct file in the landing folder - will be async
         Dir.mktmpdir do |dir|
           staging_folder.extract(output_filename_rtf, to: File.join(dir, output_filename_rtf))
-          input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file), __FILE__)
+          input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file.downcase), __FILE__)
           expect(File.join(dir, output_filename_rtf)).to be_a_file_copy_of(input_rtf_file_full_path)
         end
       end
