@@ -266,7 +266,7 @@ RSpec.describe 'Create Claim Request', type: :request do
         Dir.mktmpdir do |dir|
           staging_folder.extract(output_filename_additional_claimants_csv, to: File.join(dir, output_filename_additional_claimants_csv))
           input_csv_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_csv_file), __FILE__)
-          expect(File.join(dir, output_filename_additional_claimants_csv)).to be_a_file_copy_of(input_csv_file_full_path)
+          expect(File.join(dir, output_filename_additional_claimants_csv)).to be_a_file_copy_of(input_csv_file_full_path.downcase)
         end
       end
     end
