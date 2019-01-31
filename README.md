@@ -300,6 +300,38 @@ on what area of the system you are using.
 
 # Other Environment Variables
 
+## CLOUD_PROVIDER
+
+Defaults to 'amazon' at the moment - valid values are 'amazon' and 'azure'
+
+This switch will eventually be removed, it is only present for the transition from amazon to azure
+
+## AZURE_STORAGE_BLOB_HOST
+
+This is normally not present - but in test environment, you can set this to "http://localhost:10000" for example to
+use the 'azurite' simulator
+
+## AZURE_STORAGE_BLOB_FORCE_PATH_STYLE
+
+This is normally not present - but in test environment, you can set this to 'true' for example to
+use the 'azurite' simulator (which must use this value - it doesnt support virtual hosts)
+
+## AZURE_STORAGE_ACCOUNT
+
+In production, this will be the real azure storage account.  In test mode when using 'azurite' simulator, this
+must be set to 'devstoreaccount1' as it is hard coded into azurite.
+
+## AZURE_STORAGE_ACCESS_KEY
+
+In production, this will be the real azure storage access key.  In test mode when using 'azurite' simulator, this
+must be set to 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==' as it is hard coded into azurite.
+
+## AZURE_STORAGE_CONTAINER
+
+This is the storage container name for azure and must conform to microsoft's naming convention which pretty much means
+that is must be a valid dns name, must only contain alphanumeric's with '-' separating words - NO underscores or other symbols
+
+
 ## EXPORT_CLAIMS_EVERY
 
 The claims are batched up and zipped ready for consumption by the ATOS API every 15 minutes
