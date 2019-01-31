@@ -266,7 +266,7 @@ RSpec.describe 'Create Claim Request', type: :request do
         Dir.mktmpdir do |dir|
           staging_folder.extract(output_filename_additional_claimants_csv, to: File.join(dir, output_filename_additional_claimants_csv))
           input_csv_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_csv_file), __FILE__)
-          expect(File.join(dir, output_filename_additional_claimants_csv)).to be_a_file_copy_of(input_csv_file_full_path)
+          expect(File.join(dir, output_filename_additional_claimants_csv)).to be_a_file_copy_of(input_csv_file_full_path.downcase)
         end
       end
     end
@@ -278,7 +278,7 @@ RSpec.describe 'Create Claim Request', type: :request do
         # Assert - look for the correct file in the landing folder - will be async
         Dir.mktmpdir do |dir|
           staging_folder.extract(output_filename_rtf, to: File.join(dir, output_filename_rtf))
-          input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file), __FILE__)
+          input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file.downcase), __FILE__)
           expect(File.join(dir, output_filename_rtf)).to be_a_file_copy_of(input_rtf_file_full_path)
         end
       end
@@ -335,6 +335,20 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 0) }
+      include_examples 'any claim variation'
+      include_examples 'a claim exported to primary ATOS'
+      include_examples 'a claim with provided reference number'
+      include_examples 'a claim with multiple claimants'
+      include_examples 'a claim with multiple claimants from csv'
+      include_examples 'a claim with single respondent'
+      include_examples 'a claim with no representatives'
+      include_examples 'a claim with a csv file'
+    end
+
+    context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded but uppercased filename' do
+      include_context 'with fake sidekiq'
+      include_context 'with setup for claims',
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0) }
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
       include_examples 'a claim with provided reference number'
@@ -513,6 +527,20 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
+
+      include_examples 'any claim variation'
+      include_examples 'a claim exported to primary ATOS'
+      include_examples 'a claim with provided reference number'
+      include_examples 'a claim with single claimant'
+      include_examples 'a claim with single respondent'
+      include_examples 'a claim with a representative'
+      include_examples 'a claim with an rtf file'
+    end
+
+    context 'with json for single claimant, single respondent and representative - with rtf file uploaded with uppercased extension' do
+      include_context 'with fake sidekiq'
+      include_context 'with setup for claims',
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
 
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'

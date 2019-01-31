@@ -18,7 +18,7 @@ class ClaimClaimantsFileImporterService
   private
 
   def csv_file
-    claim.uploaded_files.detect { |f| f.filename.end_with?('.csv') }
+    claim.claimants_csv_file
   end
 
   def import_claimants(uploaded_file:)
