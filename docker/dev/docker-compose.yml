@@ -22,10 +22,19 @@ services:
       MINIO_ACCESS_KEY: accessKey1
       MINIO_SECRET_KEY: verySecretKey1
     command: server minio_data
+  azurite:
+    image: mcr.microsoft.com/azurestorage-azurite:2.6.7
+    ports:
+      - ${AZURE_BLOB_PORT:-10000}:10000
+    volumes:
+      - azurite_data:/opt/azurite/folder
+    environment:
+      executable: blob
 
 
 volumes:
   rubygems_cache:
   minio_data:
+  azurite_data:
 networks:
   api:

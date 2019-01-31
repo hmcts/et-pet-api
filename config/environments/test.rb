@@ -35,7 +35,7 @@ Rails.application.configure do
   config.action_controller.default_url_options = { host: 'example.com' }
 
   # As we do some s3 specific stuff, we have to use an s3 server for testing (local server called minio)
-  config.active_storage.service = :amazon
+  config.active_storage.service = ENV.fetch('CLOUD_PROVIDER', 'amazon').to_sym
 
   config.action_mailer.perform_caching = false
   config.action_mailer.default_options = { from: 'no-reply@digital.justice.gov.uk' }
