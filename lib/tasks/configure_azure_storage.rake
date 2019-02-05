@@ -18,10 +18,20 @@ task "configure_azure_storage_containers" => :environment do
   direct_container_name = ENV.fetch('AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER', 'et-api-direct-container')
 
   containers = client.blob_client.list_containers
-  client.blob_client.create_container(container_name) unless containers.map(&:name).include?(container_name)
+  if containers.map(&:name).include?(container_name)
+    puts "Azure already has container #{container_name}"
+  else
+    client.blob_client.create_container(container_name)
+    puts "Container #{container_name} added to azure"
+  end
 
   direct_upload_containers = direct_upload_client.blob_client.list_containers
-  direct_upload_client.blob_client.create_container(direct_container_name) unless direct_upload_containers.map(&:name).include?(direct_container_name)
+  if direct_upload_containers.map(&:name).include?(direct_container_name)
+    puts "Azure already has container #{direct_container_name}"
+  else
+    direct_upload_client.blob_client.create_container(direct_container_name)
+    puts "Container #{direct_container_name} added to azure"
+  end
 end
 
 desc "Configures cors on the direct upload azure account.  Generally only used in development / test"
@@ -43,6 +53,8 @@ task "configure_azure_storage_cors" => :environment do
     cors_rule.max_age_in_seconds = 3600
     service_properties.cors.cors_rules = [cors_rule]
     direct_upload_client.blob_client.set_service_properties(service_properties)
+    puts "Direct upload storage account now has cors configured"
+  else
+    puts "Direct upload storage account has existing cors config - cowardly refusing to touch it"
   end
-
 end
