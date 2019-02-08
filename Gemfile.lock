@@ -38,6 +38,11 @@ PATH
     et_atos_export (0.1.0)
       rails (~> 5.2.1)
 
+PATH
+  remote: vendor/gems/et_s3_to_azure
+  specs:
+    et_s3_to_azure (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -366,6 +371,7 @@ DEPENDENCIES
   et_atos_export!
   et_atos_file_transfer!
   et_fake_acas_server!
+  et_s3_to_azure!
   factory_bot (~> 4.11)
   faker (~> 1.9)
   httparty (~> 0.16.2)
