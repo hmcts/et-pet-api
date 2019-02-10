@@ -38,7 +38,8 @@ steps:
     chmod +x docker-compose
     sudo mv docker-compose /usr/local/bin
     curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter
-    sudo apt-get install pdftk  
+    sudo apt-get install pdftk
+    gem install bundler -v 1.16.4
   displayName: 'before install'
 
 - script: |
@@ -64,10 +65,9 @@ steps:
     export DB_PORT=5433
     S3_PORT=9000
     CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
-    gem install bundler -v 1.16.4
     RAILS_ENV=test bundle exec rspec
-    cd vendor/gems/et_acas_api; BUNDLE_GEMFILE=$PWD/Gemfile bundle install; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rake db:create db:migrate RAILS_ENV=test; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rspec
-    bundle exec codeclimate-test-reporter
+    RAILS_ENV=test cd vendor/gems/et_acas_api; BUNDLE_GEMFILE=$PWD/Gemfile bundle install; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rake db:create db:migrate; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rspec
+    RAILS_ENV=test bundle exec codeclimate-test-reporter
     curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
     chmod +x ./cc-test-reporter
     # ./cc-test-reporter after-build --exit-code 0
