@@ -27,7 +27,7 @@ resource 'Blob Resource (Azure mode)' do
     parameter :command, type: :string, enum: ['BuildBlob'], with_example: true, in: :body
 
     context "200" do
-      include_context 'with cloud provider switching', cloud_provider: :amazon
+      include_context 'with cloud provider switching', cloud_provider: :azure
       example 'Create a signed azure url' do
         request =  build(:json_build_blob_command).as_json
 

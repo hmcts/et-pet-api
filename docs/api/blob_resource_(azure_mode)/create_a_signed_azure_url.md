@@ -30,7 +30,7 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "e33cefd1-fac4-495b-a688-60838a75dc2f",
+  "uuid": "a4accfc1-3c05-4f4a-a511-b8e403ce7721",
   "command": "BuildBlob",
   "data": null,
   "async": false
@@ -39,7 +39,7 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/build_blob&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;e33cefd1-fac4-495b-a688-60838a75dc2f&quot;,
+  &quot;uuid&quot;: &quot;a4accfc1-3c05-4f4a-a511-b8e403ce7721&quot;,
   &quot;command&quot;: &quot;BuildBlob&quot;,
   &quot;data&quot;: null,
   &quot;async&quot;: false
@@ -55,9 +55,9 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 23c7ddf5-9a74-472e-859e-ac95f0584215
-X-Runtime: 0.020188
-Content-Length: 929</pre>
+X-Request-Id: 81792823-849b-4be1-92bb-add3d9cb2c2f
+X-Runtime: 0.023217
+Content-Length: 710</pre>
 
 #### Status
 
@@ -65,4 +65,4 @@ Content-Length: 929</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"cloud_provider":"amazon"},"uuid":"e33cefd1-fac4-495b-a688-60838a75dc2f","data":{"fields":{"key":"direct_uploads/5455793b-bdf5-48d3-b5ae-bae5a007764c","success_action_status":"201","policy":"eyJleHBpcmF0aW9uIjoiMjAxOS0wMi0xM1QwMDoxMzoyOVoiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJldGFwaWRpcmVjdGJ1Y2tldHRlc3QifSx7ImtleSI6ImRpcmVjdF91cGxvYWRzLzU0NTU3OTNiLWJkZjUtNDhkMy1iNWFlLWJhZTVhMDA3NzY0YyJ9LHsic3VjY2Vzc19hY3Rpb25fc3RhdHVzIjoiMjAxIn0seyJ4LWFtei1jcmVkZW50aWFsIjoiYWNjZXNzS2V5MS8yMDE5MDIxMi91cy1lYXN0LTEvczMvYXdzNF9yZXF1ZXN0In0seyJ4LWFtei1hbGdvcml0aG0iOiJBV1M0LUhNQUMtU0hBMjU2In0seyJ4LWFtei1kYXRlIjoiMjAxOTAyMTJUMjMxMzI5WiJ9XX0=","x-amz-credential":"accessKey1/20190212/us-east-1/s3/aws4_request","x-amz-algorithm":"AWS4-HMAC-SHA256","x-amz-date":"20190212T231329Z","x-amz-signature":"68614eea822f17881327d70aa03b27a48256beda2cabe0e3eb3f447aea348a1c"},"url":"http://localhost:9000/etapidirectbuckettest"}}</pre>
+<pre>{"status":"accepted","meta":{"cloud_provider":"azure"},"uuid":"a4accfc1-3c05-4f4a-a511-b8e403ce7721","data":{"fields":{"key":"direct_uploads/1cc30f7e-8847-4fe8-bb27-a7a967979fe3","permissions":"rw","version":"2016-05-31","expiry":"2019-02-12T23:20:57Z","resource":"b","signature":"Ggyp0OFq9wZlQWcALwC2PhnoKV2iVzUPH8PkUwl3pZY="},"url":"http://localhost:10000/devstoreaccount1/et-api-direct-container/direct_uploads/1cc30f7e-8847-4fe8-bb27-a7a967979fe3?sp=rw\u0026sv=2016-05-31\u0026se=2019-02-12T23%3A20%3A57Z\u0026sr=b\u0026sig=Ggyp0OFq9wZlQWcALwC2PhnoKV2iVzUPH8PkUwl3pZY%3D","unsigned_url":"http://localhost:10000/devstoreaccount1/et-api-direct-container/direct_uploads/1cc30f7e-8847-4fe8-bb27-a7a967979fe3"}}</pre>
