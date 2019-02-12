@@ -27,26 +27,28 @@ resource 'Blob Resource' do
     parameter :command, type: :string, enum: ['BuildBlob'], with_example: true, in: :body
 
     context "200" do
-      include_context 'with cloud provider switching', cloud_provider: :amazon
-      example 'Create a signed s3 object suitable for use in a HTML form for use with direct upload' do
-        request =  build(:json_build_blob_command).as_json
+      context "amazon" do
+        include_context 'with cloud provider switching', cloud_provider: :amazon
+        example 'Create a signed s3 object suitable for use in a HTML form for use with direct upload' do
+          request =  build(:json_build_blob_command).as_json
 
-        # It's also possible to extract types of parameters when you pass data through `do_request` method.
-        do_request(request)
+          # It's also possible to extract types of parameters when you pass data through `do_request` method.
+          do_request(request)
 
-        expect(rspec_api_documentation_client.send(:last_response).status).to eq(202)
+          expect(rspec_api_documentation_client.send(:last_response).status).to eq(202)
+        end
       end
-    end
 
-    context "200" do
-      include_context 'with cloud provider switching', cloud_provider: :amazon
-      example 'Create a signed azure url' do
-        request =  build(:json_build_blob_command).as_json
+      context "azure" do
+        include_context 'with cloud provider switching', cloud_provider: :amazon
+        example 'Create a signed azure url' do
+          request =  build(:json_build_blob_command).as_json
 
-        # It's also possible to extract types of parameters when you pass data through `do_request` method.
-        do_request(request)
+          # It's also possible to extract types of parameters when you pass data through `do_request` method.
+          do_request(request)
 
-        expect(rspec_api_documentation_client.send(:last_response).status).to eq(202)
+          expect(rspec_api_documentation_client.send(:last_response).status).to eq(202)
+        end
       end
     end
   end
