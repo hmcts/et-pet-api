@@ -58,6 +58,7 @@ group :development, :test do
   gem 'dotenv-rails', '~> 2.4'
   gem 'site_prism', '~> 3.0'
   gem 'rspec_api_documentation', '~> 6.1'
+  gem 'climate_control', '~> 0.2.0'
 end
 
 group :development do

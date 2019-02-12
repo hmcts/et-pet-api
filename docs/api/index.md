@@ -10,6 +10,13 @@ Acas Certificate Resource
 * [500 Error response (something wrong with the ACAS server)](acas_certificate/500_error_response_(something_wrong_with_the_acas_server).md)
 * [Valid certificate response](acas_certificate/valid_certificate_response.md)
 
+## Blob Resource
+
+Signed Blob resource - either amazon S3 or Azure blob
+
+* [Create a signed azure url](blob_resource/create_a_signed_azure_url.md)
+* [Create a signed s3 object suitable for use in a HTML form for use with direct upload](blob_resource/create_a_signed_s3_object_suitable_for_use_in_a_html_form_for_use_with_direct_upload.md)
+
 ## Claim
 
 A claim is the claim made by the claimant against the respondent (employer)

@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "33690611-ac31-46ef-af11-8d3fa9bd34c5",
+  "uuid": "087f1ecd-ccd2-47e2-a418-1d3462e8b406",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "576eb9b0-ac78-4e22-8ab6-bd075f5b2f47",
+      "uuid": "b6d16c59-268a-407a-b216-a974331ed71b",
       "command": "BuildResponse",
       "data": {
         "additional_information_key": null,
@@ -70,7 +70,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "1c5045a9-32fd-493c-8aa0-7fc072bca45f",
+      "uuid": "4261e924-1fd3-4476-99e9-7144f49778ab",
       "command": "BuildRespondent",
       "data": {
         "name": "dodgy_co",
@@ -104,6 +104,29 @@ Cookie: </pre>
         "acas_certificate_number": "AC123456/78/90",
         "acas_exemption_code": null
       }
+    },
+    {
+      "uuid": "32a6cfcd-1562-40e1-bbc0-56420aeeb9bf",
+      "command": "BuildRepresentative",
+      "data": {
+        "address_attributes": {
+          "building": "Rep Building",
+          "street": "Rep Street",
+          "locality": "Rep Town",
+          "county": "Rep County",
+          "post_code": "WC2 2BB"
+        },
+        "name": "Jane Doe",
+        "organisation_name": "repco ltd",
+        "address_telephone_number": "0207 987 6543",
+        "mobile_number": "07987654321",
+        "representative_type": "Private Individual",
+        "dx_number": "dx address",
+        "reference": "Rep Ref",
+        "contact_preference": "fax",
+        "email_address": "test@email.com",
+        "fax_number": "0207 345 6789"
+      }
     }
   ]
 }</pre>
@@ -111,11 +134,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/respondents/build_response&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;33690611-ac31-46ef-af11-8d3fa9bd34c5&quot;,
+  &quot;uuid&quot;: &quot;087f1ecd-ccd2-47e2-a418-1d3462e8b406&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;576eb9b0-ac78-4e22-8ab6-bd075f5b2f47&quot;,
+      &quot;uuid&quot;: &quot;b6d16c59-268a-407a-b216-a974331ed71b&quot;,
       &quot;command&quot;: &quot;BuildResponse&quot;,
       &quot;data&quot;: {
         &quot;additional_information_key&quot;: null,
@@ -151,7 +174,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;1c5045a9-32fd-493c-8aa0-7fc072bca45f&quot;,
+      &quot;uuid&quot;: &quot;4261e924-1fd3-4476-99e9-7144f49778ab&quot;,
       &quot;command&quot;: &quot;BuildRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -185,6 +208,29 @@ Cookie: </pre>
         &quot;acas_certificate_number&quot;: &quot;AC123456/78/90&quot;,
         &quot;acas_exemption_code&quot;: null
       }
+    },
+    {
+      &quot;uuid&quot;: &quot;32a6cfcd-1562-40e1-bbc0-56420aeeb9bf&quot;,
+      &quot;command&quot;: &quot;BuildRepresentative&quot;,
+      &quot;data&quot;: {
+        &quot;address_attributes&quot;: {
+          &quot;building&quot;: &quot;Rep Building&quot;,
+          &quot;street&quot;: &quot;Rep Street&quot;,
+          &quot;locality&quot;: &quot;Rep Town&quot;,
+          &quot;county&quot;: &quot;Rep County&quot;,
+          &quot;post_code&quot;: &quot;WC2 2BB&quot;
+        },
+        &quot;name&quot;: &quot;Jane Doe&quot;,
+        &quot;organisation_name&quot;: &quot;repco ltd&quot;,
+        &quot;address_telephone_number&quot;: &quot;0207 987 6543&quot;,
+        &quot;mobile_number&quot;: &quot;07987654321&quot;,
+        &quot;representative_type&quot;: &quot;Private Individual&quot;,
+        &quot;dx_number&quot;: &quot;dx address&quot;,
+        &quot;reference&quot;: &quot;Rep Ref&quot;,
+        &quot;contact_preference&quot;: &quot;fax&quot;,
+        &quot;email_address&quot;: &quot;test@email.com&quot;,
+        &quot;fax_number&quot;: &quot;0207 345 6789&quot;
+      }
     }
   ]
 }&#39; -X POST \
@@ -199,9 +245,9 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 2974887d-5538-43ba-a072-254b4c922159
-X-Runtime: 0.248249
-Content-Length: 812</pre>
+X-Request-Id: 5b208d99-4a4e-4edb-90d3-f464ebfa781c
+X-Runtime: 0.148928
+Content-Length: 837</pre>
 
 #### Status
 
@@ -209,4 +255,4 @@ Content-Length: 812</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"BuildResponse":{"submitted_at":"2019-01-08T18:01:26.000Z","reference":"142000441500","office_address":"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR","office_phone_number":"0117 929 8261","pdf_url":"http://localhost:9000/etapibuckettest/KNHKhHd8WEJcrkBZ2nWwKA6X?response-content-disposition=attachment%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190108%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190108T180126Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=ed24bac4eae29bf07e0f17b5909d09c68efc17ff0ad97b6c79fa20bbf24e6db9"},"BuildRespondent":{}},"uuid":"33690611-ac31-46ef-af11-8d3fa9bd34c5"}</pre>
+<pre>{"status":"accepted","meta":{"BuildResponse":{"submitted_at":"2019-02-12T20:26:57.474Z","reference":"142000000400","office_address":"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR","office_phone_number":"0117 929 8261","pdf_url":"http://localhost:9000/etapibuckettest/EmVSKpDGpPwGtbphWzrXVwuC?response-content-disposition=attachment%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190212%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190212T202657Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=a40f1ed36d8913ebd212a7b28652c0f20ebecde34b488586989af63f888d0c29"},"BuildRespondent":{},"BuildRepresentative":{}},"uuid":"087f1ecd-ccd2-47e2-a418-1d3462e8b406"}</pre>
