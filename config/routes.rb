@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       namespace :claims do
         post "build_claim" => 'build_claims#create'
       end
+      post "build_blob" => "build_blobs#create"
     end
   end
   mount EtAcasApi::Engine => "/et_acas_api"

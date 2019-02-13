@@ -30,7 +30,7 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "f32044af-80cf-4d56-98f6-f7606401cf51",
+  "uuid": "a594c55f-071e-4f1b-83d5-c62747610dca",
   "command": "BuildDiversityResponse",
   "data": {
     "claim_type": "Discrimination",
@@ -52,7 +52,7 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/diversity/build_diversity_response&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;f32044af-80cf-4d56-98f6-f7606401cf51&quot;,
+  &quot;uuid&quot;: &quot;a594c55f-071e-4f1b-83d5-c62747610dca&quot;,
   &quot;command&quot;: &quot;BuildDiversityResponse&quot;,
   &quot;data&quot;: {
     &quot;claim_type&quot;: &quot;Discrimination&quot;,
@@ -80,10 +80,10 @@ Cookie: </pre>
 #### Headers
 
 <pre>Content-Type: application/json; charset=utf-8
-ETag: W/&quot;9812db626ddccb0e6a653eaa42f18ab6&quot;
+ETag: W/&quot;ec0cff3b6505c1b6e9333b4dee20e497&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 02e9bdc5-3deb-457a-a639-1c46c2fc054e
-X-Runtime: 0.084409
+X-Request-Id: 382cf8e9-d97f-4079-97d2-e2f989eae642
+X-Runtime: 0.042139
 Content-Length: 67</pre>
 
 #### Status
@@ -92,4 +92,4 @@ Content-Length: 67</pre>
 
 #### Body
 
-<pre>{"status":"accepted","uuid":"f32044af-80cf-4d56-98f6-f7606401cf51"}</pre>
+<pre>{"status":"accepted","uuid":"a594c55f-071e-4f1b-83d5-c62747610dca"}</pre>
