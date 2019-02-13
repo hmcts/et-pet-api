@@ -6,7 +6,7 @@ module Api
         result = CommandService.dispatch root_object: root_object, data: {}, **create_params.to_h.symbolize_keys
         EventService.publish('BlobBuilt', root_object)
         render locals: { result: result, data: root_object },
-          status: (result.valid? ? :accepted : :unprocessable_entity)
+               status: (result.valid? ? :accepted : :unprocessable_entity)
       end
 
       private

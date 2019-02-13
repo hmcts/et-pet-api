@@ -45,7 +45,10 @@ class BlobBuiltHandler
     def handle(root)
       blob = ActiveStorage::Blob.new key: key
       build_service_for(blob)
-      assign_parts_to(blob, root)
+      root[:output_values] ||= {}
+      signed_url = signed_url_for(blob)
+      assign_parts_to(blob, root, signed_url)
+      assign_urls_to(blob, root, signed_url)
     end
 
     def build_service_for(blob)
@@ -61,10 +64,8 @@ class BlobBuiltHandler
 
     private
 
-    def assign_parts_to(blob, root)
-      signed_url = signed_url_for(blob)
+    def assign_parts_to(blob, root, signed_url)
       parts = Rack::Utils.parse_nested_query(URI.parse(signed_url).query)
-      root[:output_values] ||= {}
       root[:output_values][:fields] = {
         key: blob.key,
         permissions: parts['sp'],
@@ -73,8 +74,11 @@ class BlobBuiltHandler
         resource: parts['sr'],
         signature: parts['sig']
       }
+    end
+
+    def assign_urls_to(blob, root, signed_url)
       root[:output_values].merge! url: signed_url,
-                                  unsigned_url: unsigned_url_for(blob)
+        unsigned_url: unsigned_url_for(blob)
     end
 
     def signed_url_for(blob)
