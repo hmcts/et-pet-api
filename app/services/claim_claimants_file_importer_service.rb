@@ -34,7 +34,7 @@ class ClaimClaimantsFileImporterService
   def force_utf8_file(file)
     block_size = 1024
     tempfile = Tempfile.new
-    while true do
+    loop do
       chunk = file.read(block_size)
       break if chunk.nil?
       tempfile.write chunk.encode('utf-8', invalid: :replace, undef: :replace)
