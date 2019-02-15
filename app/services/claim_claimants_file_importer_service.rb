@@ -24,10 +24,22 @@ class ClaimClaimantsFileImporterService
   def import_claimants(uploaded_file:)
     tempfile = Tempfile.new
     uploaded_file.download_blob_to(tempfile.path)
+    utf8_tempfile = force_utf8_file(tempfile)
     ActiveRecord::Base.transaction do
-      import_claimants_from_file(file: tempfile.path)
+      import_claimants_from_file(file: utf8_tempfile.path)
       claim.save! if autosave
     end
+  end
+
+  def force_utf8_file(file)
+    block_size = 1024
+    tempfile = Tempfile.new
+    loop do
+      chunk = file.read(block_size)
+      break if chunk.nil?
+      tempfile.write chunk.encode('utf-8', invalid: :replace, undef: :replace)
+    end
+    tempfile.tap(&:close)
   end
 
   def import_claimants_from_file(file:)
