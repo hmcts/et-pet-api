@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "d7157dbf-6f43-4fc8-ad20-738d4fe6c843",
+  "uuid": "d40c9b45-ec3f-4b0d-b4c0-eeadbcbae23e",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "51baa6d4-8090-488d-9655-2acc2114bd3a",
+      "uuid": "356586af-7e92-4490-9008-1d737ba2cdf9",
       "command": "BuildClaim",
       "data": {
         "reference": "222000000100",
@@ -43,7 +43,7 @@ Cookie: </pre>
         "case_type": "Single",
         "jurisdiction": "2",
         "office_code": "22",
-        "date_of_receipt": "2019-01-08T18:01:22+0000",
+        "date_of_receipt": "2019-02-12T23:15:57+0000",
         "other_known_claimant_names": "",
         "discrimination_claims": [
 
@@ -65,7 +65,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "fc16d9d0-761f-4038-940b-f7fecb34d468",
+      "uuid": "a27cc619-b01c-424c-b3b3-9065879b8eb5",
       "command": "BuildPrimaryRespondent",
       "data": {
         "name": "dodgy_co",
@@ -101,7 +101,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "33a4c433-7ad4-48ce-948a-036e2e1413d7",
+      "uuid": "2cae219c-86fe-47b9-b079-d91ef6ca7ef3",
       "command": "BuildPrimaryClaimant",
       "data": {
         "title": "Mr",
@@ -125,7 +125,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "4e05ccb0-2197-4e30-9300-d7f2a7d39f40",
+      "uuid": "09cdd286-d817-4747-b642-e5a682c67e72",
       "command": "BuildSecondaryClaimants",
       "data": [
         {
@@ -151,7 +151,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "3d90279b-cf3b-4a33-8dee-23d7820e1cd3",
+      "uuid": "eb3d1869-aecd-41a3-a642-75b07ece3956",
       "command": "BuildSecondaryRespondents",
       "data": [
         {
@@ -189,11 +189,9 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "fca79f54-ecb6-4c0c-a55d-3f35dac83925",
+      "uuid": "dbe517f2-5362-4940-85c2-a3e8c14bd74b",
       "command": "BuildPrimaryRepresentative",
       "data": {
-        "name": "Jane Doe",
-        "organisation_name": "repco ltd",
         "address_attributes": {
           "building": "Rep Building",
           "street": "Rep Street",
@@ -201,6 +199,8 @@ Cookie: </pre>
           "county": "Rep County",
           "post_code": "WC2 2BB"
         },
+        "name": "Jane Doe",
+        "organisation_name": "repco ltd",
         "address_telephone_number": "0207 987 6543",
         "mobile_number": "07987654321",
         "representative_type": "Private Individual",
@@ -212,10 +212,10 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "ed39d479-da6c-42a3-abb2-6c8abc944991",
+      "uuid": "733b597d-0ecb-4fd9-a7ce-103b32f45872",
       "command": "BuildPdfFile",
       "data": {
-        "data_url": "http://localhost:9000/etapibuckettest/UaJ3uvFPSaL9J3iLJXNLWNit?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20190108%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190108T180124Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=03cc2426d232d0b1b5253db1c14bf80566bd7523a7e3e552320cbd85597e3c60",
+        "data_url": "http://localhost:9000/etapibuckettest/Cr6ZahKUkubCPqRW4QZQWXyB?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20190212%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190212T231558Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=7760295397cbe8577b41c7760030112488df0c99fe50072ee08402f8b8014fa8",
         "filename": "et1_first_last.pdf",
         "checksum": "ee2714b8b731a8c1e95dffaa33f89728",
         "data_from_key": null
@@ -227,11 +227,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/claims/build_claim&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;d7157dbf-6f43-4fc8-ad20-738d4fe6c843&quot;,
+  &quot;uuid&quot;: &quot;d40c9b45-ec3f-4b0d-b4c0-eeadbcbae23e&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;51baa6d4-8090-488d-9655-2acc2114bd3a&quot;,
+      &quot;uuid&quot;: &quot;356586af-7e92-4490-9008-1d737ba2cdf9&quot;,
       &quot;command&quot;: &quot;BuildClaim&quot;,
       &quot;data&quot;: {
         &quot;reference&quot;: &quot;222000000100&quot;,
@@ -240,7 +240,7 @@ Cookie: </pre>
         &quot;case_type&quot;: &quot;Single&quot;,
         &quot;jurisdiction&quot;: &quot;2&quot;,
         &quot;office_code&quot;: &quot;22&quot;,
-        &quot;date_of_receipt&quot;: &quot;2019-01-08T18:01:22+0000&quot;,
+        &quot;date_of_receipt&quot;: &quot;2019-02-12T23:15:57+0000&quot;,
         &quot;other_known_claimant_names&quot;: &quot;&quot;,
         &quot;discrimination_claims&quot;: [
 
@@ -262,7 +262,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;fc16d9d0-761f-4038-940b-f7fecb34d468&quot;,
+      &quot;uuid&quot;: &quot;a27cc619-b01c-424c-b3b3-9065879b8eb5&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -298,7 +298,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;33a4c433-7ad4-48ce-948a-036e2e1413d7&quot;,
+      &quot;uuid&quot;: &quot;2cae219c-86fe-47b9-b079-d91ef6ca7ef3&quot;,
       &quot;command&quot;: &quot;BuildPrimaryClaimant&quot;,
       &quot;data&quot;: {
         &quot;title&quot;: &quot;Mr&quot;,
@@ -322,7 +322,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;4e05ccb0-2197-4e30-9300-d7f2a7d39f40&quot;,
+      &quot;uuid&quot;: &quot;09cdd286-d817-4747-b642-e5a682c67e72&quot;,
       &quot;command&quot;: &quot;BuildSecondaryClaimants&quot;,
       &quot;data&quot;: [
         {
@@ -348,7 +348,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;3d90279b-cf3b-4a33-8dee-23d7820e1cd3&quot;,
+      &quot;uuid&quot;: &quot;eb3d1869-aecd-41a3-a642-75b07ece3956&quot;,
       &quot;command&quot;: &quot;BuildSecondaryRespondents&quot;,
       &quot;data&quot;: [
         {
@@ -386,11 +386,9 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;fca79f54-ecb6-4c0c-a55d-3f35dac83925&quot;,
+      &quot;uuid&quot;: &quot;dbe517f2-5362-4940-85c2-a3e8c14bd74b&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRepresentative&quot;,
       &quot;data&quot;: {
-        &quot;name&quot;: &quot;Jane Doe&quot;,
-        &quot;organisation_name&quot;: &quot;repco ltd&quot;,
         &quot;address_attributes&quot;: {
           &quot;building&quot;: &quot;Rep Building&quot;,
           &quot;street&quot;: &quot;Rep Street&quot;,
@@ -398,6 +396,8 @@ Cookie: </pre>
           &quot;county&quot;: &quot;Rep County&quot;,
           &quot;post_code&quot;: &quot;WC2 2BB&quot;
         },
+        &quot;name&quot;: &quot;Jane Doe&quot;,
+        &quot;organisation_name&quot;: &quot;repco ltd&quot;,
         &quot;address_telephone_number&quot;: &quot;0207 987 6543&quot;,
         &quot;mobile_number&quot;: &quot;07987654321&quot;,
         &quot;representative_type&quot;: &quot;Private Individual&quot;,
@@ -409,10 +409,10 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;ed39d479-da6c-42a3-abb2-6c8abc944991&quot;,
+      &quot;uuid&quot;: &quot;733b597d-0ecb-4fd9-a7ce-103b32f45872&quot;,
       &quot;command&quot;: &quot;BuildPdfFile&quot;,
       &quot;data&quot;: {
-        &quot;data_url&quot;: &quot;http://localhost:9000/etapibuckettest/UaJ3uvFPSaL9J3iLJXNLWNit?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&amp;response-content-type=application%2Fpdf&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=accessKey1%2F20190108%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20190108T180124Z&amp;X-Amz-Expires=300&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=03cc2426d232d0b1b5253db1c14bf80566bd7523a7e3e552320cbd85597e3c60&quot;,
+        &quot;data_url&quot;: &quot;http://localhost:9000/etapibuckettest/Cr6ZahKUkubCPqRW4QZQWXyB?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&amp;response-content-type=application%2Fpdf&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=accessKey1%2F20190212%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20190212T231558Z&amp;X-Amz-Expires=300&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=7760295397cbe8577b41c7760030112488df0c99fe50072ee08402f8b8014fa8&quot;,
         &quot;filename&quot;: &quot;et1_first_last.pdf&quot;,
         &quot;checksum&quot;: &quot;ee2714b8b731a8c1e95dffaa33f89728&quot;,
         &quot;data_from_key&quot;: null
@@ -431,9 +431,9 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 1ce8ebf6-dcec-44ca-8de4-b7fbb0c4a0c4
-X-Runtime: 0.608158
-Content-Length: 248</pre>
+X-Request-Id: fa380a97-0fca-4616-9054-a10bb1e5ca2d
+X-Runtime: 0.345644
+Content-Length: 282</pre>
 
 #### Status
 
@@ -441,4 +441,4 @@ Content-Length: 248</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"BuildClaim":{"reference":"222000000100"},"BuildPrimaryRespondent":{},"BuildPrimaryClaimant":{},"BuildSecondaryClaimants":{},"BuildSecondaryRespondents":{},"BuildPrimaryRepresentative":{},"BuildPdfFile":{}},"uuid":null}</pre>
+<pre>{"status":"accepted","meta":{"BuildClaim":{"reference":"222000000100"},"BuildPrimaryRespondent":{},"BuildPrimaryClaimant":{},"BuildSecondaryClaimants":{},"BuildSecondaryRespondents":{},"BuildPrimaryRepresentative":{},"BuildPdfFile":{}},"uuid":"d40c9b45-ec3f-4b0d-b4c0-eeadbcbae23e"}</pre>
