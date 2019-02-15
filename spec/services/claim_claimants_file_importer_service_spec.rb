@@ -6,10 +6,11 @@ RSpec.describe ClaimClaimantsFileImporterService do
   let(:built_claim) do
     claimant = build(:claimant)
     build :claim,
-      uploaded_files: [build(:uploaded_file, :example_claim_claimants_csv, filename: "et1a_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.csv")],
+      uploaded_files: [build(:uploaded_file, example_file_trait, filename: "et1a_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.csv")],
       primary_claimant: claimant
   end
   let(:claim) { built_claim.tap(&:save!) }
+  let(:example_file_trait) { :example_claim_claimants_csv }
 
   describe '#call' do
     context 'with unsaved claim' do
@@ -20,17 +21,39 @@ RSpec.describe ClaimClaimantsFileImporterService do
       end
     end
 
-    context 'with saved claim' do
-      it 'imports the rows from the csv file into the claims claimants' do
-        # Act
-        service.call
+    context "with simple csv" do
+      let(:example_file_trait) { :example_claim_claimants_csv }
+      context 'with saved claim' do
+        it 'imports the rows from the csv file into the claims claimants' do
+          # Act
+          service.call
 
-        # Assert
-        map = lambda do |c|
-          c[:address] = an_object_having_attributes(c[:address])
-          an_object_having_attributes(c)
+          # Assert
+          map = lambda do |c|
+            c[:address] = an_object_having_attributes(c[:address])
+            an_object_having_attributes(c)
+          end
+          expect(claim.secondary_claimants).to match_array normalize_claimants_from_file.map(&map)
         end
-        expect(claim.secondary_claimants).to match_array normalize_claimants_from_file.map(&map)
+      end
+    end
+
+    context "with csv full of horrible encoding issues" do
+      let(:example_file_trait) { :example_claim_claimants_csv_bad_encoding }
+      context 'with saved claim' do
+        it 'imports the rows from the csv file into the claims claimants' do
+          # Act
+          service.call
+
+          # Assert
+          filename = build(:uploaded_file, example_file_trait).file.filename.to_s
+          full_path = File.absolute_path("../fixtures/#{filename}", __dir__)
+          map = lambda do |c|
+            c[:address] = an_object_having_attributes(c[:address])
+            an_object_having_attributes(c)
+          end
+          expect(claim.secondary_claimants).to match_array normalize_claimants_from_file(file: full_path).map(&map)
+        end
       end
     end
   end

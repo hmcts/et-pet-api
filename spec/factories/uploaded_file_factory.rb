@@ -40,6 +40,14 @@ FactoryBot.define do
       end
     end
 
+    trait :example_claim_claimants_csv_bad_encoding do
+      filename { 'et1a_first_last.csv' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      after(:build) do |uploaded_file, _evaluator|
+        uploaded_file.file.attach(Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims_bad_encoding.csv'), 'text/csv'))
+      end
+    end
+
     trait :example_response_text do
       filename { 'et3_atos_export.txt' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
