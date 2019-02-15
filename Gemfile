@@ -47,6 +47,9 @@ gem 'aws-sdk-s3', '~> 1.30'
 # Azure
 gem 'azure-storage', '~> 0.15.0.preview', require: false
 
+# Azure Importer
+gem 'et_s3_to_azure', path: 'vendor/gems/et_s3_to_azure'
+
 # For general easy http access - mainly for test but used in app too
 gem 'httparty', '~> 0.16.2'
 
