@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe 'Create signed S3 url request', type: :request do
+  include_context 'with cloud provider switching', cloud_provider: :amazon
   describe 'POST /api/v2/s3/create_signed_url' do
     let(:default_headers) do
       {
