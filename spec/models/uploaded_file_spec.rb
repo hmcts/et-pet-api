@@ -14,20 +14,22 @@ RSpec.describe UploadedFile, type: :model do
   end
 
   describe '#url' do
-    around do |example|
-      old_value = ActiveStorage::Current.host
-      begin
-        ActiveStorage::Current.host = 'http://example.com'
-        example.call
-        ActiveStorage::Current.host = old_value
-      ensure
-        ActiveStorage::Current.host = old_value
+    context 'using amazon cloud provider' do
+      include_context 'with cloud provider switching', cloud_provider: :amazon
+      it 'returns a minio test server url as we are in test mode' do
+        uploaded_file.file = fixture_file
+
+        expect(uploaded_file.url).to start_with(ActiveStorage::Blob.service.bucket.url)
       end
     end
-    it 'returns a minio server url as we are in test mode' do
-      uploaded_file.file = fixture_file
 
-      expect(uploaded_file.url).to start_with(ActiveStorage::Blob.service.bucket.url)
+    context 'using azure cloud provider' do
+      include_context 'with cloud provider switching', cloud_provider: :azure
+      it 'returns an azurite test server url as we are in test mode' do
+        uploaded_file.file = fixture_file
+
+        expect(uploaded_file.url).to start_with("#{ActiveStorage::Blob.service.blobs.generate_uri}/#{ActiveStorage::Blob.service.container}")
+      end
     end
   end
 

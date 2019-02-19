@@ -1,12 +1,18 @@
 require 'active_storage/service/s3_service'
 RSpec.configure do |c|
   c.before(:suite) do
-    next unless ActiveStorage::Blob.service.is_a?(ActiveStorage::Service::AzureStorageService)
-    client = ActiveStorage::Blob.service.blobs
-    container_name = ActiveStorage::Blob.service.container
-    containers = client.list_containers
-    next if containers.map(&:name).include?(container_name)
+    azure_service = ActiveStorage::Service.configure :azure, Rails.configuration.active_storage.service_configurations
+    direct_upload_service = ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
+    [azure_service, direct_upload_service].each do |service|
+      client = service.blobs
+      container_name = service.container
+      containers = client.list_containers
+      client.create_container(container_name) unless containers.map(&:name).include?(container_name)
 
-    client.create_container(container_name)
+      # Empty container
+      client.list_blobs(container_name).each do |blob|
+        client.delete_blob container_name, blob.name
+      end
+    end
   end
 end

@@ -127,19 +127,30 @@ FactoryBot.define do
     additional_information_key do
       next if rtf_file_path.nil?
 
-      config = {
-        region: ENV.fetch('AWS_REGION', 'us-east-1'),
-        access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID', 'accessKey1'),
-        secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY', 'verySecretKey1'),
-        endpoint: ENV.fetch('AWS_ENDPOINT', 'http://localhost:9000/'),
-        force_path_style: ENV.fetch('AWS_S3_FORCE_PATH_STYLE', 'true') == 'true'
-      }
-      s3 = Aws::S3::Client.new(config)
+      # @TODO RST-1676 Remove all amazon code
+      if ActiveStorage::Blob.service.is_a?(ActiveStorage::Service::AzureStorageService)
+        blob = ActiveStorage::Blob.new filename: File.basename(rtf_file_path)
+        blob.service = ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
+        file = File.open(rtf_file_path, 'r')
+        blob.upload(file)
+        file.close
+        blob.save!
+        blob.key
+      else
+        config = {
+          region: ENV.fetch('AWS_REGION', 'us-east-1'),
+          access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID', 'accessKey1'),
+          secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY', 'verySecretKey1'),
+          endpoint: ENV.fetch('AWS_ENDPOINT', 'http://localhost:9000/'),
+          force_path_style: ENV.fetch('AWS_S3_FORCE_PATH_STYLE', 'true') == 'true'
+        }
+        s3 = Aws::S3::Client.new(config)
 
-      bucket = Aws::S3::Bucket.new(client: s3, name: Rails.configuration.s3_direct_upload_bucket)
-      obj = bucket.object(SecureRandom.uuid)
-      obj.put(body: File.read(rtf_file_path), content_type: 'application/rtf')
-      obj.key
+        bucket = Aws::S3::Bucket.new(client: s3, name: Rails.configuration.s3_direct_upload_bucket)
+        obj = bucket.object(SecureRandom.uuid)
+        obj.put(body: File.read(rtf_file_path), content_type: 'application/rtf')
+        obj.key
+      end
     end
 
     trait :with_rtf do
