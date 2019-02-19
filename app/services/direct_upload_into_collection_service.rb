@@ -2,10 +2,10 @@ class DirectUploadIntoCollectionService
   def initialize(collection:, filename:)
     self.collection = collection
     self.filename = filename
-    if ActiveStorage::Blob.service.is_a?(ActiveStorage::Service::S3Service)
-      self.adapter = Amazon.new(filename)
-    else
+    if ActiveStorage::Blob.service.class.name =~ /Azure/
       self.adapter = Azure.new(filename)
+    else
+      self.adapter = Amazon.new(filename)
     end
   end
 

@@ -128,7 +128,7 @@ FactoryBot.define do
       next if rtf_file_path.nil?
 
       # @TODO RST-1676 Remove all amazon code
-      if ActiveStorage::Blob.service.is_a?(ActiveStorage::Service::AzureStorageService)
+      if ActiveStorage::Blob.service.class.name =~ /Azure/
         blob = ActiveStorage::Blob.new filename: File.basename(rtf_file_path)
         blob.service = ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
         file = File.open(rtf_file_path, 'r')
