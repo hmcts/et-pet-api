@@ -14,6 +14,7 @@ RSpec.describe UploadedFile, type: :model do
   end
 
   describe '#url' do
+    # @TODO RST-1676 - The amazon block can be removed
     context 'using amazon cloud provider' do
       include_context 'with cloud provider switching', cloud_provider: :amazon
       it 'returns a minio test server url as we are in test mode' do
@@ -33,35 +34,73 @@ RSpec.describe UploadedFile, type: :model do
     end
   end
 
-  describe '#download_blob_to' do
-    it 'downloads a file to the specified location' do
-      # Arrange - Setup with a fixture file and save
-      uploaded_file.file = fixture_file
-      uploaded_file.save
+  describe '#import_file_url=' do
+    shared_examples 'import_file_url= examples' do
+      it 'imports from a remote url' do
+        # Arrange - Store a file remotely
+        remote_file = create(:uploaded_file, :example_pdf)
 
-      Dir.mktmpdir do |dir|
-        filename = File.join(dir, 'my_file.pdf')
-        # Act - download the blob
-        uploaded_file.download_blob_to filename
+        # Act - Import it
+        uploaded_file.import_file_url = remote_file.file.service_url
 
-        # Assert - make sure its there
-        expect(File.exist?(filename)).to be true
+        # Assert - Make sure the file is imported
+        Dir.mktmpdir do |dir|
+          filename = File.join(dir, 'my_file.pdf')
+          # Act - download the blob
+          uploaded_file.download_blob_to filename
+
+          # Assert - make sure its a copy of the source
+          expect(filename).to be_a_file_copy_of(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf')
+        end
       end
     end
 
-    it 'downloads the correct file to the specified location' do
-      # Arrange - Setup with a fixture file and save
-      uploaded_file.file = fixture_file
-      uploaded_file.save
+    include_examples('import_file_url= examples')
+  end
 
-      Dir.mktmpdir do |dir|
-        filename = File.join(dir, 'my_file.pdf')
-        # Act - download the blob
-        uploaded_file.download_blob_to filename
+  describe '#import_from_key='
 
-        # Assert - make sure its there
-        expect(filename).to be_a_file_copy_of fixture_file.path
+  describe '#download_blob_to' do
+    shared_examples 'download_blob_to examples' do
+      it 'downloads a file to the specified location' do
+        # Arrange - Setup with a fixture file and save
+        uploaded_file.file = fixture_file
+        uploaded_file.save
+
+        Dir.mktmpdir do |dir|
+          filename = File.join(dir, 'my_file.pdf')
+          # Act - download the blob
+          uploaded_file.download_blob_to filename
+
+          # Assert - make sure its there
+          expect(File.exist?(filename)).to be true
+        end
       end
+
+      it 'downloads the correct file to the specified location' do
+        # Arrange - Setup with a fixture file and save
+        uploaded_file.file = fixture_file
+        uploaded_file.save
+
+        Dir.mktmpdir do |dir|
+          filename = File.join(dir, 'my_file.pdf')
+          # Act - download the blob
+          uploaded_file.download_blob_to filename
+
+          # Assert - make sure its there
+          expect(filename).to be_a_file_copy_of fixture_file.path
+        end
+      end
+    end
+    # @TODO RST-1676 - The amazon block can be removed and the shared examples expanded back into their only context
+    context 'in amazon mode' do
+      include_context 'with cloud provider switching', cloud_provider: :amazon
+      include_examples 'download_blob_to examples'
+    end
+
+    context 'in azure mode' do
+      include_context 'with cloud provider switching', cloud_provider: :amazon
+      include_examples 'download_blob_to examples'
     end
   end
 end
