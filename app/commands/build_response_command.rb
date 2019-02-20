@@ -26,7 +26,6 @@ class BuildResponseCommand < BaseCommand
   attribute :make_employer_contract_claim, :boolean
   attribute :claim_information, :string
   attribute :email_receipt, :string
-  attribute :additional_information_key, :string
   attribute :pdf_template_reference, :string, default: 'et3-v1-en'
   attribute :email_template_reference, :string, default: 'et3-v1-en'
 

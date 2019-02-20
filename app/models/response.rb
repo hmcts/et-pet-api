@@ -13,11 +13,6 @@ class Response < ApplicationRecord
     reference[0..1]
   end
 
-  def additional_information_key=(value)
-    service = DirectUploadIntoCollectionService.new(collection: uploaded_files, filename: 'additional_information.rtf')
-    service.import(value)
-  end
-
   def additional_information_rtf_file?
     ai_file.present?
   end

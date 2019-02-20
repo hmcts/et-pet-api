@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe UploadedFile, type: :model do
-  subject(:uploaded_file) { described_class.new }
+  subject(:uploaded_file) { described_class.new filename: 'anything' }
 
   let(:fixture_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf') }
 
@@ -36,6 +36,14 @@ RSpec.describe UploadedFile, type: :model do
 
   describe '#import_file_url=' do
     shared_examples 'import_file_url= examples' do
+      it 'allows nil as meaning no import from url required' do
+        # Arrange and Act - set to nil
+        uploaded_file.import_file_url = nil
+
+        # Assert
+        expect(uploaded_file.file.attachment).to be_nil
+      end
+
       it 'imports from a remote url' do
         # Arrange - Store a file remotely
         remote_file = create(:uploaded_file, :example_pdf)
@@ -55,10 +63,60 @@ RSpec.describe UploadedFile, type: :model do
       end
     end
 
-    include_examples('import_file_url= examples')
+    # @TODO RST-1676 - The amazon block can be removed
+    context 'in amazon mode' do
+      include_context 'with cloud provider switching', cloud_provider: :amazon
+      include_examples('import_file_url= examples')
+    end
+
+    context 'in azure mode' do
+      include_context 'with cloud provider switching', cloud_provider: :azure
+      include_examples('import_file_url= examples')
+    end
   end
 
-  describe '#import_from_key='
+  describe '#import_from_key=' do
+    shared_examples 'import_from_key examples' do
+      it 'imports from a key from the direct upload container' do
+        # Arrange - Store a file in the direct upload container
+        remote_file = create(:uploaded_file, :example_pdf, :direct_upload)
+
+        # Act
+        uploaded_file.import_from_key=remote_file.file.blob.key
+
+        # Assert - Make sure the file is imported
+        Dir.mktmpdir do |dir|
+          filename = File.join(dir, 'my_file.pdf')
+          # Act - download the blob
+          uploaded_file.download_blob_to filename
+
+          # Assert - make sure its a copy of the source
+          expect(filename).to be_a_file_copy_of(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf')
+        end
+      end
+
+      it 'removes the original when done' do
+        # Arrange - Store a file in the direct upload container
+        remote_file = create(:uploaded_file, :example_pdf, :direct_upload)
+
+        # Act
+        uploaded_file.import_from_key=remote_file.file.blob.key
+
+        # Assert - Make sure original has gone
+        expect(remote_file.file.blob.service.exist?(remote_file.file.blob.key)).to be false
+      end
+    end
+
+    context 'in amazon mode' do
+      include_context 'with cloud provider switching', cloud_provider: :amazon
+      include_examples 'import_from_key examples'
+    end
+
+    context 'in azure mode' do
+      include_context 'with cloud provider switching', cloud_provider: :azure
+      include_examples 'import_from_key examples'
+    end
+  end
 
   describe '#download_blob_to' do
     shared_examples 'download_blob_to examples' do

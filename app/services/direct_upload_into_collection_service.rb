@@ -1,3 +1,4 @@
+# @TODO Review if this will still be required - see StoredFileRemoteUpload
 class DirectUploadIntoCollectionService
   def initialize(collection:, filename:)
     self.collection = collection
