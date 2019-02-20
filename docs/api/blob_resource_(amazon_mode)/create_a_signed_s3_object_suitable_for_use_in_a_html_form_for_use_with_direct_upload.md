@@ -30,7 +30,7 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "d158344c-50d0-4f5a-a356-77a11a1d6fb9",
+  "uuid": "aee43e3d-700f-4484-8eaa-a0826b193cdc",
   "command": "BuildBlob",
   "data": null,
   "async": false
@@ -39,7 +39,7 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/build_blob&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;d158344c-50d0-4f5a-a356-77a11a1d6fb9&quot;,
+  &quot;uuid&quot;: &quot;aee43e3d-700f-4484-8eaa-a0826b193cdc&quot;,
   &quot;command&quot;: &quot;BuildBlob&quot;,
   &quot;data&quot;: null,
   &quot;async&quot;: false
@@ -55,8 +55,8 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: c3ff8b59-b571-441e-b5b7-e8cca6284195
-X-Runtime: 0.070015
+X-Request-Id: 5d9564b0-22ec-4709-8445-d66d317b7982
+X-Runtime: 0.075141
 Content-Length: 929</pre>
 
 #### Status
@@ -65,4 +65,4 @@ Content-Length: 929</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"cloud_provider":"amazon"},"uuid":"d158344c-50d0-4f5a-a356-77a11a1d6fb9","data":{"fields":{"key":"direct_uploads/4f4af600-5c76-4602-8ef6-110428af1eb5","success_action_status":"201","policy":"eyJleHBpcmF0aW9uIjoiMjAxOS0wMi0xM1QwMDoxNTo1N1oiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJldGFwaWRpcmVjdGJ1Y2tldHRlc3QifSx7ImtleSI6ImRpcmVjdF91cGxvYWRzLzRmNGFmNjAwLTVjNzYtNDYwMi04ZWY2LTExMDQyOGFmMWViNSJ9LHsic3VjY2Vzc19hY3Rpb25fc3RhdHVzIjoiMjAxIn0seyJ4LWFtei1jcmVkZW50aWFsIjoiYWNjZXNzS2V5MS8yMDE5MDIxMi91cy1lYXN0LTEvczMvYXdzNF9yZXF1ZXN0In0seyJ4LWFtei1hbGdvcml0aG0iOiJBV1M0LUhNQUMtU0hBMjU2In0seyJ4LWFtei1kYXRlIjoiMjAxOTAyMTJUMjMxNTU3WiJ9XX0=","x-amz-credential":"accessKey1/20190212/us-east-1/s3/aws4_request","x-amz-algorithm":"AWS4-HMAC-SHA256","x-amz-date":"20190212T231557Z","x-amz-signature":"f02efaf9a26e398cea6b7aaa1c62f196d7e382b8957e4fd870350f601b500b77"},"url":"http://localhost:9000/etapidirectbuckettest"}}</pre>
+<pre>{"status":"accepted","meta":{"cloud_provider":"amazon"},"uuid":"aee43e3d-700f-4484-8eaa-a0826b193cdc","data":{"fields":{"key":"direct_uploads/84ebb576-65b4-426d-8c08-7ba00ed625a3","success_action_status":"201","policy":"eyJleHBpcmF0aW9uIjoiMjAxOS0wMi0yMFQxOTo0MDoyMloiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJldGFwaWRpcmVjdGJ1Y2tldHRlc3QifSx7ImtleSI6ImRpcmVjdF91cGxvYWRzLzg0ZWJiNTc2LTY1YjQtNDI2ZC04YzA4LTdiYTAwZWQ2MjVhMyJ9LHsic3VjY2Vzc19hY3Rpb25fc3RhdHVzIjoiMjAxIn0seyJ4LWFtei1jcmVkZW50aWFsIjoiYWNjZXNzS2V5MS8yMDE5MDIyMC91cy1lYXN0LTEvczMvYXdzNF9yZXF1ZXN0In0seyJ4LWFtei1hbGdvcml0aG0iOiJBV1M0LUhNQUMtU0hBMjU2In0seyJ4LWFtei1kYXRlIjoiMjAxOTAyMjBUMTg0MDIyWiJ9XX0=","x-amz-credential":"accessKey1/20190220/us-east-1/s3/aws4_request","x-amz-algorithm":"AWS4-HMAC-SHA256","x-amz-date":"20190220T184022Z","x-amz-signature":"f33a3e51cee3d4b21e975d3f3734e287828a3513ad7c18e2869586a837b41da5"},"url":"http://localhost:9000/etapidirectbuckettest"}}</pre>
