@@ -15,6 +15,14 @@ amazon:
   bucket: <%= ENV.fetch('S3_UPLOAD_BUCKET', '') %>
   <%= "endpoint: #{ENV.fetch('AWS_ENDPOINT')}" if ENV.key?('AWS_ENDPOINT') %>
   <%= "force_path_style: true" if ENV.fetch('AWS_S3_FORCE_PATH_STYLE', 'false') == 'true' %>
+amazon_direct_upload:
+  service: S3
+  access_key_id: <%= ENV.fetch('AWS_ACCESS_KEY_ID', '') %>
+  secret_access_key: <%= ENV.fetch('AWS_SECRET_ACCESS_KEY', '') %>
+  region: <%= ENV.fetch('AWS_REGION', 'eu-west-1') %>
+  bucket: <%= ENV.fetch('S3_DIRECT_UPLOAD_BUCKET', '') %>
+  <%= "endpoint: #{ENV.fetch('AWS_ENDPOINT')}" if ENV.key?('AWS_ENDPOINT') %>
+  <%= "force_path_style: true" if ENV.fetch('AWS_S3_FORCE_PATH_STYLE', 'false') == 'true' %>
 azure:
   service: AzureStorage
   storage_account_name: <%= ENV.fetch('AZURE_STORAGE_ACCOUNT', 'devstoreaccount1') %>
