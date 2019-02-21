@@ -48,12 +48,14 @@ FactoryBot.define do
     # @TODO RST-1729 Remove the upload method switching as it will always be azure from now on
     after(:build) do |obj, evaluator|
       next unless evaluator.upload_method == :url
+
       uploaded_file = create(:uploaded_file, *evaluator.uploaded_file_traits)
       obj.data_url = uploaded_file.file.blob.service_url
     end
 
     after(:build) do |obj, evaluator|
       next unless evaluator.upload_method == :direct_upload
+
       uploaded_file = create(:uploaded_file, :direct_upload, *evaluator.uploaded_file_traits)
       obj.data_from_key = uploaded_file.file.blob.key
     end

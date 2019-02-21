@@ -22,12 +22,15 @@ module Api
 
         private
 
-        def sub_commands(p)
-          commands = p[:data].map(&:to_h)
+        def sub_commands(safe_params)
+          commands = safe_params[:data].map(&:to_h)
           extra_commands = []
-          build_response = commands.detect {|c| c[:command] == 'BuildResponse'}
+          build_response = commands.detect { |c| c[:command] == 'BuildResponse' }
           key = build_response[:data].delete(:additional_information_key)
-          extra_commands << { uuid: SecureRandom.uuid, command: 'BuildResponseAdditionalInformationFile', data: { filename: 'additional_information.rtf', data_from_key: key } } unless key.nil?
+          unless key.nil?
+            extra_commands << { uuid: SecureRandom.uuid, command: 'BuildResponseAdditionalInformationFile',
+                                data: { filename: 'additional_information.rtf', data_from_key: key } }
+          end
           commands + extra_commands
         end
 

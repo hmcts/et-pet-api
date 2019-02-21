@@ -11,6 +11,7 @@ module StoredFileRemoteUpload
   # @param [String] url The url of the file to import
   def import_file_url=(url)
     return if url.nil?
+
     file = Tempfile.new
     file.binmode
     response = HTTParty.get(url, stream_body: true) do |chunk|
@@ -24,6 +25,7 @@ module StoredFileRemoteUpload
 
   def import_from_key=(key)
     return if key.nil?
+
     adapter = ActiveStorage::Blob.service.class.name =~ /Azure/ ? Azure.new(self) : Amazon.new(self)
     adapter.import_from_key(key)
   end
@@ -35,13 +37,24 @@ module StoredFileRemoteUpload
 
     def import_from_key(key)
       blob = ActiveStorage::Blob.new(blob_attributes_for(key))
-      source_blob_uri = direct_upload_service.url key, expires_in: 1.day, filename: blob.filename, content_type: blob.content_type, disposition: :inline
-      blob.service.blobs.copy_blob_from_uri(blob.service.container, blob.key, source_blob_uri)
-      direct_upload_service.blobs.delete_blob(direct_upload_service.container, key)
+      copy_blob(blob, key)
+      delete_source_blob(key)
       model.file.attach blob
     end
 
     private
+
+    def delete_source_blob(key)
+      direct_upload_service.blobs.delete_blob(direct_upload_service.container, key)
+    end
+
+    def copy_blob(blob, key)
+      blob.service.blobs.copy_blob_from_uri(blob.service.container, blob.key, source_uri_for(blob, key))
+    end
+
+    def source_uri_for(blob, key)
+      direct_upload_service.url key, expires_in: 1.day, filename: blob.filename, content_type: blob.content_type, disposition: :inline
+    end
 
     attr_accessor :model
 
@@ -55,7 +68,7 @@ module StoredFileRemoteUpload
     end
 
     def direct_upload_service
-      @azure_direct_service ||= ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
+      @direct_upload_service ||= ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
     end
 
   end
@@ -82,7 +95,6 @@ module StoredFileRemoteUpload
         content_type: source_object.content_type,
         metadata: {} }
     end
-
 
     attr_accessor :model
 
