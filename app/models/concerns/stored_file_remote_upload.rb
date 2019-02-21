@@ -35,7 +35,8 @@ module StoredFileRemoteUpload
 
     def import_from_key(key)
       blob = ActiveStorage::Blob.new(blob_attributes_for(key))
-      direct_upload_service.blobs.copy_blob(blob.service.container, blob.key, direct_upload_service.container, key)
+      source_blob_uri = direct_upload_service.url key, expires_in: 1.day, filename: blob.filename, content_type: blob.content_type, disposition: :inline
+      blob.service.blobs.copy_blob_from_uri(blob.service.container, blob.key, source_blob_uri)
       direct_upload_service.blobs.delete_blob(direct_upload_service.container, key)
       model.file.attach blob
     end
