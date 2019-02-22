@@ -30,7 +30,7 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "50b63a22-327c-4bb8-b923-c3c3023f3185",
+  "uuid": "7374cc74-2431-4c0d-a9ab-a3d63ecf70ce",
   "command": "CreateReference",
   "async": false,
   "data": {
@@ -41,7 +41,7 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/references/create_reference&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;50b63a22-327c-4bb8-b923-c3c3023f3185&quot;,
+  &quot;uuid&quot;: &quot;7374cc74-2431-4c0d-a9ab-a3d63ecf70ce&quot;,
   &quot;command&quot;: &quot;CreateReference&quot;,
   &quot;async&quot;: false,
   &quot;data&quot;: {
@@ -58,10 +58,10 @@ Cookie: </pre>
 #### Headers
 
 <pre>Content-Type: application/json; charset=utf-8
-ETag: W/&quot;f865645a9b80bed48e92e52e782a0645&quot;
+ETag: W/&quot;735190e2c36c9fde910f623df1a3c691&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: cdd1960f-7fcb-4010-8924-027fe7c3cbfc
-X-Runtime: 0.040847
+X-Request-Id: dea20095-2ea3-411e-b5f1-dd5828eba12e
+X-Runtime: 0.042934
 Content-Length: 246</pre>
 
 #### Status
@@ -70,4 +70,4 @@ Content-Length: 246</pre>
 
 #### Body
 
-<pre>{"status":"created","meta":{},"uuid":"50b63a22-327c-4bb8-b923-c3c3023f3185","data":{"reference":"222000013900","office":{"code":"22","name":"London Central","address":"Victory House, 30-34 Kingsway, London WC2B 6EX","telephone":"020 7273 8603"}}}</pre>
+<pre>{"status":"created","meta":{},"uuid":"7374cc74-2431-4c0d-a9ab-a3d63ecf70ce","data":{"reference":"222000279500","office":{"code":"22","name":"London Central","address":"Victory House, 30-34 Kingsway, London WC2B 6EX","telephone":"020 7273 8603"}}}</pre>

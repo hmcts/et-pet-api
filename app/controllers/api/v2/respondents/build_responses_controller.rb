@@ -9,7 +9,7 @@ module Api
           root_object = ::Response.new
           command = CommandService.command_for command: p[:command],
                                                uuid: p[:uuid],
-                                               data: p[:data].map(&:to_h)
+                                               data: sub_commands(p)
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object
             root_object.save!
@@ -21,6 +21,18 @@ module Api
         end
 
         private
+
+        def sub_commands(safe_params)
+          commands = safe_params[:data].map(&:to_h)
+          extra_commands = []
+          build_response = commands.detect { |c| c[:command] == 'BuildResponse' }
+          key = build_response[:data].delete(:additional_information_key)
+          unless key.nil?
+            extra_commands << { uuid: SecureRandom.uuid, command: 'BuildResponseAdditionalInformationFile',
+                                data: { filename: 'additional_information.rtf', data_from_key: key } }
+          end
+          commands + extra_commands
+        end
 
         def build_response_params
           params.permit(:uuid, :command, data: [:uuid, :command, data: {}])

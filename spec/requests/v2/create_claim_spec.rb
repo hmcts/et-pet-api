@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# @TODO RST-1729 - Remove all url based tests for the input files (rtf and csv) - they have their tests duplicated
+#  using the direct upload method - but we couldnt remove until the old url method has stopped being used.
 require 'rails_helper'
 RSpec.describe 'Create Claim Request', type: :request do
   describe 'POST /api/v2/claims/build_claim' do
@@ -331,12 +333,27 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim with no representatives'
     end
 
+    # @TODO RST-1676 - The amazon context can be removed and the shared examples expanded back into the only context using them
     context 'with json involving external files' do
       shared_examples 'all file examples' do
         context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using url' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
             json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 0) }
+          include_examples 'any claim variation'
+          include_examples 'a claim exported to primary ATOS'
+          include_examples 'a claim with provided reference number'
+          include_examples 'a claim with multiple claimants'
+          include_examples 'a claim with multiple claimants from csv'
+          include_examples 'a claim with single respondent'
+          include_examples 'a claim with no representatives'
+          include_examples 'a claim with a csv file'
+        end
+
+        context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload' do
+          include_context 'with fake sidekiq'
+          include_context 'with setup for claims',
+            json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 0) }
           include_examples 'any claim variation'
           include_examples 'a claim exported to primary ATOS'
           include_examples 'a claim with provided reference number'
@@ -361,10 +378,38 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim with a csv file'
         end
 
+        context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload but uppercased filename' do
+          include_context 'with fake sidekiq'
+          include_context 'with setup for claims',
+            json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0) }
+          include_examples 'any claim variation'
+          include_examples 'a claim exported to primary ATOS'
+          include_examples 'a claim with provided reference number'
+          include_examples 'a claim with multiple claimants'
+          include_examples 'a claim with multiple claimants from csv'
+          include_examples 'a claim with single respondent'
+          include_examples 'a claim with no representatives'
+          include_examples 'a claim with a csv file'
+        end
+
         context 'with json for multiple claimants, single respondent and representative - with csv file uploaded using url' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
             json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 1) }
+          include_examples 'any claim variation'
+          include_examples 'a claim exported to primary ATOS'
+          include_examples 'a claim with provided reference number'
+          include_examples 'a claim with multiple claimants'
+          include_examples 'a claim with multiple claimants from csv'
+          include_examples 'a claim with single respondent'
+          include_examples 'a claim with a representative'
+          include_examples 'a claim with a csv file'
+        end
+
+        context 'with json for multiple claimants, single respondent and representative - with csv file uploaded using direct upload' do
+          include_context 'with fake sidekiq'
+          include_context 'with setup for claims',
+            json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 1) }
           include_examples 'any claim variation'
           include_examples 'a claim exported to primary ATOS'
           include_examples 'a claim with provided reference number'
@@ -389,10 +434,38 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim with a csv file'
         end
 
+        context 'with json for multiple claimant, multiple respondents but no representatives - with csv file uploaded using direct upload' do
+          include_context 'with fake sidekiq'
+          include_context 'with setup for claims',
+            json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 0) }
+          include_examples 'any claim variation'
+          include_examples 'a claim exported to primary ATOS'
+          include_examples 'a claim with provided reference number'
+          include_examples 'a claim with multiple claimants'
+          include_examples 'a claim with multiple claimants from csv'
+          include_examples 'a claim with multiple respondents'
+          include_examples 'a claim with no representatives'
+          include_examples 'a claim with a csv file'
+        end
+
         context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using url' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
             json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 1) }
+          include_examples 'any claim variation'
+          include_examples 'a claim exported to primary ATOS'
+          include_examples 'a claim with provided reference number'
+          include_examples 'a claim with multiple claimants'
+          include_examples 'a claim with multiple claimants from csv'
+          include_examples 'a claim with multiple respondents'
+          include_examples 'a claim with a representative'
+          include_examples 'a claim with a csv file'
+        end
+
+        context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using direct upload' do
+          include_context 'with fake sidekiq'
+          include_context 'with setup for claims',
+            json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 1) }
           include_examples 'any claim variation'
           include_examples 'a claim exported to primary ATOS'
           include_examples 'a claim with provided reference number'
@@ -417,6 +490,20 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim with an rtf file'
         end
 
+        context 'with json for single claimant, single respondent and representative - with rtf file uploaded using direct upload' do
+          include_context 'with fake sidekiq'
+          include_context 'with setup for claims',
+            json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
+
+          include_examples 'any claim variation'
+          include_examples 'a claim exported to primary ATOS'
+          include_examples 'a claim with provided reference number'
+          include_examples 'a claim with single claimant'
+          include_examples 'a claim with single respondent'
+          include_examples 'a claim with a representative'
+          include_examples 'a claim with an rtf file'
+        end
+
         context 'with json for single claimant, single respondent and representative - with rtf file uploaded using url with uppercased extension' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
@@ -430,8 +517,32 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim with a representative'
           include_examples 'a claim with an rtf file'
         end
+
+        context 'with json for single claimant, single respondent and representative - with rtf file uploaded using direct upload with uppercased extension' do
+          include_context 'with fake sidekiq'
+          include_context 'with setup for claims',
+            json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
+
+          include_examples 'any claim variation'
+          include_examples 'a claim exported to primary ATOS'
+          include_examples 'a claim with provided reference number'
+          include_examples 'a claim with single claimant'
+          include_examples 'a claim with single respondent'
+          include_examples 'a claim with a representative'
+          include_examples 'a claim with an rtf file'
+        end
       end
-      include_examples 'all file examples'
+      context 'in amazon mode' do
+        include_context 'with cloud provider switching', cloud_provider: :amazon do
+          include_examples 'all file examples'
+        end
+      end
+
+      context 'in azure mode' do
+        include_context 'with cloud provider switching', cloud_provider: :azure do
+          include_examples 'all file examples'
+        end
+      end
     end
 
     context 'with json for single claimant, respondent and representative' do

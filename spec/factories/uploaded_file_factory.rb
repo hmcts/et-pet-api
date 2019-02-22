@@ -8,68 +8,68 @@ FactoryBot.define do
     trait :example_pdf do
       filename { 'et1_first_last.pdf' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'application/pdf',  filename: Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf') } }
+      file_to_attach { { content_type: 'application/pdf', filename: Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf') } }
     end
 
     trait :example_claim_text do
       filename { 'et1_first_last.txt' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'text/plain',  filename: Rails.root.join('spec', 'fixtures', 'et1_first_last.txt') } }
+      file_to_attach { { content_type: 'text/plain', filename: Rails.root.join('spec', 'fixtures', 'et1_first_last.txt') } }
     end
 
     trait :example_claim_rtf do
       filename { 'et1_attachment_first_last.rtf' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'application/rtf',  filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf') } }
+      file_to_attach { { content_type: 'application/rtf', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf') } }
     end
 
     trait :example_claim_claimants_text do
       filename { 'et1a_first_last.txt' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'text/plain',  filename: Rails.root.join('spec', 'fixtures', 'et1a_first_last.txt') } }
+      file_to_attach { { content_type: 'text/plain', filename: Rails.root.join('spec', 'fixtures', 'et1a_first_last.txt') } }
     end
 
     trait :example_claim_claimants_csv do
       filename { 'et1a_first_last.csv' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'text/csv',  filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims.csv') } }
+      file_to_attach { { content_type: 'text/csv', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims.csv') } }
     end
 
     trait :example_claim_claimants_csv_bad_encoding do
       filename { 'et1a_first_last.csv' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'text/csv',  filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims_bad_encoding.csv') } }
+      file_to_attach { { content_type: 'text/csv', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims_bad_encoding.csv') } }
     end
 
     trait :example_response_text do
       filename { 'et3_atos_export.txt' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'text/plain',  filename: Rails.root.join('spec', 'fixtures', 'et3.txt') } }
+      file_to_attach { { content_type: 'text/plain', filename: Rails.root.join('spec', 'fixtures', 'et3.txt') } }
     end
 
     trait :example_response_rtf do
       filename { 'et3_atos_export.rtf' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'application/rtf',  filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf') } }
+      file_to_attach { { content_type: 'application/rtf', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf') } }
     end
 
     trait :example_response_input_rtf do
       filename { 'additional_information.rtf' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'application/rtf',  filename: Rails.root.join('spec', 'fixtures', 'example.rtf') } }
+      file_to_attach { { content_type: 'application/rtf', filename: Rails.root.join('spec', 'fixtures', 'example.rtf') } }
     end
 
     trait :example_response_wrong_input_rtf do
       filename { 'additional_information.rtf' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'application/rtf',  filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf') } }
+      file_to_attach { { content_type: 'application/rtf', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf') } }
     end
 
     # We do not have an example pdf yet - but the file contents does not really matter as nothing is reading it
     trait :example_response_pdf do
       filename { 'et3_atos_export.pdf' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'application/pdf',  filename: Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf') } }
+      file_to_attach { { content_type: 'application/pdf', filename: Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf') } }
     end
 
     trait :example_data do
