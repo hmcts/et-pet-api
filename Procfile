@@ -1,2 +1,2 @@
-web: bundle exec unicorn -p 8080 -c ./config/unicorn.rb
+web: bundle exec puma --port=8080 --config=./config/unicorn.rb
 sidekiq: bundle exec sidekiq
