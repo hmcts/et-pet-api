@@ -20,4 +20,4 @@ supervisord -c /etc/supervisor.conf &
 
 echo "Running app"
 
-bundle exec unicorn -p 8080 -c ./config/unicorn.rb -E production
+bundle exec puma --port=8080 --config=./config/puma.rb --environment=production
