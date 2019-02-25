@@ -17,6 +17,7 @@ class BuildClaimCommand < BaseCommand
   attribute :miscellaneous_information, :string
   attribute :employment_details
   attribute :is_unfair_dismissal, :boolean
+  attribute :pdf_template_reference, :string, default: 'et1-v1-en'
 
   def initialize(*)
     super

@@ -546,7 +546,8 @@ CREATE TABLE public.claims (
     employment_details jsonb DEFAULT '{}'::jsonb NOT NULL,
     is_unfair_dismissal boolean,
     primary_respondent_id bigint,
-    primary_representative_id bigint
+    primary_representative_id bigint,
+    pdf_template_reference character varying NOT NULL
 );
 
 
@@ -2119,5 +2120,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190108161211'),
 ('20190116150702'),
 ('20190312113307');
+('20190225185919'),
+('20190225190111'),
+('20190225190207');
 
 
