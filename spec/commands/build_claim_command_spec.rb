@@ -28,5 +28,35 @@ RSpec.describe BuildClaimCommand do
       # Assert
       expect(meta).to include reference: data[:reference]
     end
+
+    it 'adds a pdf_url to the meta' do
+      # Arrange
+      meta = {}
+
+      # Act
+      command.apply(root_object, meta: meta)
+
+      # Assert
+      expect(meta).to include pdf_url: instance_of(String)
+    end
+  end
+
+  describe '#valid?' do
+    context 'with invalid pdf_template_reference' do
+      let(:data) do
+        {
+          pdf_template_reference: '../../../etc/password'
+        }
+      end
+
+      it 'contains the correct error key in the pdf_template_reference attributes' do
+        # Act
+        command.valid?
+
+        # Assert
+        expect(command.errors.details[:pdf_template_reference]).to include(error: :inclusion, value: data[:pdf_template_reference])
+      end
+
+    end
   end
 end

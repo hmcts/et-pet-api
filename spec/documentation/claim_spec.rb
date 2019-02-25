@@ -14,8 +14,17 @@ resource 'Claim' do
 
     context "200" do
 
-      example 'Create a claim with a claimant, respondent and representative' do
-        request = FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 1, number_of_secondary_respondents: 1, number_of_representatives: 1).as_json
+      example 'Create a claim with a claimant, respondent and representative with external pdf' do
+        request = FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 1, number_of_secondary_respondents: 1, number_of_representatives: 1, has_pdf_file: true).as_json
+
+        # It's also possible to extract types of parameters when you pass data through `do_request` method.
+        do_request(request)
+
+        expect(rspec_api_documentation_client.send(:last_response).status).to eq(202)
+      end
+
+      example 'Create a claim with a claimant, respondent and representative without external pdf' do
+        request = FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 1, number_of_secondary_respondents: 1, number_of_representatives: 1, has_pdf_file: false).as_json
 
         # It's also possible to extract types of parameters when you pass data through `do_request` method.
         do_request(request)
@@ -24,7 +33,7 @@ resource 'Claim' do
       end
 
       example 'Create a claim with a claimant, respondent, representative and claim information file' do
-        request = FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 1, number_of_secondary_respondents: 1, number_of_representatives: 1).as_json
+        request = FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 1, number_of_secondary_respondents: 1, number_of_representatives: 1, has_pdf_file: true).as_json
 
         # It's also possible to extract types of parameters when you pass data through `do_request` method.
         do_request(request)
