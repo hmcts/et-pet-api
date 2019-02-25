@@ -19,6 +19,8 @@ class BuildClaimCommand < BaseCommand
   attribute :is_unfair_dismissal, :boolean
   attribute :pdf_template_reference, :string, default: 'et1-v1-en'
 
+  validates :pdf_template_reference, inclusion: { in: ['et1-v1-en', 'et1-v1-cy'] }
+
   def initialize(*)
     super
     self.reference_service = ReferenceService
