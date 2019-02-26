@@ -18,6 +18,7 @@ FactoryBot.define do
     jurisdiction { 2 }
     office_code { 22 }
     date_of_receipt { Time.zone.now }
+    pdf_template_reference {"et1-v1-en"}
 
     after(:build) do |claim, evaluator|
       claim.primary_claimant = build(:claimant) if claim.primary_claimant.blank?
