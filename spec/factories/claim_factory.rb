@@ -56,6 +56,10 @@ FactoryBot.define do
       end
     end
 
+    trait :without_representative do
+      primary_representative { nil }
+    end
+
     after(:create) do |claim, evaluator|
       evaluator.ready_for_export_to.each do |external_system_id|
         Export.create resource: claim, external_system_id: external_system_id
