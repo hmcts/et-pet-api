@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/ministryofjustice/azure_env_secrets.git
+  revision: 73d252c53b9b8d3db448d7515896ab7d7c20354e
+  tag: v0.1.2
+  specs:
+    azure_env_secrets (0.1.2)
+
+GIT
   remote: https://github.com/ministryofjustice/et_atos_file_transfer.git
   revision: df31044aed9e476b835a5bc8383ce0b2f6c754a2
   ref: df31044aed9e476b835a5bc8383ce0b2f6c754a2
@@ -365,6 +372,7 @@ PLATFORMS
 DEPENDENCIES
   aws-sdk-s3 (~> 1.30)
   azure-storage (~> 0.15.0.preview)
+  azure_env_secrets!
   byebug
   database_cleaner (~> 1.6.2)
   dotenv-rails (~> 2.4)
