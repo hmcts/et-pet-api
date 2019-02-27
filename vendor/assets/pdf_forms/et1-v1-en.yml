@@ -2,7 +2,11 @@ your_details:
   title:
     field_name: '1.1 title tick boxes'
     select_values:
-      miss: 'miss'
+      Miss: 'miss'
+      Mr: 'mr'
+      Mrs: 'mrs'
+      Ms: 'ms'
+    unselected_value: 'Off'
   first_name:
     field_name: '1.2 first names'
   last_name:
@@ -15,6 +19,10 @@ your_details:
     field_name: '1.4 DOB year'
   gender:
     field_name: '1.4 gender'
+    select_values:
+      Female: 'female'
+      Male: 'male'
+    unselected_value: 'Off'
   building:
     field_name: '1.5 number'
   street:
@@ -33,6 +41,11 @@ your_details:
     field_name: '1.9 email'
   correspondence:
     field_name: '1.8 tick boxes'
+    select_values:
+      Email: 'email'
+      Fax: 'fax'
+      Post: 'post'
+    unselected_value: 'Off'
 respondents_details:
   name:
     field_name: '2.1'

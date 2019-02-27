@@ -74,7 +74,7 @@ RSpec.describe ClaimFileBuilder::BuildClaimPdfFile do
     end
 
     context 'using an alternative pdf template' do
-      let(:claim) { build(:claim, :example_data, :with_representative) }
+      let(:claim) { build(:claim, :example_data) }
 
       it 'stores an ET1 pdf file from the welsh v1 template with the correct contents' do
         # Act

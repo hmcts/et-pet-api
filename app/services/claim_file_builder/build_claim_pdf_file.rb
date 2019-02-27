@@ -50,7 +50,7 @@ module ClaimFileBuilder
 
     def pdf_fields
       result = {}
-      apply_header_pdf_fields(result)
+      apply_your_details_fields(result)
       result
     end
 
@@ -85,8 +85,35 @@ module ClaimFileBuilder
       end
     end
 
-    def apply_header_pdf_fields(result)
-      #apply_field result, response.case_number, :header, :case_number
+    def apply_your_details_fields(result)
+      primary_claimant = claim.primary_claimant
+      pca = primary_claimant.address
+      apply_field result, primary_claimant.title, :your_details, :title
+      apply_field result, primary_claimant.first_name, :your_details, :first_name
+      apply_field result, primary_claimant.last_name, :your_details, :last_name
+      apply_field result, primary_claimant.gender, :your_details, :gender
+      apply_field result, pca.building, :your_details, :building
+      apply_field result, pca.street, :your_details, :street
+      apply_field result, pca.locality, :your_details, :locality
+      apply_field result, pca.county, :your_details, :county
+      apply_field result, post_code_for(pca.post_code), :your_details, :post_code
+      apply_field result, primary_claimant.mobile_number, :your_details, :alternative_telephone_number
+      apply_field result, primary_claimant.contact_preference, :your_details, :correspondence
+      apply_field result, primary_claimant.date_of_birth.day, :your_details, :dob_day
+      apply_field result, primary_claimant.date_of_birth.month, :your_details, :dob_month
+      apply_field result, primary_claimant.date_of_birth.year, :your_details, :dob_year
+      apply_field result, primary_claimant.email_address, :your_details, :email_address
+      apply_field result, primary_claimant.address_telephone_number, :your_details, :telephone_number
     end
+
+    def post_code_for(val, optional: false)
+      return nil if val.nil? && optional
+      match = val.match(/\A\s*(\S+)\s*(\d\w\w)\s*\z/)
+      return val.slice(0,7) unless match
+      spaces = 4 - match[1].length
+      val = "#{match[1]}#{' ' * spaces}#{match[2]}"
+      val.slice(0,7)
+    end
+
   end
 end
