@@ -74,7 +74,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       let(:input_secondary_claimants_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildSecondaryClaimants' }.data }
       let(:input_primary_respondent_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildPrimaryRespondent' }.data }
       let(:input_secondary_respondents_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildSecondaryRespondents' }.data }
-      let(:input_primary_representative_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildPrimaryRepresentative' }.data }
+      let(:input_primary_representative_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildPrimaryRepresentative' }.try(:data) }
       let(:input_claim_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaim' }.data }
       let(:output_reference) { json_response.dig('meta', 'BuildClaim', 'reference') }
       let(:output_filename_pdf) { "#{output_reference}_ET1_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.pdf" }
@@ -313,11 +313,9 @@ RSpec.describe 'Create Claim Request', type: :request do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         expect(staging_folder.et1_pdf_file(output_filename_pdf, template: input_claim_factory.pdf_template_reference)).to have_correct_contents_for(
           claim: input_claim_factory,
-          primary_claimant: input_primary_claimant_factory,
-          secondary_claimants: input_secondary_claimants_factory,
-          primary_respondent: input_primary_respondent_factory,
-          secondary_respondents: input_secondary_respondents_factory,
-          primary_representative: input_primary_representative_factory
+          claimants: [input_primary_claimant_factory] + input_secondary_claimants_factory,
+          respondents: [input_primary_respondent_factory] + input_secondary_respondents_factory,
+          representative: input_primary_representative_factory
         )
       end
     end

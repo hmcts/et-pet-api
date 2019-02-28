@@ -65,6 +65,10 @@ respondents_details:
   acas:
     have_acas:
       field_name: 'Check Box1'
+      select_values:
+        true: 'Yes'
+        false: 'no'
+      unselected_value: 'Off'
     acas_number:
       field_name: 'Text2'
   different_address:
@@ -137,6 +141,10 @@ employment_details:
     field_name: '5.1 employment start'
   employment_continuing:
     field_name: '5.1 tick boxes'
+    select_values:
+      false: 'no'
+      true: 'yes'
+    unselected_value: 'Off'
   ended_date:
     field_name: '5.1 employment end'
   ending_date:
@@ -149,11 +157,19 @@ earnings_and_benefits:
       field_name: '6.2 pay before tax'
     period:
       field_name: '6.2 pay before tax tick boxes'
+      select_values:
+        weekly: 'weekly'
+        monthly: 'monthly'
+      unselected_value: 'Off'
   pay_after_tax:
     amount:
       field_name: '6.2 normal pay'
     period:
       field_name: '6.2 normal pay tick boxes'
+      select_values:
+        weekly: 'weekly'
+        monthly: 'monthly'
+      unselected_value: 'Off'
   paid_for_notice_period:
     field_name: '6.3 tick boxes'
   notice_period:
@@ -163,6 +179,10 @@ earnings_and_benefits:
       field_name: '6.3 months'
   employers_pension_scheme:
     field_name: '6.4 tick boxes'
+    select_values:
+      false: 'no'
+      true: 'yes'
+    unselected_value: 'Off'
   benefits:
     field_name: '6.5'
 what_happened_since:
@@ -175,6 +195,8 @@ what_happened_since:
 type_and_details:
   unfairly_dismissed:
     field_name: '8.1 unfairly tick box'
+  discriminated:
+    field_name: '8.1 discriminated'
   discriminated_age:
     field_name: '8.1 age'
   discriminated_race:
@@ -195,6 +217,8 @@ type_and_details:
     field_name: '8.1 religion'
   claiming_redundancy_payment:
     field_name: '8.1 redundancy'
+  owed:
+    field_name: '8.1 owed'
   owed_notice_pay:
     field_name: '8.1 notice pay'
   owed_holiday_pay:

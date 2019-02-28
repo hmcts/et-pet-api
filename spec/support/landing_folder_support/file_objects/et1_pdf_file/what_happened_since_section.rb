@@ -5,17 +5,17 @@ module EtApi
       module Et1PdfFileSection
         class WhatHappenedSinceSection < EtApi::Test::FileObjects::Et1PdfFileSection::Base
           def has_contents_for?(employment:)
-            if employment.present?
+            if employment.to_h.present?
               expected_values = {
-                  have_another_job: tri_state_for(nil),
-                  start_date: '',
-                  salary: ''
+                  have_another_job: employment.found_new_job,
+                  start_date: date_for(employment.new_job_start_date, optional: true) || '',
+                  salary: employment.new_job_gross_pay.to_s
               }
             else
               expected_values = {
-                  have_another_job: nil,
-                  start_date: nil,
-                  salary: nil
+                  have_another_job: '',
+                  start_date: '',
+                  salary: ''
               }
             end
             expect(mapped_field_values).to include expected_values

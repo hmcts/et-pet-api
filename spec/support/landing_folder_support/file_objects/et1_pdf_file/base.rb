@@ -27,27 +27,27 @@ module EtApi
 
             lookup = t("claim_pdf_fields.#{i18n_section}", locale: template)
             @mapped_field_values = lookup.inject({}) do |acc, (key, value)|
-              v = mapped_value(value, key: key)
+              v = mapped_value(value, key: key, path: [i18n_section])
               acc[key.to_sym] = v unless v === UndefinedField # rubocop:disable Style/CaseEquality
               acc
             end
           end
 
-          def mapped_value(value, key:)
+          def mapped_value(value, key:, path:)
             if value.is_a?(Hash) && !value.key?(:field_name)
               value.inject({}) do |acc, (inner_key, inner_value)|
-                v = mapped_value(inner_value, key: inner_key)
+                v = mapped_value(inner_value, key: inner_key, path: path + [key.to_s] )
                 acc[inner_key] = v unless v == UndefinedField
                 acc
               end
             elsif value.is_a?(Hash) && value[:field_name] == false
               UndefinedField
             else
-              field_value_for(value, key: key)
+              field_value_for(value, key: key, path: path)
             end
           end
 
-          def field_value_for(value, key:)
+          def field_value_for(value, key:, path:)
             if value.key?(:select_values)
               raw = raw_value_from_pdf(value)
               ret = value[:select_values].detect { |(_, v)| v == raw }.try(:first)
@@ -55,7 +55,7 @@ module EtApi
               return false if ret == :false # rubocop:disable Lint/BooleanSymbol
               return ret.to_s if ret
               return nil if raw == value[:unselected_value]
-              raise "Invalid value - '#{raw}' is not in the selected_values list or the unselected_value for field '#{key}' for section #{self.class.name}"
+              raise "Invalid value - '#{raw}' is not in the selected_values list or the unselected_value for field '#{path.join('.')}.#{key}' ('#{value[:field_name]}') for section #{self.class.name}"
             else
               field_values[value[:field_name]]
             end
@@ -75,20 +75,14 @@ module EtApi
             val ? yes : no
           end
 
-          def date_for(date)
+          def date_for(date, optional: false)
+            return nil if date.nil? && optional
             return date.strftime('%d/%m/%Y') if date.is_a?(Date) || date.is_a?(Time) || date.is_a?(DateTime)
             Time.zone.parse(date).strftime('%d/%m/%Y')
           end
 
           def decimal_for(number)
             number.to_s
-          end
-
-          # Converts a translation symbol to the correct value for the pdf - at present they seem to be the same
-          # but they dont have to be - so any translation to be done in here.
-          def title_for(val, optional: false)
-            return nil if val.nil? && optional
-            val.to_s.split('.').last
           end
 
           # Converts a translation symbol to the correct value for the pdf - at present they seem to be the same

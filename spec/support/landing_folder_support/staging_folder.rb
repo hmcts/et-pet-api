@@ -68,6 +68,10 @@ module EtApi
         EtApi::Test::FileObjects::Et3PdfFile.new extract_to_tempfile(filename), template: template
       end
 
+      def et1_pdf_file(filename, template: 'et3-v1-en')
+        EtApi::Test::FileObjects::Et1PdfFile.new extract_to_tempfile(filename), template: template
+      end
+
       private
 
       attr_accessor :base_url, :username, :password

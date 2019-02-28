@@ -6,29 +6,29 @@ module EtApi
         class RespondentsDetailsSection < EtApi::Test::FileObjects::Et1PdfFileSection::Base
           def has_contents_for?(respondents:)
             expected_values = {
-                name: title_for(respondents.first.name),
+                name: respondents.first.name,
                 address: {
-                    building: respondents.first.building,
-                    street: respondents.first.street,
-                    locality: respondents.first.locality,
-                    county: respondents.first.county,
-                    post_code: post_code_for(respondents.first.post_code),
-                    telephone_number: respondents.first.telephone_number
+                    building: respondents.first.address_attributes.building,
+                    street: respondents.first.address_attributes.street,
+                    locality: respondents.first.address_attributes.locality,
+                    county: respondents.first.address_attributes.county,
+                    post_code: post_code_for(respondents.first.address_attributes.post_code),
+                    telephone_number: respondents.first.address_telephone_number
                 },
                 acas: {
-                    have_acas: yes_no_for(respondents.first.acas_number),
+                    have_acas: respondents.first.acas_number.present?,
                     acas_number: respondents.first.acas_number
                 },
                 different_address: {
-                    building: respondents.first.work_building || '',
-                    street: respondents.first.work_street || '',
-                    locality: respondents.first.work_locality || '',
-                    county: respondents.first.work_county || '',
-                    post_code: post_code_for(respondents.first.work_post_code, optional: true) || '',
-                    telephone_number: respondents.first.work_telephone_number || ''
+                    building: respondents.first.work_address_attributes&.building || '',
+                    street: respondents.first.work_address_attributes&.street || '',
+                    locality: respondents.first.work_address_attributes&.locality || '',
+                    county: respondents.first.work_address_attributes&.county || '',
+                    post_code: post_code_for(respondents.first.work_address_attributes&.post_code, optional: true) || '',
+                    telephone_number: respondents.first.work_address_telephone_number || ''
                 },
                 respondent2: {
-                    name: title_for(respondents[1].try(:name), optional: true),
+                    name: respondents[1].try(:name),
                     address: {
                         building: respondents[1].try(:building),
                         street: respondents[1].try(:street),
@@ -43,7 +43,7 @@ module EtApi
                     }
                 },
                 respondent3: {
-                    name: title_for(respondents[2].try(:name), optional: true),
+                    name: respondents[2].try(:name),
                     address: {
                         building: respondents[2].try(:building),
                         street: respondents[2].try(:street),

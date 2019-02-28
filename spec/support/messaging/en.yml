@@ -276,6 +276,10 @@ et1-v1-en:
       acas:
         have_acas:
           field_name: 'Check Box1'
+          select_values:
+            true: 'Yes'
+            false: 'no'
+          unselected_value: 'Off'
         acas_number:
           field_name: 'Text2'
       different_address:
@@ -348,6 +352,10 @@ et1-v1-en:
         field_name: '5.1 employment start'
       employment_continuing:
         field_name: '5.1 tick boxes'
+        select_values:
+          false: 'no'
+          true: 'yes'
+        unselected_value: 'Off'
       ended_date:
         field_name: '5.1 employment end'
       ending_date:
@@ -360,11 +368,19 @@ et1-v1-en:
           field_name: '6.2 pay before tax'
         period:
           field_name: '6.2 pay before tax tick boxes'
+          select_values:
+            weekly: 'weekly'
+            monthly: 'monthly'
+          unselected_value: 'Off'
       pay_after_tax:
         amount:
           field_name: '6.2 normal pay'
         period:
           field_name: '6.2 normal pay tick boxes'
+          select_values:
+            weekly: 'weekly'
+            monthly: 'monthly'
+          unselected_value: 'Off'
       paid_for_notice_period:
         field_name: '6.3 tick boxes'
       notice_period:
@@ -374,6 +390,10 @@ et1-v1-en:
           field_name: '6.3 months'
       employers_pension_scheme:
         field_name: '6.4 tick boxes'
+        select_values:
+          false: 'no'
+          true: 'yes'
+        unselected_value: 'Off'
       benefits:
         field_name: '6.5'
     what_happened_since:

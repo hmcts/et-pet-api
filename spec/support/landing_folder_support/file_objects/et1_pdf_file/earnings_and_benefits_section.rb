@@ -5,25 +5,29 @@ module EtApi
       module Et1PdfFileSection
         class EarningsAndBenefitsSection < EtApi::Test::FileObjects::Et1PdfFileSection::Base
           def has_contents_for?(employment:)
-            employment.present? ? has_contents_for_employment?(employment) : has_contents_for_no_employment?
+            employment.to_h.present? ? has_contents_for_employment?(employment) : has_contents_for_no_employment?
           end
 
           private
 
           def has_contents_for_employment?(employment)
             expected_values = {
-                average_weekly_hours: employment.try(:average_weekly_hours).try(:to_f).try(:to_s),
+                average_weekly_hours: employment.average_hours_worked_per_week&.to_s,
                 pay_before_tax: {
-                    'amount': employment.try(:pay_before_tax),
-                    'period': employment.try(:pay_before_tax_type).try(:to_s).try(:split, '.').try(:last)
+                    'amount': employment.gross_pay&.to_s,
+                    'period': employment.gross_pay_period_type
                 },
-                paid_for_notice_period: tri_state_for(employment.try(:paid_for_notice_period)),
+                pay_after_tax: {
+                    'amount': employment.net_pay&.to_s,
+                    'period': employment.net_pay_period_type
+                },
+                paid_for_notice_period: employment.worked_notice_period_or_paid_in_lieu,
                 notice_period: {
-                    weeks: weekly_notice_period(employment.try(:notice_period)) || '',
-                    months: monthly_notice_period(employment.try(:notice_period)) || ''
+                    weeks: weekly_notice_period(employment),
+                    months: monthly_notice_period(employment)
                 },
-                employers_pension_scheme: employers_pension_scheme(employment),
-                benefits: employment.try(:benefits)
+                employers_pension_scheme: employment.enrolled_in_pension_scheme,
+                benefits: employment.benefit_details
             }
             expect(mapped_field_values).to include expected_values
           end
@@ -46,29 +50,14 @@ module EtApi
             expect(mapped_field_values).to include expected_values
           end
 
-          def employers_pension_scheme(employment)
-            return nil if employment.nil?
-            true_false = employment.employers_pension_scheme.to_s.split('.').last.downcase
-            if true_false == "true"
-              'yes'
-            elsif true_false == "false"
-              'no'
-            else
-              raise "Unexpected value for employers_pension_scheme - #{employment.employers_pension_scheme}"
-            end
+          def weekly_notice_period(employment)
+            return '' if employment.notice_pay_period_type&.to_sym != :weekly
+            employment.notice_pay_period_count.to_s
           end
 
-
-          def weekly_notice_period(notice_period)
-            return nil if notice_period.nil?
-            amount, period = notice_period.split(' ')
-            period == 'Weekly' ? amount : nil
-          end
-
-          def monthly_notice_period(notice_period)
-            return nil if notice_period.nil?
-            amount, period = notice_period.split(' ')
-            period == 'Monthly' ? amount : nil
+          def monthly_notice_period(employment)
+            return '' if employment.notice_pay_period_type&.to_sym != :monthly
+            employment.notice_pay_period_count.to_s
           end
         end
       end

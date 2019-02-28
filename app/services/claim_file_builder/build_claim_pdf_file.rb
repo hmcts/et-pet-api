@@ -51,6 +51,11 @@ module ClaimFileBuilder
     def pdf_fields
       result = {}
       apply_your_details_fields(result)
+      apply_respondents_details_fields(result)
+      apply_multiple_cases_section(result)
+      apply_employment_details_section(result)
+      apply_earnings_and_benefits_section(result)
+      apply_what_happened_since_section(result)
       result
     end
 
@@ -106,6 +111,59 @@ module ClaimFileBuilder
       apply_field result, primary_claimant.address_telephone_number, :your_details, :telephone_number
     end
 
+    def apply_respondents_details_fields(result)
+      resp1 = claim.primary_respondent
+      apply_field result, resp1.name, :respondents_details, :name
+      apply_field result, resp1.acas_number, :respondents_details, :acas, :acas_number
+      apply_field result, resp1.acas_number.present?, :respondents_details, :acas, :have_acas
+      apply_field result, resp1.address.building, :respondents_details, :address, :building
+      apply_field result, resp1.address.street, :respondents_details, :address, :street
+      apply_field result, resp1.address.locality, :respondents_details, :address, :locality
+      apply_field result, resp1.address.county, :respondents_details, :address, :county
+      apply_field result, post_code_for(resp1.address.post_code), :respondents_details, :address, :post_code
+      apply_field result, resp1.address_telephone_number, :respondents_details, :address, :telephone_number
+      apply_field result, resp1.work_address.building, :respondents_details, :different_address, :building
+      apply_field result, resp1.work_address.street, :respondents_details, :different_address, :street
+      apply_field result, resp1.work_address.locality, :respondents_details, :different_address, :locality
+      apply_field result, resp1.work_address.county, :respondents_details, :different_address, :county
+      apply_field result, post_code_for(resp1.work_address.post_code), :respondents_details, :different_address, :post_code
+      apply_field result, resp1.work_address_telephone_number, :respondents_details, :different_address, :telephone_number
+    end
+
+    def apply_multiple_cases_section(result)
+      apply_field result, claim.other_known_claimant_names&.present?, :multiple_cases, :have_similar_claims
+      apply_field result, claim.other_known_claimant_names, :multiple_cases, :other_claimants
+    end
+
+    def apply_employment_details_section(result)
+      ed = claim.employment_details.symbolize_keys
+      apply_field result, ed[:end_date].nil? || Time.zone.parse(ed[:end_date]).future?, :employment_details, :employment_continuing
+      apply_field result, ed[:job_title], :employment_details, :job_title
+      apply_field result, date_for(ed[:start_date], optional: true), :employment_details, :start_date
+      apply_field result, date_for(ed[:end_date], optional: true), :employment_details, :ended_date
+      apply_field result, date_for(ed[:notice_period_end_date], optional: true), :employment_details, :ending_date
+    end
+
+    def apply_earnings_and_benefits_section(result)
+      ed = claim.employment_details.symbolize_keys
+      apply_field result, ed[:average_hours_worked_per_week], :earnings_and_benefits, :average_weekly_hours
+      apply_field result, ed[:benefit_details], :earnings_and_benefits, :benefits
+      apply_field result, ed[:enrolled_in_pension_scheme], :earnings_and_benefits, :employers_pension_scheme
+      apply_field result, ed[:notice_pay_period_type] == 'monthly' ? ed[:notice_pay_period_count] : '', :earnings_and_benefits, :notice_period, :months
+      apply_field result, ed[:notice_pay_period_type] == 'weekly' ? ed[:notice_pay_period_count] : '', :earnings_and_benefits, :notice_period, :weeks
+      apply_field result, ed[:gross_pay]&.to_s, :earnings_and_benefits, :pay_before_tax, :amount
+      apply_field result, ed[:gross_pay_period_type], :earnings_and_benefits, :pay_before_tax, :period
+      apply_field result, ed[:net_pay]&.to_s, :earnings_and_benefits, :pay_after_tax, :amount
+      apply_field result, ed[:net_pay_period_type], :earnings_and_benefits, :pay_after_tax, :period
+    end
+
+    def apply_what_happened_since_section(result)
+      ed = claim.employment_details.symbolize_keys
+      apply_field result, ed[:found_new_job], :what_happened_since, :have_another_job
+      apply_field result, date_for(ed[:new_job_start_date], optional: true), :what_happened_since, :start_date
+      apply_field result, ed[:new_job_gross_pay], :what_happened_since, :salary
+    end
+
     def post_code_for(val, optional: false)
       return nil if val.nil? && optional
       match = val.match(/\A\s*(\S+)\s*(\d\w\w)\s*\z/)
@@ -115,5 +173,10 @@ module ClaimFileBuilder
       val.slice(0,7)
     end
 
+    def date_for(date, optional: false)
+      return nil if date.nil? && optional
+      date = Date.parse(date) if date.is_a?(String)
+      date.strftime "%d/%m/%Y"
+    end
   end
 end

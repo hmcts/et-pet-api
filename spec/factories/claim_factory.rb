@@ -60,6 +60,31 @@ FactoryBot.define do
       primary_representative { nil }
     end
 
+    trait :with_example_employment_details do
+      employment_details do
+        {
+          "start_date": "2009-11-18",
+          "end_date": nil,
+          "notice_period_end_date": nil,
+          "job_title": "agriculturist",
+          "average_hours_worked_per_week": 38.0,
+          "gross_pay": 3000,
+          "gross_pay_period_type": "monthly",
+          "net_pay": 2000,
+          "net_pay_period_type": "monthly",
+          "worked_notice_period_or_paid_in_lieu": nil,
+          "notice_pay_period_type": nil,
+          "notice_pay_period_count": nil,
+          "enrolled_in_pension_scheme": true,
+          "benefit_details": "Company car, private health care",
+          "found_new_job": nil,
+          "new_job_start_date": nil,
+          "new_job_gross_pay": nil
+        }.stringify_keys
+      end
+    end
+
+
     after(:create) do |claim, evaluator|
       evaluator.ready_for_export_to.each do |external_system_id|
         Export.create resource: claim, external_system_id: external_system_id
@@ -67,6 +92,7 @@ FactoryBot.define do
     end
 
     trait :example_data do
+      with_example_employment_details
       reference { "222000000300" }
       date_of_receipt { Time.zone.parse('29/3/2018') }
       number_of_claimants { 0 }
