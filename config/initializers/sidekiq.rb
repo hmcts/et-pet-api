@@ -5,8 +5,12 @@ default_redis_url = "redis://#{default_redis_host}:#{default_redis_port}/#{defau
 redis_url = ENV.fetch('REDIS_URL', default_redis_url)
 
 Sidekiq.configure_server do |config|
-  config.redis = { url: redis_url }
+  redis_config = { url: redis_url }
+  redis_config[:password] = ENV['REDIS_PASSWORD'] if ENV['REDIS_PASSWORD'].present?
+  config.redis = redis_config
   schedule_file = "config/schedule.yml"
+
+  Redis.new
 
   if File.exist?(schedule_file)
     Sidekiq::Cron::Job.load_from_hash YAML.safe_load(ERB.new(File.read(schedule_file)).result)
