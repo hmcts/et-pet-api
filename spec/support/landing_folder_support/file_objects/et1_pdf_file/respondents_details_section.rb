@@ -27,6 +27,7 @@ module EtApi
                     post_code: post_code_for(respondents.first.work_address_attributes&.post_code, optional: true) || '',
                     telephone_number: respondents.first.work_address_telephone_number || ''
                 },
+                additional_respondents: respondents.length > 1,
                 respondent2: {
                     name: respondents[1].try(:name),
                     address: {

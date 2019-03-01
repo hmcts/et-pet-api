@@ -10,9 +10,9 @@ module EtApi
           # no values for them - so Im not going mad - calling a method that returns "yes" or "no" - knowing it will always return "no" as I am passing it false
           # it simply to allow for the value to be added at some point soon.
           def has_contents_for?(claim:)
-            claim_types = claim_types_for(claim.claim_types)
             expected_values = {
                 unfairly_dismissed: claim.is_unfair_dismissal,
+                discriminated: claim.discrimination_claims.present?,
                 discriminated_age: claim.discrimination_claims.include?('age'),
                 discriminated_race: claim.discrimination_claims.include?('race'),
                 discriminated_gender_reassignment: claim.discrimination_claims.include?('gender_reassignment'),
@@ -23,15 +23,22 @@ module EtApi
                 discriminated_sex: claim.discrimination_claims.include?('sex_including_equal_pay'),
                 discriminated_religion: claim.discrimination_claims.include?('religion_or_belief'),
                 claiming_redundancy_payment: claim.pay_claims.include?('redundancy'),
-                owed_notice_pay: yes_no_for(claim_types.include?(:pay_notice), yes: 'yes', no: 'Off'),
-                owed_holiday_pay: yes_no_for(claim_types.include?(:pay_holiday), yes: 'yes', no: 'Off'),
-                owed_arrears_of_pay: yes_no_for(claim_types.include?(:pay_arrears), yes: 'yes', no: 'Off'),
-                owed_other_payments: yes_no_for(claim_types.include?(:pay_other), yes: 'yes', no: 'Off'),
-                other_type_of_claim: yes_no_for(claim_types.include?(:is_other_type_of_claim), yes: 'yes', no: 'Off'),
-                other_type_of_claim_details: claim.other_claimant_names,
+                owed: owed_anything?(claim),
+                owed_notice_pay: claim.pay_claims.include?('pay_notice'),
+                owed_holiday_pay: claim.pay_claims.include?('pay_holiday'),
+                owed_arrears_of_pay: claim.pay_claims.include?('pay_arrears'),
+                owed_other_payments: claim.pay_claims.include?('pay_other'),
+                other_type_of_claim: claim.other_claim_details.present?,
+                other_type_of_claim_details: claim.other_claim_details || '',
                 claim_description: claim.description
             }
             expect(mapped_field_values).to include expected_values
+          end
+
+          private
+
+          def owed_anything?(claim)
+            ['notice', 'holiday', 'arrears', 'other'].any? { |type| claim.pay_claims.include?(type) }
           end
         end
       end

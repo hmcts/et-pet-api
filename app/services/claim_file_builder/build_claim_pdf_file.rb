@@ -1,6 +1,7 @@
 module ClaimFileBuilder
   class BuildClaimPdfFile # rubocop:disable Metrics/ClassLength
     include PdfBuilder
+    PAY_CLAIMS = ['redundancy', 'notice', 'holiday', 'arrears', 'other'].freeze
 
     def self.call(claim, template_reference: 'et1-v1-en')
       new(claim, template_reference: template_reference).call
@@ -56,6 +57,11 @@ module ClaimFileBuilder
       apply_employment_details_section(result)
       apply_earnings_and_benefits_section(result)
       apply_what_happened_since_section(result)
+      apply_type_and_details_section(result)
+      apply_what_do_you_want_section(result)
+      apply_information_to_regulators_section(result)
+      apply_your_representative_section(result)
+      apply_disability_section(result)
       result
     end
 
@@ -128,6 +134,7 @@ module ClaimFileBuilder
       apply_field result, resp1.work_address.county, :respondents_details, :different_address, :county
       apply_field result, post_code_for(resp1.work_address.post_code), :respondents_details, :different_address, :post_code
       apply_field result, resp1.work_address_telephone_number, :respondents_details, :different_address, :telephone_number
+      apply_field result, claim.secondary_respondents.present?, :respondents_details, :additional_respondents
     end
 
     def apply_multiple_cases_section(result)
@@ -164,6 +171,59 @@ module ClaimFileBuilder
       apply_field result, ed[:new_job_gross_pay], :what_happened_since, :salary
     end
 
+    def apply_type_and_details_section(result)
+      apply_field result, claim.pay_claims.include?('redundancy'), :type_and_details, :claiming_redundancy_payment
+      apply_field result, claim.discrimination_claims.present?, :type_and_details, :discriminated
+      apply_field result, claim.discrimination_claims.include?('age'), :type_and_details, :discriminated_age
+      apply_field result, claim.discrimination_claims.include?('disability'), :type_and_details, :discriminated_disability
+      apply_field result, claim.discrimination_claims.include?('gender_reassignment'), :type_and_details, :discriminated_gender_reassignment
+      apply_field result, claim.discrimination_claims.include?('marriage'), :type_and_details, :discriminated_marriage
+      apply_field result, claim.discrimination_claims.include?('sexual_orientation'), :type_and_details, :discriminated_sexual_orientation
+      apply_field result, claim.discrimination_claims.include?('pregnancy'), :type_and_details, :discriminated_pregnancy
+      apply_field result, claim.discrimination_claims.include?('race'), :type_and_details, :discriminated_race
+      apply_field result, claim.discrimination_claims.include?('religion'), :type_and_details, :discriminated_religion
+      apply_field result, claim.discrimination_claims.include?('sex'), :type_and_details, :discriminated_sex
+      apply_field result, claim.other_claim_details.present?, :type_and_details, :other_type_of_claim
+      apply_field result, claim.other_claim_details, :type_and_details, :other_type_of_claim_details
+      apply_field result, owed_anything?, :type_and_details, :owed
+      apply_field result, claim.pay_claims.include?('arrears'), :type_and_details, :owed_arrears_of_pay
+      apply_field result, claim.pay_claims.include?('holiday'), :type_and_details, :owed_holiday_pay
+      apply_field result, claim.pay_claims.include?('notice'), :type_and_details, :owed_notice_pay
+      apply_field result, claim.pay_claims.include?('other'), :type_and_details, :owed_other_payments
+      apply_field result, claim.is_unfair_dismissal, :type_and_details, :unfairly_dismissed
+    end
+
+    def apply_what_do_you_want_section(result)
+      apply_field result, claim.desired_outcomes.include?('compensation_only'), :what_do_you_want, :prefer_compensation
+      apply_field result, claim.desired_outcomes.include?('new_employment_and_compensation'), :what_do_you_want, :prefer_re_engagement
+      apply_field result, claim.desired_outcomes.include?('reinstated_employment_and_compensation'), :what_do_you_want, :prefer_re_instatement
+      apply_field result, claim.desired_outcomes.include?('tribunal_recommendation'), :what_do_you_want, :prefer_recommendation
+      apply_field result, claim.other_outcome, :what_do_you_want, :compensation
+    end
+
+    def apply_information_to_regulators_section(result)
+      apply_field result, claim.send_claim_to_whistleblowing_entity, :information_to_regulators, :whistle_blowing
+    end
+
+    def apply_your_representative_section(result)
+      apply_field result, claim.primary_representative.organisation_name, :your_representative, :name_of_organisation
+      apply_field result, claim.primary_representative.name, :your_representative, :name_of_representative
+      apply_field result, claim.primary_representative.address.building, :your_representative, :building
+      apply_field result, claim.primary_representative.address.street, :your_representative, :street
+      apply_field result, claim.primary_representative.address.locality, :your_representative, :locality
+      apply_field result, claim.primary_representative.address.county, :your_representative, :county
+      apply_field result, post_code_for(claim.primary_representative.address.post_code), :your_representative, :post_code
+      apply_field result, claim.primary_representative.address_telephone_number, :your_representative, :telephone_number
+      apply_field result, claim.primary_representative.mobile_number, :your_representative, :alternative_telephone_number
+      apply_field result, claim.primary_representative.dx_number, :your_representative, :dx_number
+      apply_field result, claim.primary_representative.email_address, :your_representative, :email_address
+    end
+
+    def apply_disability_section(result)
+      apply_field result, claim.primary_claimant.special_needs.present?, :disability, :has_special_needs
+      apply_field result, claim.primary_claimant.special_needs, :disability, :special_needs
+    end
+
     def post_code_for(val, optional: false)
       return nil if val.nil? && optional
       match = val.match(/\A\s*(\S+)\s*(\d\w\w)\s*\z/)
@@ -178,5 +238,10 @@ module ClaimFileBuilder
       date = Date.parse(date) if date.is_a?(String)
       date.strftime "%d/%m/%Y"
     end
+
+    def owed_anything?
+      (PAY_CLAIMS - ['redundancy']).any? { |type| claim.pay_claims.include?(type) }
+    end
+
   end
 end

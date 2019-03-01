@@ -53,7 +53,7 @@ module EtApi
         def representative_json(claim)
           return nil if claim.nil?
 
-          OpenStruct.new(claim.primary_representative.as_json(include: :address).symbolize_keys.tap { |rep| rep[:address].symbolize_keys!}).freeze
+          OpenStruct.new(claim.primary_representative.as_json(include: :address).symbolize_keys.tap { |rep| rep[:address_attributes] = OpenStruct.new(rep.delete(:address).symbolize_keys)}).freeze
         end
 
         def respondents_json(claim)
