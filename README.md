@@ -282,6 +282,13 @@ setup your own database etc.. Just go about things in the normal way, but rememb
    REDIS_URL=redis://localhost:6379/12
    
    ```
+
+   If your redis server needs a password, it must be specified using
+
+   ```
+   REDIS_PASSWORD=<your password>
+
+   ```
    
 ## With Foreman
 
