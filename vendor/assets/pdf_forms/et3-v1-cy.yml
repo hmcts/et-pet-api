@@ -1,311 +1,315 @@
+---
 header:
   case_number:
-    field_name: 'Rhif yr'
+    field_name: Rhif yr
   date_received:
     field_name: false
   rtf:
     field_name: false
 claimant:
   claimants_name:
-    field_name: 'undefined'
+    field_name: undefined
 respondent:
   name:
-    field_name: 'undefined_2'
+    field_name: undefined_2
   contact:
-    field_name: 'undefined_3'
+    field_name: undefined_3
   address:
     building:
-      field_name: 'Rhif neu enw'
+      field_name: Rhif neu enw
     street:
-      field_name: 'Stryd'
+      field_name: Stryd
     locality:
-      field_name: 'TrefDinas'
+      field_name: TrefDinas
     county:
-      field_name: 'Sir'
+      field_name: Sir
     post_code:
-      field_name: 'Cod post'
+      field_name: Cod post
   address_dx_number:
-    field_name: 'undefined_4'
+    field_name: undefined_4
   phone_number:
-    field_name: 'Lle gallwn gysylltu â chi yn ystod y dydd'
+    field_name: Lle gallwn gysylltu â chi yn ystod y dydd
   mobile_number:
-    field_name: 'n wahanol'
+    field_name: n wahanol
   contact_preference:
     field_name: false
   email_address:
-    field_name: 'undefined_5'
+    field_name: undefined_5
   fax_number:
-    field_name: 'undefined_6'
+    field_name: undefined_6
   employ_gb:
-    field_name: 'sefydliad hwn ym Mhrydain Fawr'
+    field_name: sefydliad hwn ym Mhrydain Fawr
   multi_site_gb:
     field_name:
-      - 'Oes'
-      - 'Nac oes'
+    - Oes
+    - Nac oes
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   employment_at_site_number:
-    field_name: 'r oedd yr hawlydd yn gweithio'
+    field_name: r oedd yr hawlydd yn gweithio
 acas:
   agree:
     field_name:
-      - 'Ydw'
-      - 'Nac ydw'
+    - Ydw
+    - Nac ydw
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   disagree_explanation:
-    field_name: 'Os bu i chi ateb Nac ydw eglurwch pam er'
+    field_name: Os bu i chi ateb Nac ydw eglurwch pam er
 employment_details:
   agree_with_dates:
     field_name:
-      - 'Ydynt'
-      - 'Nac ydynt'
+    - Ydynt
+    - Nac ydynt
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   employment_start:
-    field_name: 'Pa bryd ddechreuodd ei gyflogaeth'
+    field_name: Pa bryd ddechreuodd ei gyflogaeth
   employment_end:
-    field_name: 'Pa bryd ddaeth ei gyflogaeth i ben'
+    field_name: Pa bryd ddaeth ei gyflogaeth i ben
   disagree_with_dates_reason:
-    field_name: 'n anghytuno gydar dyddiadau'
+    field_name: n anghytuno gydar dyddiadau
   continuing:
     field_name:
-      - 'Ydy'
-      - 'Nac ydy'
+    - Ydy
+    - Nac ydy
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   agree_with_job_title:
     field_name:
-      - 'Ydy_2'
-      - 'Nac ydy_2'
+    - Ydy_2
+    - Nac ydy_2
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   correct_job_title:
-    field_name: 'n gywir'
+    field_name: n gywir
 earnings:
   agree_with_hours:
     field_name:
-      - 'Ydynt_2'
-      - 'Nac ydynt_2'
+    - Ydynt_2
+    - Nac ydynt_2
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   correct_hours:
-    field_name: 'n gywir_2'
+    field_name: n gywir_2
   agree_with_earnings:
     field_name:
-      - 'Ydynt_3'
-      - 'Nac ydynt_3'
+    - Ydynt_3
+    - Nac ydynt_3
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   correct_pay_before_tax:
-    field_name: 'fill_4'
+    field_name: fill_4
   correct_pay_before_tax_period:
     field_name:
-      - 'Wythnosol'
-      - 'Misol'
+    - Wythnosol
+    - Misol
     select_values:
       Monthly:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       Weekly:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   correct_take_home_pay:
-    field_name: 'fill_5'
+    field_name: fill_5
   correct_take_home_pay_period:
     field_name:
-      - 'Wythnosol_2'
-      - 'Misol_2'
+    - Wythnosol_2
+    - Misol_2
     select_values:
       Monthly:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       Weekly:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   agree_with_notice_period:
     field_name:
-      - 'Ydy_3'
-      - 'Nac ydy_3'
+    - Ydy_3
+    - Nac ydy_3
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   disagree_notice_period_reason:
-    field_name: 'weithio ei gyfnod o rybudd eglurwch beth'
+    field_name: weithio ei gyfnod o rybudd eglurwch beth
   agree_with_pension_benefits:
     field_name:
-      - 'Ydynt_4'
-      - 'Nac ydynt_4'
+    - Ydynt_4
+    - Nac ydynt_4
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   disagree_pension_benefits_reason:
-    field_name: 'n gywir_3'
+    field_name: n gywir_3
 response:
   defend_claim:
     field_name:
-      - 'Ydw_2'
-      - 'Nac ydw_2'
+    - Ydw_2
+    - Nac ydw_2
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   defend_claim_facts:
-    field_name: 'Gweler y Canllaw  Defnyddiwch y dudalen wag ar ddiwedd y ffurflen hon os bydd angen'
+    field_name: Gweler y Canllaw  Defnyddiwch y dudalen wag ar ddiwedd y ffurflen
+      hon os bydd angen
 contract_claim:
   make_employer_contract_claim:
-    field_name: 'Check Box1'
+    field_name: Check Box1
     select_values:
       true: 'Yes'
       false: 'Off'
   information:
-    field_name: 'gweler y Canllaw am ragor o wybodaeth ynghylch pa fanylion y dylech eu cynnwys'
+    field_name: gweler y Canllaw am ragor o wybodaeth ynghylch pa fanylion y dylech
+      eu cynnwys
 representative:
   name:
-    field_name: 'ch cynrychioli chi llenwch yr wybodaeth ganlynol os gwelwch yn dda  Byddwn yn cysylltu â'
+    field_name: ch cynrychioli chi llenwch yr wybodaeth ganlynol os gwelwch yn dda  Byddwn
+      yn cysylltu â
   organisation_name:
-    field_name: 'undefined_8'
+    field_name: undefined_8
   address:
     building:
-      field_name: 'Rhif neu enw_2'
+      field_name: Rhif neu enw_2
     street:
-      field_name: 'Stryd_2'
+      field_name: Stryd_2
     locality:
-      field_name: 'TrefDinas_2'
+      field_name: TrefDinas_2
     county:
-      field_name: 'Sir_2'
+      field_name: Sir_2
     post_code:
-      field_name: 'Cod post_2'
+      field_name: Cod post_2
   dx_number:
-    field_name: 'undefined_9'
+    field_name: undefined_9
   phone_number:
-    field_name: 'undefined_10'
+    field_name: undefined_10
   mobile_number:
-    field_name: 'undefined_11'
+    field_name: undefined_11
   reference:
-    field_name: 'Eu cyfeirnod ar gyfer gohebiaeth'
+    field_name: Eu cyfeirnod ar gyfer gohebiaeth
   contact_preference:
     field_name:
-      - 'Ebost'
-      - 'Post'
-      - 'Ffacs'
+    - Ebost
+    - Post
+    - Ffacs
     select_values:
       email:
-        - 'On'
-        - 'Off'
-        - 'Off'
+      - 'On'
+      - 'Off'
+      - 'Off'
       fax:
-        - 'Off'
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'Off'
+      - 'On'
       post:
-        - 'Off'
-        - 'On'
-        - 'Off'
+      - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
+    - 'Off'
   email_address:
-    field_name: 'undefined_12'
+    field_name: undefined_12
   fax_number:
-    field_name: 'undefined_13'
+    field_name: undefined_13
 disability:
   has_disability:
     field_name:
-      - 'Oes_2'
-      - 'Nac oes_2'
+    - Oes_2
+    - Nac oes_2
     select_values:
       false:
-        - 'Off'
-        - 'On'
+      - 'Off'
+      - 'On'
       true:
-        - 'On'
-        - 'Off'
+      - 'On'
+      - 'Off'
     unselected_value:
-      - 'Off'
-      - 'Off'
+    - 'Off'
+    - 'Off'
   information:
-    field_name: 'gynnwys ar gyfer unrhyw wrandawiadau a'
+    field_name: gynnwys ar gyfer unrhyw wrandawiadau a

@@ -1,12 +1,13 @@
+---
 header:
   case_number:
-    field_name: 'case number'
+    field_name: case number
   date_received:
-    field_name: 'date_received'
+    field_name: date_received
   rtf:
-    field_name: 'RTF'
+    field_name: RTF
     select_values:
-      true: 'Additional RTF'
+      true: Additional RTF
       false: ''
 claimant:
   claimants_name:
@@ -18,32 +19,32 @@ respondent:
     field_name: '2.2'
   address:
     building:
-      field_name: '2.3 number or name'
+      field_name: 2.3 number or name
     street:
-      field_name: '2.3 street'
+      field_name: 2.3 street
     locality:
-      field_name: '2.3 town city'
+      field_name: 2.3 town city
     county:
-      field_name: '2.3 county'
+      field_name: 2.3 county
     post_code:
-      field_name: '2.3 postcode'
+      field_name: 2.3 postcode
   address_dx_number:
-    field_name: '2.3 dx number'
+    field_name: 2.3 dx number
   phone_number:
-    field_name: '2.4 phone number'
+    field_name: 2.4 phone number
   mobile_number:
-    field_name: '2.4 mobile number'
+    field_name: 2.4 mobile number
   contact_preference:
     field_name: '2.5'
     select_values:
-      email: 'email'
-      post: 'post'
-      fax: 'fax'
+      email: email
+      post: post
+      fax: fax
     unselected_value: 'Off'
   email_address:
-    field_name: '2.6 email address'
+    field_name: 2.6 email address
   fax_number:
-    field_name: '2.6 fax number'
+    field_name: 2.6 fax number
   employ_gb:
     field_name: '2.7'
   multi_site_gb:
@@ -56,13 +57,13 @@ respondent:
     field_name: '2.9'
 acas:
   agree:
-    field_name: 'new 3.1'
+    field_name: new 3.1
     select_values:
       false: 'No'
       true: 'Yes'
     unselected_value: 'Off'
   disagree_explanation:
-    field_name: 'new 3.1 If no, please explain why'
+    field_name: new 3.1 If no, please explain why
 employment_details:
   agree_with_dates:
     field_name: '3.1'
@@ -71,16 +72,16 @@ employment_details:
       true: 'yes'
     unselected_value: 'Off'
   employment_start:
-    field_name: '3.1 employment started'
+    field_name: 3.1 employment started
   employment_end:
-    field_name: '3.1 employment end'
+    field_name: 3.1 employment end
   disagree_with_dates_reason:
-    field_name: '3.1 disagree'
+    field_name: 3.1 disagree
   continuing:
     field_name: '3.2'
     select_values:
-      no: 'no'
-      yes: 'yes'
+      false: 'no'
+      true: 'yes'
     unselected_value: 'Off'
   agree_with_job_title:
     field_name: '3.3'
@@ -89,7 +90,7 @@ employment_details:
       true: 'yes'
     unselected_value: 'Off'
   correct_job_title:
-    field_name: '3.3 if no'
+    field_name: 3.3 if no
 earnings:
   agree_with_hours:
     field_name: '4.1'
@@ -98,7 +99,7 @@ earnings:
       true: 'yes'
     unselected_value: 'Off'
   correct_hours:
-    field_name: '4.1 if no'
+    field_name: 4.1 if no
   agree_with_earnings:
     field_name: '4.2'
     select_values:
@@ -106,49 +107,49 @@ earnings:
       true: 'yes'
     unselected_value: 'Off'
   correct_pay_before_tax:
-    field_name: '4.2 pay before tax'
+    field_name: 4.2 pay before tax
   correct_pay_before_tax_period:
-    field_name: '4.2 pay before tax tick box'
+    field_name: 4.2 pay before tax tick box
     select_values:
-      Monthly: 'monthly'
-      Weekly: 'weekly'
+      Monthly: monthly
+      Weekly: weekly
     unselected_value: 'Off'
   correct_take_home_pay:
-    field_name: '4.2 normal take-home pay'
+    field_name: 4.2 normal take-home pay
   correct_take_home_pay_period:
-    field_name: '4.2 normal take-home pay tick box'
+    field_name: 4.2 normal take-home pay tick box
     select_values:
-      Monthly: 'monthly'
-      Weekly: 'weekly'
+      Monthly: monthly
+      Weekly: weekly
     unselected_value: 'Off'
   agree_with_notice_period:
-    field_name: '4.3 tick box'
+    field_name: 4.3 tick box
     select_values:
-      no: 'no'
-      yes: 'yes'
+      false: 'no'
+      true: 'yes'
     unselected_value: 'Off'
   disagree_notice_period_reason:
-    field_name: '4.3 if no'
+    field_name: 4.3 if no
   agree_with_pension_benefits:
-    field_name: '4.4 tick box'
+    field_name: 4.4 tick box
     select_values:
-      no: 'no'
-      yes: 'yes'
+      false: 'no'
+      true: 'yes'
     unselected_value: 'Off'
   disagree_pension_benefits_reason:
-    field_name: '4.4 if no'
+    field_name: 4.4 if no
 response:
   defend_claim:
-    field_name: '5.1 tick box'
+    field_name: 5.1 tick box
     select_values:
-      no: 'no'
-      yes: 'yes'
+      false: 'no'
+      true: 'yes'
     unselected_value: 'Off'
   defend_claim_facts:
-    field_name: '5.1 if yes'
+    field_name: 5.1 if yes
 contract_claim:
   make_employer_contract_claim:
-    field_name: '6.2 tick box'
+    field_name: 6.2 tick box
     select_values:
       true: 'yes'
       false: 'Off'
@@ -161,29 +162,29 @@ representative:
     field_name: '7.2'
   address:
     building:
-      field_name: '7.3 number or name'
+      field_name: 7.3 number or name
     street:
-      field_name: '7.3 street'
+      field_name: 7.3 street
     locality:
-      field_name: '7.3 town city'
+      field_name: 7.3 town city
     county:
-      field_name: '7.3 county'
+      field_name: 7.3 county
     post_code:
-      field_name: '7.3 postcode'
+      field_name: 7.3 postcode
   dx_number:
     field_name: '7.4'
   phone_number:
-    field_name: '7.5 phone number'
+    field_name: 7.5 phone number
   mobile_number:
     field_name: '7.6'
   reference:
     field_name: '7.7'
   contact_preference:
-    field_name: '7.8 tick box'
+    field_name: 7.8 tick box
     select_values:
-      email: 'email'
-      fax: 'fax'
-      post: 'post'
+      email: email
+      fax: fax
+      post: post
     unselected_value: 'Off'
   email_address:
     field_name: '7.9'
@@ -191,10 +192,10 @@ representative:
     field_name: '7.10'
 disability:
   has_disability:
-    field_name: '8.1 tick box'
+    field_name: 8.1 tick box
     select_values:
-      no: 'no'
-      yes: 'yes'
+      false: 'no'
+      true: 'yes'
     unselected_value: 'Off'
   information:
-    field_name: '8.1 if yes'
+    field_name: 8.1 if yes
