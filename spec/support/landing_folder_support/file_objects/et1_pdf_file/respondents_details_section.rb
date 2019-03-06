@@ -17,7 +17,7 @@ module EtApi
                 },
                 acas: {
                     have_acas: respondents.first.acas_number.present?,
-                    acas_number: respondents.first.acas_number
+                    acas_number: respondents.first.acas_number || ''
                 },
                 different_address: {
                     building: respondents.first.work_address_attributes&.building || '',

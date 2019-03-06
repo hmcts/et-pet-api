@@ -46,7 +46,6 @@ module EtApi
 
         def claim_json(claim)
           json = claim.as_json.symbolize_keys
-          json[:employment_details] = OpenStruct.new(json[:employment_details]).freeze
           OpenStruct.new(json).freeze
         end
 

@@ -87,6 +87,7 @@ FactoryBot.define do
 
   factory :json_claim_data, class: ::EtApi::Test::Json::Node do
     trait :minimal do
+      example_employment_details
       reference { nil }
       submission_reference { 'J704-ZK5E' }
       submission_channel { 'Web' }
@@ -104,12 +105,34 @@ FactoryBot.define do
       other_outcome { "" }
       send_claim_to_whistleblowing_entity { false }
       miscellaneous_information { '' }
-      employment_details { {} }
       is_unfair_dismissal { false }
       pdf_template_reference { "et1-v1-en" }
     end
     trait :full do
       minimal
+    end
+    trait :example_employment_details do
+      employment_details do
+        {
+          "start_date": "2009-11-18",
+          "end_date": nil,
+          "notice_period_end_date": nil,
+          "job_title": "agriculturist",
+          "average_hours_worked_per_week": 38.0,
+          "gross_pay": 3000,
+          "gross_pay_period_type": "monthly",
+          "net_pay": 2000,
+          "net_pay_period_type": "monthly",
+          "worked_notice_period_or_paid_in_lieu": nil,
+          "notice_pay_period_type": nil,
+          "notice_pay_period_count": nil,
+          "enrolled_in_pension_scheme": true,
+          "benefit_details": "Company car, private health care",
+          "found_new_job": nil,
+          "new_job_start_date": nil,
+          "new_job_gross_pay": nil
+        }.stringify_keys
+      end
     end
   end
 end
