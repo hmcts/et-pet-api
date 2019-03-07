@@ -19,8 +19,8 @@ module StoredFileRemoteUpload
     end
     file.flush
     self.file = ActionDispatch::Http::UploadedFile.new filename: filename || File.basename(url),
-                                                       tempfile: file,
-                                                       type: response.content_type
+      tempfile: file,
+      type: response.content_type
   end
 
   def import_from_key=(key)
@@ -39,6 +39,7 @@ module StoredFileRemoteUpload
       blob = ActiveStorage::Blob.new(blob_attributes_for(key))
       copy_blob(blob, key)
       delete_source_blob(key)
+      compute_metadata blob
       model.file.attach blob
     end
 
@@ -71,6 +72,17 @@ module StoredFileRemoteUpload
       @direct_upload_service ||= ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
     end
 
+    def compute_metadata(blob)
+      compute_checksum_in_chunks(blob) unless blob.checksum.present?
+    end
+
+    def compute_checksum_in_chunks(blob)
+      blob.checksum = Digest::MD5.new.tap do |checksum|
+        blob.download do |chunk|
+          checksum << chunk
+        end
+      end.base64digest
+    end
   end
 
   class Amazon
