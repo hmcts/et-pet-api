@@ -61,7 +61,6 @@ module StoredFileRemoteUpload
 
     def blob_attributes_for(value)
       props = direct_upload_service.blobs.get_blob_properties(direct_upload_service.container, value)
-      Rails.logger.info "Receiving file from direct upload - the blob properties are :- \n\t#{JSON.pretty_generate(props)}"
       { filename: model.filename,
         byte_size: props.properties[:content_length],
         checksum: props.properties[:content_md5],
