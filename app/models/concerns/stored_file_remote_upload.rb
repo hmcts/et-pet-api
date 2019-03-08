@@ -50,11 +50,16 @@ module StoredFileRemoteUpload
     end
 
     def copy_blob(blob, key)
+      Rails.logger.info "copy_blob called with blob=#{blob}, key=#{key}"
+      Rails.logger.info "\tcontainer=#{blob.service.container}, key=#{blob.key} - source_uri called"
       blob.service.blobs.copy_blob_from_uri(blob.service.container, blob.key, source_uri_for(blob, key))
     end
 
     def source_uri_for(blob, key)
-      direct_upload_service.url key, expires_in: 1.day, filename: blob.filename, content_type: blob.content_type, disposition: :inline
+      Rails.logger.info "source_uri_for called with blob=#{blob}, key=#{key}"
+      direct_upload_service.url(key, expires_in: 1.day, filename: blob.filename, content_type: blob.content_type, disposition: :inline).tap do |url|
+        Rails.logger.info "source_uri method returned #{url}"
+      end
     end
 
     attr_accessor :model
@@ -66,7 +71,9 @@ module StoredFileRemoteUpload
         byte_size: props.properties[:content_length],
         checksum: props.properties[:content_md5],
         content_type: props.properties[:content_type],
-        metadata: {} }
+        metadata: {} }.tap do |hash|
+          Rails.logger.info "blob_attributes_for returned \n\t#{JSON.pretty_generate(hash)}"
+      end
     end
 
     def direct_upload_service
