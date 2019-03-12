@@ -29,7 +29,6 @@ module UploadedFileImportService
       blob = ActiveStorage::Blob.new(blob_attributes_for(key))
       copy_blob(blob, key)
       delete_source_blob(key)
-      compute_metadata blob
       model.file.attach blob
     end
 
@@ -40,7 +39,12 @@ module UploadedFileImportService
     end
 
     def copy_blob(blob, key)
-      blob.service.blobs.copy_blob_from_uri(blob.service.container, blob.key, source_uri_for(blob, key))
+      tempfile = Tempfile.new
+      tempfile.binmode
+      direct_upload_service.download(key) { |chunk| tempfile.write(chunk) }
+      tempfile.rewind
+      blob.upload(tempfile)
+      tempfile.delete
     end
 
     def source_uri_for(blob, key)
@@ -60,18 +64,6 @@ module UploadedFileImportService
 
     def direct_upload_service
       @direct_upload_service ||= ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
-    end
-
-    def compute_metadata(blob)
-      compute_checksum_in_chunks(blob) unless blob.checksum.present?
-    end
-
-    def compute_checksum_in_chunks(blob)
-      blob.checksum = Digest::MD5.new.tap do |checksum|
-        blob.download do |chunk|
-          checksum << chunk
-        end
-      end.base64digest
     end
   end
 
