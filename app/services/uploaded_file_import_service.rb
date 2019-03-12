@@ -8,7 +8,7 @@ module UploadedFileImportService
       file.write chunk
     end
     file.flush
-    into.file = ActionDispatch::Http::UploadedFile.new filename: filename || File.basename(url),
+    into.file = ActionDispatch::Http::UploadedFile.new filename: into.filename || File.basename(url),
       tempfile: file,
       type: response.content_type
   end
