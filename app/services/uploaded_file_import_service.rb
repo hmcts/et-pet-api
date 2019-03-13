@@ -33,12 +33,23 @@ module UploadedFileImportService
       copy_blob(blob, key)
       delete_source_blob(key)
       model.file.attach blob
-      logger.tagged("UploadedFileImportService::Azure") do
-        logger.info "File #{key} imported from direct upload container in #{timings.values.sum.round(1)}ms - Download(#{timings[:download].round(1)}ms), Upload(#{timings[:upload].round(1)}ms) and Delete Source(#{timings[:delete_source].round(1)}ms)"
-      end
+      log_import_from_key(key)
     end
 
     private
+
+    def info(*args)
+      logger.tagged("UploadedFileImportService::Azure") { logger.info(*args) }
+    end
+
+    def log_import_from_key(key)
+      info sprintf "File %<key>s imported from direct upload container in %<total>dms (Download: %<download>dms, Upload %<upload>dms, Delete %<delete>dms)",
+        key: key,
+        total: timings.values.sum.round(1),
+        download: timings[:download].round(1),
+        upload: timings[:upload].round(1),
+        delete: timings[:delete_source].round(1)
+    end
 
     def delete_source_blob(key)
       timings[:delete_source] = Benchmark.ms do
