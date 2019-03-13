@@ -43,16 +43,16 @@ module UploadedFileImportService
     end
 
     def log_import_from_key(key)
-      info sprintf "File %<key>s imported from direct upload container in %<total>dms (Download: %<download>dms, Upload %<upload>dms, Delete %<delete>dms)",
-        key: key,
-        total: timings.values.sum.round(1),
-        download: timings[:download].round(1),
-        upload: timings[:upload].round(1),
-        delete: timings[:delete_source].round(1)
+      total = timings.values.sum
+      info "File #{key} imported from direct upload container in #{total}ms (Download: #{timings[:download]}ms, Upload #{timings[:upload]}ms, Delete #{timings[:delete]}ms)"
+    end
+
+    def measure(&block)
+      Benchmark.ms(&block).round(1)
     end
 
     def delete_source_blob(key)
-      timings[:delete_source] = Benchmark.ms do
+      timings[:delete_source] = measure do
         direct_upload_service.blobs.delete_blob(direct_upload_service.container, key)
       end
     end
@@ -64,7 +64,7 @@ module UploadedFileImportService
     end
 
     def upload_from_tempfile(blob, tempfile)
-      timings[:upload] = Benchmark.ms do
+      timings[:upload] = measure do
         blob.upload(tempfile)
       end
     end
@@ -72,7 +72,7 @@ module UploadedFileImportService
     def download_to_tempfile(key)
       tempfile = Tempfile.new
       tempfile.binmode
-      timings[:download] = Benchmark.ms do
+      timings[:download] = measure do
         direct_upload_service.download(key) { |chunk| tempfile.write(chunk) }
       end
       tempfile.rewind
