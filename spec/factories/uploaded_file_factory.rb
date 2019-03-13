@@ -83,6 +83,7 @@ FactoryBot.define do
     # @TODO RST-1676 - Remove amazon / azure switcher below
     after(:build) do |uploaded_file, evaluator|
       next if evaluator.file_to_attach.nil?
+
       service_type = ActiveStorage::Blob.service.class.name =~ /Azure/ ? :azure : :amazon
       service_type = :"#{service_type}_direct_upload" if evaluator.upload_method == :direct_upload
       begin

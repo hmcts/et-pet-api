@@ -1,15 +1,5 @@
-require 'net/http'
-require 'tempfile'
-require 'uri'
-# This module is included in any models that need to be able to upload a file from a remote url
-#
-module StoredFileRemoteUpload
-  extend ActiveSupport::Concern
-
-  # Imports a remote file
-  #
-  # @param [String] url The url of the file to import
-  def import_file_url=(url)
+module UploadedFileImportService
+  def self.import_file_url(url, into: UploadedFile.new)
     return if url.nil?
 
     file = Tempfile.new
@@ -18,45 +8,82 @@ module StoredFileRemoteUpload
       file.write chunk
     end
     file.flush
-    self.file = ActionDispatch::Http::UploadedFile.new filename: filename || File.basename(url),
+    into.file = ActionDispatch::Http::UploadedFile.new filename: into.filename || File.basename(url),
                                                        tempfile: file,
                                                        type: response.content_type
   end
 
-  def import_from_key=(key)
+  def self.import_from_key(key, into: UploadedFile.new, logger: Rails.logger)
     return if key.nil?
 
-    adapter = ActiveStorage::Blob.service.class.name =~ /Azure/ ? Azure.new(self) : Amazon.new(self)
+    adapter = ActiveStorage::Blob.service.class.name =~ /Azure/ ? Azure.new(into, logger: logger) : Amazon.new(into, logger: logger)
     adapter.import_from_key(key)
   end
 
   class Azure
-    def initialize(model)
+    def initialize(model, logger:)
       self.model = model
+      self.logger = logger
+      self.timings = {}
     end
 
     def import_from_key(key)
+      timings.clear
       blob = ActiveStorage::Blob.new(blob_attributes_for(key))
       copy_blob(blob, key)
       delete_source_blob(key)
       model.file.attach blob
+      log_import_from_key(key)
     end
 
     private
 
+    def info(*args)
+      logger.tagged("UploadedFileImportService::Azure") { logger.info(*args) }
+    end
+
+    def log_import_from_key(key)
+      total = timings.values.sum
+      info "File #{key} imported from direct upload container in #{total}ms (Download: #{timings[:download]}ms, Upload #{timings[:upload]}ms, Delete #{timings[:delete]}ms)"
+    end
+
+    def measure(&block)
+      Benchmark.ms(&block).round(1)
+    end
+
     def delete_source_blob(key)
-      direct_upload_service.blobs.delete_blob(direct_upload_service.container, key)
+      timings[:delete_source] = measure do
+        direct_upload_service.blobs.delete_blob(direct_upload_service.container, key)
+      end
     end
 
     def copy_blob(blob, key)
-      blob.service.blobs.copy_blob_from_uri(blob.service.container, blob.key, source_uri_for(blob, key))
+      tempfile = download_to_tempfile(key)
+      upload_from_tempfile(blob, tempfile)
+      tempfile.delete
+    end
+
+    def upload_from_tempfile(blob, tempfile)
+      timings[:upload] = measure do
+        blob.upload(tempfile)
+      end
+    end
+
+    def download_to_tempfile(key)
+      tempfile = Tempfile.new
+      tempfile.binmode
+      timings[:download] = measure do
+        direct_upload_service.download(key) { |chunk| tempfile.write(chunk) }
+      end
+      tempfile.rewind
+      tempfile
     end
 
     def source_uri_for(blob, key)
       direct_upload_service.url key, expires_in: 1.day, filename: blob.filename, content_type: blob.content_type, disposition: :inline
     end
 
-    attr_accessor :model
+    attr_accessor :model, :timings, :logger
 
     def blob_attributes_for(value)
       props = direct_upload_service.blobs.get_blob_properties(direct_upload_service.container, value)
@@ -70,12 +97,12 @@ module StoredFileRemoteUpload
     def direct_upload_service
       @direct_upload_service ||= ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
     end
-
   end
 
   class Amazon
-    def initialize(model)
+    def initialize(model, logger:)
       self.model = model
+      self.logger = logger
     end
 
     def import_from_key(key)
@@ -96,10 +123,11 @@ module StoredFileRemoteUpload
         metadata: {} }
     end
 
-    attr_accessor :model
+    attr_accessor :model, :logger
 
     def direct_upload_service
       @direct_upload_service ||= ActiveStorage::Service.configure :amazon_direct_upload, Rails.configuration.active_storage.service_configurations
     end
   end
+
 end

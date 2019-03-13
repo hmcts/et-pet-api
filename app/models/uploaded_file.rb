@@ -4,5 +4,4 @@
 class UploadedFile < ApplicationRecord
   has_one_attached :file
   include StoredFileDownload
-  include StoredFileRemoteUpload
 end

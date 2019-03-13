@@ -15,7 +15,7 @@ RSpec.describe UploadedFile, type: :model do
 
   describe '#url' do
     # @TODO RST-1676 - The amazon block can be removed
-    context 'using amazon cloud provider' do
+    context 'when using amazon cloud provider' do
       include_context 'with cloud provider switching', cloud_provider: :amazon
       it 'returns a minio test server url as we are in test mode' do
         uploaded_file.file = fixture_file
@@ -24,97 +24,13 @@ RSpec.describe UploadedFile, type: :model do
       end
     end
 
-    context 'using azure cloud provider' do
+    context 'when using azure cloud provider' do
       include_context 'with cloud provider switching', cloud_provider: :azure
       it 'returns an azurite test server url as we are in test mode' do
         uploaded_file.file = fixture_file
 
         expect(uploaded_file.url).to start_with("#{ActiveStorage::Blob.service.blobs.generate_uri}/#{ActiveStorage::Blob.service.container}")
       end
-    end
-  end
-
-  describe '#import_file_url=' do
-    shared_examples 'import_file_url= examples' do
-      it 'allows nil as meaning no import from url required' do
-        # Arrange and Act - set to nil
-        uploaded_file.import_file_url = nil
-
-        # Assert
-        expect(uploaded_file.file.attachment).to be_nil
-      end
-
-      it 'imports from a remote url' do
-        # Arrange - Store a file remotely
-        remote_file = create(:uploaded_file, :example_pdf)
-
-        # Act - Import it
-        uploaded_file.import_file_url = remote_file.file.service_url
-
-        # Assert - Make sure the file is imported
-        Dir.mktmpdir do |dir|
-          filename = File.join(dir, 'my_file.pdf')
-          # Act - download the blob
-          uploaded_file.download_blob_to filename
-
-          # Assert - make sure its a copy of the source
-          expect(filename).to be_a_file_copy_of(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf')
-        end
-      end
-    end
-
-    # @TODO RST-1676 - The amazon block can be removed
-    context 'in amazon mode' do
-      include_context 'with cloud provider switching', cloud_provider: :amazon
-      include_examples('import_file_url= examples')
-    end
-
-    context 'in azure mode' do
-      include_context 'with cloud provider switching', cloud_provider: :azure
-      include_examples('import_file_url= examples')
-    end
-  end
-
-  describe '#import_from_key=' do
-    shared_examples 'import_from_key examples' do
-      it 'imports from a key from the direct upload container' do
-        # Arrange - Store a file in the direct upload container
-        remote_file = create(:uploaded_file, :example_pdf, :direct_upload)
-
-        # Act
-        uploaded_file.import_from_key=remote_file.file.blob.key
-
-        # Assert - Make sure the file is imported
-        Dir.mktmpdir do |dir|
-          filename = File.join(dir, 'my_file.pdf')
-          # Act - download the blob
-          uploaded_file.download_blob_to filename
-
-          # Assert - make sure its a copy of the source
-          expect(filename).to be_a_file_copy_of(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf')
-        end
-      end
-
-      it 'removes the original when done' do
-        # Arrange - Store a file in the direct upload container
-        remote_file = create(:uploaded_file, :example_pdf, :direct_upload)
-
-        # Act
-        uploaded_file.import_from_key=remote_file.file.blob.key
-
-        # Assert - Make sure original has gone
-        expect(remote_file.file.blob.service.exist?(remote_file.file.blob.key)).to be false
-      end
-    end
-
-    context 'in amazon mode' do
-      include_context 'with cloud provider switching', cloud_provider: :amazon
-      include_examples 'import_from_key examples'
-    end
-
-    context 'in azure mode' do
-      include_context 'with cloud provider switching', cloud_provider: :azure
-      include_examples 'import_from_key examples'
     end
   end
 
@@ -151,12 +67,12 @@ RSpec.describe UploadedFile, type: :model do
       end
     end
     # @TODO RST-1676 - The amazon block can be removed and the shared examples expanded back into their only context
-    context 'in amazon mode' do
+    context 'when in amazon mode' do
       include_context 'with cloud provider switching', cloud_provider: :amazon
       include_examples 'download_blob_to examples'
     end
 
-    context 'in azure mode' do
+    context 'when in azure mode' do
       include_context 'with cloud provider switching', cloud_provider: :amazon
       include_examples 'download_blob_to examples'
     end

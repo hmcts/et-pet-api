@@ -1121,7 +1121,9 @@ CREATE TABLE public.uploaded_files (
     filename character varying,
     checksum character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    import_file_url character varying,
+    import_from_key character varying
 );
 
 
@@ -2115,6 +2117,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190108161050'),
 ('20190108161126'),
 ('20190108161211'),
-('20190116150702');
+('20190116150702'),
+('20190312113307');
 
 
