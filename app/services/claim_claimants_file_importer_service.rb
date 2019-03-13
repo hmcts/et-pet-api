@@ -12,6 +12,7 @@ class ClaimClaimantsFileImporterService
 
   def call
     raise "The claim must be saved with no changes before this importer can be used" unless claim.persisted? && claim.changes.empty?
+
     import_claimants uploaded_file: csv_file
   end
 
@@ -37,6 +38,7 @@ class ClaimClaimantsFileImporterService
     loop do
       chunk = file.read(block_size)
       break if chunk.nil?
+
       tempfile.write chunk.encode('utf-8', invalid: :replace, undef: :replace)
     end
     tempfile.tap(&:close)
@@ -50,6 +52,7 @@ class ClaimClaimantsFileImporterService
       append_to_import(claimant, to_import)
     end
     raise ActiveRecord::Rollback if errors.present?
+
     insert_records(to_import)
   end
 

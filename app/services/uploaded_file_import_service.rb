@@ -9,49 +9,70 @@ module UploadedFileImportService
     end
     file.flush
     into.file = ActionDispatch::Http::UploadedFile.new filename: into.filename || File.basename(url),
-      tempfile: file,
-      type: response.content_type
+                                                       tempfile: file,
+                                                       type: response.content_type
   end
 
-  def self.import_from_key(key, into: UploadedFile.new)
+  def self.import_from_key(key, into: UploadedFile.new, logger: Rails.logger)
     return if key.nil?
 
-    adapter = ActiveStorage::Blob.service.class.name =~ /Azure/ ? Azure.new(into) : Amazon.new(into)
+    adapter = ActiveStorage::Blob.service.class.name =~ /Azure/ ? Azure.new(into, logger: logger) : Amazon.new(into, logger: logger)
     adapter.import_from_key(key)
   end
 
   class Azure
-    def initialize(model)
+    def initialize(model, logger:)
       self.model = model
+      self.logger = logger
+      self.timings = {}
     end
 
     def import_from_key(key)
+      timings.clear
       blob = ActiveStorage::Blob.new(blob_attributes_for(key))
       copy_blob(blob, key)
       delete_source_blob(key)
       model.file.attach blob
+      logger.tagged("UploadedFileImportService::Azure") do
+        logger.info "File #{key} imported from direct upload container in #{timings.values.sum.round(1)}ms - Download(#{timings[:download].round(1)}ms), Upload(#{timings[:upload].round(1)}ms) and Delete Source(#{timings[:delete_source].round(1)}ms)"
+      end
     end
 
     private
 
     def delete_source_blob(key)
-      direct_upload_service.blobs.delete_blob(direct_upload_service.container, key)
+      timings[:delete_source] = Benchmark.ms do
+        direct_upload_service.blobs.delete_blob(direct_upload_service.container, key)
+      end
     end
 
     def copy_blob(blob, key)
+      tempfile = download_to_tempfile(key)
+      upload_from_tempfile(blob, tempfile)
+      tempfile.delete
+    end
+
+    def upload_from_tempfile(blob, tempfile)
+      timings[:upload] = Benchmark.ms do
+        blob.upload(tempfile)
+      end
+    end
+
+    def download_to_tempfile(key)
       tempfile = Tempfile.new
       tempfile.binmode
-      direct_upload_service.download(key) { |chunk| tempfile.write(chunk) }
+      timings[:download] = Benchmark.ms do
+        direct_upload_service.download(key) { |chunk| tempfile.write(chunk) }
+      end
       tempfile.rewind
-      blob.upload(tempfile)
-      tempfile.delete
+      tempfile
     end
 
     def source_uri_for(blob, key)
       direct_upload_service.url key, expires_in: 1.day, filename: blob.filename, content_type: blob.content_type, disposition: :inline
     end
 
-    attr_accessor :model
+    attr_accessor :model, :timings, :logger
 
     def blob_attributes_for(value)
       props = direct_upload_service.blobs.get_blob_properties(direct_upload_service.container, value)
@@ -68,8 +89,9 @@ module UploadedFileImportService
   end
 
   class Amazon
-    def initialize(model)
+    def initialize(model, logger:)
       self.model = model
+      self.logger = logger
     end
 
     def import_from_key(key)
@@ -90,7 +112,7 @@ module UploadedFileImportService
         metadata: {} }
     end
 
-    attr_accessor :model
+    attr_accessor :model, :logger
 
     def direct_upload_service
       @direct_upload_service ||= ActiveStorage::Service.configure :amazon_direct_upload, Rails.configuration.active_storage.service_configurations

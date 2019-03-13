@@ -2,10 +2,9 @@ require 'rails_helper'
 
 RSpec.describe UploadedFileImportService do
   subject(:service) { described_class }
+
   let(:uploaded_file) { build(:uploaded_file, filename: 'anything') }
-
   let(:fixture_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf') }
-
 
   describe '#import_file_url' do
     shared_examples 'import_file_url examples' do
@@ -37,12 +36,12 @@ RSpec.describe UploadedFileImportService do
     end
 
     # @TODO RST-1676 - The amazon block can be removed
-    context 'in amazon mode' do
+    context 'when in amazon mode' do
       include_context 'with cloud provider switching', cloud_provider: :amazon
       include_examples('import_file_url examples')
     end
 
-    context 'in azure mode' do
+    context 'when in azure mode' do
       include_context 'with cloud provider switching', cloud_provider: :azure
       include_examples('import_file_url examples')
     end
@@ -80,12 +79,12 @@ RSpec.describe UploadedFileImportService do
       end
     end
 
-    context 'in amazon mode' do
+    context 'when in amazon mode' do
       include_context 'with cloud provider switching', cloud_provider: :amazon
       include_examples 'import_from_key examples'
     end
 
-    context 'in azure mode' do
+    context 'when in azure mode' do
       include_context 'with cloud provider switching', cloud_provider: :azure
       include_examples 'import_from_key examples'
     end

@@ -15,7 +15,7 @@ RSpec.describe UploadedFile, type: :model do
 
   describe '#url' do
     # @TODO RST-1676 - The amazon block can be removed
-    context 'using amazon cloud provider' do
+    context 'when using amazon cloud provider' do
       include_context 'with cloud provider switching', cloud_provider: :amazon
       it 'returns a minio test server url as we are in test mode' do
         uploaded_file.file = fixture_file
@@ -24,7 +24,7 @@ RSpec.describe UploadedFile, type: :model do
       end
     end
 
-    context 'using azure cloud provider' do
+    context 'when using azure cloud provider' do
       include_context 'with cloud provider switching', cloud_provider: :azure
       it 'returns an azurite test server url as we are in test mode' do
         uploaded_file.file = fixture_file
@@ -67,12 +67,12 @@ RSpec.describe UploadedFile, type: :model do
       end
     end
     # @TODO RST-1676 - The amazon block can be removed and the shared examples expanded back into their only context
-    context 'in amazon mode' do
+    context 'when in amazon mode' do
       include_context 'with cloud provider switching', cloud_provider: :amazon
       include_examples 'download_blob_to examples'
     end
 
-    context 'in azure mode' do
+    context 'when in azure mode' do
       include_context 'with cloud provider switching', cloud_provider: :amazon
       include_examples 'download_blob_to examples'
     end
