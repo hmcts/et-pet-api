@@ -5,8 +5,8 @@
 module EtAtosExport
   class ResponseFileBuilderService
     def initialize(response,
-      response_text_file_builder: ResponseFileBuilder::BuildResponseTextFile,
-      response_rtf_file_builder: ResponseFileBuilder::BuildResponseRtfFile)
+      response_text_file_builder: ::EtAtosExport::ResponseFileBuilder::BuildResponseTextFile,
+      response_rtf_file_builder: ::EtAtosExport::ResponseFileBuilder::BuildResponseRtfFile)
       self.response = response
       self.response_text_file_builder = response_text_file_builder
       self.response_rtf_file_builder = response_rtf_file_builder

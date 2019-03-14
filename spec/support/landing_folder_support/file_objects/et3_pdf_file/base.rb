@@ -51,8 +51,8 @@ module EtApi
             if value.key?(:select_values)
               raw = raw_value_from_pdf(value)
               ret = value[:select_values].detect { |(_, v)| v == raw }.try(:first)
-              return true if ret == :true # rubocop:disable Lint/BooleanSymbol
-              return false if ret == :false # rubocop:disable Lint/BooleanSymbol
+              return true if ret == :true || ret == true # rubocop:disable Lint/BooleanSymbol
+              return false if ret == :false || ret == false # rubocop:disable Lint/BooleanSymbol
               return ret.to_s if ret
               return nil if raw == value[:unselected_value]
               raise "Invalid value - '#{raw}' is not in the selected_values list or the unselected_value for field '#{key}' for section #{self.class.name}"
