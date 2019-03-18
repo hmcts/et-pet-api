@@ -53,6 +53,7 @@ module ClaimFileBuilder
       result = {}
       apply_your_details_fields(result)
       apply_respondents_details_fields(result)
+      apply_secondary_respondents_details_fields(result)
       apply_multiple_cases_section(result)
       apply_employment_details_section(result)
       apply_earnings_and_benefits_section(result)
@@ -120,21 +121,36 @@ module ClaimFileBuilder
     def apply_respondents_details_fields(result)
       resp1 = claim.primary_respondent
       apply_field result, resp1.name, :respondents_details, :name
-      apply_field result, resp1.acas_number, :respondents_details, :acas, :acas_number
-      apply_field result, resp1.acas_number.present?, :respondents_details, :acas, :have_acas
+      apply_field result, resp1.acas_certificate_number, :respondents_details, :acas, :acas_number
+      apply_field result, resp1.acas_certificate_number.present?, :respondents_details, :acas, :have_acas
       apply_field result, resp1.address.building, :respondents_details, :address, :building
       apply_field result, resp1.address.street, :respondents_details, :address, :street
       apply_field result, resp1.address.locality, :respondents_details, :address, :locality
       apply_field result, resp1.address.county, :respondents_details, :address, :county
       apply_field result, post_code_for(resp1.address.post_code), :respondents_details, :address, :post_code
       apply_field result, resp1.address_telephone_number, :respondents_details, :address, :telephone_number
-      apply_field result, resp1.work_address.building, :respondents_details, :different_address, :building
-      apply_field result, resp1.work_address.street, :respondents_details, :different_address, :street
-      apply_field result, resp1.work_address.locality, :respondents_details, :different_address, :locality
-      apply_field result, resp1.work_address.county, :respondents_details, :different_address, :county
-      apply_field result, post_code_for(resp1.work_address.post_code), :respondents_details, :different_address, :post_code
+      apply_field result, resp1.work_address&.building, :respondents_details, :different_address, :building
+      apply_field result, resp1.work_address&.street, :respondents_details, :different_address, :street
+      apply_field result, resp1.work_address&.locality, :respondents_details, :different_address, :locality
+      apply_field result, resp1.work_address&.county, :respondents_details, :different_address, :county
+      apply_field result, post_code_for(resp1.work_address&.post_code, optional: resp1.present?), :respondents_details, :different_address, :post_code
       apply_field result, resp1.work_address_telephone_number, :respondents_details, :different_address, :telephone_number
       apply_field result, claim.secondary_respondents.present?, :respondents_details, :additional_respondents
+    end
+
+    def apply_secondary_respondents_details_fields(result)
+      resp2 = claim.secondary_respondents.first
+      return if resp2.nil?
+
+      apply_field result, resp2.name, :respondents_details, :respondent2,  :name
+      apply_field result, resp2.acas_certificate_number, :respondents_details, :respondent2,  :acas, :acas_number
+      apply_field result, resp2.acas_certificate_number.present?, :respondents_details, :respondent2,  :acas, :have_acas
+      apply_field result, resp2.address.building, :respondents_details, :respondent2,  :address, :building
+      apply_field result, resp2.address.street, :respondents_details, :respondent2,  :address, :street
+      apply_field result, resp2.address.locality, :respondents_details, :respondent2,  :address, :locality
+      apply_field result, resp2.address.county, :respondents_details, :respondent2,  :address, :county
+      apply_field result, post_code_for(resp2.address.post_code), :respondents_details, :respondent2,  :address, :post_code
+      apply_field result, resp2.address_telephone_number, :respondents_details, :respondent2,  :address, :telephone_number
     end
 
     def apply_multiple_cases_section(result)
@@ -206,17 +222,18 @@ module ClaimFileBuilder
     end
 
     def apply_your_representative_section(result)
-      apply_field result, claim.primary_representative.organisation_name, :your_representative, :name_of_organisation
-      apply_field result, claim.primary_representative.name, :your_representative, :name_of_representative
-      apply_field result, claim.primary_representative.address.building, :your_representative, :building
-      apply_field result, claim.primary_representative.address.street, :your_representative, :street
-      apply_field result, claim.primary_representative.address.locality, :your_representative, :locality
-      apply_field result, claim.primary_representative.address.county, :your_representative, :county
-      apply_field result, post_code_for(claim.primary_representative.address.post_code), :your_representative, :post_code
-      apply_field result, claim.primary_representative.address_telephone_number, :your_representative, :telephone_number
-      apply_field result, claim.primary_representative.mobile_number, :your_representative, :alternative_telephone_number
-      apply_field result, claim.primary_representative.dx_number, :your_representative, :dx_number
-      apply_field result, claim.primary_representative.email_address, :your_representative, :email_address
+      rep = claim.primary_representative
+      apply_field result, rep&.organisation_name, :your_representative, :name_of_organisation
+      apply_field result, rep&.name, :your_representative, :name_of_representative
+      apply_field result, rep&.address&.building, :your_representative, :building
+      apply_field result, rep&.address&.street, :your_representative, :street
+      apply_field result, rep&.address&.locality, :your_representative, :locality
+      apply_field result, rep&.address&.county, :your_representative, :county
+      apply_field result, post_code_for(rep&.address&.post_code, optional: rep.blank?), :your_representative, :post_code
+      apply_field result, rep&.address_telephone_number, :your_representative, :telephone_number
+      apply_field result, rep&.mobile_number, :your_representative, :alternative_telephone_number
+      apply_field result, rep&.dx_number, :your_representative, :dx_number
+      apply_field result, rep&.email_address, :your_representative, :email_address
     end
 
     def apply_disability_section(result)

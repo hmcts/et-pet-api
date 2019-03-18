@@ -16,46 +16,46 @@ module EtApi
                     telephone_number: respondents.first.address_telephone_number
                 },
                 acas: {
-                    have_acas: respondents.first.acas_number.present?,
-                    acas_number: respondents.first.acas_number || ''
+                    have_acas: respondents.first.acas_certificate_number.present?,
+                    acas_number: respondents.first.acas_certificate_number || ''
                 },
                 different_address: {
-                    building: respondents.first.work_address_attributes&.building || '',
-                    street: respondents.first.work_address_attributes&.street || '',
-                    locality: respondents.first.work_address_attributes&.locality || '',
-                    county: respondents.first.work_address_attributes&.county || '',
-                    post_code: post_code_for(respondents.first.work_address_attributes&.post_code, optional: true) || '',
+                    building: respondents.first.work_address_attributes[:building] || '',
+                    street: respondents.first.work_address_attributes[:street] || '',
+                    locality: respondents.first.work_address_attributes[:locality] || '',
+                    county: respondents.first.work_address_attributes[:county] || '',
+                    post_code: post_code_for(respondents.first.work_address_attributes[:post_code], optional: true) || '',
                     telephone_number: respondents.first.work_address_telephone_number || ''
                 },
                 additional_respondents: respondents.length > 1,
                 respondent2: {
                     name: respondents[1].try(:name),
                     address: {
-                        building: respondents[1].try(:building),
-                        street: respondents[1].try(:street),
-                        locality: respondents[1].try(:locality),
-                        county: respondents[1].try(:county),
-                        post_code: post_code_for(respondents[1].try(:post_code), optional: true),
+                        building: respondents[1]&.address_attributes&.building,
+                        street: respondents[1]&.address_attributes&.street,
+                        locality: respondents[1]&.address_attributes&.locality,
+                        county: respondents[1]&.address_attributes&.county,
+                        post_code: post_code_for(respondents[1]&.address_attributes&.post_code, optional: true),
                         telephone_number: respondents[1].try(:telephone_number)
                     },
                     acas: {
-                        have_acas: yes_no_for(respondents[1].try(:acas_number), optional: true),
-                        acas_number: respondents[1].try(:acas_number)
+                        have_acas: respondents[1]&.acas_certificate_number.present?,
+                        acas_number: respondents[1]&.acas_certificate_number
                     }
                 },
                 respondent3: {
                     name: respondents[2].try(:name),
                     address: {
-                        building: respondents[2].try(:building),
-                        street: respondents[2].try(:street),
-                        locality: respondents[2].try(:locality),
-                        county: respondents[2].try(:county),
-                        post_code: post_code_for(respondents[2].try(:post_code), optional: true),
-                        telephone_number: respondents[2].try(:telephone_number)
+                        building: respondents[2]&.address_attributes&.building,
+                        street: respondents[2]&.address_attributes&.street,
+                        locality: respondents[2]&.address_attributes&.locality,
+                        county: respondents[2]&.address_attributes&.county,
+                        post_code: post_code_for(respondents[2]&.address_attributes&.post_code, optional: true),
+                        telephone_number: respondents[2]&.telephone_number
                     },
                     acas: {
-                        have_acas: yes_no_for(respondents[2].try(:acas_number), optional: true),
-                        acas_number: respondents[2].try(:acas_number)
+                        have_acas: respondents[2]&.acas_certificate_number.present?,
+                        acas_number: respondents[2]&.acas_certificate_number
                     }
                 }
             }
