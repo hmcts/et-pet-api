@@ -11,10 +11,12 @@ RSpec.configure do |c|
 
       # Empty container
       puts "Emptying container #{container_name}"
-      client.list_blobs(container_name).each do |blob|
-        client.delete_blob container_name, blob.name
+      time =Benchmark.ms do
+        client.list_blobs(container_name).each do |blob|
+          client.delete_blob container_name, blob.name
+        end
       end
-      puts "Emptied container #{container_name}"
+      puts "Emptied container #{container_name} in #{time}ms"
     end
   end
 end

@@ -21,10 +21,10 @@ class BuildClaimCommand < BaseCommand
 
   validates :pdf_template_reference, inclusion: { in: ['et1-v1-en', 'et1-v1-cy'] }
 
-  def initialize(*)
-    super
-    self.reference_service = ReferenceService
-    self.allocator_service = UploadedFileAllocatorService.new
+  def initialize(*args, reference_service: ReferenceService, allocator_service: UploadedFileAllocatorService.new, **kw_args)
+    super(*args, **kw_args)
+    self.reference_service = reference_service
+    self.allocator_service = allocator_service
   end
 
   def apply(root_object, meta: {})
