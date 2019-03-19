@@ -318,9 +318,13 @@ et1-v1-en:
             field_name: '2.4 R2 phone number'
         acas:
           have_acas:
-            field_name: 'Check Box8'
+            field_name: Check Box8
+            unselected_value: 'Off'
+            select_values:
+              true: 'Yes'
+              false: 'no'
           acas_number:
-            field_name: 'Text9'
+            field_name: Text9
       respondent3:
         name:
           field_name: '2.4 R3 name'
@@ -339,9 +343,13 @@ et1-v1-en:
             field_name: '2.4 R3 phone number'
         acas:
           have_acas:
-            field_name: 'Check Box15'
+            field_name: Check Box15
+            unselected_value: 'Off'
+            select_values:
+              true: 'Yes'
+              false: 'no'
           acas_number:
-            field_name: 'Text16'
+            field_name: Text16
     multiple_cases:
       have_similar_claims:
         field_name: 3.1 tick boxes

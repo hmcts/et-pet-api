@@ -140,17 +140,28 @@ module ClaimFileBuilder
 
     def apply_secondary_respondents_details_fields(result)
       resp2 = claim.secondary_respondents.first
-      return if resp2.nil?
 
-      apply_field result, resp2.name, :respondents_details, :respondent2,  :name
-      apply_field result, resp2.acas_certificate_number, :respondents_details, :respondent2,  :acas, :acas_number
-      apply_field result, resp2.acas_certificate_number.present?, :respondents_details, :respondent2,  :acas, :have_acas
-      apply_field result, resp2.address.building, :respondents_details, :respondent2,  :address, :building
-      apply_field result, resp2.address.street, :respondents_details, :respondent2,  :address, :street
-      apply_field result, resp2.address.locality, :respondents_details, :respondent2,  :address, :locality
-      apply_field result, resp2.address.county, :respondents_details, :respondent2,  :address, :county
-      apply_field result, post_code_for(resp2.address.post_code), :respondents_details, :respondent2,  :address, :post_code
-      apply_field result, resp2.address_telephone_number, :respondents_details, :respondent2,  :address, :telephone_number
+      apply_field result, resp2&.name, :respondents_details, :respondent2,  :name
+      apply_field result, resp2&.acas_certificate_number, :respondents_details, :respondent2,  :acas, :acas_number
+      apply_field result, resp2&.acas_certificate_number&.present?, :respondents_details, :respondent2,  :acas, :have_acas
+      apply_field result, resp2&.address&.building, :respondents_details, :respondent2,  :address, :building
+      apply_field result, resp2&.address&.street, :respondents_details, :respondent2,  :address, :street
+      apply_field result, resp2&.address&.locality, :respondents_details, :respondent2,  :address, :locality
+      apply_field result, resp2&.address&.county, :respondents_details, :respondent2,  :address, :county
+      apply_field result, post_code_for(resp2&.address&.post_code, optional: resp2.blank?), :respondents_details, :respondent2,  :address, :post_code
+      apply_field result, resp2&.address_telephone_number, :respondents_details, :respondent2,  :address, :telephone_number
+
+      resp3 = claim.secondary_respondents[1]
+
+      apply_field result, resp3&.name, :respondents_details, :respondent3,  :name
+      apply_field result, resp3&.acas_certificate_number, :respondents_details, :respondent3,  :acas, :acas_number
+      apply_field result, resp3&.acas_certificate_number&.present?, :respondents_details, :respondent3,  :acas, :have_acas
+      apply_field result, resp3&.address&.building, :respondents_details, :respondent3,  :address, :building
+      apply_field result, resp3&.address&.street, :respondents_details, :respondent3,  :address, :street
+      apply_field result, resp3&.address&.locality, :respondents_details, :respondent3,  :address, :locality
+      apply_field result, resp3&.address&.county, :respondents_details, :respondent3,  :address, :county
+      apply_field result, post_code_for(resp3&.address&.post_code, optional: resp3.blank?), :respondents_details, :respondent3,  :address, :post_code
+      apply_field result, resp3&.address_telephone_number, :respondents_details, :respondent3,  :address, :telephone_number
     end
 
     def apply_multiple_cases_section(result)

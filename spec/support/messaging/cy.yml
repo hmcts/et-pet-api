@@ -318,3 +318,427 @@ et3-v1-cy:
     office_telephone: 'Rhif ffôn: %{telephone}'
     office_name: 'Diolch am gyflwyno eich ymateb. Mae wedi cael ei anfon i’r swyddfa ym %{office_name} a byddant yn cysylltu â chi maes o law.'
     subject: 'E-bost yn cadarnhau bod eich ymateb i’r hawliad Tribiwnlys Cyflogaeth ar-lein wedi cyrraedd'
+et1-v1-cy:
+  claim_pdf_fields:
+    your_details:
+      title:
+        field_name: '1.1 title tick boxes'
+        select_values:
+          Miss: 'miss'
+          Mr: 'mr'
+          Mrs: 'mrs'
+          Ms: 'ms'
+        unselected_value: 'Off'
+      first_name:
+        field_name: '1.2 first names'
+      last_name:
+        field_name: '1.3 surname'
+      dob_day:
+        field_name: '1.4 DOB day'
+      dob_month:
+        field_name: '1.4 DOB month'
+      dob_year:
+        field_name: '1.4 DOB year'
+      gender:
+        field_name: '1.4 gender'
+        select_values:
+          Female: 'female'
+          Male: 'male'
+        unselected_value: 'Off'
+      building:
+        field_name: '1.5 number'
+      street:
+        field_name: '1.5 street'
+      locality:
+        field_name: '1.5 town city'
+      county:
+        field_name: '1.5 county'
+      post_code:
+        field_name: '1.5 postcode'
+      telephone_number:
+        field_name: '1.6 phone number'
+      alternative_telephone_number:
+        field_name: '1.7 mobile number'
+      email_address:
+        field_name: '1.9 email'
+      correspondence:
+        field_name: '1.8 tick boxes'
+        select_values:
+          Email: 'email'
+          Fax: 'fax'
+          Post: 'post'
+        unselected_value: 'Off'
+    respondents_details:
+      name:
+        field_name: '2.1'
+      address:
+        building:
+          field_name: '2.2 number'
+        street:
+          field_name: '2.2 street'
+        locality:
+          field_name: '2.2 town city'
+        county:
+          field_name: '2.2 county'
+        post_code:
+          field_name: '2.2 postcode'
+        telephone_number:
+          field_name: '2.2 phone number'
+      acas:
+        have_acas:
+          field_name: 'Check Box1'
+          select_values:
+            true: 'Yes'
+            false: 'no'
+          unselected_value: 'Off'
+        acas_number:
+          field_name: 'Text2'
+      different_address:
+        building:
+          field_name: '2.3 number'
+        street:
+          field_name: '2.3 street'
+        locality:
+          field_name: '2.3 town city'
+        county:
+          field_name: '2.3 county'
+        post_code:
+          field_name: '2.3 postcode'
+        telephone_number:
+          field_name: '2.3 phone number'
+      additional_respondents:
+        field_name: 2.4 tick box
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      respondent2:
+        name:
+          field_name: '2.4 R2 name'
+        address:
+          building:
+            field_name: '2.4 R2 number'
+          street:
+            field_name: '2.4 R2 street'
+          locality:
+            field_name: '2.4 R2 town'
+          county:
+            field_name: '2.4 R2 county'
+          post_code:
+            field_name: '2.4 R2 postcode'
+          telephone_number:
+            field_name: '2.4 R2 phone number'
+        acas:
+          have_acas:
+            field_name: Check Box8
+            unselected_value: 'Off'
+            select_values:
+              true: 'Yes'
+              false: 'no'
+          acas_number:
+            field_name: Text9
+      respondent3:
+        name:
+          field_name: '2.4 R3 name'
+        address:
+          building:
+            field_name: '2.4 R3 number'
+          street:
+            field_name: '2.4 R3 street'
+          locality:
+            field_name: '2.4 R3 town city'
+          county:
+            field_name: '2.4 R3 county'
+          post_code:
+            field_name: '2.4 R3 postcode'
+          telephone_number:
+            field_name: '2.4 R3 phone number'
+        acas:
+          have_acas:
+            field_name: Check Box15
+            unselected_value: 'Off'
+            select_values:
+              true: 'Yes'
+              false: 'no'
+          acas_number:
+            field_name: Text16
+    multiple_cases:
+      have_similar_claims:
+        field_name: 3.1 tick boxes
+        unselected_value: 'Off'
+        select_values:
+          false: 'no'
+          true: 'yes'
+      other_claimants:
+        field_name: '3.1 if yes'
+    not_your_employer:
+      claim_type:
+        field_name: '4.1'
+    employment_details:
+      job_title:
+        field_name: '5.2'
+      start_date:
+        field_name: '5.1 employment start'
+      employment_continuing:
+        field_name: '5.1 tick boxes'
+        select_values:
+          false: 'no'
+          true: 'yes'
+        unselected_value: 'Off'
+      ended_date:
+        field_name: '5.1 employment end'
+      ending_date:
+        field_name: '5.1 not ended'
+    earnings_and_benefits:
+      average_weekly_hours:
+        field_name: '6.1'
+      pay_before_tax:
+        amount:
+          field_name: '6.2 pay before tax'
+        period:
+          field_name: '6.2 pay before tax tick boxes'
+          select_values:
+            weekly: 'weekly'
+            monthly: 'monthly'
+          unselected_value: 'Off'
+      pay_after_tax:
+        amount:
+          field_name: '6.2 normal pay'
+        period:
+          field_name: '6.2 normal pay tick boxes'
+          select_values:
+            weekly: 'weekly'
+            monthly: 'monthly'
+          unselected_value: 'Off'
+      paid_for_notice_period:
+        field_name: '6.3 tick boxes'
+      notice_period:
+        weeks:
+          field_name: '6.3 weeks'
+        months:
+          field_name: '6.3 months'
+      employers_pension_scheme:
+        field_name: '6.4 tick boxes'
+        select_values:
+          false: 'no'
+          true: 'yes'
+        unselected_value: 'Off'
+      benefits:
+        field_name: '6.5'
+    what_happened_since:
+      have_another_job:
+        field_name: 7.1 tick boxes
+        unselected_value: 'Off'
+        select_values:
+          false: 'no'
+          true: 'yes'
+      start_date:
+        field_name: '7.2'
+      salary:
+        field_name: '7.3'
+    type_and_details:
+      unfairly_dismissed:
+        field_name: 8.1 unfairly tick box
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      discriminated:
+        field_name: 8.1 discriminated
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      discriminated_age:
+        field_name: 8.1 age
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      discriminated_race:
+        field_name: 8.1 race
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      discriminated_gender_reassignment:
+        field_name: 8.1 gender reassignment
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      discriminated_disability:
+        field_name: 8.1 disability
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      discriminated_pregnancy:
+        field_name: 8.1 pregnancy
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      discriminated_marriage:
+        field_name: 8.1 marriage
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      discriminated_sexual_orientation:
+        field_name: 8.1 sexual orientation
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      discriminated_sex:
+        field_name: 8.1 sex
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      discriminated_religion:
+        field_name: 8.1 religion
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      claiming_redundancy_payment:
+        field_name: 8.1 redundancy
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      owed:
+        field_name: 8.1 owed
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      owed_notice_pay:
+        field_name: 8.1 notice pay
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      owed_holiday_pay:
+        field_name: 8.1 holiday pay
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      owed_arrears_of_pay:
+        field_name: 8.1 arrears of pay
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      owed_other_payments:
+        field_name: 8.1 other payments
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      other_type_of_claim:
+        field_name: 8.1 another type of claim
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      other_type_of_claim_details:
+        field_name: '8.1 other type of claim'
+      claim_description:
+        field_name: '8.2'
+    what_do_you_want:
+      prefer_re_instatement:
+        field_name: 9.1 old job back
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      prefer_re_engagement:
+        field_name: 9.1 another job
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      prefer_compensation:
+        field_name: 9.1 compensation
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      prefer_recommendation:
+        field_name: 9.1 recommendation
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      compensation:
+        field_name: '9.2'
+    information_to_regulators:
+      whistle_blowing:
+        field_name: '10.1'
+        select_values:
+          false: 'Off'
+          true: 'yes'
+    your_representative:
+      name_of_representative:
+        field_name: '11.1'
+      name_of_organisation:
+        field_name: '11.2'
+      building:
+        field_name: '11.3 number'
+      street:
+        field_name: '11.3 street'
+      locality:
+        field_name: '11.3 town city'
+      county:
+        field_name: '11.3 county'
+      post_code:
+        field_name: '11.3 postcode'
+      dx_number:
+        field_name: '11.4 dx number'
+      telephone_number:
+        field_name: '11.5 phone number'
+      alternative_telephone_number:
+        field_name: '11.6 mobile number'
+      reference:
+        field_name: '11.7 reference'
+      email_address:
+        field_name: '11.8 email'
+      communication_preference:
+        field_name: '11.9 tick boxes'
+      fax_number:
+        field_name: '11.10 fax number'
+    disability:
+      has_special_needs:
+        field_name: 12.1 tick box
+        unselected_value: 'Off'
+        select_values:
+          false: 'no'
+          true: 'yes'
+      special_needs:
+        field_name: '12.1 if yes'
+    additional_respondents:
+      respondent4:
+        name:
+          field_name: '13 R4 name'
+        building:
+          field_name: '13 R4 number'
+        street:
+          field_name: '13 R4 street'
+        locality:
+          field_name: '13 R4 town city'
+        county:
+          field_name: '13 R4 county'
+        post_code:
+          field_name: '13 R4 postcode'
+        telephone_number:
+          field_name: '13 R4 phone number'
+        have_acas:
+          field_name: 'Check Box22'
+        acas_number:
+          field_name: 'Text23'
+      respondent5:
+        name:
+          field_name: '13 R5 name'
+        building:
+          field_name: '13 R5 number'
+        street:
+          field_name: 'R5 street'
+        locality:
+          field_name: 'R5 town city'
+        county:
+          field_name: 'R5 county'
+        post_code:
+          field_name: 'R5 postcode'
+        telephone_number:
+          field_name: 'R5 phone number'
+        have_acas:
+          field_name: 'Check Box29'
+        acas_number:
+          field_name: 'Text30'
+    final_check:
+      satisfied:
+        field_name: '14 satisfied tick box'
+    additional_information:
+      additional_information:
+        field_name: '15'

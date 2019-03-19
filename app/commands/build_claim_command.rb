@@ -24,16 +24,23 @@ class BuildClaimCommand < BaseCommand
   def initialize(*)
     super
     self.reference_service = ReferenceService
+    self.allocator_service = UploadedFileAllocatorService.new
   end
 
   def apply(root_object, meta: {})
     apply_root_attributes(attributes, to: root_object)
-    meta.merge! reference: root_object.reference
+    allocate_pdf_file(root_object)
+    meta.merge! reference: root_object.reference,
+                pdf_url: allocator_service.allocated_url
   end
 
   private
 
-  attr_accessor :reference_service
+  attr_accessor :reference_service, :allocator_service
+
+  def allocate_pdf_file(root_object)
+    allocator_service.allocate('et1_atos_export.pdf', into: root_object)
+  end
 
   def apply_root_attributes(input_data, to:)
     to.attributes = input_data
