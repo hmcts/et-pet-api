@@ -33,7 +33,7 @@ RSpec.describe ClaimClaimantsFileImporterService do
             c[:address] = an_object_having_attributes(c[:address])
             an_object_having_attributes(c)
           end
-          expect(claim.secondary_claimants).to match_array normalize_claimants_from_file.map(&map)
+          expect(claim.secondary_claimants.includes(:address)).to match_array normalize_claimants_from_file.map(&map)
         end
       end
     end
@@ -52,7 +52,7 @@ RSpec.describe ClaimClaimantsFileImporterService do
             c[:address] = an_object_having_attributes(c[:address])
             an_object_having_attributes(c)
           end
-          expect(claim.secondary_claimants).to match_array normalize_claimants_from_file(file: full_path).map(&map)
+          expect(claim.secondary_claimants.includes(:address)).to match_array normalize_claimants_from_file(file: full_path).map(&map)
         end
       end
     end
