@@ -6,7 +6,7 @@ module EtApi
     module FileObjects
       # Represents the ET3 PDF file and provides assistance in validating its contents
       module Et1PdfFileSection
-        class Base < ::EtApi::Test::FileObjects::BasePdfFile
+        class Base < ::EtApi::Test::FileObjects::BasePdfFile # rubocop:disable Metrics/ClassName
           UndefinedField = Object.new
 
           def initialize(*args, template:)
@@ -36,7 +36,7 @@ module EtApi
           def mapped_value(value, key:, path:)
             if value.is_a?(Hash) && !value.key?(:field_name)
               value.inject({}) do |acc, (inner_key, inner_value)|
-                v = mapped_value(inner_value, key: inner_key, path: path + [key.to_s] )
+                v = mapped_value(inner_value, key: inner_key, path: path + [key.to_s])
                 acc[inner_key] = v unless v == UndefinedField
                 acc
               end
@@ -51,9 +51,10 @@ module EtApi
             if value.key?(:select_values)
               raw = raw_value_from_pdf(value)
               ret = value[:select_values].detect { |(_, v)| v == raw }.try(:first)
-              return ret if ret == true || ret == false # rubocop:disable Lint/BooleanSymbol
+              return ret if ret == true || ret == false
               return ret.to_s if ret
               return nil if raw == value[:unselected_value]
+
               raise "Invalid value - '#{raw}' is not in the selected_values list or the unselected_value for field '#{path.join('.')}.#{key}' ('#{value[:field_name]}') for section #{self.class.name}"
             else
               field_values[value[:field_name]]
@@ -62,16 +63,6 @@ module EtApi
 
           def raw_value_from_pdf(value)
             value[:field_name].is_a?(Array) ? value[:field_name].map { |f| field_values[f] } : field_values[value[:field_name]]
-          end
-
-          def yes_no_for(val, optional: false, yes: 'Yes', no: 'No')
-            return nil if val.nil? && optional
-            val ? yes : no
-          end
-
-          def tri_state_for(val, yes: 'Yes', no: 'No', off: 'Off')
-            return off if val.nil?
-            val ? yes : no
           end
 
           def date_for(date, optional: false)

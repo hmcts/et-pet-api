@@ -8,13 +8,13 @@ module EtApi
   module Test
     module FileObjects
       # Represents the ET3 PDF file and provides assistance in validating its contents
-      class Et1PdfFile < Base # rubocop:disable Metrics/ClassLength
+      class Et1PdfFile < Base
         def initialize(*args, template:)
           super(*args)
           self.template = template
         end
 
-        def has_correct_contents_for?(claim: , claimants:, respondents:, representative:)
+        def has_correct_contents_for?(claim:, claimants:, respondents:, representative:) # rubocop:disable Naming/PredicateName
           Et1PdfFileSection::YourDetailsSection.new(tempfile, template: template).has_contents_for?(claimant: claimants.first)
           Et1PdfFileSection::RespondentsDetailsSection.new(tempfile, template: template).has_contents_for?(respondents: respondents)
           Et1PdfFileSection::MultipleCasesSection.new(tempfile, template: template).has_contents_for?(claim: claim)
@@ -41,7 +41,6 @@ module EtApi
           has_correct_contents_for?(claim: claim, claimants: claimants, respondents: respondents, representative: representative)
         end
 
-
         private
 
         def claim_json(claim)
@@ -53,7 +52,7 @@ module EtApi
           representative = claim.primary_representative
           return nil if representative.nil?
 
-          OpenStruct.new(representative.as_json(include: :address).symbolize_keys.tap { |rep| rep[:address_attributes] = OpenStruct.new(rep.delete(:address).symbolize_keys)}).freeze
+          OpenStruct.new(representative.as_json(include: :address).symbolize_keys.tap { |rep| rep[:address_attributes] = OpenStruct.new(rep.delete(:address).symbolize_keys) }).freeze
         end
 
         def respondents_json(claim)

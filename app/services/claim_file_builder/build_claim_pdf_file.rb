@@ -17,7 +17,7 @@ module ClaimFileBuilder
     def call
       filename = 'et1_atos_export.pdf'
       claim.uploaded_files.build filename: filename,
-                                    file: blob_for_pdf_file(filename)
+                                 file: blob_for_pdf_file(filename)
     end
 
     private
@@ -70,6 +70,7 @@ module ClaimFileBuilder
       field_def = yaml_data.dig(*path)
       raise "Field #{path} does not exist in the file #{yaml_file}" unless field_def
       return if field_def[:field_name] == false
+
       if field_def.key?(:select_values)
         apply_selected_value_for(result, field_def, field_value)
       else
@@ -93,10 +94,13 @@ module ClaimFileBuilder
         field_def[:unselected_value]
       else
         raise "Value of #{field_value} is not valid for the field definition #{field_def[:field_name]}" unless field_def[:select_values].key?(field_value)
+
         field_def[:select_values][field_value]
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def apply_your_details_fields(result)
       primary_claimant = claim.primary_claimant
       pca = primary_claimant.address
@@ -141,27 +145,27 @@ module ClaimFileBuilder
     def apply_secondary_respondents_details_fields(result)
       resp2 = claim.secondary_respondents.first
 
-      apply_field result, resp2&.name, :respondents_details, :respondent2,  :name
-      apply_field result, resp2&.acas_certificate_number, :respondents_details, :respondent2,  :acas, :acas_number
-      apply_field result, resp2&.acas_certificate_number&.present?, :respondents_details, :respondent2,  :acas, :have_acas
-      apply_field result, resp2&.address&.building, :respondents_details, :respondent2,  :address, :building
-      apply_field result, resp2&.address&.street, :respondents_details, :respondent2,  :address, :street
-      apply_field result, resp2&.address&.locality, :respondents_details, :respondent2,  :address, :locality
-      apply_field result, resp2&.address&.county, :respondents_details, :respondent2,  :address, :county
-      apply_field result, post_code_for(resp2&.address&.post_code, optional: resp2.blank?), :respondents_details, :respondent2,  :address, :post_code
-      apply_field result, resp2&.address_telephone_number, :respondents_details, :respondent2,  :address, :telephone_number
+      apply_field result, resp2&.name, :respondents_details, :respondent2, :name
+      apply_field result, resp2&.acas_certificate_number, :respondents_details, :respondent2, :acas, :acas_number
+      apply_field result, resp2&.acas_certificate_number&.present?, :respondents_details, :respondent2, :acas, :have_acas
+      apply_field result, resp2&.address&.building, :respondents_details, :respondent2, :address, :building
+      apply_field result, resp2&.address&.street, :respondents_details, :respondent2, :address, :street
+      apply_field result, resp2&.address&.locality, :respondents_details, :respondent2, :address, :locality
+      apply_field result, resp2&.address&.county, :respondents_details, :respondent2, :address, :county
+      apply_field result, post_code_for(resp2&.address&.post_code, optional: resp2.blank?), :respondents_details, :respondent2, :address, :post_code
+      apply_field result, resp2&.address_telephone_number, :respondents_details, :respondent2, :address, :telephone_number
 
       resp3 = claim.secondary_respondents[1]
 
-      apply_field result, resp3&.name, :respondents_details, :respondent3,  :name
-      apply_field result, resp3&.acas_certificate_number, :respondents_details, :respondent3,  :acas, :acas_number
-      apply_field result, resp3&.acas_certificate_number&.present?, :respondents_details, :respondent3,  :acas, :have_acas
-      apply_field result, resp3&.address&.building, :respondents_details, :respondent3,  :address, :building
-      apply_field result, resp3&.address&.street, :respondents_details, :respondent3,  :address, :street
-      apply_field result, resp3&.address&.locality, :respondents_details, :respondent3,  :address, :locality
-      apply_field result, resp3&.address&.county, :respondents_details, :respondent3,  :address, :county
-      apply_field result, post_code_for(resp3&.address&.post_code, optional: resp3.blank?), :respondents_details, :respondent3,  :address, :post_code
-      apply_field result, resp3&.address_telephone_number, :respondents_details, :respondent3,  :address, :telephone_number
+      apply_field result, resp3&.name, :respondents_details, :respondent3, :name
+      apply_field result, resp3&.acas_certificate_number, :respondents_details, :respondent3, :acas, :acas_number
+      apply_field result, resp3&.acas_certificate_number&.present?, :respondents_details, :respondent3, :acas, :have_acas
+      apply_field result, resp3&.address&.building, :respondents_details, :respondent3, :address, :building
+      apply_field result, resp3&.address&.street, :respondents_details, :respondent3, :address, :street
+      apply_field result, resp3&.address&.locality, :respondents_details, :respondent3, :address, :locality
+      apply_field result, resp3&.address&.county, :respondents_details, :respondent3, :address, :county
+      apply_field result, post_code_for(resp3&.address&.post_code, optional: resp3.blank?), :respondents_details, :respondent3, :address, :post_code
+      apply_field result, resp3&.address_telephone_number, :respondents_details, :respondent3, :address, :telephone_number
     end
 
     def apply_multiple_cases_section(result)
@@ -251,6 +255,9 @@ module ClaimFileBuilder
       apply_field result, claim.primary_claimant.special_needs.present?, :disability, :has_special_needs
       apply_field result, claim.primary_claimant.special_needs, :disability, :special_needs
     end
+
+    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize
 
     def post_code_for(val, optional: false)
       return nil if val.nil? && optional

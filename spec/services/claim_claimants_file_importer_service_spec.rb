@@ -23,6 +23,7 @@ RSpec.describe ClaimClaimantsFileImporterService do
 
     context "with simple csv" do
       let(:example_file_trait) { :example_claim_claimants_csv }
+
       context 'with saved claim' do
         it 'imports the rows from the csv file into the claims claimants' do
           # Act
@@ -40,6 +41,7 @@ RSpec.describe ClaimClaimantsFileImporterService do
 
     context "with csv full of horrible encoding issues" do
       let(:example_file_trait) { :example_claim_claimants_csv_bad_encoding }
+
       context 'with saved claim' do
         it 'imports the rows from the csv file into the claims claimants' do
           # Act

@@ -18,7 +18,7 @@ FactoryBot.define do
     jurisdiction { 2 }
     office_code { 22 }
     date_of_receipt { Time.zone.now }
-    pdf_template_reference {"et1-v1-en"}
+    pdf_template_reference { "et1-v1-en" }
 
     after(:build) do |claim, evaluator|
       claim.primary_claimant = build(:claimant) if claim.primary_claimant.blank?
@@ -83,7 +83,6 @@ FactoryBot.define do
         }.stringify_keys
       end
     end
-
 
     after(:create) do |claim, evaluator|
       evaluator.ready_for_export_to.each do |external_system_id|

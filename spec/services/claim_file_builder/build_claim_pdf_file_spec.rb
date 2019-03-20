@@ -13,7 +13,7 @@ RSpec.describe ClaimFileBuilder::BuildClaimPdfFile do
 
         # Assert
         expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_atos_export.pdf',
-                                                                               file: be_a_stored_file
+                                                                            file: be_a_stored_file
 
       end
 
@@ -73,7 +73,7 @@ RSpec.describe ClaimFileBuilder::BuildClaimPdfFile do
       end
     end
 
-    context 'using an alternative pdf template' do
+    context 'when using an alternative pdf template' do
       let(:claim) { build(:claim, :example_data) }
 
       it 'stores an ET1 pdf file from the welsh v1 template with the correct contents' do

@@ -98,22 +98,22 @@ RSpec.describe 'Create Claim Request', type: :request do
     end
 
     shared_examples 'any claim variation' do
-      it 'returns the correct status code' do
+      it 'returns the correct status code', background_jobs: :disable do
         # Assert - Make sure we get a 202 - to say the claim has been accepted and a reference number is created
         expect(response).to have_http_status(:accepted)
       end
 
-      it 'returns status of ok' do
+      it 'returns status of ok', background_jobs: :disable do
         # Assert - make sure we get status of accepted
         expect(json_response).to include status: 'accepted'
       end
 
-      it 'returns a reference number which contains 12 digits' do
+      it 'returns a reference number which contains 12 digits', background_jobs: :disable do
         # Assert - make sure we get status of ok
         expect(json_response.dig('meta', 'BuildClaim')).to include reference: a_string_matching(/\A\d{12}\z/)
       end
 
-      it 'returns a valid reference number that is persisted in the database' do
+      it 'returns a valid reference number that is persisted in the database', background_jobs: :disable do
         result = Claim.where(reference: json_response.dig('meta', 'BuildClaim', 'reference')).first
 
         # Assert - make sure it is a claim
@@ -184,7 +184,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     end
 
     shared_examples 'a claim with provided reference number' do
-      it 'returns a reference number which matches the one provided if one was provided' do
+      it 'returns a reference number which matches the one provided if one was provided', background_jobs: :disable do
         # Assert - make sure we get status of ok
         claim = normalize_json_claim(input_claim_factory.to_h)
         expect(json_response.dig('meta', 'BuildClaim')).to include reference: claim[:reference]
@@ -636,13 +636,13 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim with an rtf file'
         end
       end
-      context 'in amazon mode' do
+      context 'when in amazon mode' do
         include_context 'with cloud provider switching', cloud_provider: :amazon do
           include_examples 'all file examples'
         end
       end
 
-      context 'in azure mode' do
+      context 'when in azure mode' do
         include_context 'with cloud provider switching', cloud_provider: :azure do
           include_examples 'all file examples'
         end
@@ -826,7 +826,6 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim with no representatives'
     end
 
-
     context 'with json for single claimant, multiple respondents, a representative and external pdf' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
@@ -883,7 +882,6 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim with a representative'
     end
 
-
     context 'with json for single claimant, single respondent with postcode that routes to default office' do
       # Uses respondent address with post code 'FF1 1AA'
       include_context 'with fake sidekiq'
@@ -901,7 +899,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
 
-      it 'has the correct error in the address_attributes field' do
+      it 'has the correct error in the address_attributes field', background_jobs: :disable do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildPrimaryClaimant' }.uuid
         expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
                                                                                            code: "invalid_address",
@@ -920,7 +918,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
 
-      it 'has the correct error in the address_attributes field' do
+      it 'has the correct error in the address_attributes field', background_jobs: :disable do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildPrimaryRespondent' }.uuid
         expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
                                                                                            code: "invalid_address",
@@ -939,7 +937,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
 
-      it 'has the correct error in the address_attributes field' do
+      it 'has the correct error in the address_attributes field', background_jobs: :disable do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildPrimaryRepresentative' }.uuid
         expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
                                                                                            code: "invalid_address",
