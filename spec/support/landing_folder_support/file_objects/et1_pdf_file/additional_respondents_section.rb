@@ -15,7 +15,7 @@ module EtApi
                 county: respondents[3].try(:county),
                 post_code: post_code_for(respondents[3].try(:post_code), optional: true),
                 telephone_number: respondents[3].try(:telephone_number),
-                have_acas: yes_no_for(respondents[3].try(:acas_number), optional: true),
+                have_acas: respondents[3].try(:acas_number)&.present?,
                 acas_number: respondents[3].try(:acas_number)
 
               },
@@ -27,7 +27,7 @@ module EtApi
                 county: respondents[4].try(:county),
                 post_code: post_code_for(respondents[4].try(:post_code), optional: true),
                 telephone_number: respondents[4].try(:telephone_number),
-                have_acas: yes_no_for(respondents[4].try(:acas_number), optional: true),
+                have_acas: respondents[4].try(:acas_number)&.present?,
                 acas_number: respondents[4].try(:acas_number)
               }
             }

@@ -8,7 +8,14 @@ module EtApi
         include EtApi::Test::I18n
         include ::RSpec::Matchers
 
+        def initialize(tempfile, form = nil)
+          super(tempfile)
+          self.form = form || PdfForms.new('pdftk', utf8_fields: true).read(tempfile.path)
+        end
+
         private
+
+        attr_accessor :form
 
         def field_values
           @field_values ||= form.fields.inject({}) do |acc, field|
@@ -19,10 +26,6 @@ module EtApi
                               end
             acc
           end
-        end
-
-        def form
-          @form ||= PdfForms.new('pdftk', utf8_fields: true).read(tempfile.path)
         end
 
         def unescape(val)

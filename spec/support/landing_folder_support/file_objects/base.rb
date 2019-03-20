@@ -9,7 +9,6 @@ module EtApi
         private
 
         attr_accessor :tempfile
-
       end
     end
   end
