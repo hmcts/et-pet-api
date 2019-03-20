@@ -520,7 +520,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim with a csv file'
         end
 
-        context 'with json for multiple claimant, multiple respondents but no representatives - with csv file uploaded using url' do
+        context 'with json for multiple claimants, multiple respondents but no representatives - with csv file uploaded using url' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
             json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 0, has_pdf_file: true) }
@@ -535,7 +535,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim with a csv file'
         end
 
-        context 'with json for multiple claimant, multiple respondents but no representatives - with csv file uploaded using direct upload' do
+        context 'with json for multiple claimants, multiple respondents but no representatives - with csv file uploaded using direct upload' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
             json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 0, has_pdf_file: true) }
