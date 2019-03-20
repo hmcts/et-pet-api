@@ -66,18 +66,6 @@ module ClaimFileBuilder
       result
     end
 
-    def apply_field(result, field_value, *path)
-      field_def = yaml_data.dig(*path)
-      raise "Field #{path} does not exist in the file #{yaml_file}" unless field_def
-      return if field_def[:field_name] == false
-
-      if field_def.key?(:select_values)
-        apply_selected_value_for(result, field_def, field_value)
-      else
-        result[field_def[:field_name]] = field_value
-      end
-    end
-
     def apply_selected_value_for(result, field_def, field_value)
       if field_def[:field_name].is_a?(Array)
         results = selected_value_for(field_def, field_value)
