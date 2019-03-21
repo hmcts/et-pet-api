@@ -10,9 +10,13 @@ RSpec.configure do |c|
       client.create_container(container_name) unless containers.map(&:name).include?(container_name)
 
       # Empty container
-      client.list_blobs(container_name).each do |blob|
-        client.delete_blob container_name, blob.name
+      puts "Emptying container #{container_name}"
+      time =Benchmark.ms do
+        client.list_blobs(container_name).each do |blob|
+          client.delete_blob container_name, blob.name
+        end
       end
+      puts "Emptied container #{container_name} in #{time}ms"
     end
   end
 end

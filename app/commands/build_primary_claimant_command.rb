@@ -13,6 +13,7 @@ class BuildPrimaryClaimantCommand < BaseCommand
   attribute :special_needs, :string
 
   validates :address_attributes, presence: true, address: true
+  validates :contact_preference, inclusion: { in: ['Email', 'Post', 'Fax'] }
 
   def apply(root_object, **_args)
     root_object.build_primary_claimant(attributes)

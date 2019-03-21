@@ -20,7 +20,7 @@ module EtAtosExport
           claim: claim, primary_claimant: claim.primary_claimant,
           primary_respondent: claim.primary_respondent,
           primary_representative: claim.primary_representative,
-          additional_respondents: claim.secondary_respondents
+          additional_respondents: claim.secondary_respondents.includes(:address)
         }
       end
 

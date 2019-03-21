@@ -23,6 +23,7 @@ RSpec.describe ClaimClaimantsFileImporterService do
 
     context "with simple csv" do
       let(:example_file_trait) { :example_claim_claimants_csv }
+
       context 'with saved claim' do
         it 'imports the rows from the csv file into the claims claimants' do
           # Act
@@ -33,13 +34,14 @@ RSpec.describe ClaimClaimantsFileImporterService do
             c[:address] = an_object_having_attributes(c[:address])
             an_object_having_attributes(c)
           end
-          expect(claim.secondary_claimants).to match_array normalize_claimants_from_file.map(&map)
+          expect(claim.secondary_claimants.includes(:address)).to match_array normalize_claimants_from_file.map(&map)
         end
       end
     end
 
     context "with csv full of horrible encoding issues" do
       let(:example_file_trait) { :example_claim_claimants_csv_bad_encoding }
+
       context 'with saved claim' do
         it 'imports the rows from the csv file into the claims claimants' do
           # Act
@@ -52,7 +54,7 @@ RSpec.describe ClaimClaimantsFileImporterService do
             c[:address] = an_object_having_attributes(c[:address])
             an_object_having_attributes(c)
           end
-          expect(claim.secondary_claimants).to match_array normalize_claimants_from_file(file: full_path).map(&map)
+          expect(claim.secondary_claimants.includes(:address)).to match_array normalize_claimants_from_file(file: full_path).map(&map)
         end
       end
     end

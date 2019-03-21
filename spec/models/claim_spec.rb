@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Claim, type: :model do
   subject(:example_address_attrs) { attributes_for :address }
 
-  let(:claim) { described_class.new }
+  let(:claim) { described_class.new attributes_for(:claim) }
 
   describe '#primary_claimant' do
     it 'returns claim - claimant built in memory' do
@@ -54,7 +54,6 @@ RSpec.describe Claim, type: :model do
                                      work_address_attributes: example_address_attrs,
                                      alt_phone_number: '03333 423554'
 
-
       # Assert - Validate the results
       expect(claim.primary_respondent).to have_attributes name: 'Fred Bloggs'
     end
@@ -70,7 +69,6 @@ RSpec.describe Claim, type: :model do
                                         acas_number: 'AC123456/78/90',
                                         work_address_attributes: example_address_attrs,
                                         alt_phone_number: '03333 423554'
-
 
       # Assert - Validate the results
       expect(claim.secondary_respondents).to contain_exactly an_object_having_attributes name: 'Fred Bloggs'

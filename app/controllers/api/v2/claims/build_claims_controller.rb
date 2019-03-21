@@ -15,7 +15,8 @@ module Api
             # This is a bit of a frig - because we are not expecting the caller to
             # add the AssignReferenceToClaim command, we cant expect them to check the meta for
             # that command so we pretend its from the BuildClaim command instead
-            result.meta['BuildClaim'] = result.meta.delete('AssignReferenceToClaim')
+            result.meta['BuildClaim'] ||= {}
+            result.meta['BuildClaim'].merge! result.meta.delete('AssignReferenceToClaim')
             root_object.save!
             EventService.publish('ClaimCreated', root_object)
             render locals: { result: result }, status: (result.valid? ? :accepted : :unprocessable_entity)

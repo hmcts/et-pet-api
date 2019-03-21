@@ -29,12 +29,12 @@ FactoryBot.define do
     end
 
     trait :no_work_address do
-      work_address_attributes { {} }
+      association :work_address_attributes, :empty, factory: :json_address_data
     end
 
     trait :no_addresses do
-      work_address_attributes { {} }
-      address_attributes { {} }
+      association :work_address_attributes, :empty, factory: :json_address_data
+      association :address_attributes, :empty, factory: :json_address_data
     end
 
     trait :invalid_address_keys do

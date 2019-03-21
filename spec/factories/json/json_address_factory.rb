@@ -3,6 +3,10 @@ require 'faker'
 FactoryBot.define do
 
   factory :json_address_data, class: ::EtApi::Test::Json::Node do
+    trait :empty do
+      # Intentionally blank
+    end
+
     trait :invalid_keys do
       wrong_key { '21' }
       street { "downing_street" }

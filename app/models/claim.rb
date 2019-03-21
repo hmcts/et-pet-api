@@ -18,6 +18,7 @@ class Claim < ApplicationRecord
   has_many :secondary_representatives, class_name: 'Representative',
                                        through: :claim_representatives, source: :representative
   has_many :uploaded_files, through: :claim_uploaded_files
+  has_many :pre_allocated_file_keys, as: :allocated_to, dependent: :destroy, inverse_of: :allocated_to
 
   before_save :cache_claimant_count
   # @TODO RST-1080 Refactoring Tasks - 'uploaded_files' really needs renaming as these files are not only

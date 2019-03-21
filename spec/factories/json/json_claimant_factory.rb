@@ -25,7 +25,7 @@ FactoryBot.define do
       mobile_number { '01234 098765' }
       email_address { 'test@digital.justice.gov.uk' }
       fax_number { nil }
-      contact_preference { 'email' }
+      contact_preference { 'Email' }
       gender { 'Male' }
       date_of_birth { '1982-11-21' }
       special_needs { nil }
