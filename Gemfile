@@ -55,7 +55,7 @@ gem 'azure-storage', '~> 0.15.0.preview', require: false
 gem 'et_s3_to_azure', path: 'vendor/gems/et_s3_to_azure'
 
 # For general easy http access - mainly for test but used in app too
-gem 'httparty', '~> 0.16.2'
+gem 'httparty', '~> 0.16.4'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
