@@ -30,7 +30,7 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "f422f221-fb32-4652-8a5f-5515b9b8f363",
+  "uuid": "59e943f7-d58b-4b88-8516-910840ea7e4e",
   "command": "BuildBlob",
   "data": null,
   "async": false
@@ -39,7 +39,7 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/build_blob&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;f422f221-fb32-4652-8a5f-5515b9b8f363&quot;,
+  &quot;uuid&quot;: &quot;59e943f7-d58b-4b88-8516-910840ea7e4e&quot;,
   &quot;command&quot;: &quot;BuildBlob&quot;,
   &quot;data&quot;: null,
   &quot;async&quot;: false
@@ -55,9 +55,9 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 3120b30a-7937-4edb-a0a8-543da3d64cd9
-X-Runtime: 0.015269
-Content-Length: 710</pre>
+X-Request-Id: e01ee76f-6131-4b6b-9527-37a8151ab0ff
+X-Runtime: 0.018129
+Content-Length: 712</pre>
 
 #### Status
 
@@ -65,4 +65,4 @@ Content-Length: 710</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"cloud_provider":"azure"},"uuid":"f422f221-fb32-4652-8a5f-5515b9b8f363","data":{"fields":{"key":"direct_uploads/89d75096-cd90-476d-997e-aec2bbc6194c","permissions":"rw","version":"2016-05-31","expiry":"2019-02-20T18:45:22Z","resource":"b","signature":"64eLeSf8EPTYTVoN5tieDLJrEoS4kbdp9Jg1DC5M02w="},"url":"http://localhost:10000/devstoreaccount1/et-api-direct-container/direct_uploads/89d75096-cd90-476d-997e-aec2bbc6194c?sp=rw\u0026sv=2016-05-31\u0026se=2019-02-20T18%3A45%3A22Z\u0026sr=b\u0026sig=64eLeSf8EPTYTVoN5tieDLJrEoS4kbdp9Jg1DC5M02w%3D","unsigned_url":"http://localhost:10000/devstoreaccount1/et-api-direct-container/direct_uploads/89d75096-cd90-476d-997e-aec2bbc6194c"}}</pre>
+<pre>{"status":"accepted","meta":{"cloud_provider":"azure"},"uuid":"59e943f7-d58b-4b88-8516-910840ea7e4e","data":{"fields":{"key":"direct_uploads/d9754978-a216-40a2-98c6-e9eda5d3b31b","permissions":"rw","version":"2016-05-31","expiry":"2019-03-21T17:52:11Z","resource":"b","signature":"erS66wlTbZjgaDNn3cjJYIFxIdNrwXWhss+3oEf6DRc="},"url":"http://localhost:10000/devstoreaccount1/et-api-direct-container/direct_uploads/d9754978-a216-40a2-98c6-e9eda5d3b31b?sp=rw\u0026sv=2016-05-31\u0026se=2019-03-21T17%3A52%3A11Z\u0026sr=b\u0026sig=erS66wlTbZjgaDNn3cjJYIFxIdNrwXWhss%2B3oEf6DRc%3D","unsigned_url":"http://localhost:10000/devstoreaccount1/et-api-direct-container/direct_uploads/d9754978-a216-40a2-98c6-e9eda5d3b31b"}}</pre>

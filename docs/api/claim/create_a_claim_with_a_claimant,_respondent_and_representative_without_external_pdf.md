@@ -2,7 +2,7 @@
 
 A claim is the claim made by the claimant against the respondent (employer)
 
-## Create a claim with a claimant, respondent and representative
+## Create a claim with a claimant, respondent and representative without external pdf
 
 ### POST /api/v2/claims/build_claim
 
@@ -30,20 +30,39 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "b7342bc8-00d7-4093-8777-e9072f342fb8",
+  "uuid": "c93da90a-13cc-4ebf-a433-7d85f9780e0e",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "ccd073d6-f7ba-4bcc-bda6-0635719afd7e",
+      "uuid": "ffd410aa-d88b-4a65-8240-cf768989afd3",
       "command": "BuildClaim",
       "data": {
-        "reference": "222000000100",
+        "employment_details": {
+          "start_date": "2009-11-18",
+          "end_date": null,
+          "notice_period_end_date": null,
+          "job_title": "agriculturist",
+          "average_hours_worked_per_week": 38.0,
+          "gross_pay": 3000,
+          "gross_pay_period_type": "monthly",
+          "net_pay": 2000,
+          "net_pay_period_type": "monthly",
+          "worked_notice_period_or_paid_in_lieu": null,
+          "notice_pay_period_type": null,
+          "notice_pay_period_count": null,
+          "enrolled_in_pension_scheme": true,
+          "benefit_details": "Company car, private health care",
+          "found_new_job": null,
+          "new_job_start_date": null,
+          "new_job_gross_pay": null
+        },
+        "reference": "222000000200",
         "submission_reference": "J704-ZK5E",
         "submission_channel": "Web",
         "case_type": "Single",
         "jurisdiction": "2",
         "office_code": "22",
-        "date_of_receipt": "2019-02-20T18:40:22+0000",
+        "date_of_receipt": "2019-03-21T17:47:13+0000",
         "other_known_claimant_names": "",
         "discrimination_claims": [
 
@@ -59,13 +78,12 @@ Cookie: </pre>
         "other_outcome": "",
         "send_claim_to_whistleblowing_entity": false,
         "miscellaneous_information": "",
-        "employment_details": {
-        },
-        "is_unfair_dismissal": false
+        "is_unfair_dismissal": false,
+        "pdf_template_reference": "et1-v1-en"
       }
     },
     {
-      "uuid": "b4632021-a2e7-47e1-b9ad-c6466f89b6ec",
+      "uuid": "1fdf3352-fe4e-429d-a17f-2effa4fb6822",
       "command": "BuildPrimaryRespondent",
       "data": {
         "name": "dodgy_co",
@@ -101,7 +119,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "1c6bcfe9-b876-4bf6-aa91-8eda652788c4",
+      "uuid": "861ac848-7782-434d-b9b4-59edfeeab9af",
       "command": "BuildPrimaryClaimant",
       "data": {
         "title": "Mr",
@@ -118,14 +136,14 @@ Cookie: </pre>
         "mobile_number": "01234 098765",
         "email_address": "test@digital.justice.gov.uk",
         "fax_number": null,
-        "contact_preference": "email",
+        "contact_preference": "Email",
         "gender": "Male",
         "date_of_birth": "1982-11-21",
         "special_needs": null
       }
     },
     {
-      "uuid": "6acf407e-d097-4636-9829-7afbaeee5661",
+      "uuid": "97682d5e-5b23-4fee-a1fa-18ba53cc1c06",
       "command": "BuildSecondaryClaimants",
       "data": [
         {
@@ -143,7 +161,7 @@ Cookie: </pre>
           "mobile_number": "01234 098765",
           "email_address": "test@digital.justice.gov.uk",
           "fax_number": null,
-          "contact_preference": "email",
+          "contact_preference": "Email",
           "gender": "Male",
           "date_of_birth": "1982-11-21",
           "special_needs": null
@@ -151,7 +169,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "91e4626f-8f2f-4e9a-8038-40e25ed4b3e9",
+      "uuid": "b0a05927-411b-40ed-b91c-3e2bbbc95376",
       "command": "BuildSecondaryRespondents",
       "data": [
         {
@@ -189,7 +207,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "bbb44bca-f131-445b-94b3-031a711edc12",
+      "uuid": "5ab910c5-ae67-4364-ba6e-6c83ddc597f7",
       "command": "BuildPrimaryRepresentative",
       "data": {
         "address_attributes": {
@@ -210,16 +228,6 @@ Cookie: </pre>
         "email_address": "test@email.com",
         "fax_number": "0207 345 6789"
       }
-    },
-    {
-      "uuid": "5e77c4d4-23a8-4b35-9552-ec7cdeb7687b",
-      "command": "BuildPdfFile",
-      "data": {
-        "data_url": "http://localhost:9000/etapibuckettest/THAhw2T7QktFUFu9Jn3rtLJT?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20190220%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190220T184022Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=a9ed72f6942c1b04eb935a61891d2230dc9ad9e97af717a0d255eda47570cc09",
-        "data_from_key": null,
-        "filename": "et1_first_last.pdf",
-        "checksum": "ee2714b8b731a8c1e95dffaa33f89728"
-      }
     }
   ]
 }</pre>
@@ -227,20 +235,39 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/claims/build_claim&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;b7342bc8-00d7-4093-8777-e9072f342fb8&quot;,
+  &quot;uuid&quot;: &quot;c93da90a-13cc-4ebf-a433-7d85f9780e0e&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;ccd073d6-f7ba-4bcc-bda6-0635719afd7e&quot;,
+      &quot;uuid&quot;: &quot;ffd410aa-d88b-4a65-8240-cf768989afd3&quot;,
       &quot;command&quot;: &quot;BuildClaim&quot;,
       &quot;data&quot;: {
-        &quot;reference&quot;: &quot;222000000100&quot;,
+        &quot;employment_details&quot;: {
+          &quot;start_date&quot;: &quot;2009-11-18&quot;,
+          &quot;end_date&quot;: null,
+          &quot;notice_period_end_date&quot;: null,
+          &quot;job_title&quot;: &quot;agriculturist&quot;,
+          &quot;average_hours_worked_per_week&quot;: 38.0,
+          &quot;gross_pay&quot;: 3000,
+          &quot;gross_pay_period_type&quot;: &quot;monthly&quot;,
+          &quot;net_pay&quot;: 2000,
+          &quot;net_pay_period_type&quot;: &quot;monthly&quot;,
+          &quot;worked_notice_period_or_paid_in_lieu&quot;: null,
+          &quot;notice_pay_period_type&quot;: null,
+          &quot;notice_pay_period_count&quot;: null,
+          &quot;enrolled_in_pension_scheme&quot;: true,
+          &quot;benefit_details&quot;: &quot;Company car, private health care&quot;,
+          &quot;found_new_job&quot;: null,
+          &quot;new_job_start_date&quot;: null,
+          &quot;new_job_gross_pay&quot;: null
+        },
+        &quot;reference&quot;: &quot;222000000200&quot;,
         &quot;submission_reference&quot;: &quot;J704-ZK5E&quot;,
         &quot;submission_channel&quot;: &quot;Web&quot;,
         &quot;case_type&quot;: &quot;Single&quot;,
         &quot;jurisdiction&quot;: &quot;2&quot;,
         &quot;office_code&quot;: &quot;22&quot;,
-        &quot;date_of_receipt&quot;: &quot;2019-02-20T18:40:22+0000&quot;,
+        &quot;date_of_receipt&quot;: &quot;2019-03-21T17:47:13+0000&quot;,
         &quot;other_known_claimant_names&quot;: &quot;&quot;,
         &quot;discrimination_claims&quot;: [
 
@@ -256,13 +283,12 @@ Cookie: </pre>
         &quot;other_outcome&quot;: &quot;&quot;,
         &quot;send_claim_to_whistleblowing_entity&quot;: false,
         &quot;miscellaneous_information&quot;: &quot;&quot;,
-        &quot;employment_details&quot;: {
-        },
-        &quot;is_unfair_dismissal&quot;: false
+        &quot;is_unfair_dismissal&quot;: false,
+        &quot;pdf_template_reference&quot;: &quot;et1-v1-en&quot;
       }
     },
     {
-      &quot;uuid&quot;: &quot;b4632021-a2e7-47e1-b9ad-c6466f89b6ec&quot;,
+      &quot;uuid&quot;: &quot;1fdf3352-fe4e-429d-a17f-2effa4fb6822&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -298,7 +324,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;1c6bcfe9-b876-4bf6-aa91-8eda652788c4&quot;,
+      &quot;uuid&quot;: &quot;861ac848-7782-434d-b9b4-59edfeeab9af&quot;,
       &quot;command&quot;: &quot;BuildPrimaryClaimant&quot;,
       &quot;data&quot;: {
         &quot;title&quot;: &quot;Mr&quot;,
@@ -315,14 +341,14 @@ Cookie: </pre>
         &quot;mobile_number&quot;: &quot;01234 098765&quot;,
         &quot;email_address&quot;: &quot;test@digital.justice.gov.uk&quot;,
         &quot;fax_number&quot;: null,
-        &quot;contact_preference&quot;: &quot;email&quot;,
+        &quot;contact_preference&quot;: &quot;Email&quot;,
         &quot;gender&quot;: &quot;Male&quot;,
         &quot;date_of_birth&quot;: &quot;1982-11-21&quot;,
         &quot;special_needs&quot;: null
       }
     },
     {
-      &quot;uuid&quot;: &quot;6acf407e-d097-4636-9829-7afbaeee5661&quot;,
+      &quot;uuid&quot;: &quot;97682d5e-5b23-4fee-a1fa-18ba53cc1c06&quot;,
       &quot;command&quot;: &quot;BuildSecondaryClaimants&quot;,
       &quot;data&quot;: [
         {
@@ -340,7 +366,7 @@ Cookie: </pre>
           &quot;mobile_number&quot;: &quot;01234 098765&quot;,
           &quot;email_address&quot;: &quot;test@digital.justice.gov.uk&quot;,
           &quot;fax_number&quot;: null,
-          &quot;contact_preference&quot;: &quot;email&quot;,
+          &quot;contact_preference&quot;: &quot;Email&quot;,
           &quot;gender&quot;: &quot;Male&quot;,
           &quot;date_of_birth&quot;: &quot;1982-11-21&quot;,
           &quot;special_needs&quot;: null
@@ -348,7 +374,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;91e4626f-8f2f-4e9a-8038-40e25ed4b3e9&quot;,
+      &quot;uuid&quot;: &quot;b0a05927-411b-40ed-b91c-3e2bbbc95376&quot;,
       &quot;command&quot;: &quot;BuildSecondaryRespondents&quot;,
       &quot;data&quot;: [
         {
@@ -386,7 +412,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;bbb44bca-f131-445b-94b3-031a711edc12&quot;,
+      &quot;uuid&quot;: &quot;5ab910c5-ae67-4364-ba6e-6c83ddc597f7&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRepresentative&quot;,
       &quot;data&quot;: {
         &quot;address_attributes&quot;: {
@@ -407,16 +433,6 @@ Cookie: </pre>
         &quot;email_address&quot;: &quot;test@email.com&quot;,
         &quot;fax_number&quot;: &quot;0207 345 6789&quot;
       }
-    },
-    {
-      &quot;uuid&quot;: &quot;5e77c4d4-23a8-4b35-9552-ec7cdeb7687b&quot;,
-      &quot;command&quot;: &quot;BuildPdfFile&quot;,
-      &quot;data&quot;: {
-        &quot;data_url&quot;: &quot;http://localhost:9000/etapibuckettest/THAhw2T7QktFUFu9Jn3rtLJT?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&amp;response-content-type=application%2Fpdf&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=accessKey1%2F20190220%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20190220T184022Z&amp;X-Amz-Expires=300&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=a9ed72f6942c1b04eb935a61891d2230dc9ad9e97af717a0d255eda47570cc09&quot;,
-        &quot;data_from_key&quot;: null,
-        &quot;filename&quot;: &quot;et1_first_last.pdf&quot;,
-        &quot;checksum&quot;: &quot;ee2714b8b731a8c1e95dffaa33f89728&quot;
-      }
     }
   ]
 }&#39; -X POST \
@@ -431,9 +447,9 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: d13e6c27-b8dd-4e66-b0de-0b836967c2d1
-X-Runtime: 0.346506
-Content-Length: 282</pre>
+X-Request-Id: 4e6363bd-6ff6-49e3-b8fe-ad4461d4f556
+X-Runtime: 0.057707
+Content-Length: 758</pre>
 
 #### Status
 
@@ -441,4 +457,4 @@ Content-Length: 282</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"BuildClaim":{"reference":"222000000100"},"BuildPrimaryRespondent":{},"BuildPrimaryClaimant":{},"BuildSecondaryClaimants":{},"BuildSecondaryRespondents":{},"BuildPrimaryRepresentative":{},"BuildPdfFile":{}},"uuid":"b7342bc8-00d7-4093-8777-e9072f342fb8"}</pre>
+<pre>{"status":"accepted","meta":{"BuildClaim":{"reference":"222000000200","pdf_url":"http://localhost:9000/etapibuckettest/M8XCBDeMr6FU58bWquX1dz5x?response-content-disposition=attachment%3B%20filename%3D%22et1_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190321%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190321T174713Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=41bb5ddbb06357e0bb514ac20889b69ff5c1c6194ea7f58fc64b21ef68f0ae4a"},"BuildPrimaryRespondent":{},"BuildPrimaryClaimant":{},"BuildSecondaryClaimants":{},"BuildSecondaryRespondents":{},"BuildPrimaryRepresentative":{}},"uuid":"c93da90a-13cc-4ebf-a433-7d85f9780e0e"}</pre>

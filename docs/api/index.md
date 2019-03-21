@@ -26,7 +26,8 @@ Signed Blob resource - azure mode
 
 A claim is the claim made by the claimant against the respondent (employer)
 
-* [Create a claim with a claimant, respondent and representative](claim/create_a_claim_with_a_claimant,_respondent_and_representative.md)
+* [Create a claim with a claimant, respondent and representative with external pdf](claim/create_a_claim_with_a_claimant,_respondent_and_representative_with_external_pdf.md)
+* [Create a claim with a claimant, respondent and representative without external pdf](claim/create_a_claim_with_a_claimant,_respondent_and_representative_without_external_pdf.md)
 * [Create a claim with a claimant, respondent, representative and claim information file](claim/create_a_claim_with_a_claimant,_respondent,_representative_and_claim_information_file.md)
 
 ## Claim Reference

@@ -2,7 +2,7 @@
 
 A claim is the claim made by the claimant against the respondent (employer)
 
-## Create a claim with a claimant, respondent, representative and claim information file
+## Create a claim with a claimant, respondent and representative with external pdf
 
 ### POST /api/v2/claims/build_claim
 
@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "c81b1408-7b95-41ea-a82a-fa50219b307a",
+  "uuid": "ee6b2a08-22eb-42e5-a6cb-83daf834aa8a",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "2e2d77fe-5005-419f-bf0a-022b0d4ef00d",
+      "uuid": "b9e7b559-3785-46cc-aab8-85dd4154c827",
       "command": "BuildClaim",
       "data": {
         "employment_details": {
@@ -56,13 +56,13 @@ Cookie: </pre>
           "new_job_start_date": null,
           "new_job_gross_pay": null
         },
-        "reference": "222000000300",
+        "reference": "222000000100",
         "submission_reference": "J704-ZK5E",
         "submission_channel": "Web",
         "case_type": "Single",
         "jurisdiction": "2",
         "office_code": "22",
-        "date_of_receipt": "2019-03-21T17:47:13+0000",
+        "date_of_receipt": "2019-03-21T17:47:11+0000",
         "other_known_claimant_names": "",
         "discrimination_claims": [
 
@@ -83,7 +83,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "6ef5293c-e291-4ee8-a22c-4a228d11291c",
+      "uuid": "496db989-19e2-4da0-94a8-850ed8d07045",
       "command": "BuildPrimaryRespondent",
       "data": {
         "name": "dodgy_co",
@@ -119,7 +119,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "1038315f-a6cc-4e5c-81d8-e0cc50da2cce",
+      "uuid": "7d7dfe03-d9ec-4928-badd-42868cc63b53",
       "command": "BuildPrimaryClaimant",
       "data": {
         "title": "Mr",
@@ -143,7 +143,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "4b2b10a2-4db3-40b3-9eca-adb694d2a73a",
+      "uuid": "6dc9e2d7-665f-4f1b-9158-111de7210ba9",
       "command": "BuildSecondaryClaimants",
       "data": [
         {
@@ -169,7 +169,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "3510c236-cfa2-46c0-bdb1-06116948e9bb",
+      "uuid": "8db37472-cbf5-4001-8c8a-4dc54362e7f2",
       "command": "BuildSecondaryRespondents",
       "data": [
         {
@@ -207,7 +207,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "2d59f386-a964-4de5-b478-473ddb66e516",
+      "uuid": "05f578e8-2be3-4ed1-9caa-8097e0b96bdb",
       "command": "BuildPrimaryRepresentative",
       "data": {
         "address_attributes": {
@@ -230,23 +230,13 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "b8bca979-981f-4f26-a96f-c0047f9245e4",
+      "uuid": "7067d096-6f25-45dd-9602-8a7a9577ba61",
       "command": "BuildPdfFile",
       "data": {
-        "data_url": "http://localhost:9000/etapibuckettest/YMRAH2HnCitVtTSiEBJhZwnz?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20190321%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190321T174713Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=30be5f8f4a8b037a3dea1551be1f7722c85b6b4170ffde9dbdfcd20bb95fb148",
+        "data_url": "http://localhost:9000/etapibuckettest/eu5BDBCcnMxUvKKUh2Rt4Gk1?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20190321%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190321T174712Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=579adb4b033b6bd30f4001f1a3101b4daf2976108b8de60ee471696ba446ad9c",
         "data_from_key": null,
         "filename": "et1_first_last.pdf",
         "checksum": "ee2714b8b731a8c1e95dffaa33f89728"
-      }
-    },
-    {
-      "uuid": "11e1b2f4-ecb8-4888-ac91-f239f105fa15",
-      "command": "BuildClaimDetailsFile",
-      "data": {
-        "data_url": null,
-        "data_from_key": "YdRcaG5kXE4AtkDvZ2ammknn",
-        "filename": "simple_user_with_rtf.rtf",
-        "checksum": "e69a0344620b5040b7d0d1595b9c7726"
       }
     }
   ]
@@ -255,11 +245,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/claims/build_claim&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;c81b1408-7b95-41ea-a82a-fa50219b307a&quot;,
+  &quot;uuid&quot;: &quot;ee6b2a08-22eb-42e5-a6cb-83daf834aa8a&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;2e2d77fe-5005-419f-bf0a-022b0d4ef00d&quot;,
+      &quot;uuid&quot;: &quot;b9e7b559-3785-46cc-aab8-85dd4154c827&quot;,
       &quot;command&quot;: &quot;BuildClaim&quot;,
       &quot;data&quot;: {
         &quot;employment_details&quot;: {
@@ -281,13 +271,13 @@ Cookie: </pre>
           &quot;new_job_start_date&quot;: null,
           &quot;new_job_gross_pay&quot;: null
         },
-        &quot;reference&quot;: &quot;222000000300&quot;,
+        &quot;reference&quot;: &quot;222000000100&quot;,
         &quot;submission_reference&quot;: &quot;J704-ZK5E&quot;,
         &quot;submission_channel&quot;: &quot;Web&quot;,
         &quot;case_type&quot;: &quot;Single&quot;,
         &quot;jurisdiction&quot;: &quot;2&quot;,
         &quot;office_code&quot;: &quot;22&quot;,
-        &quot;date_of_receipt&quot;: &quot;2019-03-21T17:47:13+0000&quot;,
+        &quot;date_of_receipt&quot;: &quot;2019-03-21T17:47:11+0000&quot;,
         &quot;other_known_claimant_names&quot;: &quot;&quot;,
         &quot;discrimination_claims&quot;: [
 
@@ -308,7 +298,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;6ef5293c-e291-4ee8-a22c-4a228d11291c&quot;,
+      &quot;uuid&quot;: &quot;496db989-19e2-4da0-94a8-850ed8d07045&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -344,7 +334,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;1038315f-a6cc-4e5c-81d8-e0cc50da2cce&quot;,
+      &quot;uuid&quot;: &quot;7d7dfe03-d9ec-4928-badd-42868cc63b53&quot;,
       &quot;command&quot;: &quot;BuildPrimaryClaimant&quot;,
       &quot;data&quot;: {
         &quot;title&quot;: &quot;Mr&quot;,
@@ -368,7 +358,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;4b2b10a2-4db3-40b3-9eca-adb694d2a73a&quot;,
+      &quot;uuid&quot;: &quot;6dc9e2d7-665f-4f1b-9158-111de7210ba9&quot;,
       &quot;command&quot;: &quot;BuildSecondaryClaimants&quot;,
       &quot;data&quot;: [
         {
@@ -394,7 +384,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;3510c236-cfa2-46c0-bdb1-06116948e9bb&quot;,
+      &quot;uuid&quot;: &quot;8db37472-cbf5-4001-8c8a-4dc54362e7f2&quot;,
       &quot;command&quot;: &quot;BuildSecondaryRespondents&quot;,
       &quot;data&quot;: [
         {
@@ -432,7 +422,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;2d59f386-a964-4de5-b478-473ddb66e516&quot;,
+      &quot;uuid&quot;: &quot;05f578e8-2be3-4ed1-9caa-8097e0b96bdb&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRepresentative&quot;,
       &quot;data&quot;: {
         &quot;address_attributes&quot;: {
@@ -455,23 +445,13 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;b8bca979-981f-4f26-a96f-c0047f9245e4&quot;,
+      &quot;uuid&quot;: &quot;7067d096-6f25-45dd-9602-8a7a9577ba61&quot;,
       &quot;command&quot;: &quot;BuildPdfFile&quot;,
       &quot;data&quot;: {
-        &quot;data_url&quot;: &quot;http://localhost:9000/etapibuckettest/YMRAH2HnCitVtTSiEBJhZwnz?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&amp;response-content-type=application%2Fpdf&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=accessKey1%2F20190321%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20190321T174713Z&amp;X-Amz-Expires=300&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=30be5f8f4a8b037a3dea1551be1f7722c85b6b4170ffde9dbdfcd20bb95fb148&quot;,
+        &quot;data_url&quot;: &quot;http://localhost:9000/etapibuckettest/eu5BDBCcnMxUvKKUh2Rt4Gk1?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&amp;response-content-type=application%2Fpdf&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=accessKey1%2F20190321%2Fus-east-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20190321T174712Z&amp;X-Amz-Expires=300&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Signature=579adb4b033b6bd30f4001f1a3101b4daf2976108b8de60ee471696ba446ad9c&quot;,
         &quot;data_from_key&quot;: null,
         &quot;filename&quot;: &quot;et1_first_last.pdf&quot;,
         &quot;checksum&quot;: &quot;ee2714b8b731a8c1e95dffaa33f89728&quot;
-      }
-    },
-    {
-      &quot;uuid&quot;: &quot;11e1b2f4-ecb8-4888-ac91-f239f105fa15&quot;,
-      &quot;command&quot;: &quot;BuildClaimDetailsFile&quot;,
-      &quot;data&quot;: {
-        &quot;data_url&quot;: null,
-        &quot;data_from_key&quot;: &quot;YdRcaG5kXE4AtkDvZ2ammknn&quot;,
-        &quot;filename&quot;: &quot;simple_user_with_rtf.rtf&quot;,
-        &quot;checksum&quot;: &quot;e69a0344620b5040b7d0d1595b9c7726&quot;
       }
     }
   ]
@@ -487,9 +467,9 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: b11dcc40-4e81-420f-924b-0de08ccd7858
-X-Runtime: 0.078866
-Content-Length: 803</pre>
+X-Request-Id: d182a6a6-52e8-4761-bda6-f431f3e32bcc
+X-Runtime: 0.379125
+Content-Length: 776</pre>
 
 #### Status
 
@@ -497,4 +477,4 @@ Content-Length: 803</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"BuildClaim":{"reference":"222000000300","pdf_url":"http://localhost:9000/etapibuckettest/L5KYtG9ajUpQ1uckURr1j92V?response-content-disposition=attachment%3B%20filename%3D%22et1_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190321%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190321T174713Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=9f052dc7aef8321838992c6c488da21dd50a7593fec588f239d43cf75a1a5586"},"BuildPrimaryRespondent":{},"BuildPrimaryClaimant":{},"BuildSecondaryClaimants":{},"BuildSecondaryRespondents":{},"BuildPrimaryRepresentative":{},"BuildPdfFile":{},"BuildClaimDetailsFile":{}},"uuid":"c81b1408-7b95-41ea-a82a-fa50219b307a"}</pre>
+<pre>{"status":"accepted","meta":{"BuildClaim":{"reference":"222000000100","pdf_url":"http://localhost:9000/etapibuckettest/n4vXqBQM7gYbYr3N3rzRGjpD?response-content-disposition=attachment%3B%20filename%3D%22et1_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190321%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190321T174712Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=717a34893ff16015263d592a2c0e1b34642a2edfcc78573835ecaadd1d214007"},"BuildPrimaryRespondent":{},"BuildPrimaryClaimant":{},"BuildSecondaryClaimants":{},"BuildSecondaryRespondents":{},"BuildPrimaryRepresentative":{},"BuildPdfFile":{}},"uuid":"ee6b2a08-22eb-42e5-a6cb-83daf834aa8a"}</pre>
