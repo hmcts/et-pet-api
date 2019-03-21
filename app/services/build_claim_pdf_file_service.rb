@@ -13,7 +13,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   def call
     filename = 'et1_atos_export.pdf'
     source.uploaded_files.build filename: filename,
-                               file: blob_for_pdf_file(filename)
+                                file: blob_for_pdf_file(filename)
   end
 
   private
@@ -197,8 +197,10 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
 
   def post_code_for(val, optional: false)
     return nil if val.nil? && optional
+
     match = val.match(/\A\s*(\S+)\s*(\d\w\w)\s*\z/)
     return val.slice(0, 7) unless match
+
     spaces = 4 - match[1].length
     val = "#{match[1]}#{' ' * spaces}#{match[2]}"
     val.slice(0, 7)
@@ -206,6 +208,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
 
   def date_for(date, optional: false)
     return nil if date.nil? && optional
+
     date = Date.parse(date) if date.is_a?(String)
     date.strftime "%d/%m/%Y"
   end

@@ -34,7 +34,7 @@ task update_pdf_yml_buttons: :environment do
     node['select_values'] ||= {}
     return if node['select_values'].value?(option)
 
-    key = !!(option =~ /yes|true/i)
+    key = option =~ /yes|true/i ? true : false
     # Make sure we are not gonna overwrite something - change the key if we are
     key = option.underscore if node['select_values'].key?(key)
     node['select_values'][key] = option
