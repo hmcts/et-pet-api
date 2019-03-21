@@ -12,7 +12,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
   def call
     filename = 'et3_atos_export.pdf'
     source.uploaded_files.build filename: filename,
-                                  file: blob_for_pdf_file(filename)
+                                file: blob_for_pdf_file(filename)
   end
 
   private
@@ -32,6 +32,12 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     result
   end
 
+  # Note: A few rubocop disables here as the complexity of the pdf is dictated to us in terms of the file
+  # itself.  It is intentional that this complexity is mirrored in a 1-1 mapping so each section is clear
+  # in the code as it is in the pdf document.
+  #
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def apply_header_pdf_fields(result)
     apply_field result, source.case_number, :header, :case_number
     apply_field result, source.date_of_receipt.try(:strftime, '%d/%m/%Y'), :header, :date_received
@@ -105,6 +111,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
   def apply_representative_pdf_fields(result)
     representative = source.representative
     return apply_no_representative(result) if representative.nil?
+
     address = representative.address
     apply_field result, representative.name, :representative, :name
     apply_field result, representative.organisation_name, :representative, :organisation_name
@@ -149,4 +156,6 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, nil, :disability, :has_disability
     apply_field result, '', :disability, :information
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 end

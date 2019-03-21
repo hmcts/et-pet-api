@@ -14,9 +14,9 @@ module PdfBuilder
     end
 
     included do
-      private
-
       attr_accessor :template_dir, :template_reference, :yaml_file
+
+      private :template_dir, :template_reference, :yaml_file
     end
 
     private
