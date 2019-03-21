@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ClaimFileBuilder::BuildClaimPdfFile do
+RSpec.describe BuildClaimPdfFileService do
   subject(:builder) { described_class }
 
   let(:errors) { [] }

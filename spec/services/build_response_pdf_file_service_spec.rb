@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ResponseFileBuilder::BuildResponsePdfFile do
+RSpec.describe BuildResponsePdfFileService do
   subject(:builder) { described_class }
 
   let(:errors) { [] }
