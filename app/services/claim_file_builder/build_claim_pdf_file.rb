@@ -229,10 +229,10 @@ module ClaimFileBuilder
     def post_code_for(val, optional: false)
       return nil if val.nil? && optional
       match = val.match(/\A\s*(\S+)\s*(\d\w\w)\s*\z/)
-      return val.slice(0,7) unless match
+      return val.slice(0, 7) unless match
       spaces = 4 - match[1].length
       val = "#{match[1]}#{' ' * spaces}#{match[2]}"
-      val.slice(0,7)
+      val.slice(0, 7)
     end
 
     def date_for(date, optional: false)

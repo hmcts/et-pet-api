@@ -10,14 +10,15 @@ module EtApi
 
         UndefinedField = Object.new
 
-        def initialize(form, template:)
+        def initialize(form, lookup_root, template:)
           self.form = form
           self.template = template
+          self.lookup_root = lookup_root
         end
 
         private
 
-        attr_accessor :form, :template
+        attr_accessor :form, :template, :lookup_root
 
         def i18n_section
           self.class.name.demodulize.underscore.gsub(/_section\z/, '')
@@ -37,7 +38,7 @@ module EtApi
         def mapped_field_values
           return @mapped_field_values if defined?(@mapped_field_values)
 
-          lookup = t("claim_pdf_fields.#{i18n_section}", locale: template)
+          lookup = t("#{lookup_root}.#{i18n_section}", locale: template)
           @mapped_field_values = lookup.inject({}) do |acc, (key, value)|
             v = mapped_value(value, key: key, path: [i18n_section])
             acc[key.to_sym] = v unless v === UndefinedField # rubocop:disable Style/CaseEquality

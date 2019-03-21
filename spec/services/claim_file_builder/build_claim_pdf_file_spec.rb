@@ -28,7 +28,7 @@ RSpec.describe ClaimFileBuilder::BuildClaimPdfFile do
           full_path = File.join(dir, 'et1_atos_export.pdf')
           uploaded_file.download_blob_to(full_path)
           File.open full_path do |file|
-            et1_file = EtApi::Test::FileObjects::Et1PdfFile.new(file, template: 'et1-v1-en')
+            et1_file = EtApi::Test::FileObjects::Et1PdfFile.new(file, template: 'et1-v1-en', lookup_root: 'claim_pdf_fields')
             expect(et1_file).to have_correct_contents_from_db_for(errors: errors, claim: claim), -> { errors.join("\n") }
           end
         end
@@ -87,7 +87,7 @@ RSpec.describe ClaimFileBuilder::BuildClaimPdfFile do
           full_path = File.join(dir, 'et1_atos_export.pdf')
           uploaded_file.download_blob_to(full_path)
           File.open full_path do |file|
-            et1_file = EtApi::Test::FileObjects::Et1PdfFile.new(file, template: 'et1-v1-cy')
+            et1_file = EtApi::Test::FileObjects::Et1PdfFile.new(file, template: 'et1-v1-cy', lookup_root: 'claim_pdf_fields')
             expect(et1_file).to have_correct_contents_from_db_for(errors: errors, claim: claim), -> { errors.join("\n") }
           end
         end

@@ -7,16 +7,16 @@ module EtApi
         include RSpec::Matchers
 
         def has_correct_contents_for?(response:, respondent:, representative:, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
-            Et3PdfFileSection::HeaderSection.new(form, template: template).has_contents_for?(response: response)
-            Et3PdfFileSection::ClaimantSection.new(form, template: template).has_contents_for?(response: response)
-            Et3PdfFileSection::RespondentSection.new(form, template: template).has_contents_for?(respondent: respondent)
-            Et3PdfFileSection::AcasSection.new(form, template: template).has_contents_for?(response: response)
-            Et3PdfFileSection::EmploymentDetailsSection.new(form, template: template).has_contents_for?(response: response)
-            Et3PdfFileSection::EarningsSection.new(form, template: template).has_contents_for?(response: response)
-            Et3PdfFileSection::ResponseSection.new(form, template: template).has_contents_for?(response: response)
-            Et3PdfFileSection::ContractClaimSection.new(form, template: template).has_contents_for?(response: response)
-            Et3PdfFileSection::RepresentativeSection.new(form, template: template).has_contents_for?(representative: representative)
-            Et3PdfFileSection::DisabilitySection.new(form, template: template).has_contents_for?(respondent: respondent)
+            Et3PdfFileSection::HeaderSection.new(form, lookup_root, template: template).has_contents_for?(response: response)
+            Et3PdfFileSection::ClaimantSection.new(form, lookup_root, template: template).has_contents_for?(response: response)
+            Et3PdfFileSection::RespondentSection.new(form, lookup_root, template: template).has_contents_for?(respondent: respondent)
+            Et3PdfFileSection::AcasSection.new(form, lookup_root, template: template).has_contents_for?(response: response)
+            Et3PdfFileSection::EmploymentDetailsSection.new(form, lookup_root, template: template).has_contents_for?(response: response)
+            Et3PdfFileSection::EarningsSection.new(form, lookup_root, template: template).has_contents_for?(response: response)
+            Et3PdfFileSection::ResponseSection.new(form, lookup_root, template: template).has_contents_for?(response: response)
+            Et3PdfFileSection::ContractClaimSection.new(form, lookup_root, template: template).has_contents_for?(response: response)
+            Et3PdfFileSection::RepresentativeSection.new(form, lookup_root, template: template).has_contents_for?(representative: representative)
+            Et3PdfFileSection::DisabilitySection.new(form, lookup_root, template: template).has_contents_for?(respondent: respondent)
         end
 
         def has_correct_contents_from_db_for?(response:, errors: [], indent: 1)
