@@ -14,10 +14,10 @@ module EtApi
             else
               expected_values = {
                 case_number: response[:case_number],
-                date_received: date_for(Time.zone.now),
+                date_received: formatted_date(Time.zone.now),
                 rtf: response[:additional_information_key].present?
               }
-              expect(mapped_field_values).to eql(expected_values).or(include(expected_values.merge(date_received: date_for(1.hour.ago))))
+              expect(mapped_field_values).to eql(expected_values).or(include(expected_values.merge(date_received: formatted_date(1.hour.ago))))
             end
           end
         end

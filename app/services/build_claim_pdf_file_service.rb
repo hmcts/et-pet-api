@@ -48,7 +48,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, pca.street, :your_details, :street
     apply_field result, pca.locality, :your_details, :locality
     apply_field result, pca.county, :your_details, :county
-    apply_field result, post_code_for(pca.post_code), :your_details, :post_code
+    apply_field result, format_post_code(pca.post_code), :your_details, :post_code
     apply_field result, primary_claimant.mobile_number, :your_details, :alternative_telephone_number
     apply_field result, primary_claimant.contact_preference, :your_details, :correspondence
     apply_field result, primary_claimant.date_of_birth.day, :your_details, :dob_day
@@ -67,13 +67,13 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, resp1.address.street, :respondents_details, :address, :street
     apply_field result, resp1.address.locality, :respondents_details, :address, :locality
     apply_field result, resp1.address.county, :respondents_details, :address, :county
-    apply_field result, post_code_for(resp1.address.post_code), :respondents_details, :address, :post_code
+    apply_field result, format_post_code(resp1.address.post_code), :respondents_details, :address, :post_code
     apply_field result, resp1.address_telephone_number, :respondents_details, :address, :telephone_number
     apply_field result, resp1.work_address&.building, :respondents_details, :different_address, :building
     apply_field result, resp1.work_address&.street, :respondents_details, :different_address, :street
     apply_field result, resp1.work_address&.locality, :respondents_details, :different_address, :locality
     apply_field result, resp1.work_address&.county, :respondents_details, :different_address, :county
-    apply_field result, post_code_for(resp1.work_address&.post_code, optional: resp1.present?), :respondents_details, :different_address, :post_code
+    apply_field result, format_post_code(resp1.work_address&.post_code, optional: resp1.present?), :respondents_details, :different_address, :post_code
     apply_field result, resp1.work_address_telephone_number, :respondents_details, :different_address, :telephone_number
     apply_field result, source.secondary_respondents.present?, :respondents_details, :additional_respondents
   end
@@ -88,7 +88,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, resp2&.address&.street, :respondents_details, :respondent2, :address, :street
     apply_field result, resp2&.address&.locality, :respondents_details, :respondent2, :address, :locality
     apply_field result, resp2&.address&.county, :respondents_details, :respondent2, :address, :county
-    apply_field result, post_code_for(resp2&.address&.post_code, optional: resp2.blank?), :respondents_details, :respondent2, :address, :post_code
+    apply_field result, format_post_code(resp2&.address&.post_code, optional: resp2.blank?), :respondents_details, :respondent2, :address, :post_code
     apply_field result, resp2&.address_telephone_number, :respondents_details, :respondent2, :address, :telephone_number
 
     resp3 = source.secondary_respondents[1]
@@ -100,7 +100,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, resp3&.address&.street, :respondents_details, :respondent3, :address, :street
     apply_field result, resp3&.address&.locality, :respondents_details, :respondent3, :address, :locality
     apply_field result, resp3&.address&.county, :respondents_details, :respondent3, :address, :county
-    apply_field result, post_code_for(resp3&.address&.post_code, optional: resp3.blank?), :respondents_details, :respondent3, :address, :post_code
+    apply_field result, format_post_code(resp3&.address&.post_code, optional: resp3.blank?), :respondents_details, :respondent3, :address, :post_code
     apply_field result, resp3&.address_telephone_number, :respondents_details, :respondent3, :address, :telephone_number
   end
 
@@ -113,9 +113,9 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     ed = source.employment_details.symbolize_keys
     apply_field result, ed[:end_date].nil? || Time.zone.parse(ed[:end_date]).future?, :employment_details, :employment_continuing
     apply_field result, ed[:job_title], :employment_details, :job_title
-    apply_field result, date_for(ed[:start_date], optional: true), :employment_details, :start_date
-    apply_field result, date_for(ed[:end_date], optional: true), :employment_details, :ended_date
-    apply_field result, date_for(ed[:notice_period_end_date], optional: true), :employment_details, :ending_date
+    apply_field result, format_date(ed[:start_date], optional: true), :employment_details, :start_date
+    apply_field result, format_date(ed[:end_date], optional: true), :employment_details, :ended_date
+    apply_field result, format_date(ed[:notice_period_end_date], optional: true), :employment_details, :ending_date
   end
 
   def apply_earnings_and_benefits_section(result)
@@ -134,7 +134,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   def apply_what_happened_since_section(result)
     ed = source.employment_details.symbolize_keys
     apply_field result, ed[:found_new_job], :what_happened_since, :have_another_job
-    apply_field result, date_for(ed[:new_job_start_date], optional: true), :what_happened_since, :start_date
+    apply_field result, format_date(ed[:new_job_start_date], optional: true), :what_happened_since, :start_date
     apply_field result, ed[:new_job_gross_pay], :what_happened_since, :salary
   end
 
@@ -180,7 +180,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, rep&.address&.street, :your_representative, :street
     apply_field result, rep&.address&.locality, :your_representative, :locality
     apply_field result, rep&.address&.county, :your_representative, :county
-    apply_field result, post_code_for(rep&.address&.post_code, optional: rep.blank?), :your_representative, :post_code
+    apply_field result, format_post_code(rep&.address&.post_code, optional: rep.blank?), :your_representative, :post_code
     apply_field result, rep&.address_telephone_number, :your_representative, :telephone_number
     apply_field result, rep&.mobile_number, :your_representative, :alternative_telephone_number
     apply_field result, rep&.dx_number, :your_representative, :dx_number
@@ -195,7 +195,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
 
-  def post_code_for(val, optional: false)
+  def format_post_code(val, optional: false)
     return nil if val.nil? && optional
 
     match = val.match(/\A\s*(\S+)\s*(\d\w\w)\s*\z/)
@@ -206,7 +206,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     val.slice(0, 7)
   end
 
-  def date_for(date, optional: false)
+  def format_date(date, optional: false)
     return nil if date.nil? && optional
 
     date = Date.parse(date) if date.is_a?(String)

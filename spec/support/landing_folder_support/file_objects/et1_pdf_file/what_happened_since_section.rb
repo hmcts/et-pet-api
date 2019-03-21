@@ -8,7 +8,7 @@ module EtApi
             if employment.present?
               expected_values = {
                   have_another_job: employment['found_new_job'],
-                  start_date: date_for(employment['new_job_start_date'], optional: true) || '',
+                  start_date: formatted_date(employment['new_job_start_date'], optional: true) || '',
                   salary: employment['new_job_gross_pay'].to_s
               }
             else

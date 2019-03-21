@@ -13,7 +13,7 @@ module EtApi
           def has_contents_for_employment?(employment)
             expected_values = {
                 job_title: employment['job_title'] || '',
-                start_date: date_for(employment['start_date'], optional: true),
+                start_date: formatted_date(employment['start_date'], optional: true),
                 employment_continuing: employment['end_date'].nil? || date_in_future(employment['end_date']).present?,
                 ended_date: date_in_past(employment['end_date'], optional: true) || '',
                 ending_date: date_in_future(employment['end_date'], optional: true) || ''
@@ -34,13 +34,13 @@ module EtApi
 
           def date_in_past(date, optional: false)
             return nil if date.nil? && optional
-            d = date_for(date)
+            d = formatted_date(date)
             d < Date.today ? d : nil
           end
 
           def date_in_future(date, optional: false)
             return nil if date.nil? && optional
-            d = date_for(date)
+            d = formatted_date(date)
             d > Date.today ? d : nil
           end
         end

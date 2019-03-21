@@ -12,7 +12,7 @@ module EtApi
                 street: representative&.address_attributes&.street || '',
                 locality: representative&.address_attributes&.locality || '',
                 county: representative&.address_attributes&.county || '',
-                post_code: post_code_for(representative&.address_attributes&.post_code, optional: representative.nil?) || '',
+                post_code: formatted_post_code(representative&.address_attributes&.post_code, optional: representative.nil?) || '',
                 dx_number: representative&.dx_number || '',
                 telephone_number: representative&.address_telephone_number || '',
                 alternative_telephone_number: representative&.mobile_number || '',

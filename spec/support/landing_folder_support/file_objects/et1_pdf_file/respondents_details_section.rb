@@ -18,7 +18,7 @@ module EtApi
                     street: respondents.first.address_attributes.street,
                     locality: respondents.first.address_attributes.locality,
                     county: respondents.first.address_attributes.county,
-                    post_code: post_code_for(respondents.first.address_attributes.post_code),
+                    post_code: formatted_post_code(respondents.first.address_attributes.post_code),
                     telephone_number: respondents.first.address_telephone_number
                 },
                 acas: {
@@ -30,7 +30,7 @@ module EtApi
                     street: respondents.first.work_address_attributes&.street || '',
                     locality: respondents.first.work_address_attributes&.locality || '',
                     county: respondents.first.work_address_attributes&.county || '',
-                    post_code: post_code_for(respondents.first.work_address_attributes&.post_code, optional: true) || '',
+                    post_code: formatted_post_code(respondents.first.work_address_attributes&.post_code, optional: true) || '',
                     telephone_number: respondents.first.work_address_telephone_number || ''
                 },
                 additional_respondents: respondents.length > 1,
@@ -53,7 +53,7 @@ module EtApi
                 street: resp.address_attributes.street,
                 locality: resp.address_attributes.locality,
                 county: resp.address_attributes.county,
-                post_code: post_code_for(resp.address_attributes.post_code),
+                post_code: formatted_post_code(resp.address_attributes.post_code),
                 telephone_number: resp.telephone_number || ''
               },
               acas: {

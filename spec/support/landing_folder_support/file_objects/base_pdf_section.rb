@@ -78,7 +78,7 @@ module EtApi
           value[:field_name].is_a?(Array) ? value[:field_name].map { |f| field_values[f] } : field_values[value[:field_name]]
         end
 
-        def date_for(date, optional: false)
+        def formatted_date(date, optional: false)
           return nil if date.nil? && optional
           return date.strftime('%d/%m/%Y') if date.is_a?(Date) || date.is_a?(Time) || date.is_a?(DateTime)
           Time.zone.parse(date).strftime('%d/%m/%Y')

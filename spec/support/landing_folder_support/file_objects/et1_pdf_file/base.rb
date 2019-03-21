@@ -12,7 +12,7 @@ module EtApi
 
           # Postcodes in the pdf have no spaces in them, but the inputs might.  Also, the pdf
           # will only ever remember the first 7 characters
-          def post_code_for(val, optional: false)
+          def formatted_post_code(val, optional: false)
             return nil if val.nil? && optional
             match = val.match(/\A\s*(\S+)\s*(\d\w\w)\s*\z/)
             return val.slice(0,7) unless match

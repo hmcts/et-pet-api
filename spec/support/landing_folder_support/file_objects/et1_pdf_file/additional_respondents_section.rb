@@ -13,7 +13,7 @@ module EtApi
                 street: respondents[3].try(:street),
                 locality: respondents[3].try(:locality),
                 county: respondents[3].try(:county),
-                post_code: post_code_for(respondents[3].try(:post_code), optional: true),
+                post_code: formatted_post_code(respondents[3].try(:post_code), optional: true),
                 telephone_number: respondents[3].try(:telephone_number),
                 have_acas: respondents[3].try(:acas_number)&.present?,
                 acas_number: respondents[3].try(:acas_number)
@@ -25,7 +25,7 @@ module EtApi
                 street: respondents[4].try(:street),
                 locality: respondents[4].try(:locality),
                 county: respondents[4].try(:county),
-                post_code: post_code_for(respondents[4].try(:post_code), optional: true),
+                post_code: formatted_post_code(respondents[4].try(:post_code), optional: true),
                 telephone_number: respondents[4].try(:telephone_number),
                 have_acas: respondents[4].try(:acas_number)&.present?,
                 acas_number: respondents[4].try(:acas_number)
