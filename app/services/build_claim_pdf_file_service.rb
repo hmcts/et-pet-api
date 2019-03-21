@@ -1,52 +1,22 @@
 class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
-  include PdfBuilder
+  include PdfBuilder::Base
+  include PdfBuilder::MultiTemplate
+  include PdfBuilder::Rendering
+  include PdfBuilder::PreAllocation
+  include PdfBuilder::ActiveStorage
   PAY_CLAIMS = ['redundancy', 'notice', 'holiday', 'arrears', 'other'].freeze
 
-  def self.call(claim, template_reference: 'et1-v1-en')
-    new(claim, template_reference: template_reference).call
-  end
-
-  def initialize(claim, template_reference:, template_dir: Rails.root.join('vendor', 'assets', 'pdf_forms'))
-    self.claim = claim
-    self.template_dir = template_dir
-    self.template_reference = template_reference
-    self.yaml_file = File.join(template_dir, "#{template_reference}.yml")
+  def self.call(source, template_reference: 'et1-v1-en')
+    new(source, template_reference: template_reference).call
   end
 
   def call
     filename = 'et1_atos_export.pdf'
-    claim.uploaded_files.build filename: filename,
+    source.uploaded_files.build filename: filename,
                                file: blob_for_pdf_file(filename)
   end
 
   private
-
-  attr_accessor :claim, :template_dir, :template_reference, :yaml_file
-
-  def yaml_data
-    @yaml_data ||= YAML.load_file(yaml_file).with_indifferent_access
-  end
-
-  def blob_for_pdf_file(filename)
-    ActiveStorage::Blob.new.tap do |blob|
-      blob.filename = filename
-      blob.content_type = 'application/pdf'
-      blob.metadata = nil
-      blob.key = pre_allocated_key
-      blob.upload render_to_file
-    end
-  end
-
-  def pre_allocated_key
-    claim.pre_allocated_file_keys.where(filename: 'et1_atos_export.pdf').first.try(:key)
-  end
-
-  def render_to_file
-    tempfile = Tempfile.new
-    template_path = File.join(template_dir, "#{template_reference}.pdf")
-    fill_in_pdf_form(template_path: template_path, to: tempfile.path, data: pdf_fields)
-    tempfile
-  end
 
   def pdf_fields
     result = {}
@@ -68,7 +38,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def apply_your_details_fields(result)
-    primary_claimant = claim.primary_claimant
+    primary_claimant = source.primary_claimant
     pca = primary_claimant.address
     apply_field result, primary_claimant.title, :your_details, :title
     apply_field result, primary_claimant.first_name, :your_details, :first_name
@@ -89,7 +59,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_respondents_details_fields(result)
-    resp1 = claim.primary_respondent
+    resp1 = source.primary_respondent
     apply_field result, resp1.name, :respondents_details, :name
     apply_field result, resp1.acas_certificate_number, :respondents_details, :acas, :acas_number
     apply_field result, resp1.acas_certificate_number.present?, :respondents_details, :acas, :have_acas
@@ -105,11 +75,11 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, resp1.work_address&.county, :respondents_details, :different_address, :county
     apply_field result, post_code_for(resp1.work_address&.post_code, optional: resp1.present?), :respondents_details, :different_address, :post_code
     apply_field result, resp1.work_address_telephone_number, :respondents_details, :different_address, :telephone_number
-    apply_field result, claim.secondary_respondents.present?, :respondents_details, :additional_respondents
+    apply_field result, source.secondary_respondents.present?, :respondents_details, :additional_respondents
   end
 
   def apply_secondary_respondents_details_fields(result)
-    resp2 = claim.secondary_respondents.first
+    resp2 = source.secondary_respondents.first
 
     apply_field result, resp2&.name, :respondents_details, :respondent2, :name
     apply_field result, resp2&.acas_certificate_number, :respondents_details, :respondent2, :acas, :acas_number
@@ -121,7 +91,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, post_code_for(resp2&.address&.post_code, optional: resp2.blank?), :respondents_details, :respondent2, :address, :post_code
     apply_field result, resp2&.address_telephone_number, :respondents_details, :respondent2, :address, :telephone_number
 
-    resp3 = claim.secondary_respondents[1]
+    resp3 = source.secondary_respondents[1]
 
     apply_field result, resp3&.name, :respondents_details, :respondent3, :name
     apply_field result, resp3&.acas_certificate_number, :respondents_details, :respondent3, :acas, :acas_number
@@ -135,12 +105,12 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_multiple_cases_section(result)
-    apply_field result, claim.other_known_claimant_names&.present?, :multiple_cases, :have_similar_claims
-    apply_field result, claim.other_known_claimant_names, :multiple_cases, :other_claimants
+    apply_field result, source.other_known_claimant_names&.present?, :multiple_cases, :have_similar_claims
+    apply_field result, source.other_known_claimant_names, :multiple_cases, :other_claimants
   end
 
   def apply_employment_details_section(result)
-    ed = claim.employment_details.symbolize_keys
+    ed = source.employment_details.symbolize_keys
     apply_field result, ed[:end_date].nil? || Time.zone.parse(ed[:end_date]).future?, :employment_details, :employment_continuing
     apply_field result, ed[:job_title], :employment_details, :job_title
     apply_field result, date_for(ed[:start_date], optional: true), :employment_details, :start_date
@@ -149,7 +119,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_earnings_and_benefits_section(result)
-    ed = claim.employment_details.symbolize_keys
+    ed = source.employment_details.symbolize_keys
     apply_field result, ed[:average_hours_worked_per_week], :earnings_and_benefits, :average_weekly_hours
     apply_field result, ed[:benefit_details], :earnings_and_benefits, :benefits
     apply_field result, ed[:enrolled_in_pension_scheme], :earnings_and_benefits, :employers_pension_scheme
@@ -162,48 +132,48 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_what_happened_since_section(result)
-    ed = claim.employment_details.symbolize_keys
+    ed = source.employment_details.symbolize_keys
     apply_field result, ed[:found_new_job], :what_happened_since, :have_another_job
     apply_field result, date_for(ed[:new_job_start_date], optional: true), :what_happened_since, :start_date
     apply_field result, ed[:new_job_gross_pay], :what_happened_since, :salary
   end
 
   def apply_type_and_details_section(result)
-    apply_field result, claim.pay_claims.include?('redundancy'), :type_and_details, :claiming_redundancy_payment
-    apply_field result, claim.discrimination_claims.present?, :type_and_details, :discriminated
-    apply_field result, claim.discrimination_claims.include?('age'), :type_and_details, :discriminated_age
-    apply_field result, claim.discrimination_claims.include?('disability'), :type_and_details, :discriminated_disability
-    apply_field result, claim.discrimination_claims.include?('gender_reassignment'), :type_and_details, :discriminated_gender_reassignment
-    apply_field result, claim.discrimination_claims.include?('marriage'), :type_and_details, :discriminated_marriage
-    apply_field result, claim.discrimination_claims.include?('sexual_orientation'), :type_and_details, :discriminated_sexual_orientation
-    apply_field result, claim.discrimination_claims.include?('pregnancy'), :type_and_details, :discriminated_pregnancy
-    apply_field result, claim.discrimination_claims.include?('race'), :type_and_details, :discriminated_race
-    apply_field result, claim.discrimination_claims.include?('religion'), :type_and_details, :discriminated_religion
-    apply_field result, claim.discrimination_claims.include?('sex'), :type_and_details, :discriminated_sex
-    apply_field result, claim.other_claim_details.present?, :type_and_details, :other_type_of_claim
-    apply_field result, claim.other_claim_details, :type_and_details, :other_type_of_claim_details
+    apply_field result, source.pay_claims.include?('redundancy'), :type_and_details, :claiming_redundancy_payment
+    apply_field result, source.discrimination_claims.present?, :type_and_details, :discriminated
+    apply_field result, source.discrimination_claims.include?('age'), :type_and_details, :discriminated_age
+    apply_field result, source.discrimination_claims.include?('disability'), :type_and_details, :discriminated_disability
+    apply_field result, source.discrimination_claims.include?('gender_reassignment'), :type_and_details, :discriminated_gender_reassignment
+    apply_field result, source.discrimination_claims.include?('marriage'), :type_and_details, :discriminated_marriage
+    apply_field result, source.discrimination_claims.include?('sexual_orientation'), :type_and_details, :discriminated_sexual_orientation
+    apply_field result, source.discrimination_claims.include?('pregnancy'), :type_and_details, :discriminated_pregnancy
+    apply_field result, source.discrimination_claims.include?('race'), :type_and_details, :discriminated_race
+    apply_field result, source.discrimination_claims.include?('religion'), :type_and_details, :discriminated_religion
+    apply_field result, source.discrimination_claims.include?('sex'), :type_and_details, :discriminated_sex
+    apply_field result, source.other_claim_details.present?, :type_and_details, :other_type_of_claim
+    apply_field result, source.other_claim_details, :type_and_details, :other_type_of_claim_details
     apply_field result, owed_anything?, :type_and_details, :owed
-    apply_field result, claim.pay_claims.include?('arrears'), :type_and_details, :owed_arrears_of_pay
-    apply_field result, claim.pay_claims.include?('holiday'), :type_and_details, :owed_holiday_pay
-    apply_field result, claim.pay_claims.include?('notice'), :type_and_details, :owed_notice_pay
-    apply_field result, claim.pay_claims.include?('other'), :type_and_details, :owed_other_payments
-    apply_field result, claim.is_unfair_dismissal, :type_and_details, :unfairly_dismissed
+    apply_field result, source.pay_claims.include?('arrears'), :type_and_details, :owed_arrears_of_pay
+    apply_field result, source.pay_claims.include?('holiday'), :type_and_details, :owed_holiday_pay
+    apply_field result, source.pay_claims.include?('notice'), :type_and_details, :owed_notice_pay
+    apply_field result, source.pay_claims.include?('other'), :type_and_details, :owed_other_payments
+    apply_field result, source.is_unfair_dismissal, :type_and_details, :unfairly_dismissed
   end
 
   def apply_what_do_you_want_section(result)
-    apply_field result, claim.desired_outcomes.include?('compensation_only'), :what_do_you_want, :prefer_compensation
-    apply_field result, claim.desired_outcomes.include?('new_employment_and_compensation'), :what_do_you_want, :prefer_re_engagement
-    apply_field result, claim.desired_outcomes.include?('reinstated_employment_and_compensation'), :what_do_you_want, :prefer_re_instatement
-    apply_field result, claim.desired_outcomes.include?('tribunal_recommendation'), :what_do_you_want, :prefer_recommendation
-    apply_field result, claim.other_outcome, :what_do_you_want, :compensation
+    apply_field result, source.desired_outcomes.include?('compensation_only'), :what_do_you_want, :prefer_compensation
+    apply_field result, source.desired_outcomes.include?('new_employment_and_compensation'), :what_do_you_want, :prefer_re_engagement
+    apply_field result, source.desired_outcomes.include?('reinstated_employment_and_compensation'), :what_do_you_want, :prefer_re_instatement
+    apply_field result, source.desired_outcomes.include?('tribunal_recommendation'), :what_do_you_want, :prefer_recommendation
+    apply_field result, source.other_outcome, :what_do_you_want, :compensation
   end
 
   def apply_information_to_regulators_section(result)
-    apply_field result, claim.send_claim_to_whistleblowing_entity, :information_to_regulators, :whistle_blowing
+    apply_field result, source.send_claim_to_whistleblowing_entity, :information_to_regulators, :whistle_blowing
   end
 
   def apply_your_representative_section(result)
-    rep = claim.primary_representative
+    rep = source.primary_representative
     apply_field result, rep&.organisation_name, :your_representative, :name_of_organisation
     apply_field result, rep&.name, :your_representative, :name_of_representative
     apply_field result, rep&.address&.building, :your_representative, :building
@@ -218,8 +188,8 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_disability_section(result)
-    apply_field result, claim.primary_claimant.special_needs.present?, :disability, :has_special_needs
-    apply_field result, claim.primary_claimant.special_needs, :disability, :special_needs
+    apply_field result, source.primary_claimant.special_needs.present?, :disability, :has_special_needs
+    apply_field result, source.primary_claimant.special_needs, :disability, :special_needs
   end
 
   # rubocop:enable Metrics/MethodLength
@@ -241,7 +211,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def owed_anything?
-    (PAY_CLAIMS - ['redundancy']).any? { |type| claim.pay_claims.include?(type) }
+    (PAY_CLAIMS - ['redundancy']).any? { |type| source.pay_claims.include?(type) }
   end
 
 end

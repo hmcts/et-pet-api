@@ -1,51 +1,21 @@
 class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
-  include PdfBuilder
+  include PdfBuilder::Base
+  include PdfBuilder::MultiTemplate
+  include PdfBuilder::Rendering
+  include PdfBuilder::PreAllocation
+  include PdfBuilder::ActiveStorage
 
-  def self.call(response, template_reference: 'et3-v1-en')
-    new(response, template_reference: template_reference).call
-  end
-
-  def initialize(response, template_reference:, template_dir: Rails.root.join('vendor', 'assets', 'pdf_forms'))
-    self.response = response
-    self.template_dir = template_dir
-    self.template_reference = template_reference
-    self.yaml_file = File.join(template_dir, "#{template_reference}.yml")
+  def self.call(source, template_reference: 'et3-v1-en')
+    new(source, template_reference: template_reference).call
   end
 
   def call
     filename = 'et3_atos_export.pdf'
-    response.uploaded_files.build filename: filename,
+    source.uploaded_files.build filename: filename,
                                   file: blob_for_pdf_file(filename)
   end
 
   private
-
-  attr_accessor :response, :template_dir, :template_reference, :yaml_file
-
-  def yaml_data
-    @yaml_data ||= YAML.load_file(yaml_file).with_indifferent_access
-  end
-
-  def blob_for_pdf_file(filename)
-    ActiveStorage::Blob.new.tap do |blob|
-      blob.filename = filename
-      blob.content_type = 'application/pdf'
-      blob.metadata = nil
-      blob.key = pre_allocated_key
-      blob.upload render_to_file
-    end
-  end
-
-  def pre_allocated_key
-    response.pre_allocated_file_keys.where(filename: 'et3_atos_export.pdf').first.try(:key)
-  end
-
-  def render_to_file
-    tempfile = Tempfile.new
-    template_path = File.join(template_dir, "#{template_reference}.pdf")
-    fill_in_pdf_form(template_path: template_path, to: tempfile.path, data: pdf_fields)
-    tempfile
-  end
 
   def pdf_fields
     result = {}
@@ -63,17 +33,17 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_header_pdf_fields(result)
-    apply_field result, response.case_number, :header, :case_number
-    apply_field result, response.date_of_receipt.try(:strftime, '%d/%m/%Y'), :header, :date_received
-    apply_field result, response.additional_information_rtf_file?, :header, :rtf
+    apply_field result, source.case_number, :header, :case_number
+    apply_field result, source.date_of_receipt.try(:strftime, '%d/%m/%Y'), :header, :date_received
+    apply_field result, source.additional_information_rtf_file?, :header, :rtf
   end
 
   def apply_claimant_pdf_fields(result)
-    apply_field result, response.claimants_name, :claimant, :claimants_name
+    apply_field result, source.claimants_name, :claimant, :claimants_name
   end
 
   def apply_respondent_pdf_fields(result)
-    respondent = response.respondent
+    respondent = source.respondent
     address = respondent.address
     apply_field result, respondent.name, :respondent, :name
     apply_field result, respondent.contact, :respondent, :contact
@@ -94,46 +64,46 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_acas_pdf_fields(result)
-    apply_field result, response.agree_with_early_conciliation_details?, :acas, :agree
-    apply_field result, response.disagree_conciliation_reason, :acas, :disagree_explanation
+    apply_field result, source.agree_with_early_conciliation_details?, :acas, :agree
+    apply_field result, source.disagree_conciliation_reason, :acas, :disagree_explanation
   end
 
   def apply_employment_details_pdf_fields(result)
-    apply_field result, response.agree_with_employment_dates, :employment_details, :agree_with_dates
-    apply_field result, response.employment_start.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_start
-    apply_field result, response.employment_end.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_end
-    apply_field result, response.disagree_employment, :employment_details, :disagree_with_dates_reason
-    apply_field result, response.continued_employment?, :employment_details, :continuing
-    apply_field result, response.agree_with_claimants_description_of_job_or_title, :employment_details, :agree_with_job_title
-    apply_field result, response.disagree_claimants_job_or_title, :employment_details, :correct_job_title
+    apply_field result, source.agree_with_employment_dates, :employment_details, :agree_with_dates
+    apply_field result, source.employment_start.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_start
+    apply_field result, source.employment_end.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_end
+    apply_field result, source.disagree_employment, :employment_details, :disagree_with_dates_reason
+    apply_field result, source.continued_employment?, :employment_details, :continuing
+    apply_field result, source.agree_with_claimants_description_of_job_or_title, :employment_details, :agree_with_job_title
+    apply_field result, source.disagree_claimants_job_or_title, :employment_details, :correct_job_title
   end
 
   def apply_earnings_pdf_fields(result)
-    apply_field result, response.agree_with_claimants_hours, :earnings, :agree_with_hours
-    apply_field result, response.queried_hours, :earnings, :correct_hours
-    apply_field result, response.agree_with_earnings_details, :earnings, :agree_with_earnings
-    apply_field result, response.queried_pay_before_tax, :earnings, :correct_pay_before_tax
-    apply_field result, response.queried_pay_before_tax_period, :earnings, :correct_pay_before_tax_period
-    apply_field result, response.queried_take_home_pay, :earnings, :correct_take_home_pay
-    apply_field result, response.queried_take_home_pay_period, :earnings, :correct_take_home_pay_period
-    apply_field result, response.agree_with_claimant_notice, :earnings, :agree_with_notice_period
-    apply_field result, response.disagree_claimant_notice_reason, :earnings, :disagree_notice_period_reason
-    apply_field result, response.agree_with_claimant_pension_benefits, :earnings, :agree_with_pension_benefits
-    apply_field result, response.disagree_claimant_pension_benefits_reason, :earnings, :disagree_pension_benefits_reason
+    apply_field result, source.agree_with_claimants_hours, :earnings, :agree_with_hours
+    apply_field result, source.queried_hours, :earnings, :correct_hours
+    apply_field result, source.agree_with_earnings_details, :earnings, :agree_with_earnings
+    apply_field result, source.queried_pay_before_tax, :earnings, :correct_pay_before_tax
+    apply_field result, source.queried_pay_before_tax_period, :earnings, :correct_pay_before_tax_period
+    apply_field result, source.queried_take_home_pay, :earnings, :correct_take_home_pay
+    apply_field result, source.queried_take_home_pay_period, :earnings, :correct_take_home_pay_period
+    apply_field result, source.agree_with_claimant_notice, :earnings, :agree_with_notice_period
+    apply_field result, source.disagree_claimant_notice_reason, :earnings, :disagree_notice_period_reason
+    apply_field result, source.agree_with_claimant_pension_benefits, :earnings, :agree_with_pension_benefits
+    apply_field result, source.disagree_claimant_pension_benefits_reason, :earnings, :disagree_pension_benefits_reason
   end
 
   def apply_response_pdf_fields(result)
-    apply_field result, response.defend_claim?, :response, :defend_claim
-    apply_field result, response.defend_claim_facts, :response, :defend_claim_facts
+    apply_field result, source.defend_claim?, :response, :defend_claim
+    apply_field result, source.defend_claim_facts, :response, :defend_claim_facts
   end
 
   def apply_contract_claim_pdf_fields(result)
-    apply_field result, response.make_employer_contract_claim?, :contract_claim, :make_employer_contract_claim
-    apply_field result, response.claim_information, :contract_claim, :information
+    apply_field result, source.make_employer_contract_claim?, :contract_claim, :make_employer_contract_claim
+    apply_field result, source.claim_information, :contract_claim, :information
   end
 
   def apply_representative_pdf_fields(result)
-    representative = response.representative
+    representative = source.representative
     return apply_no_representative(result) if representative.nil?
     address = representative.address
     apply_field result, representative.name, :representative, :name
@@ -170,7 +140,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_disability_pdf_fields(result)
-    respondent = response.respondent
+    respondent = source.respondent
     apply_field result, respondent.disability, :disability, :has_disability
     apply_field result, respondent.disability_information, :disability, :information
   end
