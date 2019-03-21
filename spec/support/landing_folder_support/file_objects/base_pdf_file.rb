@@ -1,5 +1,6 @@
 require 'rspec/matchers'
 require 'pdf-forms'
+require_relative './base'
 module EtApi
   module Test
     module FileObjects
@@ -8,14 +9,15 @@ module EtApi
         include EtApi::Test::I18n
         include ::RSpec::Matchers
 
-        def initialize(tempfile, form = nil)
+        def initialize(tempfile, form = nil, template:)
           super(tempfile)
           self.form = form || PdfForms.new('pdftk', utf8_fields: true).read(tempfile.path)
+          self.template = template
         end
 
         private
 
-        attr_accessor :form
+        attr_accessor :form, :template
 
         def field_values
           @field_values ||= form.fields.inject({}) do |acc, field|

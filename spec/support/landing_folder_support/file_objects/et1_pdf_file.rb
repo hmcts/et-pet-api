@@ -1,34 +1,27 @@
 require 'rspec/matchers'
 require_relative './base_pdf_file'
-require_relative './et1_pdf_file/base.rb'
-Dir.glob(File.absolute_path('./et1_pdf_file/**/*.rb', __dir__)).each { |f| require f }
 
 module EtApi
   module Test
     module FileObjects
       # Represents the ET3 PDF file and provides assistance in validating its contents
       class Et1PdfFile < BasePdfFile
-        def initialize(*args, template:)
-          super(*args)
-          self.template = template
-        end
-
         def has_correct_contents_for?(claim:, claimants:, respondents:, representative:) # rubocop:disable Naming/PredicateName
-          Et1PdfFileSection::YourDetailsSection.new(tempfile, form, template: template).has_contents_for?(claimant: claimants.first)
-          Et1PdfFileSection::RespondentsDetailsSection.new(tempfile, form, template: template).has_contents_for?(respondents: respondents)
-          Et1PdfFileSection::MultipleCasesSection.new(tempfile, form, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::NotYourEmployerSection.new(tempfile, form, template: template).has_contents_for?
-          Et1PdfFileSection::EmploymentDetailsSection.new(tempfile, form, template: template).has_contents_for?(employment: claim.employment_details)
-          Et1PdfFileSection::EarningsAndBenefitsSection.new(tempfile, form, template: template).has_contents_for?(employment: claim.employment_details)
-          Et1PdfFileSection::WhatHappenedSinceSection.new(tempfile, form, template: template).has_contents_for?(employment: claim.employment_details)
-          Et1PdfFileSection::TypeAndDetailsSection.new(tempfile, form, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::WhatDoYouWantSection.new(tempfile, form, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::InformationToRegulatorsSection.new(tempfile, form, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::YourRepresentativeSection.new(tempfile, form, template: template).has_contents_for?(representative: representative)
-          Et1PdfFileSection::DisabilitySection.new(tempfile, form, template: template).has_contents_for?(claimant: claimants.first)
-          Et1PdfFileSection::AdditionalRespondentsSection.new(tempfile, form, template: template).has_contents_for?(respondents: respondents)
-          Et1PdfFileSection::FinalCheckSection.new(tempfile, form, template: template).has_contents_for?
-          Et1PdfFileSection::AdditionalInformationSection.new(tempfile, form, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::YourDetailsSection.new(form, template: template).has_contents_for?(claimant: claimants.first)
+          Et1PdfFileSection::RespondentsDetailsSection.new(form, template: template).has_contents_for?(respondents: respondents)
+          Et1PdfFileSection::MultipleCasesSection.new(form, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::NotYourEmployerSection.new(form, template: template).has_contents_for?
+          Et1PdfFileSection::EmploymentDetailsSection.new(form, template: template).has_contents_for?(employment: claim.employment_details)
+          Et1PdfFileSection::EarningsAndBenefitsSection.new(form, template: template).has_contents_for?(employment: claim.employment_details)
+          Et1PdfFileSection::WhatHappenedSinceSection.new(form, template: template).has_contents_for?(employment: claim.employment_details)
+          Et1PdfFileSection::TypeAndDetailsSection.new(form, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::WhatDoYouWantSection.new(form, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::InformationToRegulatorsSection.new(form, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::YourRepresentativeSection.new(form, template: template).has_contents_for?(representative: representative)
+          Et1PdfFileSection::DisabilitySection.new(form, template: template).has_contents_for?(claimant: claimants.first)
+          Et1PdfFileSection::AdditionalRespondentsSection.new(form, template: template).has_contents_for?(respondents: respondents)
+          Et1PdfFileSection::FinalCheckSection.new(form, template: template).has_contents_for?
+          Et1PdfFileSection::AdditionalInformationSection.new(form, template: template).has_contents_for?(claim: claim)
           true
         end
 
@@ -72,8 +65,6 @@ module EtApi
             OpenStruct.new(c).freeze
           end
         end
-
-        attr_accessor :template
       end
     end
   end

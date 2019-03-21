@@ -1,91 +1,14 @@
 require 'rspec/matchers'
 require 'pdf-forms'
-require_relative '../base_pdf_file'
+require_relative '../base_pdf_section'
 module EtApi
   module Test
     module FileObjects
       # Represents the ET3 PDF file and provides assistance in validating its contents
       module Et1PdfFileSection
-        class Base < ::EtApi::Test::FileObjects::BasePdfFile # rubocop:disable Metrics/ClassName
-          UndefinedField = Object.new
-
-          def initialize(*args, template:)
-            super(*args)
-            self.template = template
-          end
+        class Base < ::EtApi::Test::FileObjects::BasePdfSection # rubocop:disable Metrics/ClassName
 
           private
-
-          attr_accessor :template
-
-          def i18n_section
-            self.class.name.demodulize.underscore.gsub(/_section\z/, '')
-          end
-
-          def mapped_field_values
-            return @mapped_field_values if defined?(@mapped_field_values)
-
-            lookup = t("claim_pdf_fields.#{i18n_section}", locale: template)
-            @mapped_field_values = lookup.inject({}) do |acc, (key, value)|
-              v = mapped_value(value, key: key, path: [i18n_section])
-              acc[key.to_sym] = v unless v === UndefinedField # rubocop:disable Style/CaseEquality
-              acc
-            end
-          end
-
-          def mapped_value(value, key:, path:)
-            if value.is_a?(Hash) && !value.key?(:field_name)
-              value.inject({}) do |acc, (inner_key, inner_value)|
-                v = mapped_value(inner_value, key: inner_key, path: path + [key.to_s])
-                acc[inner_key] = v unless v == UndefinedField
-                acc
-              end
-            elsif value.is_a?(Hash) && value[:field_name] == false
-              UndefinedField
-            else
-              field_value_for(value, key: key, path: path)
-            end
-          end
-
-          def field_value_for(value, key:, path:)
-            if value.key?(:select_values)
-              raw = raw_value_from_pdf(value)
-              ret = value[:select_values].detect { |(_, v)| v == raw }.try(:first)
-              return ret if ret == true || ret == false
-              return ret.to_s if ret
-              return nil if raw == value[:unselected_value]
-
-              raise "Invalid value - '#{raw}' is not in the selected_values list or the unselected_value for field '#{path.join('.')}.#{key}' ('#{value[:field_name]}') for section #{self.class.name}"
-            else
-              field_values[value[:field_name]]
-            end
-          end
-
-          def raw_value_from_pdf(value)
-            value[:field_name].is_a?(Array) ? value[:field_name].map { |f| field_values[f] } : field_values[value[:field_name]]
-          end
-
-          def date_for(date, optional: false)
-            return nil if date.nil? && optional
-            return date.strftime('%d/%m/%Y') if date.is_a?(Date) || date.is_a?(Time) || date.is_a?(DateTime)
-            Time.zone.parse(date).strftime('%d/%m/%Y')
-          end
-
-          def decimal_for(number)
-            number.to_s
-          end
-
-          # Converts a translation symbol to the correct value for the pdf - at present they seem to be the same
-          # but they dont have to be - so any translation to be done in here.
-          def gender_for(val)
-            val.to_s.split('.').last
-          end
-
-          # Converts a translation symbol to the correct value for the pdf - at present they seem to be the same
-          # but they dont have to be - so any translation to be done in here.
-          def contact_preference_for(val)
-            val.to_s.split('.').last
-          end
 
           # Postcodes in the pdf have no spaces in them, but the inputs might.  Also, the pdf
           # will only ever remember the first 7 characters
@@ -96,52 +19,6 @@ module EtApi
             spaces = 4 - match[1].length
             val = "#{match[1]}#{' ' * spaces}#{match[2]}"
             val.slice(0,7)
-          end
-
-          def date_in_past(date, optional: false)
-            return nil if date.nil? && optional
-            d = date_for(date)
-            d < Date.today ? d : nil
-          end
-
-          def date_in_future(date, optional: false)
-            return nil if date.nil? && optional
-            d = date_for(date)
-            d > Date.today ? d : nil
-          end
-
-          def claim_type_for(claim_type)
-            claim_type = claim_type.to_s.gsub(/.*\.claim_type\./, '').split('.').map(&:to_sym)
-            if claim_type.length == 1
-              claim_type.first
-            elsif claim_type.length == 2
-              "#{claim_type.first.to_s.gsub(/_claims\z/, '')}_#{claim_type.last}".to_sym
-            else
-              raise "Invalid claim_type #{claim_type}"
-            end
-          end
-
-          def claim_types_for(claim_types)
-            claim_types.map { |claim_type| claim_type_for(claim_type) }
-          end
-
-          def outcome_type_for(outcome_type)
-            case outcome_type.to_s.split('.').last.to_sym
-            when :compensation_only then
-              :prefer_compensation
-            when :tribunal_recommendation then
-              :prefer_recommendation
-            when :reinstated_employment_and_compensation then
-              :prefer_re_instatement
-            when :new_employment_and_compensation then
-              :prefer_re_engagement
-            else
-              raise "Unknown outcome type of #{outcome_type} - please add it to et1_pdf_file.rb in the outcome_type_for method"
-            end
-          end
-
-          def outcome_types_for(outcome_types)
-            outcome_types.map {|type| outcome_type_for(type)}
           end
         end
       end

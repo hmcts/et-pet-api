@@ -31,6 +31,18 @@ module EtApi
             }
             expect(mapped_field_values).to include expected_values
           end
+
+          def date_in_past(date, optional: false)
+            return nil if date.nil? && optional
+            d = date_for(date)
+            d < Date.today ? d : nil
+          end
+
+          def date_in_future(date, optional: false)
+            return nil if date.nil? && optional
+            d = date_for(date)
+            d > Date.today ? d : nil
+          end
         end
       end
     end
