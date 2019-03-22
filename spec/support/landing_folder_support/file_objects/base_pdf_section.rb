@@ -10,29 +10,18 @@ module EtApi
 
         UndefinedField = Object.new
 
-        def initialize(form, lookup_root, template:)
-          self.form = form
+        def initialize(field_values, lookup_root, template:)
+          self.field_values = field_values
           self.template = template
           self.lookup_root = lookup_root
         end
 
         private
 
-        attr_accessor :form, :template, :lookup_root
+        attr_accessor :field_values, :template, :lookup_root
 
         def i18n_section
           self.class.name.demodulize.underscore.gsub(/_section\z/, '')
-        end
-
-        def field_values
-          @field_values ||= form.fields.inject({}) do |acc, field|
-            acc[field.name] = if field.type == "Button" && field.options.present?
-                                field.options.include?(field.value) ? unescape(field.value) : nil
-                              else
-                                unescape(field.value)
-                              end
-            acc
-          end
         end
 
         def mapped_field_values

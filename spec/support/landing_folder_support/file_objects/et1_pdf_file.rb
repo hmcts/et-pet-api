@@ -7,21 +7,21 @@ module EtApi
       # Represents the ET3 PDF file and provides assistance in validating its contents
       class Et1PdfFile < BasePdfFile
         def has_correct_contents_for?(claim:, claimants:, respondents:, representative:) # rubocop:disable Naming/PredicateName
-          Et1PdfFileSection::YourDetailsSection.new(form, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
-          Et1PdfFileSection::RespondentsDetailsSection.new(form, lookup_root, template: template).has_contents_for?(respondents: respondents)
-          Et1PdfFileSection::MultipleCasesSection.new(form, lookup_root, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::NotYourEmployerSection.new(form, lookup_root, template: template).has_contents_for?
-          Et1PdfFileSection::EmploymentDetailsSection.new(form, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
-          Et1PdfFileSection::EarningsAndBenefitsSection.new(form, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
-          Et1PdfFileSection::WhatHappenedSinceSection.new(form, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
-          Et1PdfFileSection::TypeAndDetailsSection.new(form, lookup_root, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::WhatDoYouWantSection.new(form, lookup_root, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::InformationToRegulatorsSection.new(form, lookup_root, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::YourRepresentativeSection.new(form, lookup_root, template: template).has_contents_for?(representative: representative)
-          Et1PdfFileSection::DisabilitySection.new(form, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
-          Et1PdfFileSection::AdditionalRespondentsSection.new(form, lookup_root, template: template).has_contents_for?(respondents: respondents)
-          Et1PdfFileSection::FinalCheckSection.new(form, lookup_root, template: template).has_contents_for?
-          Et1PdfFileSection::AdditionalInformationSection.new(form, lookup_root, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::YourDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
+          Et1PdfFileSection::RespondentsDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
+          Et1PdfFileSection::MultipleCasesSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::NotYourEmployerSection.new(field_values, lookup_root, template: template).has_contents_for?
+          Et1PdfFileSection::EmploymentDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
+          Et1PdfFileSection::EarningsAndBenefitsSection.new(field_values, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
+          Et1PdfFileSection::WhatHappenedSinceSection.new(field_values, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
+          Et1PdfFileSection::TypeAndDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::WhatDoYouWantSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::InformationToRegulatorsSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::YourRepresentativeSection.new(field_values, lookup_root, template: template).has_contents_for?(representative: representative)
+          Et1PdfFileSection::DisabilitySection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
+          Et1PdfFileSection::AdditionalRespondentsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
+          Et1PdfFileSection::FinalCheckSection.new(field_values, lookup_root, template: template).has_contents_for?
+          Et1PdfFileSection::AdditionalInformationSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
           true
         end
 

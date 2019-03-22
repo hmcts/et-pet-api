@@ -97,7 +97,6 @@ RSpec.describe 'Create Response Request', type: :request do
         next if example.metadata[:background_jobs] == :disable
 
         run_background_jobs
-        sleep 0.1
         force_export_now
       end
     end
