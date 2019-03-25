@@ -9,9 +9,10 @@ module EtApi
         include EtApi::Test::I18n
         include ::RSpec::Matchers
 
-        def initialize(tempfile, form = nil, template:, lookup_root:)
+        def initialize(tempfile, template:, lookup_root:)
           super(tempfile)
-          self.form = form || PdfForms.new('pdftk', utf8_fields: true).read(tempfile.path)
+          self.form = PdfForms.new('pdftk', utf8_fields: true).read(tempfile.path)
+          form.fields # To preload
           self.template = template
           self.lookup_root = lookup_root
         end
