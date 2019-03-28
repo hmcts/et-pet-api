@@ -1,7 +1,7 @@
 module EtAtosExport
   module ExportServiceExporters
     class ClaimExporter
-      def initialize(system:, claims_to_export: Export.claims.where(external_system_id: system.id).includes(resource: {uploaded_files: {file_attachment: :blob}}), claim_export_service: ::EtAtosExport::ClaimExportService)
+      def initialize(system:, claims_to_export: Export.claims.where(external_system_id: system.id).includes(:resource), claim_export_service: ::EtAtosExport::ClaimExportService)
         self.claims_to_export = claims_to_export
         self.claim_export_service = claim_export_service
         self.exports = []

@@ -2,7 +2,7 @@ module EtAtosExport
   module ExportServiceExporters
     class ResponseExporter
       def initialize(system:,
-        responses_to_export: Export.responses.where(external_system_id: system.id).includes(resource: {uploaded_files: {file_attachment: :blob}}),
+        responses_to_export: Export.responses.where(external_system_id: system.id).includes(:resource),
         response_export_service: ResponseExportService)
         self.responses_to_export = responses_to_export
         self.response_export_service = response_export_service
