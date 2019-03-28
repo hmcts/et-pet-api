@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "b15b0615-0ec8-491f-936f-79b28c6c6769",
+  "uuid": "3a7a8c18-88e3-4713-8920-293874da0d54",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "513e7fe8-a7cf-42c2-a051-ebec1aca8e35",
+      "uuid": "dc88390f-a5cb-4eb6-b198-6c78e83a7371",
       "command": "BuildResponse",
       "data": {
         "additional_information_key": null,
@@ -70,7 +70,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "f9453014-5032-499a-b489-ec81b1b0f849",
+      "uuid": "a6721892-b9d9-43d8-98cc-42255e10c696",
       "command": "BuildRespondent",
       "data": {
         "name": "dodgy_co",
@@ -106,7 +106,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "0af496ff-e2de-4056-88da-6cb727868bd8",
+      "uuid": "cdeb2b15-9690-4014-95d4-1e7b6f324d17",
       "command": "BuildRepresentative",
       "data": {
         "address_attributes": {
@@ -134,11 +134,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/respondents/build_response&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;b15b0615-0ec8-491f-936f-79b28c6c6769&quot;,
+  &quot;uuid&quot;: &quot;3a7a8c18-88e3-4713-8920-293874da0d54&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;513e7fe8-a7cf-42c2-a051-ebec1aca8e35&quot;,
+      &quot;uuid&quot;: &quot;dc88390f-a5cb-4eb6-b198-6c78e83a7371&quot;,
       &quot;command&quot;: &quot;BuildResponse&quot;,
       &quot;data&quot;: {
         &quot;additional_information_key&quot;: null,
@@ -174,7 +174,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;f9453014-5032-499a-b489-ec81b1b0f849&quot;,
+      &quot;uuid&quot;: &quot;a6721892-b9d9-43d8-98cc-42255e10c696&quot;,
       &quot;command&quot;: &quot;BuildRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -210,7 +210,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;0af496ff-e2de-4056-88da-6cb727868bd8&quot;,
+      &quot;uuid&quot;: &quot;cdeb2b15-9690-4014-95d4-1e7b6f324d17&quot;,
       &quot;command&quot;: &quot;BuildRepresentative&quot;,
       &quot;data&quot;: {
         &quot;address_attributes&quot;: {
@@ -245,8 +245,8 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 9b322791-0741-42c4-b28b-2ac76542b8f8
-X-Runtime: 0.104303
+X-Request-Id: 477605c2-07fd-4b3c-8bbf-b0250162fc35
+X-Runtime: 0.134408
 Content-Length: 837</pre>
 
 #### Status
@@ -255,4 +255,4 @@ Content-Length: 837</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"BuildResponse":{"submitted_at":"2019-03-28T13:59:39.859Z","reference":"142000139300","office_address":"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR","office_phone_number":"0117 929 8261","pdf_url":"http://localhost:9000/etapibuckettest/pJGTknKbjvH5RXLu3uUpZnwK?response-content-disposition=attachment%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190328%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190328T135939Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=bc63f7a890f2472927d75d56737959d181709e921fcbf6b96df87c3bf8e579c5"},"BuildRespondent":{},"BuildRepresentative":{}},"uuid":"b15b0615-0ec8-491f-936f-79b28c6c6769"}</pre>
+<pre>{"status":"accepted","meta":{"BuildResponse":{"submitted_at":"2019-03-21T17:47:14.271Z","reference":"142000573800","office_address":"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR","office_phone_number":"0117 929 8261","pdf_url":"http://localhost:9000/etapibuckettest/LrbS7knbuN5UvkujYT1cZDdq?response-content-disposition=attachment%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190321%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190321T174714Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=a37209f0903e722eb6b794884927ef766bd34692abc16006be4e846a46716279"},"BuildRespondent":{},"BuildRepresentative":{}},"uuid":"3a7a8c18-88e3-4713-8920-293874da0d54"}</pre>
