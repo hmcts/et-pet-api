@@ -23,6 +23,30 @@ FactoryBot.define do
       uploaded_file_traits { [:example_claim_claimants_csv] }
     end
 
+    trait :empty_csv do
+      filename { 'simple_user_with_csv_group_claims.csv' }
+      checksum { '7ac66d9f4af3b498e4cf7b9430974618' }
+      uploaded_file_traits { [:empty_csv] }
+    end
+
+    trait :simple_user_with_csv_group_claims_missing_column do
+      filename { 'simple_user_with_csv_group_claims.csv' }
+      checksum { '7ac66d9f4af3b498e4cf7b9430974618' }
+      uploaded_file_traits { [:example_claim_claimants_csv_missing_column] }
+    end
+
+    trait :simple_user_with_csv_group_claims_bad_encoding do
+      filename { 'simple_user_with_csv_group_claims.csv' }
+      checksum { '7ac66d9f4af3b498e4cf7b9430974618' }
+      uploaded_file_traits { [:example_claim_claimants_csv_bad_encoding] }
+    end
+
+    trait :simple_user_with_csv_group_claims_multiple_errors do
+      filename { 'simple_user_with_csv_group_claims_multiple_errors.csv' }
+      checksum { '7ac66d9f4af3b498e4cf7b9430974618' }
+      uploaded_file_traits { [:example_claim_claimants_csv_multiple_errors] }
+    end
+
     trait :simple_user_with_csv_group_claims_uppercased do
       filename { 'simple_user_with_csv_group_claims.CSV' }
       checksum { '7ac66d9f4af3b498e4cf7b9430974618' }

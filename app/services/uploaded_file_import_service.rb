@@ -11,6 +11,7 @@ module UploadedFileImportService
     into.file = ActionDispatch::Http::UploadedFile.new filename: into.filename || File.basename(url),
                                                        tempfile: file,
                                                        type: response.content_type
+    into
   end
 
   def self.import_from_key(key, into: UploadedFile.new, logger: Rails.logger)
@@ -18,6 +19,7 @@ module UploadedFileImportService
 
     adapter = ActiveStorage::Blob.service.class.name =~ /Azure/ ? Azure.new(into, logger: logger) : Amazon.new(into, logger: logger)
     adapter.import_from_key(key)
+    into
   end
 
   class Azure

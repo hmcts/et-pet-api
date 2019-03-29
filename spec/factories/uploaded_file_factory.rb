@@ -35,6 +35,24 @@ FactoryBot.define do
       file_to_attach { { content_type: 'text/csv', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims.csv') } }
     end
 
+    trait :empty_csv do
+      filename { 'et1a_first_last.csv' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'text/csv', filename: Rails.root.join('spec', 'fixtures', 'empty.csv') } }
+    end
+
+    trait :example_claim_claimants_csv_missing_column do
+      filename { 'et1a_first_last.csv' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'text/csv', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims_missing_column.csv') } }
+    end
+
+    trait :example_claim_claimants_csv_multiple_errors do
+      filename { 'et1a_first_last.csv' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'text/csv', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims_multiple_errors.csv') } }
+    end
+
     trait :example_claim_claimants_csv_bad_encoding do
       filename { 'et1a_first_last.csv' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
@@ -84,7 +102,12 @@ FactoryBot.define do
     after(:build) do |uploaded_file, evaluator|
       next if evaluator.file_to_attach.nil?
 
-      service_type = ActiveStorage::Blob.service.class.name =~ /Azure/ ? :azure : :amazon
+      service_type = case ActiveStorage::Blob.service.class.name.demodulize # AzureStorageService, DiskService or S3Service
+                     when 'AzureStorageService' then :azure
+                     when 'S3Service' then :amazon
+                     when 'DiskService' then :local
+                     else raise "Unknown storage service in use - #{ActiveStorage::Blob.service.class.name.demodulize}"
+               end
       service_type = :"#{service_type}_direct_upload" if evaluator.upload_method == :direct_upload
       begin
         file = File.open(evaluator.file_to_attach[:filename], 'rb')

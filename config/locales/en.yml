@@ -62,6 +62,14 @@ en:
             address_attributes:
               invalid_address: Invalid address
               blank: Missing address
+        claimants_file_validator/claimants_file:
+          attributes:
+            date_of_birth:
+              too_young: Claimant must be 16 years of age or over
+        validate_claimants_file_command:
+          invalid_columns: file does not contain the correct columns
+          empty_file: file is empty
+          missing_file: file is missing
 
 
 
