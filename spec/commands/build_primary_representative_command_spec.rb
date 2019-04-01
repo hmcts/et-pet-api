@@ -6,6 +6,8 @@ RSpec.describe BuildPrimaryRepresentativeCommand do
   let(:uuid) { SecureRandom.uuid }
   let(:root_object) { Claim.new }
 
+  include_context 'with disabled event handlers'
+
   describe '#apply' do
     context 'with full data set' do
       let(:data) { build(:json_representative_data, :full).as_json }

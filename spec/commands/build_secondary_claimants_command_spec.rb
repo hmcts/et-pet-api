@@ -9,6 +9,8 @@ RSpec.describe BuildSecondaryClaimantsCommand do
   let(:data) { [claimant1, claimant2] }
   let(:root_object) { Claim.new }
 
+  include_context 'with disabled event handlers'
+
   describe '#apply' do
     it 'applies the data to the root object' do
       # Act

@@ -8,6 +8,8 @@ RSpec.describe BuildClaimCommand do
   let(:root_object) { Claim.new }
   let(:mock_allocator_service) { instance_double(UploadedFileAllocatorService, allocate: nil, allocated_url: 'http://mocked.com/allocated') }
 
+  include_context 'with disabled event handlers'
+
   describe '#apply' do
     it 'applies the data to the root object' do
       # Act

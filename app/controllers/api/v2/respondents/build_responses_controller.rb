@@ -5,15 +5,10 @@ module Api
     module Respondents
       class BuildResponsesController < ::Api::V2::BaseController
         def create
-          p = build_response_params
           root_object = ::Response.new
-          command = CommandService.command_for command: p[:command],
-                                               uuid: p[:uuid],
-                                               data: sub_commands(p)
+          command = CommandService.command_for(**build_response_params.merge(command: 'CreateResponse').to_h.symbolize_keys)
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object
-            root_object.save!
-            EventService.publish('ResponseCreated', root_object)
             render locals: { result: result }, status: (result.valid? ? :accepted : :unprocessable_entity)
           else
             render locals: { command: command }, status: :bad_request, template: 'api/v2/shared/command_errors'
@@ -22,20 +17,8 @@ module Api
 
         private
 
-        def sub_commands(safe_params)
-          commands = safe_params[:data].map(&:to_h)
-          extra_commands = []
-          build_response = commands.detect { |c| c[:command] == 'BuildResponse' }
-          key = build_response[:data].delete(:additional_information_key)
-          unless key.nil?
-            extra_commands << { uuid: SecureRandom.uuid, command: 'BuildResponseAdditionalInformationFile',
-                                data: { filename: 'additional_information.rtf', data_from_key: key } }
-          end
-          commands + extra_commands
-        end
-
         def build_response_params
-          params.permit(:uuid, :command, data: [:uuid, :command, data: {}])
+          params.permit(:uuid, :command, data: [:uuid, :command, data: {}]).to_h
         end
       end
     end

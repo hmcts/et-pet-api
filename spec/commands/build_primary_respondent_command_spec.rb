@@ -6,6 +6,8 @@ RSpec.describe BuildPrimaryRespondentCommand do
   let(:uuid) { SecureRandom.uuid }
   let(:root_object) { Claim.new }
 
+  include_context 'with disabled event handlers'
+
   describe '#apply' do
     context 'with full data set' do
       let(:data) { build(:json_respondent_data, :full).as_json }
