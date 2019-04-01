@@ -7,6 +7,8 @@ RSpec.describe BuildResponseCommand do
   let(:data) { build(:json_response_data, :full, case_number: '2234567/2016').as_json }
   let(:root_object) { Response.new }
 
+  include_context 'with disabled event handlers'
+
   describe '#apply' do
     it 'applies the data to the root object' do
       # Act

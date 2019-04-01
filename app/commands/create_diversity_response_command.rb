@@ -1,4 +1,4 @@
-class BuildDiversityResponseCommand < BaseCommand
+class CreateDiversityResponseCommand < BaseCommand
   attribute :claim_type, :string
   attribute :sex, :string
   attribute :sexual_identity, :string
@@ -15,5 +15,7 @@ class BuildDiversityResponseCommand < BaseCommand
 
   def apply(root_object, **_args)
     root_object.attributes = attributes
+    root_object.save!
+    EventService.publish('DiversityResponseCreated', root_object)
   end
 end

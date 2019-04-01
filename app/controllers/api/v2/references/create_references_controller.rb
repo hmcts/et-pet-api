@@ -5,7 +5,6 @@ module Api
         def create
           root_object = {}
           result = CommandService.dispatch root_object: root_object, data: {}, **create_params.to_h.symbolize_keys
-          EventService.publish('ReferenceCreated', root_object, command: result)
           render locals: { result: result, data: root_object },
                  status: (result.valid? ? :created : :unprocessable_entity)
         end

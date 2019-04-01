@@ -5,14 +5,9 @@ module Api
     module Diversity
       class BuildDiversityResponsesController < ::ApplicationController
         def create
-          p = build_diversity_response_params
+          p = build_diversity_response_params.merge(command: 'CreateDiversityResponse').to_h.symbolize_keys
           root_object = ::DiversityResponse.new
-          result = CommandService.dispatch command: p[:command],
-                                           uuid: p[:uuid],
-                                           data: p[:data].to_h,
-                                           root_object: root_object
-          root_object.save! if result.valid?
-          EventService.publish('DiversityResponseCreated', root_object)
+          result = CommandService.dispatch root_object: root_object, **p
           render locals: { result: result }, status: (result.valid? ? :created : :unprocessable_entity)
         end
 

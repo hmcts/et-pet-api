@@ -6,6 +6,8 @@ RSpec.describe ValidateClaimantsFileCommand do
   let(:uuid) { SecureRandom.uuid }
 
   include_context 'with cloud provider switching', cloud_provider: :local
+  include_context 'with disabled event handlers'
+
   describe '#valid?' do
     context 'with valid data' do
       let(:data) { FactoryBot.build(:json_validate_claimants_file_command, :valid) }

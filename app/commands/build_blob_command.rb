@@ -5,6 +5,7 @@ class BuildBlobCommand < BaseCommand
 
   def apply(root_object, meta:, **_args)
     meta[:cloud_provider] = Rails.application.config.active_storage.service.to_s
+    EventService.publish('BlobBuilt', root_object)
     root_object
   end
 end
