@@ -4,6 +4,10 @@ module Api
   module V2
     module Diversity
       class BuildDiversityResponsesController < ::ApplicationController
+        include CacheCommandResults
+
+        cache_command_results only: :create
+
         def create
           p = build_diversity_response_params.merge(command: 'CreateDiversityResponse').to_h.symbolize_keys
           root_object = ::DiversityResponse.new
