@@ -4,6 +4,10 @@ module Api
   module V2
     module Respondents
       class BuildResponsesController < ::Api::V2::BaseController
+        include CacheCommandResults
+
+        cache_command_results only: :create
+
         def create
           root_object = ::Response.new
           command = CommandService.command_for(**build_response_params.merge(command: 'CreateResponse').to_h.symbolize_keys)

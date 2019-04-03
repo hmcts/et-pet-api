@@ -66,13 +66,12 @@ RSpec.describe 'Build a blob using the configured cloud provider', type: :reques
     end
 
     it 'provides a unique response every time' do
-      # Arrange - build the data
+      # Arrange - build an array to store the results in
       response_keys = []
-      json_factory = FactoryBot.build(:json_build_blob_command)
-      json_data = json_factory.to_json
 
       # Act - Make the request
       5.times do
+        json_data = FactoryBot.build(:json_build_blob_command).to_json
         post '/api/v2/build_blob', params: json_data, headers: default_headers
         response_keys << response.parsed_body["data"]["fields"]["key"]
       end
@@ -91,6 +90,20 @@ RSpec.describe 'Build a blob using the configured cloud provider', type: :reques
 
       # Assert - Make sure the data is in the response
       expect(json_response).to include meta: a_hash_including(cloud_provider: 'azure')
+    end
+
+    it 'returns exactly the same data if called with the same uuid' do
+      # Arrange - build the data, call the endpoint for the first time then reset the session ready for the main call
+      json_data = FactoryBot.build(:json_build_blob_command).to_json
+      post '/api/v2/build_blob', params: json_data, headers: default_headers
+      response1 = JSON.parse(response.body).with_indifferent_access
+
+      # Act - Make the request for a second time
+      post '/api/v2/build_blob', params: json_data, headers: default_headers
+      response2 = JSON.parse(response.body).with_indifferent_access
+
+      # Assert - Make sure the repsonses are the same
+      expect(response1).to eq response2
     end
   end
 
@@ -131,13 +144,12 @@ RSpec.describe 'Build a blob using the configured cloud provider', type: :reques
     end
 
     it 'provides a unique response every time' do
-      # Arrange - build the data
+      # Arrange - build an array to store results in
       response_keys = []
-      json_factory = FactoryBot.build(:json_build_blob_command)
-      json_data = json_factory.to_json
 
       # Act - Make the request
       5.times do
+        json_data = FactoryBot.build(:json_build_blob_command).to_json
         post '/api/v2/build_blob', params: json_data, headers: default_headers
         response_keys << response.parsed_body["data"]["fields"]["key"]
       end
@@ -156,6 +168,21 @@ RSpec.describe 'Build a blob using the configured cloud provider', type: :reques
 
       # Assert - Make sure the data is in the response
       expect(json_response).to include meta: a_hash_including(cloud_provider: 'amazon')
+    end
+
+    it 'returns exactly the same data if called with the same uuid' do
+      # Arrange - build the data, call the endpoint for the first time then reset the session ready for the main call
+      json_data = FactoryBot.build(:json_build_blob_command).to_json
+      post '/api/v2/build_blob', params: json_data, headers: default_headers
+      response1 = JSON.parse(response.body).with_indifferent_access
+      reset!
+
+      # Act - Make the request for a second time
+      post '/api/v2/build_blob', params: json_data, headers: default_headers
+      response2 = JSON.parse(response.body).with_indifferent_access
+
+      # Assert - Make sure the repsonses are the same
+      expect(response1).to eq response2
     end
   end
 end

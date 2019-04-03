@@ -4,6 +4,10 @@ module Api
   module V2
     module Claims
       class BuildClaimsController < ::Api::V2::BaseController
+        include CacheCommandResults
+
+        cache_command_results only: :create
+
         def create
           root_object = ::Claim.new
           command = CommandService.command_for(**build_claims_params.merge(command: 'CreateClaim').symbolize_keys)

@@ -135,6 +135,25 @@ RSpec.describe 'Create Response Request', type: :request do
         res = HTTParty.get(url)
         expect(res.code).to be 200
       end
+
+      it 'returns identical data if called twice with the same uuid', background_jobs: :disable do
+        # Arrange - get the response from the first call and reset the session ready for the second
+        response1 = JSON.parse(response.body).with_indifferent_access
+        reset!
+
+        # Act - Call the endpoint for the second time
+        perform_action
+        response2 = JSON.parse(response.body).with_indifferent_access
+
+        # Arrange - check they are identical
+        expect(response1).to eq response2
+      end
+
+      it 'creates no more records if called a second time with same uuid', background_jobs: :disable do
+
+        # Assert
+        expect { perform_action }.not_to change(Response, :count)
+      end
     end
 
     shared_examples 'a response with meta for office 22 bristol' do

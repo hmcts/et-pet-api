@@ -136,5 +136,27 @@ RSpec.describe "V2 RequestReferenceNumbers", type: :request do
                                          'reference' => an_instance_of(String)
                                        )
     end
+
+    it "returns identical data if called twice with the same uuid" do
+      # Arrange - call for the first time, save the response and reset the session ready for the second
+      json_data = {
+        uuid: uuid,
+        command: 'CreateReference',
+        async: false,
+        data: {
+          post_code: 'SW1H 209ST'
+        }
+      }
+      post '/api/v2/references/create_reference', params: json_data.to_json, headers: default_headers
+      response1 = JSON.parse(response.body)
+      reset!
+
+      # Act - call for the second time
+      post '/api/v2/references/create_reference', params: json_data.to_json, headers: default_headers
+      response2 = JSON.parse(response.body)
+
+      # Assert - Make sure they are identical
+      expect(response1).to eq response2
+    end
   end
 end
