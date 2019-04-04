@@ -7,6 +7,10 @@ module EtApi
         self.password = password
       end
 
+      def empty?
+        filenames.empty?
+      end
+
       def filenames
         resp = HTTParty.get("#{base_url}/list", basic_auth: { username: username, password: password })
         resp.body.lines.map { |line| CGI.unescape(line.strip) }

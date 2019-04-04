@@ -84,7 +84,9 @@ FactoryBot.define do
     end
 
   end
-
+  factory :json_import_claim_commands, class: ::EtApi::Test::Json::Document, parent: :json_build_claim_commands do
+    command { 'ImportClaim' }
+  end
   factory :json_claim_data, class: ::EtApi::Test::Json::Node do
     trait :minimal do
       example_employment_details
