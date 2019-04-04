@@ -22,7 +22,7 @@ module EtS3ToAzure
     def help
       help_text_from_blobporter = `#{blobporter_path} --help 2>&1`
       puts <<-EOS
-        rails azure:import_files_from_s3 OPTIONS
+        rails azure_import:import_files_from_s3 OPTIONS
 
           This command delegates the work to 'blobporter' with certain options set according to the configuration
           for this system.  However, any further options can be passed on to the blobporter executable.  These options are :-
