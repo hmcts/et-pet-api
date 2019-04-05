@@ -29,7 +29,7 @@ gem 'wisper', '2.0.0'
 # gem 'rack-cors'
 
 gem 'sidekiq', '~> 5.1', '>= 5.1.3'
-gem 'sidekiq-cron', '~> 0.6', '>= 0.6.3'
+gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 
