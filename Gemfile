@@ -79,7 +79,7 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 1.7'
-  gem 'factory_bot', '~> 4.11'
+  gem 'factory_bot', '~> 5.0'
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 1.9'
   gem 'webmock', '~> 3.4'
