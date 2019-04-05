@@ -28,8 +28,8 @@ gem 'wisper', '2.0.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem 'sidekiq', '~> 5.1', '>= 5.1.3'
-gem 'sidekiq-cron', '~> 0.6', '>= 0.6.3'
+gem 'sidekiq', '~> 5.2'
+gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 
@@ -74,7 +74,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rubocop', '~> 0.61'
-  gem 'rubocop-rspec', '~> 1.30'
+  gem 'rubocop-rspec', '~> 1.31'
 end
 
 group :test do
