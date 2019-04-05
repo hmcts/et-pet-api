@@ -35,7 +35,7 @@ module EtApi
 
       def normalize_json_representative(representative)
         h = representative.symbolize_keys
-        h[:address] = normalize_json_address(representative.delete(:address_attributes))
+        h[:address] = normalize_json_address(h.delete(:address_attributes))
         h
       end
 

@@ -5,6 +5,10 @@ module EtApi
         self.deliveries = deliveries
       end
 
+      def empty?
+        deliveries.empty?
+      end
+
       def new_response_html_email_for(reference:, template_reference:)
         email = EtApi::Test::EmailObjects::NewResponseEmailHtml.find(reference: reference, template_reference: template_reference)
         raise "No HTML response (ET3) email has been sent for reference #{reference} using template reference #{template_reference}" unless email.present?
