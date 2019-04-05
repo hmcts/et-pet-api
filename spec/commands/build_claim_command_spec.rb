@@ -1,12 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe BuildClaimCommand do
-  subject(:command) { described_class.new(uuid: uuid, data: data, allocator_service: mock_allocator_service) }
+  subject(:command) { described_class.new(uuid: uuid, data: data) }
 
   let(:uuid) { SecureRandom.uuid }
   let(:data) { build(:json_claim_data, :full, reference: 'myreference').as_json }
   let(:root_object) { build(:claim) }
-  let(:mock_allocator_service) { instance_double(UploadedFileAllocatorService, allocate: nil, allocated_url: 'http://mocked.com/allocated') }
 
   include_context 'with disabled event handlers'
 
@@ -30,28 +29,6 @@ RSpec.describe BuildClaimCommand do
 
       # Assert
       expect(meta).to include reference: data[:reference]
-    end
-
-    it 'adds a pdf_url to the meta' do
-      # Arrange
-      meta = {}
-
-      # Act
-      command.apply(root_object, meta: meta)
-
-      # Assert
-      expect(meta).to include pdf_url: 'http://mocked.com/allocated'
-    end
-
-    it 'uses the correct filename when calling the allocator' do
-      # Arrange
-      meta = {}
-
-      # Act
-      command.apply(root_object, meta: meta)
-
-      # Assert
-      expect(mock_allocator_service).to have_received(:allocate).with("et1_atos_export.pdf", anything)
     end
   end
 

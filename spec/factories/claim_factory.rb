@@ -99,7 +99,6 @@ FactoryBot.define do
       secondary_claimants { [] }
       primary_respondent { build(:respondent, :example_data) }
       primary_representative { build(:representative, :example_data) }
-      uploaded_files { [build(:uploaded_file, :example_data)] }
     end
 
     trait :example_data_multiple_claimants do

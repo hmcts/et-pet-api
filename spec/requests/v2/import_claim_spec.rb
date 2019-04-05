@@ -239,7 +239,6 @@ RSpec.describe 'Import Claim Request', type: :request do
       it 'stores the rtf file with the correct filename and is a copy of the original' do
         # Assert - look for the correct file in the database and check its contents
         file = created_claim.uploaded_files.where(filename: input_rtf_file).first
-        # @TODO This needs sorting
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, input_rtf_file)
           file.download_blob_to(full_path)
@@ -251,10 +250,13 @@ RSpec.describe 'Import Claim Request', type: :request do
 
     # @TODO RST-1741 - Once we only generating pdf's internally for et1 - the examples in here can be merged with the normal output folder shared examples
     shared_examples 'a claim imported with internally generated pdf' do
+      # A private scrubber to set expectations for the filename - replaces white space with underscores and any non word chars are removed
+      scrubber = ->(text) { text.gsub(/\s/, '_').gsub(/\W/, '').downcase }
+
       it 'creates a valid pdf file the data filled in correctly' do
         # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
-        file = created_claim.uploaded_files.where(filename: "et1_atos_export.pdf").first
-        # @TODO Needs sorting
+        filename = "et1_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.pdf"
+        file = created_claim.uploaded_files.where(filename: filename).first
         tempfile = Tempfile.new
 
         file.download_blob_to(tempfile.path)
@@ -276,7 +278,6 @@ RSpec.describe 'Import Claim Request', type: :request do
       it 'stores the pdf file with the correct filename and is a copy of the original' do
         # Assert - look for the correct file in the database and check its contents
         file = created_claim.uploaded_files.where(filename: input_pdf_file).first
-        # @TODO This needs sorting
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, input_pdf_file)
           file.download_blob_to(full_path)
