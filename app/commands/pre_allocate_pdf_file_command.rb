@@ -15,8 +15,8 @@ class PreAllocatePdfFileCommand < BaseCommand
 
   def allocate_pdf_file(root_object)
     primary_claimant = root_object.primary_claimant
-    fn = "et1_#{scrubber(primary_claimant.first_name)}_#{scrubber(primary_claimant.last_name)}.pdf"
-    allocator_service.allocate(fn, into: root_object)
+    filename = "et1_#{scrubber(primary_claimant.first_name)}_#{scrubber(primary_claimant.last_name)}.pdf"
+    allocator_service.allocate(filename, into: root_object)
   end
 
   def scrubber(text)
