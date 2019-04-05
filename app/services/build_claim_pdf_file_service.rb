@@ -11,12 +11,17 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def call
-    filename = 'et1_atos_export.pdf'
+    claimant = source.primary_claimant
+    filename = "et1_#{scrubber claimant.first_name}_#{scrubber claimant.last_name}.pdf"
     source.uploaded_files.build filename: filename,
                                 file: blob_for_pdf_file(filename)
   end
 
   private
+
+  def scrubber(text)
+    text.gsub(/\s/, '_').gsub(/\W/, '').downcase
+  end
 
   def pdf_fields
     result = {}

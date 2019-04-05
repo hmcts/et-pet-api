@@ -6,13 +6,20 @@ RSpec.describe BuildClaimPdfFileService do
   let(:errors) { [] }
 
   describe '#call' do
+    let(:correct_filename) do
+      scrubber = ->(text) { text.gsub(/\s/, '_').gsub(/\W/, '').downcase }
+      "et1_#{scrubber.call claim.primary_claimant.first_name}_#{scrubber.call claim.primary_claimant.last_name}.pdf"
+    end
+
+    include_context "with disabled event handlers"
+
     shared_examples 'for any claim variation' do
       it 'stores an ET1 pdf file with the correct filename' do
         # Act
         builder.call(claim)
 
         # Assert
-        expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_atos_export.pdf',
+        expect(claim.uploaded_files).to include an_object_having_attributes filename: correct_filename,
                                                                             file: be_a_stored_file
 
       end
@@ -23,9 +30,9 @@ RSpec.describe BuildClaimPdfFileService do
         claim.save!
 
         # Assert
-        uploaded_file = claim.uploaded_files.where(filename: 'et1_atos_export.pdf').first
+        uploaded_file = claim.uploaded_files.where(filename: correct_filename).first
         Dir.mktmpdir do |dir|
-          full_path = File.join(dir, 'et1_atos_export.pdf')
+          full_path = File.join(dir, correct_filename)
           uploaded_file.download_blob_to(full_path)
           File.open full_path do |file|
             et1_file = EtApi::Test::FileObjects::Et1PdfFile.new(file, template: 'et1-v1-en', lookup_root: 'claim_pdf_fields')
@@ -60,9 +67,9 @@ RSpec.describe BuildClaimPdfFileService do
         it 'is available at the location provided' do
           # Arrange - Create a pre allocation
           claim.save
-          blob = ActiveStorage::Blob.new(filename: 'et1_atos_export.pdf', byte_size: 0, checksum: 0)
+          blob = ActiveStorage::Blob.new(filename: correct_filename, byte_size: 0, checksum: 0)
           original_url = blob.service_url(expires_in: 1.hour)
-          PreAllocatedFileKey.create(allocated_to: claim, key: blob.key, filename: 'et1_atos_export.pdf')
+          PreAllocatedFileKey.create(allocated_to: claim, key: blob.key, filename: correct_filename)
 
           # Act
           builder.call(claim)
@@ -82,9 +89,9 @@ RSpec.describe BuildClaimPdfFileService do
         claim.save!
 
         # Assert
-        uploaded_file = claim.uploaded_files.where(filename: 'et1_atos_export.pdf').first
+        uploaded_file = claim.uploaded_files.where(filename: correct_filename).first
         Dir.mktmpdir do |dir|
-          full_path = File.join(dir, 'et1_atos_export.pdf')
+          full_path = File.join(dir, correct_filename)
           uploaded_file.download_blob_to(full_path)
           File.open full_path do |file|
             et1_file = EtApi::Test::FileObjects::Et1PdfFile.new(file, template: 'et1-v1-cy', lookup_root: 'claim_pdf_fields')
