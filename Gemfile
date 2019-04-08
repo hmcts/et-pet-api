@@ -33,10 +33,6 @@ gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 
-# ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
-# Note that we are now using it as a separate service, but we need this gem just for the model for now
-# (and we need it for test environment)
-gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: 'df31044aed9e476b835a5bc8383ce0b2f6c754a2'
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 
 # Rubyzip used to produce and test zip files
@@ -84,6 +80,10 @@ group :test do
   gem 'faker', '~> 1.9'
   gem 'webmock', '~> 3.4'
   gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'ba78be596b80a6006b543a03f1b40ff6b130d5fc'
+  # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
+  # Note that we are now using it as a separate service, but we need this gem just for the model for now
+  # (and we need it for test environment)
+  gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: 'df31044aed9e476b835a5bc8383ce0b2f6c754a2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
