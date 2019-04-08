@@ -6,7 +6,7 @@ module EtAtosExport
   class ExportService
 
     def initialize(system:,
-      exported_file: EtAtosFileTransfer::ExportedFile,
+      exported_file: ::ExportedFile,
       claim_exporter: ::EtAtosExport::ExportServiceExporters::ClaimExporter,
       response_exporter: ::EtAtosExport::ExportServiceExporters::ResponseExporter)
       self.claim_exporter = claim_exporter.new(system: system)
