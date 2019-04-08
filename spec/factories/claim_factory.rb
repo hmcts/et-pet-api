@@ -22,7 +22,7 @@ FactoryBot.define do
 
     after(:build) do |claim, evaluator|
       claim.primary_claimant = build(:claimant) if claim.primary_claimant.blank?
-      claim.secondary_claimants.concat build_list(:claimant, evaluator.number_of_claimants - 1)
+      claim.secondary_claimants.concat build_list(:claimant, [evaluator.number_of_claimants - 1,0].max)
       claim.claimant_count += evaluator.number_of_claimants
     end
 
