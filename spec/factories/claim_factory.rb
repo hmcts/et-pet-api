@@ -21,7 +21,7 @@ FactoryBot.define do
     pdf_template_reference { "et1-v1-en" }
 
     after(:build) do |claim, evaluator|
-      claim.primary_claimant = build(:claimant) if claim.primary_claimant.blank?
+      claim.primary_claimant = build(:claimant) if claim.primary_claimant.blank? && evaluator.number_of_claimants > 0
       claim.secondary_claimants.concat build_list(:claimant, [evaluator.number_of_claimants - 1,0].max)
       claim.claimant_count += evaluator.number_of_claimants
     end
