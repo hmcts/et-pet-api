@@ -10,6 +10,7 @@ class CreateClaimCommand < SerialSequenceCommand
     # that command so we pretend its from the BuildClaim command instead
     meta['BuildClaim'] ||= {}
     meta['BuildClaim'].merge! meta.delete('AssignReferenceToClaim')
+    meta['BuildClaim'].merge! meta.delete('AssignOfficeToClaim')
     meta['BuildClaim'].merge! meta.delete('PreAllocatePdfFile')
 
     root_object.save!
@@ -20,6 +21,7 @@ class CreateClaimCommand < SerialSequenceCommand
 
   def extra_commands
     [
+      { command: 'AssignOfficeToClaim', uuid: SecureRandom.uuid, data: {} },
       { command: 'AssignReferenceToClaim', uuid: SecureRandom.uuid, data: {} },
       { command: 'PreAllocatePdfFile', uuid: SecureRandom.uuid, data: {} }
     ]
