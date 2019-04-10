@@ -31,6 +31,7 @@ gem 'wisper', '2.0.0'
 gem 'sidekiq', '~> 5.1', '>= 5.1.3'
 gem 'sidekiq-cron', '~> 0.6', '>= 0.6.3'
 gem 'sidekiq-failures', '~> 1.0'
+gem 'sidekiq_alive', '~> 0.1.0'
 gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
