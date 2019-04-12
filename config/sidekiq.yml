@@ -11,3 +11,4 @@ production:
   - default
   - low
   - mailers
+  - sidekiq_alive
