@@ -118,6 +118,25 @@ RSpec.describe 'Create Claim Request', type: :request do
         # Assert - make sure it is a claim
         expect(result).to be_an_instance_of Claim
       end
+
+      it 'returns exactly the same data if called twice with the same uuid', background_jobs: :disable do
+        # Arrange - get the response from the first call and reset the session ready for the second
+        response1 = JSON.parse(response.body).with_indifferent_access
+        reset!
+
+        # Act - Make the call a second time
+        perform_action
+        response2 = JSON.parse(response.body).with_indifferent_access
+
+        # Assert - Make sure its identical
+        expect(response1).to eq response2
+      end
+
+      it 'does not create another claim if called for a second time with same uuid', background_jobs: :disable do
+
+        # Assert
+        expect { perform_action }.not_to change(Claim, :count)
+      end
     end
 
     shared_examples 'any bad request error variation' do

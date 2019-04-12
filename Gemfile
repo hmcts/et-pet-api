@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.2'
+gem 'rails', '~> 5.2.3'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/ministryofjustice/azure_env_secrets.git', tag: 'v0.1.3'
@@ -28,8 +28,8 @@ gem 'wisper', '2.0.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem 'sidekiq', '~> 5.1', '>= 5.1.3'
-gem 'sidekiq-cron', '~> 0.6', '>= 0.6.3'
+gem 'sidekiq', '~> 5.2'
+gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sidekiq_alive', '~> 0.1.0'
 gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
@@ -47,7 +47,7 @@ gem 'rubyzip', '~> 1.2', '>= 1.2.1'
 gem 'pdf-forms', '~> 1.2'
 
 # AWS SDK gem
-gem 'aws-sdk-s3', '~> 1.30'
+gem 'aws-sdk-s3', '~> 1.36'
 
 # Azure
 gem 'azure-storage', '~> 0.15.0.preview', require: false
@@ -75,12 +75,12 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rubocop', '~> 0.61'
-  gem 'rubocop-rspec', '~> 1.30'
+  gem 'rubocop-rspec', '~> 1.31'
 end
 
 group :test do
-  gem 'database_cleaner', '~> 1.6.2'
-  gem 'factory_bot', '~> 4.11'
+  gem 'database_cleaner', '~> 1.7'
+  gem 'factory_bot', '~> 5.0'
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 1.9'
   gem 'webmock', '~> 3.4'

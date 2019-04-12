@@ -21,26 +21,19 @@ class BuildClaimCommand < BaseCommand
 
   validates :pdf_template_reference, inclusion: { in: ['et1-v1-en', 'et1-v1-cy'] }
 
-  def initialize(*args, reference_service: ReferenceService, allocator_service: UploadedFileAllocatorService.new, **kw_args)
+  def initialize(*args, reference_service: ReferenceService, **kw_args)
     super(*args, **kw_args)
     self.reference_service = reference_service
-    self.allocator_service = allocator_service
   end
 
   def apply(root_object, meta: {})
     apply_root_attributes(attributes, to: root_object)
-    allocate_pdf_file(root_object)
-    meta.merge! reference: root_object.reference,
-                pdf_url: allocator_service.allocated_url
+    meta.merge! reference: root_object.reference
   end
 
   private
 
-  attr_accessor :reference_service, :allocator_service
-
-  def allocate_pdf_file(root_object)
-    allocator_service.allocate('et1_atos_export.pdf', into: root_object)
-  end
+  attr_accessor :reference_service
 
   def apply_root_attributes(input_data, to:)
     to.attributes = input_data

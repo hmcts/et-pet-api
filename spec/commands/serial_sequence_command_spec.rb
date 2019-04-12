@@ -38,6 +38,7 @@ RSpec.describe SerialSequenceCommand do
     end
     let(:command_service) { class_double(CommandService) }
 
+    include_context 'with disabled event handlers'
   end
 
   shared_context 'with fake commands from data' do

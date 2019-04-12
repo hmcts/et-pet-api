@@ -16,8 +16,10 @@ Rails.application.routes.draw do
       end
       namespace :claims do
         post "build_claim" => 'build_claims#create'
+        post "import_claim" => 'import_claims#create'
       end
       post "build_blob" => "build_blobs#create"
+      post "validate" => "validation#validate"
     end
   end
   mount EtAcasApi::Engine => "/et_acas_api"

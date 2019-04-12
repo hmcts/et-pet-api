@@ -7,6 +7,10 @@ module EtApi
         self.password = password
       end
 
+      def empty?
+        filenames.empty?
+      end
+
       def filenames
         resp = HTTParty.get("#{base_url}/list", basic_auth: { username: username, password: password })
         resp.body.lines.map { |line| CGI.unescape(line.strip) }
@@ -64,7 +68,7 @@ module EtApi
         EtApi::Test::FileObjects::Et3PdfFile.new extract_to_tempfile(filename), template: template, lookup_root: 'response_pdf_fields'
       end
 
-      def et1_pdf_file(filename, template: 'et3-v1-en')
+      def et1_pdf_file(filename, template: 'et1-v1-en')
         EtApi::Test::FileObjects::Et1PdfFile.new extract_to_tempfile(filename), template: template, lookup_root: 'claim_pdf_fields'
       end
 

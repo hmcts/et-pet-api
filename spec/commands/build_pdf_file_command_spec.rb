@@ -7,6 +7,8 @@ RSpec.describe BuildPdfFileCommand do
   let(:data) { build(:json_file_data, :et1_first_last_pdf).as_json.stringify_keys }
   let(:root_object) { Claim.new }
 
+  include_context 'with disabled event handlers'
+
   describe '#apply' do
     it 'applies the data to the root object' do
       # Act

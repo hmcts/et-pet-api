@@ -1,12 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe BuildClaimCommand do
-  subject(:command) { described_class.new(uuid: uuid, data: data, allocator_service: mock_allocator_service) }
+  subject(:command) { described_class.new(uuid: uuid, data: data) }
 
   let(:uuid) { SecureRandom.uuid }
   let(:data) { build(:json_claim_data, :full, reference: 'myreference').as_json }
-  let(:root_object) { Claim.new }
-  let(:mock_allocator_service) { instance_double(UploadedFileAllocatorService, allocate: nil, allocated_url: 'http://mocked.com/allocated') }
+  let(:root_object) { build(:claim) }
+
+  include_context 'with disabled event handlers'
 
   describe '#apply' do
     it 'applies the data to the root object' do
@@ -28,17 +29,6 @@ RSpec.describe BuildClaimCommand do
 
       # Assert
       expect(meta).to include reference: data[:reference]
-    end
-
-    it 'adds a pdf_url to the meta' do
-      # Arrange
-      meta = {}
-
-      # Act
-      command.apply(root_object, meta: meta)
-
-      # Assert
-      expect(meta).to include pdf_url: 'http://mocked.com/allocated'
     end
   end
 
