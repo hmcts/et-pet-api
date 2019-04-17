@@ -13,11 +13,19 @@ create)
     ;;
 esac
 
-./expand_variables.sh
-python ./awslogs-agent-setup.py -n -r eu-west-1 -c ./awslogs.conf
-ps -eaf | grep awslogs | grep -v grep | awk -F' ' '{print $2'} | xargs kill -9
-supervisord -c /etc/supervisor.conf &
+# remove if statement after migration to Azure is complete.
+# python ./awslogs-agent-setup.py -n -r eu-west-1 -c ./awslogs.conf
+if [[ $CLOUD_PROVIDER == "azure" || $DISABLE_CLOUDWATCH == "true" ]]; then
+# ps -eaf | grep awslogs | grep -v grep | awk -F' ' '{print $2'} | xargs kill -9
+    echo "Running on Azure"
+# supervisord -c /etc/supervisor.conf &
+else
+    ./expand_variables.sh
+    python ./awslogs-agent-setup.py -n -r eu-west-1 -c ./awslogs.conf
+    ps -eaf | grep awslogs | grep -v grep | awk -F' ' '{print $2'} | xargs kill -9
+    supervisord -c /etc/supervisor.conf &
+fi
 
 echo "Running app"
 
-bundle exec puma --port=8080 --config=./config/puma.rb --environment=production
+bundle exec puma --port=${PORT:-8080} --config=./config/puma.rb --environment=${RAILS_ENV:-production}
