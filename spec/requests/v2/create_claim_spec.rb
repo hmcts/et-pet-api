@@ -125,7 +125,8 @@ RSpec.describe 'Create Claim Request', type: :request do
         expect(office).to include code: instance_of(Integer),
                                   name: instance_of(String),
                                   telephone: instance_of(String),
-                                  address: instance_of(String)
+                                  address: instance_of(String),
+                                  email: instance_of(String)
       end
 
       it 'returns exactly the same data if called twice with the same uuid', background_jobs: :disable do

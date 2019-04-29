@@ -49,12 +49,6 @@ A response is the response from the employer who the claim is made against.  It 
 * [Response not created - this example shows invalid case number due to the office code not being correct](response/response_not_created_-_this_example_shows_invalid_case_number_due_to_the_office_code_not_being_correct.md)
 * [Response successfully created](response/response_successfully_created.md)
 
-## Signed S3 Resource
-
-Signed S3 resource
-
-* [Create a signed s3 object suitable for use in a HTML form for use with direct upload](signed_s3_resource/create_a_signed_s3_object_suitable_for_use_in_a_html_form_for_use_with_direct_upload.md)
-
 ## Validate Claimants File
 
 A service perform validation using various commands

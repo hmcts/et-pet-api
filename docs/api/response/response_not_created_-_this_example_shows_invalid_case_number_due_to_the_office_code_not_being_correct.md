@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "0cb29b8f-4566-4471-88af-4ab7d8c4e705",
+  "uuid": "2b8f4ab3-1fc2-449c-9bcb-c6f2c40f06ae",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "42d5d0e1-2d2b-4313-8976-5cd1f9eb77c1",
+      "uuid": "19fe5efe-e3ed-4712-a900-810ee10198cd",
       "command": "BuildResponse",
       "data": {
         "additional_information_key": null,
@@ -70,7 +70,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "a3e3afbb-5b91-413d-8c1b-8f3240bb8c65",
+      "uuid": "b5bb2567-9022-43a6-8550-0a88a230105b",
       "command": "BuildRespondent",
       "data": {
         "name": "dodgy_co",
@@ -111,11 +111,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/respondents/build_response&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;0cb29b8f-4566-4471-88af-4ab7d8c4e705&quot;,
+  &quot;uuid&quot;: &quot;2b8f4ab3-1fc2-449c-9bcb-c6f2c40f06ae&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;42d5d0e1-2d2b-4313-8976-5cd1f9eb77c1&quot;,
+      &quot;uuid&quot;: &quot;19fe5efe-e3ed-4712-a900-810ee10198cd&quot;,
       &quot;command&quot;: &quot;BuildResponse&quot;,
       &quot;data&quot;: {
         &quot;additional_information_key&quot;: null,
@@ -151,7 +151,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;a3e3afbb-5b91-413d-8c1b-8f3240bb8c65&quot;,
+      &quot;uuid&quot;: &quot;b5bb2567-9022-43a6-8550-0a88a230105b&quot;,
       &quot;command&quot;: &quot;BuildRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -199,8 +199,8 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: cddef9b1-194b-44a8-929f-593577cc77e4
-X-Runtime: 0.019326
+X-Request-Id: c31d38de-07c6-4087-9e2d-8e27b935d868
+X-Runtime: 0.009365
 Content-Length: 290</pre>
 
 #### Status
@@ -209,4 +209,4 @@ Content-Length: 290</pre>
 
 #### Body
 
-<pre>{"status":"not_accepted","uuid":"0cb29b8f-4566-4471-88af-4ab7d8c4e705","errors":[{"status":422,"code":"invalid_office_code","title":"Invalid case number","detail":"Invalid case number","source":"/data/0/case_number","command":"BuildResponse","uuid":"42d5d0e1-2d2b-4313-8976-5cd1f9eb77c1"}]}</pre>
+<pre>{"status":"not_accepted","uuid":"2b8f4ab3-1fc2-449c-9bcb-c6f2c40f06ae","errors":[{"status":422,"code":"invalid_office_code","title":"Invalid case number","detail":"Invalid case number","source":"/data/0/case_number","command":"BuildResponse","uuid":"19fe5efe-e3ed-4712-a900-810ee10198cd"}]}</pre>

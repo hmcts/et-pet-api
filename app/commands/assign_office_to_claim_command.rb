@@ -23,7 +23,8 @@ class AssignOfficeToClaimCommand < BaseCommand
       name: office.name,
       code: office.code,
       telephone: office.telephone,
-      address: office.address
+      address: office.address,
+      email: office.email
     }
   end
 
