@@ -1,7 +1,7 @@
 class AssignReferenceToClaimCommand < BaseCommand
-  def initialize(*)
-    super
-    self.reference_service = ReferenceService
+  def initialize(*args, reference_service: ReferenceService, **kw_args)
+    super(*args, **kw_args)
+    self.reference_service = reference_service
   end
 
   def apply(root_object, meta: {})
