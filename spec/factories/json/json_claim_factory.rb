@@ -28,6 +28,10 @@ FactoryBot.define do
     command { 'SerialSequence' }
     data { [] }
 
+    trait :with_pdf do
+      has_pdf_file { true }
+    end
+
     trait :with_csv do
       case_type { 'Multiple' }
       csv_file_traits { [:simple_user_with_csv_group_claims] }
