@@ -327,7 +327,7 @@ GEM
       sidekiq (>= 4.2.1)
     sidekiq-failures (1.0.0)
       sidekiq (>= 4.0.0)
-    sidekiq_alive (0.1.1)
+    sidekiq_alive (1.1.0)
       sidekiq
       sinatra
     simplecov (0.16.1)
@@ -415,7 +415,7 @@ DEPENDENCIES
   sidekiq (~> 5.2)
   sidekiq-cron (~> 1.1)
   sidekiq-failures (~> 1.0)
-  sidekiq_alive (~> 0.1.0)
+  sidekiq_alive (~> 1.0)
   simplecov (~> 0.16.1)
   site_prism (~> 3.0)
   spring
