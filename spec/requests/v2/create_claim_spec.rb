@@ -119,6 +119,16 @@ RSpec.describe 'Create Claim Request', type: :request do
         expect(result).to be_an_instance_of Claim
       end
 
+      it 'returns the correct office data structure' do
+        # Assert - make sure the office data is correct
+        office = json_response.dig('meta', 'BuildClaim', 'office').symbolize_keys
+        expect(office).to include code: instance_of(Integer),
+                                  name: instance_of(String),
+                                  telephone: instance_of(String),
+                                  address: instance_of(String),
+                                  email: instance_of(String)
+      end
+
       it 'returns exactly the same data if called twice with the same uuid', background_jobs: :disable do
         # Arrange - get the response from the first call and reset the session ready for the second
         response1 = JSON.parse(response.body).with_indifferent_access
