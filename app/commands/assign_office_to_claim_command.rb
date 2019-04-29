@@ -1,7 +1,7 @@
 class AssignOfficeToClaimCommand < BaseCommand
-  def initialize(*)
-    super
-    self.office_service = OfficeService
+  def initialize(*args, office_service: OfficeService, **kw_args)
+    super(*args, **kw_args)
+    self.office_service = office_service
   end
 
   def apply(root_object, meta: {})
