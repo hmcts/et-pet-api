@@ -11,12 +11,12 @@ trigger:
     include:
       - develop
 
-pr:
-  autoCancel: true
-  branches:
-    include:
-      - develop
-      - feature/*
+# pr:
+#   autoCancel: true
+#   branches:
+#     include:
+#       - develop
+#       - feature/*
 
 variables:
   application.name: 'et-api'
