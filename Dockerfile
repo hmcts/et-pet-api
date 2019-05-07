@@ -1,10 +1,10 @@
 FROM ministryofjustice/ruby:2.5.1
 
 # Adding argument support for ping.json
-ARG APPVERSION=unknowntc
-ARG APP_BUILD_DATE=unknowntc
-ARG APP_GIT_COMMIT=unknowntc
-ARG APP_BUILD_TAG=unknowntc
+ARG APPVERSION=unknown
+ARG APP_BUILD_DATE=unknown
+ARG APP_GIT_COMMIT=unknown
+ARG APP_BUILD_TAG=unknown
 
 # Setting up ping.json variables
 ENV APPVERSION ${APPVERSION}
