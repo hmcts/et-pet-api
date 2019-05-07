@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "ef243870-4d35-4a35-85f1-5313fd1449ad",
+  "uuid": "106144b2-537b-4066-b4bc-2982531d9b9a",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "3afb0891-ad1c-41f2-9426-190db224e5b2",
+      "uuid": "d250f3c3-2343-48f1-a6a5-bec2216922ee",
       "command": "BuildClaim",
       "data": {
         "employment_details": {
@@ -62,7 +62,7 @@ Cookie: </pre>
         "case_type": "Single",
         "jurisdiction": "2",
         "office_code": "22",
-        "date_of_receipt": "2019-03-28T13:59:38+0000",
+        "date_of_receipt": "2019-04-29T07:38:41+0000",
         "other_known_claimant_names": "",
         "discrimination_claims": [
 
@@ -83,7 +83,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "fa83fc09-7d22-4b37-88f6-0645d84ed3ab",
+      "uuid": "24451846-9eac-4a4c-9c89-89bb3c4cb11f",
       "command": "BuildPrimaryRespondent",
       "data": {
         "name": "dodgy_co",
@@ -119,7 +119,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "8d57eef0-9945-4c8b-999a-bee33f888af4",
+      "uuid": "1e414de6-84f9-4b6d-a98c-0cc70f295c54",
       "command": "BuildPrimaryClaimant",
       "data": {
         "title": "Mr",
@@ -143,7 +143,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "e51d7e88-dbb4-4058-bdeb-e7f47ae9c598",
+      "uuid": "32318832-f033-4639-929f-9be3f80ee6ec",
       "command": "BuildSecondaryClaimants",
       "data": [
         {
@@ -169,7 +169,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "5b843227-3416-4907-abfb-3c7cef1107cf",
+      "uuid": "581709a7-fb34-4323-a541-0ba14e4be901",
       "command": "BuildSecondaryRespondents",
       "data": [
         {
@@ -207,7 +207,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "b7ac17f4-8fcf-4f36-9c55-45162584e47c",
+      "uuid": "1bdf8ec9-a993-46e2-802a-c4a001070de3",
       "command": "BuildPrimaryRepresentative",
       "data": {
         "address_attributes": {
@@ -235,11 +235,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/claims/build_claim&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;ef243870-4d35-4a35-85f1-5313fd1449ad&quot;,
+  &quot;uuid&quot;: &quot;106144b2-537b-4066-b4bc-2982531d9b9a&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;3afb0891-ad1c-41f2-9426-190db224e5b2&quot;,
+      &quot;uuid&quot;: &quot;d250f3c3-2343-48f1-a6a5-bec2216922ee&quot;,
       &quot;command&quot;: &quot;BuildClaim&quot;,
       &quot;data&quot;: {
         &quot;employment_details&quot;: {
@@ -267,7 +267,7 @@ Cookie: </pre>
         &quot;case_type&quot;: &quot;Single&quot;,
         &quot;jurisdiction&quot;: &quot;2&quot;,
         &quot;office_code&quot;: &quot;22&quot;,
-        &quot;date_of_receipt&quot;: &quot;2019-03-28T13:59:38+0000&quot;,
+        &quot;date_of_receipt&quot;: &quot;2019-04-29T07:38:41+0000&quot;,
         &quot;other_known_claimant_names&quot;: &quot;&quot;,
         &quot;discrimination_claims&quot;: [
 
@@ -288,7 +288,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;fa83fc09-7d22-4b37-88f6-0645d84ed3ab&quot;,
+      &quot;uuid&quot;: &quot;24451846-9eac-4a4c-9c89-89bb3c4cb11f&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -324,7 +324,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;8d57eef0-9945-4c8b-999a-bee33f888af4&quot;,
+      &quot;uuid&quot;: &quot;1e414de6-84f9-4b6d-a98c-0cc70f295c54&quot;,
       &quot;command&quot;: &quot;BuildPrimaryClaimant&quot;,
       &quot;data&quot;: {
         &quot;title&quot;: &quot;Mr&quot;,
@@ -348,7 +348,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;e51d7e88-dbb4-4058-bdeb-e7f47ae9c598&quot;,
+      &quot;uuid&quot;: &quot;32318832-f033-4639-929f-9be3f80ee6ec&quot;,
       &quot;command&quot;: &quot;BuildSecondaryClaimants&quot;,
       &quot;data&quot;: [
         {
@@ -374,7 +374,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;5b843227-3416-4907-abfb-3c7cef1107cf&quot;,
+      &quot;uuid&quot;: &quot;581709a7-fb34-4323-a541-0ba14e4be901&quot;,
       &quot;command&quot;: &quot;BuildSecondaryRespondents&quot;,
       &quot;data&quot;: [
         {
@@ -412,7 +412,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;b7ac17f4-8fcf-4f36-9c55-45162584e47c&quot;,
+      &quot;uuid&quot;: &quot;1bdf8ec9-a993-46e2-802a-c4a001070de3&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRepresentative&quot;,
       &quot;data&quot;: {
         &quot;address_attributes&quot;: {
@@ -447,9 +447,9 @@ Cookie: </pre>
 
 <pre>Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: b20ec25f-4c53-4cae-85dc-dcb91a4ac3b9
-X-Runtime: 0.132349
-Content-Length: 758</pre>
+X-Request-Id: 416f28ac-8b43-45af-8e78-06d97ead34a6
+X-Runtime: 0.036581
+Content-Length: 931</pre>
 
 #### Status
 
@@ -457,4 +457,4 @@ Content-Length: 758</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"BuildClaim":{"reference":"222000000200","pdf_url":"http://localhost:9000/etapibuckettest/TJXjHxXu1E4SQLZD37w4Yetn?response-content-disposition=attachment%3B%20filename%3D%22et1_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190328%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190328T135938Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=52b1582ae1c2300966a44d08459a819e79d8e94ab4caf951aa2bc8ad80f05503"},"BuildPrimaryRespondent":{},"BuildPrimaryClaimant":{},"BuildSecondaryClaimants":{},"BuildSecondaryRespondents":{},"BuildPrimaryRepresentative":{}},"uuid":"ef243870-4d35-4a35-85f1-5313fd1449ad"}</pre>
+<pre>{"status":"accepted","meta":{"BuildClaim":{"reference":"222000000200","office":{"name":"London Central","code":22,"telephone":"020 7273 8603","address":"Victory House, 30-34 Kingsway, London WC2B 6EX","email":"londoncentralet@hmcts.gsi.gov.uk"},"pdf_url":"http://localhost:9000/etapibuckettest/5KL3ugfH8V8DEn7VaTsxZ2Eh?response-content-disposition=attachment%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190429%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190429T073842Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=4b81e1773553ef2908afa8e61a57a1a6af83a0f9af9a69eea606a6606ca1f15e"},"BuildPrimaryRespondent":{},"BuildPrimaryClaimant":{},"BuildSecondaryClaimants":{},"BuildSecondaryRespondents":{},"BuildPrimaryRepresentative":{}},"uuid":"106144b2-537b-4066-b4bc-2982531d9b9a"}</pre>

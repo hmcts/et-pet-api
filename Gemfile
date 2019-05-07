@@ -31,7 +31,7 @@ gem 'wisper', '2.0.0'
 gem 'sidekiq', '~> 5.2'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
-gem 'sidekiq_alive', '~> 0.1.0'
+gem 'sidekiq_alive', '~> 1.0'
 gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
@@ -56,7 +56,7 @@ gem 'azure-storage', '~> 0.15.0.preview', require: false
 gem 'et_s3_to_azure', path: 'vendor/gems/et_s3_to_azure'
 
 # For general easy http access - mainly for test but used in app too
-gem 'httparty', '~> 0.16.2'
+gem 'httparty', '~> 0.17'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -66,7 +66,7 @@ group :development, :test do
   gem 'dotenv-rails', '~> 2.4'
   gem 'site_prism', '~> 3.0'
   gem 'rspec_api_documentation', '~> 6.1'
-  gem 'bullet', '~> 5.9'
+  gem 'bullet', '~> 6.0'
 end
 
 group :development do
