@@ -9,14 +9,12 @@ trigger:
   batch: true
   branches:
     include:
-      - devops
       - develop
 
 pr:
   autoCancel: true
   branches:
     include:
-      - devops
       - develop
       - feature/*
 
