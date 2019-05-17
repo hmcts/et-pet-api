@@ -69,7 +69,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rubocop', '~> 0.61'
-  gem 'rubocop-rspec', '~> 1.31'
+  gem 'rubocop-rspec', '~> 1.33'
 end
 
 group :test do
