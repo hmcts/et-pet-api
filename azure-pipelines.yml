@@ -165,7 +165,7 @@ jobs:
       azureContainerRegistry: $(azure.container.registry)
       command: 'Tag image'
       imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
-    
+
   - task: Docker@1
     displayName: 'Push an image'
     inputs:

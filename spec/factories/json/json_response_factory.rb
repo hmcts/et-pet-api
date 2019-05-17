@@ -127,41 +127,24 @@ FactoryBot.define do
     additional_information_key do
       next if rtf_file_path.nil?
 
-      # @TODO RST-1676 Remove all amazon code
-      if ActiveStorage::Blob.service.class.name =~ /Azure/
-        key = ActiveStorage::Blob.generate_unique_secure_token
-        service = ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
-        signed_uri = service.url_for_direct_upload key, expires_in: 1.hour, content_type: nil, content_length: nil, checksum: nil
-        headers = {
-          "User-Agent": "Azure-Storage/0.15.0-preview (Ruby 2.5.1-p57; MacOS darwin17.6.0)",
-          "x-ms-date": "Wed, 06 Mar 2019 14:00:46 GMT",
-          "x-ms-version": "2016-05-31",
-          "x-ms-blob-type": "BlockBlob",
-          "Accept": 'application/json'
-        }
-        file = File.open(rtf_file_path, 'r')
-        begin
-          response = HTTParty.put(signed_uri, headers: headers, body_stream: file)
-          raise "RTF File not uploaded to blob server" unless response.code == 201
-        ensure
-          file.close
-        end
-        key
-      else
-        config = {
-          region: ENV.fetch('AWS_REGION', 'us-east-1'),
-          access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID', 'accessKey1'),
-          secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY', 'verySecretKey1'),
-          endpoint: ENV.fetch('AWS_ENDPOINT', 'http://localhost:9000/'),
-          force_path_style: ENV.fetch('AWS_S3_FORCE_PATH_STYLE', 'true') == 'true'
-        }
-        s3 = Aws::S3::Client.new(config)
-
-        bucket = Aws::S3::Bucket.new(client: s3, name: Rails.configuration.s3_direct_upload_bucket)
-        obj = bucket.object(SecureRandom.uuid)
-        obj.put(body: File.read(rtf_file_path), content_type: 'application/rtf')
-        obj.key
+      key = ActiveStorage::Blob.generate_unique_secure_token
+      service = ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
+      signed_uri = service.url_for_direct_upload key, expires_in: 1.hour, content_type: nil, content_length: nil, checksum: nil
+      headers = {
+        "User-Agent": "Azure-Storage/0.15.0-preview (Ruby 2.5.1-p57; MacOS darwin17.6.0)",
+        "x-ms-date": "Wed, 06 Mar 2019 14:00:46 GMT",
+        "x-ms-version": "2016-05-31",
+        "x-ms-blob-type": "BlockBlob",
+        "Accept": 'application/json'
+      }
+      file = File.open(rtf_file_path, 'r')
+      begin
+        response = HTTParty.put(signed_uri, headers: headers, body_stream: file)
+        raise "RTF File not uploaded to blob server" unless response.code == 201
+      ensure
+        file.close
       end
+      key
     end
 
     trait :with_rtf do
