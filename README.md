@@ -4,6 +4,8 @@
 
 <a href="https://codeclimate.com/github/ministryofjustice/et_api/test_coverage"><img src="https://api.codeclimate.com/v1/badges/1229a56ce687e1a1376d/test_coverage" /></a>
 
+[![Build Status](https://dev.azure.com/HMCTS-PET/pet-azure-infrastructure/_apis/build/status/et-api?branchName=develop)](https://dev.azure.com/HMCTS-PET/pet-azure-infrastructure/_build/latest?definitionId=17&branchName=develop)
+
 The API server for the ET service including ET1 and ET3
 
 ## Introduction
