@@ -1,6 +1,7 @@
-require 'active_storage/service/s3_service'
+require 'active_storage/service/azure_storage_service'
 RSpec.configure do |c|
   c.before(:suite) do
+    ActiveStorage::Blob.service # Ensures that the active storage system is configured
     azure_service = ActiveStorage::Service.configure :azure, Rails.configuration.active_storage.service_configurations
     direct_upload_service = ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
     [azure_service, direct_upload_service].each do |service|

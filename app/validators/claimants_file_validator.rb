@@ -63,11 +63,9 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     ActiveStorage::Service.configure :"#{current_storage}_direct_upload", Rails.configuration.active_storage.service_configurations
   end
 
-  # @TODO RST-1676 - Remove amazon / azure switcher below
   def current_storage
     case ActiveStorage::Blob.service.class.name.demodulize # AzureStorageService, DiskService or S3Service
     when 'AzureStorageService' then :azure
-    when 'S3Service' then :amazon
     when 'DiskService' then :local
     else raise "Unknown storage service in use - #{ActiveStorage::Blob.service.class.name.demodulize}"
     end

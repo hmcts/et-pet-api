@@ -42,15 +42,6 @@ COPY ./vendor /usr/src/app/vendor
 # Hack to install private gems
 RUN socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork TCP4:$(ip route|awk '/default/ {print $3}'):$SSH_AUTH_PROXY_PORT & bundle install
 
-RUN curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
-RUN mkdir /etc/cron.d
-RUN touch /etc/cron.d/awslogs
-RUN apt-get update
-RUN apt-get -y install supervisor
-RUN mkdir -p /var/log/supervisor
-RUN mkdir -p /etc/supervisor/conf.d/
-COPY supervisor_awslogs.conf /etc/supervisor/conf.d/
-COPY supervisor.conf /etc/supervisor.conf
 
 COPY . /usr/src/app
 

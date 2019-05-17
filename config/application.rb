@@ -33,8 +33,6 @@ module EtApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.s3_direct_upload_bucket = ENV.fetch('S3_DIRECT_UPLOAD_BUCKET', 'defaultbucket')
-
     config.mailer_time_zone = "London"
 
     def event_service
