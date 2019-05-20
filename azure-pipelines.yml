@@ -131,7 +131,7 @@ jobs:
     inputs:
       command: logout
 
-- job: BuildAndPushImageManual
+- job: ManualBuildAndPushImage
   dependsOn: TestApplication
   condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.Reason'], 'Manual'))
   pool:
