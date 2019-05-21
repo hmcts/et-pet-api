@@ -1,5 +1,6 @@
 require 'rspec/matchers'
 require 'pdf-forms'
+require 'active_support/core_ext/object/try'
 module EtApi
   module Test
     module FileObjects
