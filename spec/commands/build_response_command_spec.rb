@@ -88,11 +88,7 @@ RSpec.describe BuildResponseCommand do
     let(:office_code) { "%02d" % office.code }
 
     context 'with invalid case number' do
-      let(:data) do
-        {
-          case_number: '0034567/2016'
-        }
-      end
+      let(:data) { attributes_for(:json_response_data, :full, case_number: '0034567/2016') }
 
       it 'is false' do
         # Act
@@ -112,11 +108,7 @@ RSpec.describe BuildResponseCommand do
     end
 
     context 'with valid case number' do
-      let(:data) do
-        {
-          case_number: "#{office_code}34567/2016"
-        }
-      end
+      let(:data) { attributes_for(:json_response_data, :full, case_number: "#{office_code}34567/2016") }
 
       it 'is true' do
         # Act
@@ -128,11 +120,7 @@ RSpec.describe BuildResponseCommand do
     end
 
     context 'with invalid pdf_template_reference' do
-      let(:data) do
-        {
-          pdf_template_reference: '../../../etc/password'
-        }
-      end
+      let(:data) { attributes_for(:json_response_data, :full, pdf_template_reference: '../../../etc/password') }
 
       it 'contains the correct error key in the pdf_template_reference attributes' do
         # Act
@@ -145,11 +133,7 @@ RSpec.describe BuildResponseCommand do
     end
 
     context 'with invalid email_template_reference' do
-      let(:data) do
-        {
-          email_template_reference: '../../../etc/password'
-        }
-      end
+      let(:data) { attributes_for(:json_response_data, :full, email_template_reference: '../../../etc/password') }
 
       it 'contains the correct error key in the email_template_reference attributes' do
         # Act
@@ -162,7 +146,7 @@ RSpec.describe BuildResponseCommand do
     end
 
     context 'with queried_hours at maximum' do
-      let(:data) { { queried_hours: 168 } }
+      let(:data) { attributes_for(:json_response_data, :full, queried_hours: 168) }
 
       it 'is true' do
         # Act
@@ -174,7 +158,7 @@ RSpec.describe BuildResponseCommand do
     end
 
     context 'with queried hours over maximum' do
-      let(:data) { { queried_hours: 168.01 } }
+      let(:data) { attributes_for(:json_response_data, :full, queried_hours: 168.01) }
 
       it 'is false' do
         # Act
@@ -194,7 +178,7 @@ RSpec.describe BuildResponseCommand do
     end
 
     context 'with queried hours over the database limit' do
-      let(:data) { { queried_hours: 1000.00 } }
+      let(:data) { attributes_for(:json_response_data, :full, queried_hours: 1000.0) }
 
       it 'is false' do
         # Act

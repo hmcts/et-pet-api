@@ -1064,7 +1064,7 @@ CREATE TABLE public.responses (
     agree_with_claimants_description_of_job_or_title boolean,
     disagree_claimants_job_or_title character varying,
     agree_with_claimants_hours boolean,
-    queried_hours numeric(4,2),
+    queried_hours numeric(5,2),
     agree_with_earnings_details boolean,
     queried_pay_before_tax numeric(8,2),
     queried_pay_before_tax_period character varying,
@@ -2178,6 +2178,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190225190207'),
 ('20190312113307'),
 ('20190401204615'),
-('20190401204745');
+('20190401204745'),
+('20190524080441');
 
 
