@@ -445,5 +445,25 @@ RSpec.describe 'Create Response Request', type: :request do
                                                                                            uuid: expected_uuid
       end
     end
+
+    context 'with json for a response with an invalid queried_hours attribute in the response data' do
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response',
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, response_traits: [:full, :invalid_queried_hours]) }
+      include_context 'with background jobs running'
+      include_examples 'any bad request error variation'
+      it 'has the correct error in the queried_hours field' do
+        expected_uuid = input_factory.data.detect { |d| d.command == 'BuildResponse' }.uuid
+        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                           code: "less_than_or_equal_to",
+                                                                                           title: "must be less than or equal to 168.0",
+                                                                                           detail: "must be less than or equal to 168.0",
+                                                                                           source: "/data/0/queried_hours",
+                                                                                           command: "BuildResponse",
+                                                                                           uuid: expected_uuid
+      end
+
+    end
   end
 end

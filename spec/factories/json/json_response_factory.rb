@@ -96,7 +96,7 @@ FactoryBot.define do
       agree_with_claimants_description_of_job_or_title { false }
       disagree_claimants_job_or_title { "lorem ipsum job title" }
       agree_with_claimants_hours { false }
-      queried_hours { 32.0 }
+      queried_hours { 101.01 }
       agree_with_earnings_details { false }
       queried_pay_before_tax { 1000.0 }
       queried_pay_before_tax_period { "Monthly" }
@@ -117,6 +117,10 @@ FactoryBot.define do
 
     trait :invalid_case_number do
       case_number { '6554321/2017' }
+    end
+
+    trait :invalid_queried_hours do
+      queried_hours { 168.01 }
     end
 
     trait :for_default_office do
