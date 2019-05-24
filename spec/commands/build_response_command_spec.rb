@@ -160,5 +160,57 @@ RSpec.describe BuildResponseCommand do
       end
 
     end
+
+    context 'with queried_hours at maximum' do
+      let(:data) { { queried_hours: 168 } }
+
+      it 'is true' do
+        # Act
+        result = command.valid?
+
+        # Assert
+        expect(result).to be true
+      end
+    end
+
+    context 'with queried hours over maximum' do
+      let(:data) { { queried_hours: 168.01 } }
+
+      it 'is false' do
+        # Act
+        result = command.valid?
+
+        # Assert
+        expect(result).to be false
+      end
+
+      it 'contains the correct error key in the queried_hours attributes' do
+        # Act
+        command.valid?
+
+        # Assert
+        expect(command.errors.details[:queried_hours]).to include(hash_including(error: :less_than_or_equal_to, value: be_within(0.001).of(data[:queried_hours]), count: 168.0))
+      end
+    end
+
+    context 'with queried hours over the database limit' do
+      let(:data) { { queried_hours: 1000.00 } }
+
+      it 'is false' do
+        # Act
+        result = command.valid?
+
+        # Assert
+        expect(result).to be false
+      end
+
+      it 'contains the correct error key in the queried_hours attributes' do
+        # Act
+        command.valid?
+
+        # Assert
+        expect(command.errors.details[:queried_hours]).to include(hash_including(error: :less_than_or_equal_to, value: be_within(0.001).of(data[:queried_hours]), count: 168))
+      end
+    end
   end
 end

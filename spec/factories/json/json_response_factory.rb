@@ -119,6 +119,10 @@ FactoryBot.define do
       case_number { '6554321/2017' }
     end
 
+    trait :invalid_queried_hours do
+      queried_hours { 168.01 }
+    end
+
     trait :for_default_office do
       full
       case_number { '9954321/2017' }
