@@ -32,6 +32,7 @@ class BuildResponseCommand < BaseCommand
   validate :validate_office_code_in_case_number
   validates :pdf_template_reference, inclusion: { in: ['et3-v1-en', 'et3-v1-cy'] }
   validates :email_template_reference, inclusion: { in: ['et3-v1-en', 'et3-v1-cy'] }
+  validates :queried_hours, numericality: { less_than_or_equal_to: 168.0, greater_than: 0.0 }, allow_nil: true
 
   def initialize(*)
     super

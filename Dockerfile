@@ -1,16 +1,16 @@
 FROM ministryofjustice/ruby:2.5.1
 
 # Adding argument support for ping.json
-# ARG APPVERSION=unknown
-# ARG APP_BUILD_DATE=unknown
-# ARG APP_GIT_COMMIT=unknown
-# ARG APP_BUILD_TAG=unknown
+ARG APPVERSION=unknown
+ARG APP_BUILD_DATE=unknown
+ARG APP_GIT_COMMIT=unknown
+ARG APP_BUILD_TAG=unknown
 
 # Setting up ping.json variables
-ENV APPVERSION ${APPVERSION:-unknown}
-ENV APP_BUILD_DATE ${APP_BUILD_DATE:-unknown}
-ENV APP_GIT_COMMIT ${APP_GIT_COMMIT:-unknown}
-ENV APP_BUILD_TAG ${APP_BUILD_TAG:-unknown}
+ENV APPVERSION ${APPVERSION}
+ENV APP_BUILD_DATE ${APP_BUILD_DATE}
+ENV APP_GIT_COMMIT ${APP_GIT_COMMIT}
+ENV APP_BUILD_TAG ${APP_BUILD_TAG}
 
 # Ensure the pdftk package is installed as a prereq for ruby PDF generation
 ENV DEBIAN_FRONTEND noninteractive
@@ -42,15 +42,6 @@ COPY ./vendor /usr/src/app/vendor
 # Hack to install private gems
 RUN socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork TCP4:$(ip route|awk '/default/ {print $3}'):$SSH_AUTH_PROXY_PORT & bundle install
 
-RUN curl https://s3.amazonaws.com/aws-cloudwatch/downloads/latest/awslogs-agent-setup.py -O
-RUN mkdir /etc/cron.d
-RUN touch /etc/cron.d/awslogs
-RUN apt-get update
-RUN apt-get -y install supervisor
-RUN mkdir -p /var/log/supervisor
-RUN mkdir -p /etc/supervisor/conf.d/
-COPY supervisor_awslogs.conf /etc/supervisor/conf.d/
-COPY supervisor.conf /etc/supervisor.conf
 
 COPY . /usr/src/app
 

@@ -4,6 +4,8 @@
 
 <a href="https://codeclimate.com/github/ministryofjustice/et_api/test_coverage"><img src="https://api.codeclimate.com/v1/badges/1229a56ce687e1a1376d/test_coverage" /></a>
 
+[![Build Status](https://dev.azure.com/HMCTS-PET/pet-azure-infrastructure/_apis/build/status/et-api?branchName=develop)](https://dev.azure.com/HMCTS-PET/pet-azure-infrastructure/_build/latest?definitionId=17&branchName=develop)
+
 The API server for the ET service including ET1 and ET3
 
 ## Introduction
@@ -73,12 +75,12 @@ Both server, client and nescessary headers for development
 
 Used for background jobs - not entirely nescessary depending on what you are working on
 
-### minio
+### azurite
 
-We use amazon S3 wired up to active storage, which you would normally use a test adapter for, however we also have
-some code that copies from one S3 bucket to another which cannot use active storage - so instead, we just use an S3
-server (I chose minio as it has been the most reliable and most feature rich).  See its github page for more
-details (https://github.com/minio/minio) - you can install it on OSX and linux - or you can use docker (note that it
+We use microsoft azure wired up to active storage, which you would normally use a test adapter for, however we also have
+some code that copies from one container to another which cannot use active storage - so instead, we just use an azure
+server (I chose azurite as it has been the most reliable and most feature rich).  See its github page for more
+details (https://github.com/Azure/Azurite) - you can install it on OSX and linux - or you can use docker (note that it
 is integrated into ./bin/dev/docker-support-services
 
 ## Developing And Testing Using Docker
@@ -307,12 +309,6 @@ on what area of the system you are using.
 
 # Other Environment Variables
 
-## CLOUD_PROVIDER
-
-Defaults to 'amazon' at the moment - valid values are 'amazon' and 'azure'
-
-This switch will eventually be removed, it is only present for the transition from amazon to azure
-
 ## AZURE_STORAGE_BLOB_HOST
 
 This is normally not present - but in test environment, you can set this to "http://localhost:10000" for example to
@@ -353,11 +349,6 @@ EXPORT_CLAIMS_EVERY=5
 
 
 will set it to every 5 minutes
-
-## S3_DIRECT_UPLOAD_BUCKET
-
-In contrast to S3_UPLOAD_BUCKET which is for storing active storage objects, this environment variable points to
-a bucket where mthe direct upload feature can be used in a front end application using the API.
 
 # Development Guidelines
 

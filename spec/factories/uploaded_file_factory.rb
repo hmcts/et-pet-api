@@ -98,13 +98,11 @@ FactoryBot.define do
       upload_method { :direct_upload }
     end
 
-    # @TODO RST-1676 - Remove amazon / azure switcher below
     after(:build) do |uploaded_file, evaluator|
       next if evaluator.file_to_attach.nil?
 
       service_type = case ActiveStorage::Blob.service.class.name.demodulize # AzureStorageService, DiskService or S3Service
                      when 'AzureStorageService' then :azure
-                     when 'S3Service' then :amazon
                      when 'DiskService' then :local
                      else raise "Unknown storage service in use - #{ActiveStorage::Blob.service.class.name.demodulize}"
                end

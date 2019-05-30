@@ -17,7 +17,7 @@ module UploadedFileImportService
   def self.import_from_key(key, into: UploadedFile.new, logger: Rails.logger)
     return if key.nil?
 
-    adapter = ActiveStorage::Blob.service.class.name =~ /Azure/ ? Azure.new(into, logger: logger) : Amazon.new(into, logger: logger)
+    adapter = Azure.new(into, logger: logger)
     adapter.import_from_key(key)
     into
   end
@@ -98,37 +98,6 @@ module UploadedFileImportService
 
     def direct_upload_service
       @direct_upload_service ||= ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
-    end
-  end
-
-  class Amazon
-    def initialize(model, logger:)
-      self.model = model
-      self.logger = logger
-    end
-
-    def import_from_key(key)
-      source_object = direct_upload_service.bucket.object(key)
-      blob = ActiveStorage::Blob.new(blob_attributes_for(key))
-      source_object.move_to key: blob.key, bucket: blob.service.bucket.name
-      model.file.attach blob
-    end
-
-    private
-
-    def blob_attributes_for(key)
-      source_object = direct_upload_service.bucket.object(key)
-      { filename: model.filename,
-        byte_size: source_object.content_length,
-        checksum: 'doesntseemtomatter',
-        content_type: source_object.content_type,
-        metadata: {} }
-    end
-
-    attr_accessor :model, :logger
-
-    def direct_upload_service
-      @direct_upload_service ||= ActiveStorage::Service.configure :amazon_direct_upload, Rails.configuration.active_storage.service_configurations
     end
   end
 

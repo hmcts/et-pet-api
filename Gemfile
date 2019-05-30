@@ -46,14 +46,8 @@ gem 'rubyzip', '~> 1.2', '>= 1.2.1'
 # Pdf forms to test pdf content and also to produce them
 gem 'pdf-forms', '~> 1.2'
 
-# AWS SDK gem
-gem 'aws-sdk-s3', '~> 1.36'
-
 # Azure
 gem 'azure-storage', '~> 0.15.0.preview', require: false
-
-# Azure Importer
-gem 'et_s3_to_azure', path: 'vendor/gems/et_s3_to_azure'
 
 # For general easy http access - mainly for test but used in app too
 gem 'httparty', '~> 0.17'

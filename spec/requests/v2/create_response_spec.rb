@@ -364,31 +364,6 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'email validation using standard template'
     end
 
-    context 'with json for a response with an rtf upload in amazon mode' do
-      rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
-      include_context 'with cloud provider switching', cloud_provider: :amazon
-      include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
-      include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) }
-      include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response with meta for office 22 bristol'
-      include_examples 'a response exported to primary ATOS'
-      include_examples 'email validation using standard template'
-
-      it 'includes the rtf file in the staging folder' do
-        reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        respondent_name = input_respondent_factory.name
-        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name}.rtf"
-        Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_rtf)
-          staging_folder.extract(output_filename_rtf, to: full_path)
-          expect(full_path).to be_a_file_copy_of(rtf_file_path)
-        end
-      end
-    end
-
     context 'with json for a response with an rtf upload in azure mode' do
       rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
       include_context 'with cloud provider switching', cloud_provider: :azure
@@ -469,6 +444,26 @@ RSpec.describe 'Create Response Request', type: :request do
                                                                                            command: "BuildRespondent",
                                                                                            uuid: expected_uuid
       end
+    end
+
+    context 'with json for a response with an invalid queried_hours attribute in the response data' do
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response',
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, response_traits: [:full, :invalid_queried_hours]) }
+      include_context 'with background jobs running'
+      include_examples 'any bad request error variation'
+      it 'has the correct error in the queried_hours field' do
+        expected_uuid = input_factory.data.detect { |d| d.command == 'BuildResponse' }.uuid
+        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                           code: "less_than_or_equal_to",
+                                                                                           title: "must be less than or equal to 168.0",
+                                                                                           detail: "must be less than or equal to 168.0",
+                                                                                           source: "/data/0/queried_hours",
+                                                                                           command: "BuildResponse",
+                                                                                           uuid: expected_uuid
+      end
+
     end
   end
 end
