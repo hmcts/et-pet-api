@@ -77,7 +77,7 @@ group :test do
   gem 'factory_bot', '~> 5.0'
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 1.9'
-  gem 'webmock', '~> 3.4'
+  gem 'webmock', '~> 3.6'
   gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'ba78be596b80a6006b543a03f1b40ff6b130d5fc'
 end
 
