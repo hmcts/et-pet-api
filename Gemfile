@@ -16,7 +16,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 
 gem 'puma', '~> 3.12'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.9'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # Wisper is used as an in process pub/sub to decouple events / commands
@@ -37,7 +37,7 @@ gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
 # (and we need it for test environment)
-gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: 'df31044aed9e476b835a5bc8383ce0b2f6c754a2'
+gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: 'd330739040cdd0b156c2eb2d1dc00f339fd05e27'
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 
 # Rubyzip used to produce and test zip files
@@ -58,7 +58,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.8'
   gem 'simplecov', '~> 0.16.1'
   gem 'dotenv-rails', '~> 2.4'
-  gem 'site_prism', '~> 3.0'
+  gem 'site_prism', '~> 3.2'
   gem 'rspec_api_documentation', '~> 6.1'
   gem 'bullet', '~> 6.0'
 end
@@ -66,10 +66,10 @@ end
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
+  gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'rubocop', '~> 0.61'
-  gem 'rubocop-rspec', '~> 1.31'
+  gem 'rubocop', '~> 0.71'
+  gem 'rubocop-rspec', '~> 1.33'
 end
 
 group :test do
@@ -77,8 +77,8 @@ group :test do
   gem 'factory_bot', '~> 5.0'
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 1.9'
-  gem 'webmock', '~> 3.4'
-  gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'ba78be596b80a6006b543a03f1b40ff6b130d5fc'
+  gem 'webmock', '~> 3.6'
+  gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: '106c7d048941892cb387c56c271f922d3b7fd929'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -87,4 +87,3 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
 
-gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
