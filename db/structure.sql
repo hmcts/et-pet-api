@@ -795,7 +795,9 @@ CREATE TABLE public.external_systems (
     office_codes integer[] DEFAULT '{}'::integer[],
     enabled boolean DEFAULT true,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    export_queue character varying,
+    export boolean DEFAULT false
 );
 
 
@@ -2179,6 +2181,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190312113307'),
 ('20190401204615'),
 ('20190401204745'),
-('20190524080441');
+('20190524080441'),
+('20190618145253'),
+('20190618153701');
 
 
