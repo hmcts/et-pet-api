@@ -8,10 +8,11 @@ class AddCcdManchesterExternalSystem < ActiveRecord::Migration[5.2]
   end
 
   def up
+    return if ExternalSystem.find_by(reference: 'ccd_manchester').present?
     ccd = ExternalSystem.create name: 'CCD Manchester',
                                  reference: 'ccd_manchester',
                                  enabled: true,
-                                 export: true,
+                                 export: false,
                                  export_queue: 'external_system_ccd',
                                  office_codes: Office.pluck(:code).to_a
 

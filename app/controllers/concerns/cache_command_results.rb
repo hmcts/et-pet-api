@@ -20,8 +20,11 @@ module CacheCommandResults
   end
 
   def cache_command_results_save(body)
+    request.body.rewind
+    request_body = request.body.read
+    request.body.rewind
     Command.create! id: params[:uuid],
-                    request_body: request.body,
+                    request_body: request_body,
                     request_headers: cache_command_results_request_headers,
                     response_body: body,
                     response_headers: response.headers.as_json,
