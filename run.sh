@@ -12,5 +12,5 @@ create)
     bundle exec rake db:seed
     ;;
 esac
-
+cd /home/app/
 bundle exec puma --port=${PORT:-8080} --config=./config/puma.rb --environment=${RAILS_ENV:-production}
