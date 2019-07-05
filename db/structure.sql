@@ -157,7 +157,8 @@ CREATE TABLE public.addresses (
     string character varying,
     post_code character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    country character varying
 );
 
 
@@ -2183,6 +2184,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190401204745'),
 ('20190524080441'),
 ('20190618145253'),
-('20190618153701');
+('20190618153701'),
+('20190705075853');
 
 
