@@ -31,6 +31,21 @@ FactoryBot.define do
       special_needs { nil }
     end
 
+    trait :mr_first_last_in_uk do
+      title { 'Mr' }
+      first_name { 'First' }
+      last_name { 'Last' }
+      association :address_attributes, :petty_france_102, :in_uk, factory: :json_address_data
+      address_telephone_number { '01234 567890' }
+      mobile_number { '01234 098765' }
+      email_address { 'test@digital.justice.gov.uk' }
+      fax_number { nil }
+      contact_preference { 'Email' }
+      gender { 'Male' }
+      date_of_birth { '1982-11-21' }
+      special_needs { nil }
+    end
+
     trait :invalid_address_keys do
       association :address_attributes, :invalid_keys, factory: :json_address_data
     end

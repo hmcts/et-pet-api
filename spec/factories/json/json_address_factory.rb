@@ -7,6 +7,10 @@ FactoryBot.define do
       # Intentionally blank
     end
 
+    trait :in_uk do
+      country { "United Kingdom" }
+    end
+
     trait :invalid_keys do
       wrong_key { '21' }
       street { "downing_street" }
