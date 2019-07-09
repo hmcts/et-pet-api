@@ -13,7 +13,8 @@ FactoryBot.define do
         street: 'Petty France',
         locality: 'London',
         county: 'Greater London',
-        post_code: 'SW1H 9AJ'
+        post_code: 'SW1H 9AJ',
+        country: 'United Kingdom'
       address_telephone_number { '01234 567890' }
       mobile_number { '01234 098765' }
       email_address { 'test@digital.justice.gov.uk' }

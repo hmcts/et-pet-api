@@ -17,7 +17,7 @@ FactoryBot.define do
       end
       claim_traits { [:full] }
       primary_respondent_traits { [:full] }
-      primary_claimant_traits { [:mr_first_last] }
+      primary_claimant_traits { [:mr_first_last_in_uk] }
       secondary_claimant_traits { [:mr_first_last] }
       secondary_respondent_traits { [:full] }
       primary_representative_traits { [:full] }

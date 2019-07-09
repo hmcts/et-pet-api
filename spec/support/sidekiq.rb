@@ -1,2 +1,2 @@
 require 'sidekiq/testing'
-Sidekiq::Testing.disable!
+Sidekiq::Testing.fake!
