@@ -55,5 +55,7 @@ ExternalSystemConfiguration.create external_system_id: ccd.id,
   key: 'user_role', value: 'caseworker,caseworker-test,caseworker-employment-tribunal-manchester,caseworker-employment,caseworker-employment-tribunal-manchester-caseofficer,caseworker-publiclaw-localAuthority'
 ExternalSystemConfiguration.create external_system_id: ccd.id,
   key: 'case_type_id', value: 'EmpTrib_MVP_1.0_Manc'
+ExternalSystemConfiguration.create external_system_id: ccd.id,
+  key: 'multiples_case_type_id', value: 'CCD_Bulk_Action_Manc_v3'
 
 
