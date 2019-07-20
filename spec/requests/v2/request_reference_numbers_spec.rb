@@ -64,6 +64,7 @@ RSpec.describe "V2 RequestReferenceNumbers", type: :request do
                                            'code' => '22',
                                            'name' => 'London Central',
                                            'address' => 'Victory House, 30-34 Kingsway, London WC2B 6EX',
+                                           'email' => 'londoncentralet@hmcts.gsi.gov.uk',
                                            'telephone' => '020 7273 8603'
                                          ),
                                          'reference' => an_instance_of(String)
