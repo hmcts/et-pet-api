@@ -64,7 +64,7 @@ RSpec.describe "V2 RequestReferenceNumbers", type: :request do
                                            'code' => '22',
                                            'name' => 'London Central',
                                            'address' => 'Victory House, 30-34 Kingsway, London WC2B 6EX',
-                                           'email' => 'londoncentralet@hmcts.gsi.gov.uk',
+                                           'email' => 'londoncentralet@justice.gov.uk',
                                            'telephone' => '020 7273 8603'
                                          ),
                                          'reference' => an_instance_of(String)
@@ -92,6 +92,7 @@ RSpec.describe "V2 RequestReferenceNumbers", type: :request do
                                            'code' => '22',
                                            'name' => 'London Central',
                                            'address' => 'Victory House, 30-34 Kingsway, London WC2B 6EX',
+                                           'email' => 'londoncentralet@justice.gov.uk',
                                            'telephone' => '020 7273 8603'
                                          ),
                                          'reference' => an_instance_of(String)
@@ -132,6 +133,7 @@ RSpec.describe "V2 RequestReferenceNumbers", type: :request do
                                            'code' => '99',
                                            'name' => 'Default',
                                            'address' => 'Alexandra House, 14-22 The Parsonage, Manchester M3 2JA',
+                                           'email' => 'manchesteret@justice.gov.uk',
                                            'telephone' => '0161 833 6100'
                                          ),
                                          'reference' => an_instance_of(String)

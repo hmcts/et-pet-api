@@ -167,7 +167,7 @@ RSpec.describe 'Create Response Request', type: :request do
       it 'returns the office phone number in the metadata for the response', background_jobs: :disable do
         # Assert - Make sure we get the reference in the metadata
         expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
-          office_phone_number: '0117 929 8261'
+          office_phone_number: '01224 593 137'
         )
       end
     end
