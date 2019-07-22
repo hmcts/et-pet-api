@@ -1,22 +1,22 @@
 office_code,office_name,office_address,office_telephone,office_email,is_default
-13,Midlands (West) ET,"Centre City Tower, 5-7 Hill Street, Birmingham B5 4UU",0121 600 7780,MidlandsWestET@hmcts.gsi.gov.uk,0
-14,Bristol,"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR",0117 929 8261,bristolet@hmcts.gsi.gov.uk,0
+13,Midlands (West) ET,"Centre City Tower, 5-7 Hill Street, Birmingham B5 4UU",0121 600 7780,midlandswestet@justice.gov.uk,0
+14,Bristol,"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR",01224 593 137,bristolet@justice.gov.uk,0
 15,Bury St Edmunds,"100 Southgate Street, Bury St Edmunds, Suffolk IP33 2AQ",01284 762171,buryet@hmcts.gsi.gov.uk,0
-16,Wales,"Employment Tribunal, 3rd Floor, Cardiff and Vale Magistrates Court, Fitzalan Place, Cardiff, CF24 0RZ",029 2067 8100,cardiffet@hmcts.gsi.gov.uk,0
+16,Wales,"Employment Tribunal, 3rd Floor, Cardiff and Vale Magistrates Court, Fitzalan Place, Cardiff, CF24 0RZ",029 2067 8100,cardiffet@justice.gov.uk,0
 17,Exeter,"2nd Floor, Keble House, Southernhay Gardens, Exeter EX1 1NT",01392 279665,exeteret@hmcts.gsi.gov.uk,0
-18,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@hmcts.gsi.gov.uk,0
+18,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@justice.gov.uk,0
 19,Leicester,"3rd Floor, Byron House, 2a Maid Marian Way, Nottingham NG1 6HS",0115 947 5701,nottinghamet@hmcts.gsi.gov.uk,0
-22,London Central,"Victory House, 30-34 Kingsway, London WC2B 6EX",020 7273 8603,londoncentralet@hmcts.gsi.gov.uk,0
-23,London South,"Montague Court, 101 London Road, West Croydon CR0 2RF",020 8667 9131,londonsouthet@hmcts.gsi.gov.uk,0
-24,Manchester,"Alexandra House, 14-22 The Parsonage, Manchester M3 2JA",0161 833 6100,manchesteret@hmcts.gsi.gov.uk,0
-25,Newcastle,"Kings Court, Earl Grey Way, Royal Quays, North Shields, Tyne & Wear, NE29 6AR",0191 260 6900,newcastleet@hmcts.gsi.gov.uk,0
-26,Midlands (East) ET,"Nottingham Justice Centre - Employment, Carrington Street, Nottingham, NG2 1EE",0115 947 5701,Midlandseastet@hmcts.gsi.gov.uk,0
+22,London Central,"Victory House, 30-34 Kingsway, London WC2B 6EX",020 7273 8603,londoncentralet@justice.gov.uk,0
+23,London South,"Montague Court, 101 London Road, West Croydon CR0 2RF",020 8667 9131,londonsouthet@justice.gov.uk,0
+24,Manchester,"Alexandra House, 14-22 The Parsonage, Manchester M3 2JA",0161 833 6100,manchesteret@justice.gov.uk,0
+25,Newcastle,"Kings Court, Earl Grey Way, Royal Quays, North Shields, Tyne & Wear, NE29 6AR",0191 260 6900,newcastleet@justice.gov.uk,0
+26,Midlands (East) ET,"Nottingham Justice Centre - Employment, Carrington Street, Nottingham, NG2 1EE",0115 947 5701,midlandseastet@justice.gov.uk,0
 27,Reading,"4th Floor, 30-31 Friar Street, Reading RG1 1DX",0118 959 4917,readinget@hmcts.gsi.gov.uk,0
 31,Southampton,"Southampton Magistrates' Court, 100 The Avenue, Southampton SO17 1EY",023 8038 4200,southamptonet@hmcts.gsi.gov.uk,0
-32,East London,"2nd Floor, Anchorage House, 2 Clove Crescent, London E14 2BE",020 7538 6161,eastlondon@hmcts.gsi.gov.uk,0
-33,Watford,"3rd Floor, Radius House, 51 Clarendon Rd, Watford, WD17 1HP",01923 281 750,watfordet@hmcts.gsi.gov.uk,0
+32,East London,"2nd Floor, Anchorage House, 2 Clove Crescent, London E14 2BE",020 7538 6161,eastlondon@justice.gov.uk,0
+33,Watford,"3rd Floor, Radius House, 51 Clarendon Rd, Watford, WD17 1HP",01923 281 750,watfordet@justice.gov.uk,0
 34,Huntingdon,"Huntingdon Law Courts, Walden Road, Huntingdon PE29 3DW",01480 415600,huntingdonet@hmcts.gsi.gov.uk,0
-41,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@hmcts.gsi.gov.uk,0
+41,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
 50,London,"Employment Appeal Tribunal, Second Floor, Fleetbank House, 2-6 Salisbury Square, London, EC4Y 8JX",020 7273 1041,londoneat@hmcts.gsi.gov.uk,0
 51,Edinburgh,"EAT Edinburgh, 52 Melville Street, Edinburgh, EH3 7HF",0131 225 3963,edinburgheat@hmcts.gsi.gov.uk,0
-99,Default,"Alexandra House, 14-22 The Parsonage, Manchester M3 2JA",0161 833 6100,manchesteret@hmcts.gsi.gov.uk,1
+99,Default,"Alexandra House, 14-22 The Parsonage, Manchester M3 2JA",0161 833 5113,employmentJurisdictionalSupportTeamInbox@justice.gov.uk,1
