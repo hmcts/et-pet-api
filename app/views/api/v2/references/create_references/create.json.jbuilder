@@ -10,5 +10,6 @@ json.data do
     json.name data[:office].name
     json.address data[:office].address
     json.telephone data[:office].telephone
+    json.email data[:office].email
   end
 end
