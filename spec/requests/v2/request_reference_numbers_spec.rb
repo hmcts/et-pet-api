@@ -133,7 +133,7 @@ RSpec.describe "V2 RequestReferenceNumbers", type: :request do
                                            'code' => '99',
                                            'name' => 'Default',
                                            'address' => 'Alexandra House, 14-22 The Parsonage, Manchester M3 2JA',
-                                           'email' => 'manchesteret@justice.gov.uk',
+                                           'email' => 'employmentJurisdictionalSupportTeamInbox@justice.gov.uk',
                                            'telephone' => '0161 833 5113'
                                          ),
                                          'reference' => an_instance_of(String)
