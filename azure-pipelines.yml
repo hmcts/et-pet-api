@@ -61,7 +61,7 @@ jobs:
       sleep 5
       ./bin/wait-for-it.sh localhost:5433
       ./bin/wait-for-it.sh localhost:10000
-      RAILS_ENV=test bundle install && bundle exec rails db:create db:migrate
+      bundle install && bundle exec rails db:create db:migrate
       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
       chmod +x ./cc-test-reporter
       ./cc-test-reporter before-build
