@@ -1,6 +1,7 @@
 require 'rspec/matchers'
 require 'pdf-forms'
 require_relative './base'
+require_relative '../../messaging'
 module EtApi
   module Test
     module FileObjects
