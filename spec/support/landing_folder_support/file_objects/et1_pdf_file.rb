@@ -1,28 +1,88 @@
 require 'rspec/matchers'
 require_relative './base_pdf_file'
-
+Dir.glob(File.absolute_path('./et1_pdf_file/**/*.rb', __dir__)).each { |f| require f }
 module EtApi
   module Test
     module FileObjects
       # Represents the ET3 PDF file and provides assistance in validating its contents
       class Et1PdfFile < BasePdfFile
         def has_correct_contents_for?(claim:, claimants:, respondents:, representative:) # rubocop:disable Naming/PredicateName
-          Et1PdfFileSection::YourDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
-          Et1PdfFileSection::RespondentsDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
-          Et1PdfFileSection::MultipleCasesSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::NotYourEmployerSection.new(field_values, lookup_root, template: template).has_contents_for?
-          Et1PdfFileSection::EmploymentDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
-          Et1PdfFileSection::EarningsAndBenefitsSection.new(field_values, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
-          Et1PdfFileSection::WhatHappenedSinceSection.new(field_values, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
-          Et1PdfFileSection::TypeAndDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::WhatDoYouWantSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::InformationToRegulatorsSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::YourRepresentativeSection.new(field_values, lookup_root, template: template).has_contents_for?(representative: representative)
-          Et1PdfFileSection::DisabilitySection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
-          Et1PdfFileSection::AdditionalRespondentsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
-          Et1PdfFileSection::FinalCheckSection.new(field_values, lookup_root, template: template).has_contents_for?
-          Et1PdfFileSection::AdditionalInformationSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
+          your_details_section.has_contents_for?(claimant: claimants.first)
+          respondents_details_section.has_contents_for?(respondents: respondents)
+          multiple_cases_section.has_contents_for?(claim: claim)
+          not_your_employer_section.has_contents_for?
+          employment_details_section.has_contents_for?(employment: claim.employment_details)
+          earnings_and_benefits_section.has_contents_for?(employment: claim.employment_details)
+          what_happened_since_section.has_contents_for?(employment: claim.employment_details)
+          type_and_details_section.has_contents_for?(claim: claim)
+          what_do_you_want_section.has_contents_for?(claim: claim)
+          information_to_regulators_section.has_contents_for?(claim: claim)
+          your_representative_section.has_contents_for?(representative: representative)
+          disability_section.has_contents_for?(claimant: claimants.first)
+          additional_respondents_section.has_contents_for?(respondents: respondents)
+          final_check_section.has_contents_for?
+          additional_information_section.has_contents_for?(claim: claim)
           true
+        end
+
+        def additional_information_section
+          Et1PdfFileSection::AdditionalInformationSection.new(field_values, lookup_root, template: template)
+        end
+
+        def final_check_section
+          Et1PdfFileSection::FinalCheckSection.new(field_values, lookup_root, template: template)
+        end
+
+        def disability_section
+          Et1PdfFileSection::DisabilitySection.new(field_values, lookup_root, template: template)
+        end
+
+        def your_representative_section
+          Et1PdfFileSection::YourRepresentativeSection.new(field_values, lookup_root, template: template)
+        end
+
+        def what_do_you_want_section
+          Et1PdfFileSection::WhatDoYouWantSection.new(field_values, lookup_root, template: template)
+        end
+
+        def type_and_details_section
+          Et1PdfFileSection::TypeAndDetailsSection.new(field_values, lookup_root, template: template)
+        end
+
+        def earnings_and_benefits_section
+          Et1PdfFileSection::EarningsAndBenefitsSection.new(field_values, lookup_root, template: template)
+        end
+
+        def what_happened_since_section
+          Et1PdfFileSection::WhatHappenedSinceSection.new(field_values, lookup_root, template: template)
+        end
+
+        def employment_details_section
+          Et1PdfFileSection::EmploymentDetailsSection.new(field_values, lookup_root, template: template)
+        end
+
+        def not_your_employer_section
+          Et1PdfFileSection::NotYourEmployerSection.new(field_values, lookup_root, template: template)
+        end
+
+        def respondents_details_section
+          Et1PdfFileSection::RespondentsDetailsSection.new(field_values, lookup_root, template: template)
+        end
+
+        def multiple_cases_section
+          Et1PdfFileSection::MultipleCasesSection.new(field_values, lookup_root, template: template)
+        end
+
+        def your_details_section
+          Et1PdfFileSection::YourDetailsSection.new(field_values, lookup_root, template: template)
+        end
+
+        def additional_respondents_section
+          Et1PdfFileSection::AdditionalRespondentsSection.new(field_values, lookup_root, template: template)
+        end
+
+        def information_to_regulators_section
+          Et1PdfFileSection::InformationToRegulatorsSection.new(field_values, lookup_root, template: template)
         end
 
         def has_correct_contents_from_db_for?(claim:, errors: [], indent: 1)
