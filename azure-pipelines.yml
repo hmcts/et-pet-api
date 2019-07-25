@@ -73,8 +73,15 @@ jobs:
       export DB_PORT=5433
       CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
       RAILS_ENV=test bundle exec rspec
+    displayName: 'test application'
+
+  - script: |
+      export ENABLE_COVERAGE=true
+      export DB_USERNAME=postgres
+      export DB_PORT=5433
+      CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
       RAILS_ENV=test cd vendor/gems/et_acas_api; BUNDLE_GEMFILE=$PWD/Gemfile bundle install; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rake db:create db:migrate; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rspec
-    displayName: 'script'
+    displayName: 'test acas api gem'
 
 
 - job: BuildAndPushImage
