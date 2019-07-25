@@ -79,6 +79,7 @@ group :test do
   gem 'faker', '~> 1.9'
   gem 'webmock', '~> 3.6'
   gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: '106c7d048941892cb387c56c271f922d3b7fd929'
+  gem 'rspec_junit_formatter', '~> 0.4.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
