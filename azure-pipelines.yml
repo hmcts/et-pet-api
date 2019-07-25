@@ -40,15 +40,14 @@ jobs:
       export DB_PORT=5433
       CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
       sudo apt-get update
-      sudo apt-get install -y libpq-dev mcrypt libmcrypt-dev postgresql-client
+      sudo apt-get install -y libpq-dev mcrypt libmcrypt-dev postgresql-client pdftk
       chmod +x ./bin/wait-for-it.sh
-      sudo rm /usr/local/bin/docker-compose
-      curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-Linux-x86_64 > docker-compose
-      chmod +x docker-compose
-      sudo mv docker-compose /usr/local/bin
+      # sudo rm /usr/local/bin/docker-compose
+      # curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-Linux-x86_64 > docker-compose
+      # chmod +x docker-compose
+      # sudo mv docker-compose /usr/local/bin
       curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter
-      sudo apt-get install pdftk
-      gem install bundler -v 1.16.4
+      gem install bundler -v 1.17.3
     displayName: 'before install'
 
   - script: |
@@ -72,7 +71,7 @@ jobs:
       export DB_USERNAME=postgres
       export DB_PORT=5433
       CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
-      RAILS_ENV=test bundle exec rspec
+      RAILS_ENV=test bundle exec rspec --format documentation --format RspecJunitFormatter --out test-rspec.xml
     displayName: 'test application'
 
   - script: |
@@ -80,8 +79,19 @@ jobs:
       export DB_USERNAME=postgres
       export DB_PORT=5433
       CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
-      RAILS_ENV=test cd vendor/gems/et_acas_api; BUNDLE_GEMFILE=$PWD/Gemfile bundle install; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rake db:create db:migrate; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rspec
+      RAILS_ENV=test cd vendor/gems/et_acas_api; BUNDLE_GEMFILE=$PWD/Gemfile bundle install; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rake db:create db:migrate; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rspec --format documentation --format RspecJunitFormatter --out test-acas-rspec.xml
     displayName: 'test acas api gem'
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFiles: '**/test-*.xml'
+      testRunTitle: 'Ruby tests'
+
+  - script: |
+      ./bin/dev/docker-support-services down
+    condition: always()
+    displayName: 'cleanup'
 
 
 - job: BuildAndPushImage
