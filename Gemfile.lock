@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: 3b6da47e1224d8cb3a64b21052f7c62731d2966c
-  tag: v0.2.1
+  revision: eef64f89cea7bf5c2e7b043be78b5c8c0feff944
+  tag: v0.3.1
   specs:
-    et_exporter (0.2.1)
+    et_exporter (0.3.1)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (~> 5.2.3)
@@ -196,7 +196,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2019.0331)
     mimemagic (0.3.3)
-    mini_mime (1.0.1)
+    mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
     multi_json (1.13.1)
@@ -204,7 +204,7 @@ GEM
     multipart-post (2.1.1)
     mustache (1.1.0)
     mustermann (1.0.3)
-    nio4r (2.3.1)
+    nio4r (2.4.0)
     nokogiri (1.10.3)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
@@ -249,7 +249,7 @@ GEM
       thor (>= 0.19.0, < 2.0)
     rainbow (3.0.0)
     raindrops (0.19.0)
-    rake (12.3.2)
+    rake (12.3.3)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
