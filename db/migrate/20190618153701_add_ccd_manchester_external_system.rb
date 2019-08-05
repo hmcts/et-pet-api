@@ -2,7 +2,7 @@ class AddCcdManchesterExternalSystem < ActiveRecord::Migration[5.2]
   class ExternalSystem < ActiveRecord::Base
     self.table_name=:external_systems
   end
-  
+
   class ExternalSystemConfiguration < ActiveRecord::Base
     self.table_name=:external_system_configurations
   end
@@ -21,7 +21,7 @@ class AddCcdManchesterExternalSystem < ActiveRecord::Migration[5.2]
     ExternalSystemConfiguration.create external_system_id: ccd.id,
                                        key: 'user_role', value: 'caseworker,caseworker-test,caseworker-employment-tribunal-manchester,caseworker-employment,caseworker-employment-tribunal-manchester-caseofficer,caseworker-publiclaw-localAuthority'
     ExternalSystemConfiguration.create external_system_id: ccd.id,
-                                       key: 'case_type_id', value: 'EmpTrib_MVP_1.0_Manc'
+                                       key: 'case_type_id', value: 'Manchester_Dev'
   end
 
   def down

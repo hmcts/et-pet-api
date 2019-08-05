@@ -11,7 +11,7 @@ class AddMultiplesToCcdManchesterExternalSystem < ActiveRecord::Migration[5.2]
     ccd = ExternalSystem.find_by(reference: 'ccd_manchester')
 
     ExternalSystemConfiguration.create external_system_id: ccd.id,
-      key: 'multiples_case_type_id', value: 'CCD_Bulk_Action_Manc_v3'
+      key: 'multiples_case_type_id', value: 'Manchester_Multiples_Dev'
   end
 
   def down
