@@ -56,7 +56,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.8'
-  gem 'simplecov', '~> 0.16.1'
+  gem 'simplecov', '~> 0.17'
   gem 'dotenv-rails', '~> 2.4'
   gem 'site_prism', '~> 3.2'
   gem 'rspec_api_documentation', '~> 6.1'
@@ -68,7 +68,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'rubocop', '~> 0.71'
+  gem 'rubocop', '~> 0.74'
   gem 'rubocop-rspec', '~> 1.33'
 end
 
@@ -76,7 +76,7 @@ group :test do
   gem 'database_cleaner', '~> 1.7'
   gem 'factory_bot', '~> 5.0'
   gem 'rspec-eventually', '~> 0.2.2'
-  gem 'faker', '~> 1.9'
+  gem 'faker', '~> 2.1'
   gem 'webmock', '~> 3.6'
   gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: '106c7d048941892cb387c56c271f922d3b7fd929'
 end
