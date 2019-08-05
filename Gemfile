@@ -56,7 +56,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.8'
-  gem 'simplecov', '~> 0.16.1'
+  gem 'simplecov', '~> 0.17.0'
   gem 'dotenv-rails', '~> 2.4'
   gem 'site_prism', '~> 3.2'
   gem 'rspec_api_documentation', '~> 6.1'
