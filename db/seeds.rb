@@ -34,12 +34,19 @@ atos2 = ExternalSystem.create name: 'ATOS Secondary',
   enabled: true,
   export: false,
   office_codes: [99]
-ccd = ExternalSystem.create name: 'CCD Manchester',
+ccd_manc = ExternalSystem.create name: 'CCD Manchester',
   reference: 'ccd_manchester',
   enabled: true,
   export: true,
   export_queue: 'external_system_ccd',
-  office_codes: Office.pluck(:code).to_a - [99]
+  office_codes: Office.pluck(:code).to_a - [99, 51, 41]
+
+ccd_glasgow = ExternalSystem.create name: 'CCD Glasgow',
+  reference: 'ccd_glasgow',
+  enabled: true,
+  export: true,
+  export_queue: 'external_system_ccd',
+  office_codes: [51, 41]
 
 ExternalSystemConfiguration.create external_system_id: atos.id,
   key: 'username', value: ENV.fetch('ATOS_API_USERNAME', 'atos')
@@ -49,13 +56,13 @@ ExternalSystemConfiguration.create external_system_id: atos2.id,
   key: 'username', value: 'atos2'
 ExternalSystemConfiguration.create external_system_id: atos2.id,
   key: 'password', value: 'password', can_read: false
-ExternalSystemConfiguration.create external_system_id: ccd.id,
-  key: 'user_id', value: '22'
-ExternalSystemConfiguration.create external_system_id: ccd.id,
-  key: 'user_role', value: 'caseworker,caseworker-test,caseworker-employment-tribunal-manchester,caseworker-employment,caseworker-employment-tribunal-manchester-caseofficer,caseworker-publiclaw-localAuthority'
-ExternalSystemConfiguration.create external_system_id: ccd.id,
+ExternalSystemConfiguration.create external_system_id: ccd_manc.id,
   key: 'case_type_id', value: 'Manchester_Dev'
-ExternalSystemConfiguration.create external_system_id: ccd.id,
+ExternalSystemConfiguration.create external_system_id: ccd_manc.id,
   key: 'multiples_case_type_id', value: 'Manchester_Multiples_Dev'
+ExternalSystemConfiguration.create external_system_id: ccd_glasgow.id,
+  key: 'case_type_id', value: 'Glasgow_Dev'
+ExternalSystemConfiguration.create external_system_id: ccd_glasgow.id,
+  key: 'multiples_case_type_id', value: 'Glasgow_Multiples_Dev'
 
 
