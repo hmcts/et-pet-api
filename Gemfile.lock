@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: eef64f89cea7bf5c2e7b043be78b5c8c0feff944
-  tag: v0.3.1
+  revision: 3222cc86e6c1149533e850e958a91b718f6c28ab
+  tag: v0.3.2
   specs:
-    et_exporter (0.3.1)
+    et_exporter (0.3.2)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (~> 5.2.3)
@@ -204,7 +204,7 @@ GEM
     multipart-post (2.1.1)
     mustache (1.1.0)
     mustermann (1.0.3)
-    nio4r (2.4.0)
+    nio4r (2.5.1)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
@@ -239,7 +239,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.1.0)
+    rails-html-sanitizer (1.2.0)
       loofah (~> 2.2, >= 2.2.2)
     railties (5.2.3)
       actionpack (= 5.2.3)
