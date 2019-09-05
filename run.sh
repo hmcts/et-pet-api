@@ -13,4 +13,4 @@ create)
     ;;
 esac
 
-bundle exec puma --port=${PORT:-8080} --config=./config/puma.rb --environment=${RAILS_ENV:-production}
+bundle exec iodine -port ${PORT:-8080}
