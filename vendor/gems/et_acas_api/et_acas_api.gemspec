@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "> 5.2.0"
+  s.add_dependency "rails", ">= 5.2.0"
   s.add_dependency 'pg', '>= 0.18', '< 2.0'
   s.add_dependency 'activerecord-nulldb-adapter', '~> 0.4.0'
   s.add_dependency 'savon', '~> 2.12'
