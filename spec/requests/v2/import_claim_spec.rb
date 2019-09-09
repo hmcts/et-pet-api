@@ -179,6 +179,7 @@ RSpec.describe 'Import Claim Request', type: :request do
         db_claimants = created_claim.secondary_claimants.map do |c|
           json = c.as_json only: [:first_name, :last_name, :title, :gender, :address_telephone_number, :contact_preference, :date_of_birth, :email_address, :mobile_number, :special_needs, :fax_number],
                            include: { address: { only: [:building, :street, :locality, :county, :post_code] } }
+          json['date_of_birth'] = Date.parse(json['date_of_birth'])
           json.deep_symbolize_keys
         end
         expect(db_claimants).to eql claimants
@@ -192,6 +193,7 @@ RSpec.describe 'Import Claim Request', type: :request do
         db_claimants = created_claim.secondary_claimants.map do |c|
           json = c.as_json only: [:first_name, :last_name, :title, :date_of_birth],
                            include: { address: { only: [:building, :street, :locality, :county, :post_code] } }
+          json['date_of_birth'] = Date.parse(json['date_of_birth'])
           json.deep_symbolize_keys
         end
         expect(db_claimants).to eql claimants
