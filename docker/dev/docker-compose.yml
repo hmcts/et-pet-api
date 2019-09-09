@@ -20,6 +20,8 @@ services:
       - azurite_data:/opt/azurite/folder
     environment:
       executable: blob
+    networks:
+      - api
 
 
 volumes:
