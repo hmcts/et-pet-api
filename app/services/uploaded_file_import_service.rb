@@ -1,5 +1,5 @@
 module UploadedFileImportService
-  def self.import_file_url(url, into: UploadedFile.new)
+  def self.import_file_url(url, into: UploadedFile.new, autosave: false)
     return if url.nil?
 
     file = Tempfile.new
@@ -11,14 +11,16 @@ module UploadedFileImportService
     into.file = ActionDispatch::Http::UploadedFile.new filename: into.filename || File.basename(url),
                                                        tempfile: file,
                                                        type: response.content_type
+    into.save if autosave
     into
   end
 
-  def self.import_from_key(key, into: UploadedFile.new, logger: Rails.logger)
+  def self.import_from_key(key, into: UploadedFile.new, logger: Rails.logger, autosave: false)
     return if key.nil?
 
     adapter = Azure.new(into, logger: logger)
     adapter.import_from_key(key)
+    into.save if autosave
     into
   end
 
