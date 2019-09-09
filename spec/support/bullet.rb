@@ -12,7 +12,7 @@ RSpec.configure do |c|
   end
 
   c.after do
-    Bullet.perform_out_of_channel_notifications if Bullet.notification?
+    #Bullet.perform_out_of_channel_notifications if Bullet.notification?
     Bullet.end_request
   end
 end

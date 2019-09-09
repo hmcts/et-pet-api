@@ -1,10 +1,11 @@
+# The test environment is used exclusively to run your application's
+# test suite. You never need to work with it otherwise. Remember that
+# your test database is "scratch space" for the test suite and is wiped
+# and recreated between test runs. Don't rely on the data there!
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
-  # The test environment is used exclusively to run your application's
-  # test suite. You never need to work with it otherwise. Remember that
-  # your test database is "scratch space" for the test suite and is wiped
-  # and recreated between test runs. Don't rely on the data there!
+  
   config.cache_classes = true
 
   # Do not eager load code on boot. This avoids loading your whole application
@@ -26,6 +27,7 @@ Rails.application.configure do
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
+  config.cache_store = :null_store
 
   # Raise exceptions instead of rendering exception templates.
   config.action_dispatch.show_exceptions = false
@@ -36,6 +38,7 @@ Rails.application.configure do
 
   # As we do some s3 specific stuff, we have to use an azure server for testing (local server called azurite)
   config.active_storage.service = :azure
+  config.active_storage.service_urls_expire_in = 10.days
 
   config.action_mailer.perform_caching = false
   config.action_mailer.default_options = { from: 'no-reply@digital.justice.gov.uk' }
@@ -48,7 +51,7 @@ Rails.application.configure do
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
-  # Raises error for missing translations
+  # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
   #
   config.et_acas_api.acas_rsa_certificate = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__))
