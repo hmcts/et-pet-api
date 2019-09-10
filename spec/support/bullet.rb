@@ -2,6 +2,7 @@ RSpec.configure do |c|
   c.before(:suite) do
     Bullet.enable = true
     Bullet.bullet_logger = true
+    Bullet.unused_eager_loading_enable = false
     Bullet.raise = true
   end
 

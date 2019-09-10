@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.3'
+gem 'rails', '~> 6.0.0'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/ministryofjustice/azure_env_secrets.git', tag: 'v0.1.3'
@@ -37,7 +37,7 @@ gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
 # (and we need it for test environment)
-gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: 'd330739040cdd0b156c2eb2d1dc00f339fd05e27'
+gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: '88b5f417f7eaf1739c24e57c6c9e28befa30d09f'
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 
 # Rubyzip used to produce and test zip files
@@ -78,7 +78,7 @@ group :test do
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 2.1'
   gem 'webmock', '~> 3.6'
-  gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: '106c7d048941892cb387c56c271f922d3b7fd929'
+  gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: '8b55b7b5880ca9b58ad5b51ccd4cb188bb8987a0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -86,4 +86,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
-gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v0.3.3'
+gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v0.3.5'

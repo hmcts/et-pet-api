@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'csv'
+ActiveRecord::Base.connection.execute "ALTER SEQUENCE unique_references_id_seq RESTART WITH 20000001;"
 OfficePostCode.delete_all
 Office.delete_all
 ExportedFile.delete_all
