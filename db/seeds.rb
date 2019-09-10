@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 require 'csv'
-ActiveRecord::Base.connection.execute "ALTER SEQUENCE unique_references_id_seq RESTART WITH 20000001;"
+last_unique_reference = UniqueReference.last
+if last_unique_reference.nil? || last_unique_reference.id < 20000000
+  ActiveRecord::Base.connection.execute "ALTER SEQUENCE unique_references_id_seq RESTART WITH 20000001;"
+end
 OfficePostCode.delete_all
 Office.delete_all
 ExportedFile.delete_all
