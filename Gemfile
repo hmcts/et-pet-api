@@ -41,7 +41,7 @@ gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 
 # Rubyzip used to produce and test zip files
-gem 'rubyzip', '~> 1.2', '>= 1.2.1'
+gem 'rubyzip', '~> 1.2'
 
 # Pdf forms to test pdf content and also to produce them
 gem 'pdf-forms', '~> 1.2'
