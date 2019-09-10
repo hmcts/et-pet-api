@@ -28,7 +28,7 @@ gem 'wisper', '2.0.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem 'sidekiq', '~> 5.2'
+gem 'sidekiq', '~> 6.0'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sidekiq_alive', '~> 1.0'
@@ -86,4 +86,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
-gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v0.3.5'
+gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v0.3.6'
