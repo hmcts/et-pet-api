@@ -32,7 +32,7 @@ gem 'sidekiq', '~> 5.2'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sidekiq_alive', '~> 1.0'
-gem 'sentry-raven', '~> 2.7', '>= 2.7.4'
+gem 'sentry-raven', '~> 2.11'
 
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
@@ -77,7 +77,7 @@ group :test do
   gem 'factory_bot', '~> 5.0'
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 2.1'
-  gem 'webmock', '~> 3.6'
+  gem 'webmock', '~> 3.7'
   gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: '8b55b7b5880ca9b58ad5b51ccd4cb188bb8987a0'
 end
 
