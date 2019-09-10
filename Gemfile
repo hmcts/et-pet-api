@@ -14,7 +14,7 @@ gem 'azure_env_secrets', git: 'https://github.com/ministryofjustice/azure_env_se
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 
-gem 'puma', '~> 3.12'
+gem 'puma', '~> 4.1'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.9'
 # Use ActiveModel has_secure_password
@@ -78,7 +78,7 @@ group :test do
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 2.1'
   gem 'webmock', '~> 3.7'
-  gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: '8b55b7b5880ca9b58ad5b51ccd4cb188bb8987a0'
+  gem 'et_fake_acas_server', git: 'https://github.com/ministryofjustice/et_fake_acas_server.git', ref: 'c96de4295f35fc2d6518bde96846eda8fb9042e3'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
