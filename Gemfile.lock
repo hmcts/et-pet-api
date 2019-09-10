@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: 05ae88d7cd0caf8c85ee9866444b79437bdeb9cd
-  tag: v0.3.5
+  revision: 1470abf0caad8f10358fd0b2fe464fc700c210b7
+  tag: v0.3.6
   specs:
-    et_exporter (0.3.5)
+    et_exporter (0.3.6)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (>= 5.2.3)
-      sidekiq (~> 5.2, >= 5.2.7)
+      sidekiq (>= 5.2.7)
 
 GIT
   remote: https://github.com/ministryofjustice/azure_env_secrets.git
@@ -30,13 +30,13 @@ GIT
 
 GIT
   remote: https://github.com/ministryofjustice/et_fake_acas_server.git
-  revision: 8b55b7b5880ca9b58ad5b51ccd4cb188bb8987a0
-  ref: 8b55b7b5880ca9b58ad5b51ccd4cb188bb8987a0
+  revision: c96de4295f35fc2d6518bde96846eda8fb9042e3
+  ref: c96de4295f35fc2d6518bde96846eda8fb9042e3
   specs:
-    et_fake_acas_server (0.1.7)
+    et_fake_acas_server (0.1.8)
       activesupport (>= 5.2)
       nokogiri (~> 1.8, >= 1.8.2)
-      puma (~> 3.12)
+      puma (~> 4.1)
       ruby-mcrypt (~> 0.2)
       sinatra (~> 2.0, >= 2.0.3)
       sinatra-contrib (~> 2.0)
@@ -118,8 +118,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.1, >= 2.1.8)
-    addressable (2.6.0)
-      public_suffix (>= 2.0.2, < 4.0)
+    addressable (2.7.0)
+      public_suffix (>= 2.0.2, < 5.0)
     akami (1.3.1)
       gyoku (>= 0.4.0)
       nokogiri
@@ -135,11 +135,11 @@ GEM
       nokogiri (~> 1.6, >= 1.6.8)
     backports (3.15.0)
     builder (3.2.3)
-    bullet (6.0.1)
+    bullet (6.0.2)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     byebug (11.0.1)
-    capybara (3.28.0)
+    capybara (3.29.0)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -161,18 +161,18 @@ GEM
       dotenv (= 2.7.5)
       railties (>= 3.2, < 6.1)
     erubi (1.8.0)
-    et-orbi (1.2.1)
+    et-orbi (1.2.2)
       tzinfo
     factory_bot (5.0.2)
       activesupport (>= 4.2.0)
-    faker (2.1.0)
-      i18n (>= 0.7)
+    faker (2.2.2)
+      i18n (~> 1.6.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.13.1)
       faraday (>= 0.7.4, < 1.0)
     ffi (1.11.1)
-    fugit (1.3.1)
+    fugit (1.3.3)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.1)
     globalid (0.4.2)
@@ -205,9 +205,9 @@ GEM
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (0.9.2)
-    mime-types (3.2.2)
+    mime-types (3.3)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2019.0331)
+    mime-types-data (3.2019.0904)
     mimemagic (0.3.3)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
@@ -222,14 +222,15 @@ GEM
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
     parallel (1.17.0)
-    parser (2.6.3.0)
+    parser (2.6.4.0)
       ast (~> 2.4.0)
     pdf-forms (1.2.0)
       cliver (~> 0.3.2)
       safe_shell (>= 1.0.3, < 2.0)
     pg (1.1.4)
-    public_suffix (3.1.1)
-    puma (3.12.1)
+    public_suffix (4.0.1)
+    puma (4.1.1)
+      nio4r (~> 2.0)
     raabro (1.1.6)
     rack (2.0.7)
     rack-protection (2.0.7)
@@ -308,7 +309,7 @@ GEM
     ruby-mcrypt (0.2.0)
     ruby-progressbar (1.10.1)
     ruby_dep (1.5.0)
-    rubyzip (1.2.3)
+    rubyzip (1.2.4)
     safe_shell (1.1.0)
     safe_yaml (1.0.5)
     savon (2.12.0)
@@ -319,13 +320,13 @@ GEM
       nokogiri (>= 1.8.1)
       nori (~> 2.4)
       wasabi (~> 3.4)
-    sentry-raven (2.11.0)
+    sentry-raven (2.11.1)
       faraday (>= 0.7.6, < 1.0)
-    sidekiq (5.2.7)
-      connection_pool (~> 2.2, >= 2.2.2)
-      rack (>= 1.5.0)
-      rack-protection (>= 1.5.0)
-      redis (>= 3.3.5, < 5)
+    sidekiq (6.0.0)
+      connection_pool (>= 2.2.2)
+      rack (>= 2.0.0)
+      rack-protection (>= 2.0.0)
+      redis (>= 4.1.0)
     sidekiq-cron (1.1.0)
       fugit (~> 1.1)
       sidekiq (>= 4.2.1)
@@ -381,7 +382,7 @@ GEM
     wasabi (3.5.0)
       httpi (~> 2.0)
       nokogiri (>= 1.4.2)
-    webmock (3.6.2)
+    webmock (3.7.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -415,7 +416,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   pdf-forms (~> 1.2)
   pg (>= 0.18, < 2.0)
-  puma (~> 3.12)
+  puma (~> 4.1)
   rails (~> 6.0.0)
   rspec-eventually (~> 0.2.2)
   rspec-rails (~> 3.8)
@@ -423,8 +424,8 @@ DEPENDENCIES
   rubocop (~> 0.74)
   rubocop-rspec (~> 1.33)
   rubyzip (~> 1.2, >= 1.2.1)
-  sentry-raven (~> 2.7, >= 2.7.4)
-  sidekiq (~> 5.2)
+  sentry-raven (~> 2.11)
+  sidekiq (~> 6.0)
   sidekiq-cron (~> 1.1)
   sidekiq-failures (~> 1.0)
   sidekiq_alive (~> 1.0)
@@ -433,7 +434,7 @@ DEPENDENCIES
   spring (~> 2.1.0)
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
-  webmock (~> 3.6)
+  webmock (~> 3.7)
   wisper (= 2.0.0)
 
 BUNDLED WITH
