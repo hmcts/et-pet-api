@@ -15,59 +15,62 @@ offices = CSV.read('db/offices.csv', headers: true)
 post_codes = CSV.read('db/office_post_codes.csv', headers: true)
 offices.each do |office_row|
   office = Office.new code: office_row.fetch('office_code').to_i,
-    name: office_row.fetch('office_name'),
-    address: office_row.fetch('office_address'),
-    telephone: office_row.fetch('office_telephone'),
-    email: office_row.fetch('office_email'),
-    is_default: office_row.fetch('is_default') == '1'
-  post_codes.select {|p| p['office_code'].to_i == office.code}.each do |row|
+                      name: office_row.fetch('office_name'),
+                      address: office_row.fetch('office_address'),
+                      telephone: office_row.fetch('office_telephone'),
+                      email: office_row.fetch('office_email'),
+                      is_default: office_row.fetch('is_default') == '1'
+  post_codes.select { |p| p['office_code'].to_i == office.code }.each do |row|
     office.post_codes.build(postcode: row.fetch('Postcode'))
   end
   office.save
 end
 
 
-
 atos = ExternalSystem.create name: 'ATOS Primary',
-  reference: 'atos',
-  enabled: true,
-  export: false,
-  office_codes: Office.pluck(:code).to_a - [99]
+                             reference: 'atos',
+                             enabled: true,
+                             export: false,
+                             office_codes: Office.pluck(:code).to_a - [99]
 atos2 = ExternalSystem.create name: 'ATOS Secondary',
-  reference: 'atos_secondary',
-  enabled: true,
-  export: false,
-  office_codes: [99]
-
-ccd_manc = ExternalSystem.create name: 'CCD Manchester',
-  reference: 'ccd_manchester',
-  enabled: true,
-  export: true,
-  export_queue: 'external_system_ccd',
-  office_codes: [24]
-
-ccd_glasgow = ExternalSystem.create name: 'CCD Glasgow',
-  reference: 'ccd_glasgow',
-  enabled: true,
-  export: true,
-  export_queue: 'external_system_ccd',
-  office_codes: [41]
+                              reference: 'atos_secondary',
+                              enabled: true,
+                              export: false,
+                              office_codes: [99]
 
 ExternalSystemConfiguration.create external_system_id: atos.id,
-  key: 'username', value: ENV.fetch('ATOS_API_USERNAME', 'atos')
+                                   key: 'username', value: ENV.fetch('ATOS_API_USERNAME', 'atos')
 ExternalSystemConfiguration.create external_system_id: atos.id,
-  key: 'password', value: ENV.fetch('ATOS_API_PASSWORD', 'password'), can_read: false
+                                   key: 'password', value: ENV.fetch('ATOS_API_PASSWORD', 'password'), can_read: false
 ExternalSystemConfiguration.create external_system_id: atos2.id,
-  key: 'username', value: 'atos2'
+                                   key: 'username', value: 'atos2'
 ExternalSystemConfiguration.create external_system_id: atos2.id,
-  key: 'password', value: 'password', can_read: false
-ExternalSystemConfiguration.create external_system_id: ccd_manc.id,
-  key: 'case_type_id', value: 'Manchester_Dev'
-ExternalSystemConfiguration.create external_system_id: ccd_manc.id,
-  key: 'multiples_case_type_id', value: 'Manchester_Multiples_Dev'
-ExternalSystemConfiguration.create external_system_id: ccd_glasgow.id,
-  key: 'case_type_id', value: 'Glasgow_Dev'
-ExternalSystemConfiguration.create external_system_id: ccd_glasgow.id,
-  key: 'multiples_case_type_id', value: 'Glasgow_Multiples_Dev'
+                                   key: 'password', value: 'password', can_read: false
+offices = {
+  24 => {id: 'Manchester', export: true},
+  41 => {id: 'Scotland', export: true},
+  14 => {id: 'Bristol', export: false},
+  18 => {id: 'Leeds', export: false},
+  22 => {id: 'LondonCentral', export: false},
+  32 => {id: 'LondonEast', export: false},
+  23 => {id: 'LondonSouth', export: false},
+  26 => {id: 'MidlandsEast', export: false},
+  13 => {id: 'MidlandsWest', export: false},
+  25 => {id: 'Newcastle', export: false},
+  16 => {id: 'Wales', export: false},
+  33 => {id: 'Watford', export: false}
+}
+offices.each_pair do |office_code, options|
+  ccd = ExternalSystem.create name: "CCD #{options[:id]}",
+                              reference: "ccd_#{options[:id].underscore}",
+                              enabled: true,
+                              export: options[:export],
+                              export_queue: 'external_system_ccd',
+                              office_codes: [office_code]
+  ExternalSystemConfiguration.create external_system_id: ccd.id,
+                                     key: 'case_type_id', value: options[:id]
+  ExternalSystemConfiguration.create external_system_id: ccd.id,
+                                     key: 'multiples_case_type_id', value: "#{options[:id]}_Multiples"
 
+end
 
