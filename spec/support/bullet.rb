@@ -2,6 +2,7 @@ RSpec.configure do |c|
   c.before(:suite) do
     Bullet.enable = true
     Bullet.bullet_logger = true
+    Bullet.unused_eager_loading_enable = false
     Bullet.raise = true
   end
 
@@ -12,7 +13,7 @@ RSpec.configure do |c|
   end
 
   c.after do
-    #Bullet.perform_out_of_channel_notifications if Bullet.notification?
+    Bullet.perform_out_of_channel_notifications if Bullet.notification?
     Bullet.end_request
   end
 end
