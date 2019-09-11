@@ -12,6 +12,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+!/tmp/pids/.keep
 /vendor/gems/et_acas_api/spec/dummy/log/*
 /vendor/gems/et_acas_api/spec/dummy/tmp/*
 !/vendor/gems/et_acas_api/spec/dummy/log/.keep

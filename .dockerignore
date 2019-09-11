@@ -3,4 +3,7 @@
 .gitignore
 log/*
 tmp/*
+!tmp/pids/.keep
 Dockerfile
+docs
+spec
