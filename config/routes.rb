@@ -18,6 +18,9 @@ Rails.application.routes.draw do
         post "build_claim" => 'build_claims#create'
         post "import_claim" => 'import_claims#create'
       end
+      namespace :exports do
+        post "export_responses" => 'export_responses#create'
+      end
       post "build_blob" => "build_blobs#create"
       post "validate" => "validation#validate"
     end

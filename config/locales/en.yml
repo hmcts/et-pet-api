@@ -70,6 +70,9 @@ en:
           invalid_columns: file does not contain the correct columns
           empty_file: file is empty
           missing_file: file is missing
+        export_responses_command:
+          external_system_not_found: The external system with an id of %{external_system_id} was not found
+          response_not_found: A response with an id of %{response_id} was not found
 
 
 
