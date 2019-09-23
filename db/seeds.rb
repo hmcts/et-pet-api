@@ -31,25 +31,29 @@ end
 atos = ExternalSystem.create name: 'ATOS Primary',
   reference: 'atos',
   enabled: true,
-  export: false,
+  export_claims: false,
+  export_responses: false,
   office_codes: Office.pluck(:code).to_a - [99]
 atos2 = ExternalSystem.create name: 'ATOS Secondary',
   reference: 'atos_secondary',
   enabled: true,
-  export: false,
+  export_claims: false,
+  export_responses: false,
   office_codes: [99]
 
 ccd_manc = ExternalSystem.create name: 'CCD Manchester',
   reference: 'ccd_manchester',
   enabled: true,
-  export: true,
+  export_claims: true,
+  export_responses: false,
   export_queue: 'external_system_ccd',
   office_codes: [24]
 
 ccd_glasgow = ExternalSystem.create name: 'CCD Glasgow',
   reference: 'ccd_glasgow',
   enabled: true,
-  export: true,
+  export_claims: true,
+  export_responses: false,
   export_queue: 'external_system_ccd',
   office_codes: [41]
 
