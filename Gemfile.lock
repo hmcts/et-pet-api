@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: 1470abf0caad8f10358fd0b2fe464fc700c210b7
-  tag: v0.3.6
+  revision: 687f630c7ce7fd95c6a33de4b8805f7f9a77a3f0
+  tag: v0.3.7
   specs:
-    et_exporter (0.3.6)
+    et_exporter (0.3.7)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (>= 5.2.3)
@@ -212,7 +212,7 @@ GEM
     mimemagic (0.3.3)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    minitest (5.11.3)
+    minitest (5.12.0)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
