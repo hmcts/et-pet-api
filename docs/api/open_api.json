@@ -30,7 +30,7 @@
     "/api/v2/build_blob": {
       "post": {
         "tags": [
-          "Blob Resource (Amazon mode)"
+          "Blob Resource (Azure mode)"
         ],
         "summary": "",
         "description": "",
@@ -52,7 +52,7 @@
               "properties": {
                 "uuid": {
                   "type": "string",
-                  "example": "97954f49-afe1-4e9b-be47-3b083fb68532",
+                  "example": "5cd67c39-a385-4ee7-bc9e-509b8f1c6ad2",
                   "description": "A unique ID produced by the client to refer to this command"
                 },
                 "data": {
@@ -73,7 +73,7 @@
         ],
         "responses": {
           "202": {
-            "description": "Create a signed s3 object suitable for use in a HTML form for use with direct upload",
+            "description": "Create a signed azure url",
             "schema": {
               "description": "",
               "type": "object",
@@ -81,6 +81,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -94,37 +124,37 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "33b813ae-692b-49bf-8669-abdaed2e299b"
+                "x-example-value": "4437d1ba-de87-4530-b125-cbc25219a583"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.077783"
+                "x-example-value": "0.046968"
               },
               "Content-Length": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "929"
+                "x-example-value": "712"
               }
             },
             "examples": {
               "application/json": {
                 "status": "accepted",
                 "meta": {
-                  "cloud_provider": "amazon"
+                  "cloud_provider": "azure"
                 },
-                "uuid": "97954f49-afe1-4e9b-be47-3b083fb68532",
+                "uuid": "5cd67c39-a385-4ee7-bc9e-509b8f1c6ad2",
                 "data": {
                   "fields": {
-                    "key": "direct_uploads/9e02d454-1945-414b-b38d-9142692ea8af",
-                    "success_action_status": "201",
-                    "policy": "eyJleHBpcmF0aW9uIjoiMjAxOS0wNC0yOVQwODozODo0MFoiLCJjb25kaXRpb25zIjpbeyJidWNrZXQiOiJldGFwaWRpcmVjdGJ1Y2tldHRlc3QifSx7ImtleSI6ImRpcmVjdF91cGxvYWRzLzllMDJkNDU0LTE5NDUtNDE0Yi1iMzhkLTkxNDI2OTJlYThhZiJ9LHsic3VjY2Vzc19hY3Rpb25fc3RhdHVzIjoiMjAxIn0seyJ4LWFtei1jcmVkZW50aWFsIjoiYWNjZXNzS2V5MS8yMDE5MDQyOS91cy1lYXN0LTEvczMvYXdzNF9yZXF1ZXN0In0seyJ4LWFtei1hbGdvcml0aG0iOiJBV1M0LUhNQUMtU0hBMjU2In0seyJ4LWFtei1kYXRlIjoiMjAxOTA0MjlUMDczODQwWiJ9XX0=",
-                    "x-amz-credential": "accessKey1/20190429/us-east-1/s3/aws4_request",
-                    "x-amz-algorithm": "AWS4-HMAC-SHA256",
-                    "x-amz-date": "20190429T073840Z",
-                    "x-amz-signature": "67fddc7537f40837da7afef00189b1db1db177763a537c9cc5839f055d62a32e"
+                    "key": "direct_uploads/2a76bbec-4c8f-4181-86a4-bd603a4049a8",
+                    "permissions": "rw",
+                    "version": "2016-05-31",
+                    "expiry": "2019-10-06T11:37:48Z",
+                    "resource": "b",
+                    "signature": "KakvPRyu9PGZMj8Styz6093vMbNlkocyJb1k2+BWvwc="
                   },
-                  "url": "http://localhost:9000/etapidirectbuckettest"
+                  "url": "http://localhost:10000/devstoreaccount1/et-api-direct-container/direct_uploads/2a76bbec-4c8f-4181-86a4-bd603a4049a8?sp=rw&sv=2016-05-31&se=2019-10-06T11%3A37%3A48Z&sr=b&sig=KakvPRyu9PGZMj8Styz6093vMbNlkocyJb1k2%2BBWvwc%3D",
+                  "unsigned_url": "http://localhost:10000/devstoreaccount1/et-api-direct-container/direct_uploads/2a76bbec-4c8f-4181-86a4-bd603a4049a8"
                 }
               }
             }
@@ -161,14 +191,14 @@
               "properties": {
                 "uuid": {
                   "type": "string",
-                  "example": "98daa30f-046b-4325-b679-1815944bb368",
+                  "example": "005e593e-d631-48a9-ab08-670aa8292316",
                   "description": "A unique ID produced by the client to refer to this command"
                 },
                 "data": {
                   "type": "array",
                   "example": [
                     {
-                      "uuid": "c5f756a5-59c3-4c9b-b457-e10b3bf41e64",
+                      "uuid": "d86592db-1e58-48a7-baa8-a952751227a7",
                       "command": "BuildClaim",
                       "data": {
                         "employment_details": {
@@ -196,7 +226,7 @@
                         "case_type": "Single",
                         "jurisdiction": "2",
                         "office_code": "22",
-                        "date_of_receipt": "2019-04-29T07:38:41+0000",
+                        "date_of_receipt": "2019-09-26T11:37:48+0000",
                         "other_known_claimant_names": "",
                         "discrimination_claims": [
 
@@ -217,7 +247,7 @@
                       }
                     },
                     {
-                      "uuid": "b471f19e-cf1d-43e9-ba50-36d60081fd6b",
+                      "uuid": "af0af0fe-9d94-4cd3-910e-5eb8cd56b892",
                       "command": "BuildPrimaryRespondent",
                       "data": {
                         "name": "dodgy_co",
@@ -253,7 +283,7 @@
                       }
                     },
                     {
-                      "uuid": "4f57a754-8dba-4dc5-8e9a-2235aa5a2aa3",
+                      "uuid": "dde5ef20-3aea-4e2d-8d72-fb563ca0e784",
                       "command": "BuildPrimaryClaimant",
                       "data": {
                         "title": "Mr",
@@ -264,7 +294,8 @@
                           "street": "Petty France",
                           "locality": "London",
                           "county": "Greater London",
-                          "post_code": "SW1H 9AJ"
+                          "post_code": "SW1H 9AJ",
+                          "country": "United Kingdom"
                         },
                         "address_telephone_number": "01234 567890",
                         "mobile_number": "01234 098765",
@@ -277,7 +308,7 @@
                       }
                     },
                     {
-                      "uuid": "e2bdf387-1860-46a7-9701-c5268c80db81",
+                      "uuid": "013fac72-7f06-4078-b656-cbf47b5f82b1",
                       "command": "BuildSecondaryClaimants",
                       "data": [
                         {
@@ -303,7 +334,7 @@
                       ]
                     },
                     {
-                      "uuid": "3cbcd3b2-23ec-437e-ad9d-98d88a39f9ee",
+                      "uuid": "0d2e5a43-55ab-49c2-b9c5-22be0b3eacc3",
                       "command": "BuildSecondaryRespondents",
                       "data": [
                         {
@@ -341,7 +372,7 @@
                       ]
                     },
                     {
-                      "uuid": "1addfce0-473c-44e8-813b-3b6599973f06",
+                      "uuid": "f90da5e7-9dbe-45fc-af0e-3415b94a56c5",
                       "command": "BuildPrimaryRepresentative",
                       "data": {
                         "address_attributes": {
@@ -364,10 +395,10 @@
                       }
                     },
                     {
-                      "uuid": "6ec28766-6f34-4e82-8d37-9bbe5717fcbe",
+                      "uuid": "cc985d6a-fbc3-4939-9a3a-0dede8420680",
                       "command": "BuildPdfFile",
                       "data": {
-                        "data_url": "http://localhost:9000/etapibuckettest/JZG5ZjkXTmvF4UKjvu1hZkLm?response-content-disposition=inline%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&response-content-type=application%2Fpdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20190429%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190429T073841Z&X-Amz-Expires=300&X-Amz-SignedHeaders=host&X-Amz-Signature=998eb4e2241eb427b6dc17ee2190318290b7bbf77366a2450de9bd29d0033b94",
+                        "data_url": "http://localhost:10000/devstoreaccount1/et-api-container/2q2f0ppm2ujggey9o11zk8wmhuuo?sp=r&sv=2016-05-31&se=2019-10-06T11%3A37%3A48Z&rscd=inline%3B+filename%3D%22et1_first_last.pdf%22%3B+filename*%3DUTF-8%27%27et1_first_last.pdf&rsct=application%2Fpdf&sr=b&sig=u34JRMT0AhnSYbXYCUPJLgBXpDxXbAWT6z3ngaLW3dw%3D",
                         "data_from_key": null,
                         "filename": "et1_first_last.pdf",
                         "checksum": "ee2714b8b731a8c1e95dffaa33f89728"
@@ -401,6 +432,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -414,17 +475,17 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "57a52b91-218f-4c20-bf16-d4e00041e1d5"
+                "x-example-value": "01147e3c-9148-4ff2-b6e9-3028b5c27418"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.197300"
+                "x-example-value": "0.249043"
               },
               "Content-Length": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "949"
+                "x-example-value": "785"
               }
             },
             "examples": {
@@ -438,9 +499,9 @@
                       "code": 22,
                       "telephone": "020 7273 8603",
                       "address": "Victory House, 30-34 Kingsway, London WC2B 6EX",
-                      "email": "londoncentralet@hmcts.gsi.gov.uk"
+                      "email": "londoncentralet@justice.gov.uk"
                     },
-                    "pdf_url": "http://localhost:9000/etapibuckettest/Rqoev3d6hP7KXtGk3e1QLXgv?response-content-disposition=attachment%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20190429%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190429T073841Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=3632d8761ca3ed45201fce7390c23abb9881997868f6a2861adf5dfb5a2e4250"
+                    "pdf_url": "http://localhost:10000/devstoreaccount1/et-api-container/ajjl6916fe3smyhssqy84yuzehk8?sp=r&sv=2016-05-31&se=2019-09-26T12%3A37%3A49Z&rscd=attachment%3B+filename%3D%22et1_first_last.pdf%22%3B+filename*%3DUTF-8%27%27et1_first_last.pdf&sr=b&sig=4aJrIbqE14xYLdudo%2FOt6UiaLjmlrC%2FjHolzJGYueZM%3D"
                   },
                   "BuildPrimaryRespondent": {
                   },
@@ -455,7 +516,7 @@
                   "BuildPdfFile": {
                   }
                 },
-                "uuid": "98daa30f-046b-4325-b679-1815944bb368"
+                "uuid": "005e593e-d631-48a9-ab08-670aa8292316"
               }
             }
           }
@@ -491,7 +552,7 @@
               "properties": {
                 "uuid": {
                   "type": "string",
-                  "example": "dd0da189-1cf4-423a-9850-31455394fc4f",
+                  "example": "232b5631-2d72-4e34-9ed4-1616b0a599a7",
                   "description": "A unique ID produced by the client to refer to this command"
                 },
                 "data": {
@@ -523,6 +584,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -531,7 +622,7 @@
               "ETag": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "W/\"389d8cc7c8914f21f74ce1fea5e99d2c\""
+                "x-example-value": "W/\"73b9255b00f49d218483fd7931a91905\""
               },
               "Cache-Control": {
                 "description": "",
@@ -541,17 +632,17 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "95ccaf97-fa6a-44b2-9a78-13464e85a074"
+                "x-example-value": "b97f0ede-c9ca-4bb0-a08c-147d981f5074"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.028165"
+                "x-example-value": "0.021731"
               },
               "Content-Length": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "246"
+                "x-example-value": "287"
               }
             },
             "examples": {
@@ -559,14 +650,15 @@
                 "status": "created",
                 "meta": {
                 },
-                "uuid": "dd0da189-1cf4-423a-9850-31455394fc4f",
+                "uuid": "232b5631-2d72-4e34-9ed4-1616b0a599a7",
                 "data": {
-                  "reference": "222000036100",
+                  "reference": "222000000100",
                   "office": {
                     "code": "22",
                     "name": "London Central",
                     "address": "Victory House, 30-34 Kingsway, London WC2B 6EX",
-                    "telephone": "020 7273 8603"
+                    "telephone": "020 7273 8603",
+                    "email": "londoncentralet@justice.gov.uk"
                   }
                 }
               }
@@ -604,7 +696,7 @@
               "properties": {
                 "uuid": {
                   "type": "string",
-                  "example": "a210b3e4-5622-49ce-89b3-ee06d276a12d",
+                  "example": "dbea5551-04fe-471c-b507-d50b2f7438b9",
                   "description": "A unique ID produced by the client to refer to this command"
                 },
                 "data": {
@@ -648,6 +740,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -656,7 +778,7 @@
               "ETag": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "W/\"37948e59c7d27593fd85b955bae21fde\""
+                "x-example-value": "W/\"dc0d643872e51eda459b8ec455037556\""
               },
               "Cache-Control": {
                 "description": "",
@@ -666,12 +788,12 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "3812ec2c-3f0a-4f9b-89df-300212c8fdc7"
+                "x-example-value": "668a860d-70f3-4fc5-98b9-acc04104c369"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.033990"
+                "x-example-value": "0.030162"
               },
               "Content-Length": {
                 "description": "",
@@ -682,7 +804,437 @@
             "examples": {
               "application/json": {
                 "status": "accepted",
-                "uuid": "a210b3e4-5622-49ce-89b3-ee06d276a12d"
+                "uuid": "dbea5551-04fe-471c-b507-d50b2f7438b9"
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+
+        ]
+      }
+    },
+    "/api/v2/exports/export_claims": {
+      "post": {
+        "tags": [
+          "Export Claims"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "",
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "example": "b7c322be-053b-461b-8e38-dbe471b2a507",
+                  "description": "A unique ID produced by the client to refer to this command"
+                },
+                "data": {
+                  "type": "object",
+                  "example": {
+                    "external_system_id": 43,
+                    "claim_ids": [
+                      46
+                    ]
+                  },
+                  "description": "Contains the data for this command - in this case just the claim_ids and the external_system_id"
+                },
+                "command": {
+                  "type": "string",
+                  "example": "ExportClaims",
+                  "description": " command",
+                  "enum": [
+                    "ExportClaims"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Export an existing claim",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "71f485ac-ce80-4bd5-8956-c7e0b8bb7a5c"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.019679"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "77"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "accepted",
+                "meta": {
+                },
+                "uuid": "b7c322be-053b-461b-8e38-dbe471b2a507"
+              }
+            }
+          },
+          "400": {
+            "description": "Attempting to export a claim to a non existent external system id",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "669ed087-2f0e-4226-922f-7c9678e27b20"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.007458"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "357"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "not_accepted",
+                "uuid": "d5d28778-a047-4931-8992-19ba160061f1",
+                "errors": [
+                  {
+                    "status": 422,
+                    "code": "external_system_not_found",
+                    "title": "The external system with an id of -1 was not found",
+                    "detail": "The external system with an id of -1 was not found",
+                    "source": "/external_system_id",
+                    "command": "ExportClaims",
+                    "uuid": "d5d28778-a047-4931-8992-19ba160061f1"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": [
+
+        ]
+      }
+    },
+    "/api/v2/exports/export_responses": {
+      "post": {
+        "tags": [
+          "Export Responses"
+        ],
+        "summary": "",
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "",
+            "required": false,
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "example": "fea4decf-2efe-4cd6-96b3-f0a4bbeeca78",
+                  "description": "A unique ID produced by the client to refer to this command"
+                },
+                "data": {
+                  "type": "object",
+                  "example": {
+                    "external_system_id": 43,
+                    "response_ids": [
+                      18
+                    ]
+                  },
+                  "description": "Contains the data for this command - in this case just the response_ids and the external_system_id"
+                },
+                "command": {
+                  "type": "string",
+                  "example": "ExportResponses",
+                  "description": " command",
+                  "enum": [
+                    "ExportResponses"
+                  ]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Export an existing response",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "50e03801-3aba-4aa0-9e74-3087e7325998"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.019560"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "77"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "accepted",
+                "meta": {
+                },
+                "uuid": "fea4decf-2efe-4cd6-96b3-f0a4bbeeca78"
+              }
+            }
+          },
+          "400": {
+            "description": "Attempting to export a response to a non existent external system id",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "properties": {
+              }
+            },
+            "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
+              "Content-Type": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "application/json; charset=utf-8"
+              },
+              "Cache-Control": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "no-cache"
+              },
+              "X-Request-Id": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "af0fc569-d3f7-4425-aab8-69308630feb6"
+              },
+              "X-Runtime": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "0.007150"
+              },
+              "Content-Length": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "360"
+              }
+            },
+            "examples": {
+              "application/json": {
+                "status": "not_accepted",
+                "uuid": "9f6e3de8-e731-4b7e-9f10-69e9e70e200b",
+                "errors": [
+                  {
+                    "status": 422,
+                    "code": "external_system_not_found",
+                    "title": "The external system with an id of -1 was not found",
+                    "detail": "The external system with an id of -1 was not found",
+                    "source": "/external_system_id",
+                    "command": "ExportResponses",
+                    "uuid": "9f6e3de8-e731-4b7e-9f10-69e9e70e200b"
+                  }
+                ]
               }
             }
           }
@@ -725,6 +1277,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -743,12 +1325,12 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "68327b9f-393e-4ade-8b9a-3f7fe2e52513"
+                "x-example-value": "2a75454b-42c7-4444-9dd5-023ab256cb89"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.410589"
+                "x-example-value": "0.165674"
               },
               "Content-Length": {
                 "description": "",
@@ -781,6 +1363,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -794,12 +1406,12 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "2ad66bb0-5461-4695-aedf-03c17f00503a"
+                "x-example-value": "061f903f-d51c-4cff-8513-81f82e61f76e"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.018898"
+                "x-example-value": "0.017176"
               },
               "Content-Length": {
                 "description": "",
@@ -822,6 +1434,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -835,12 +1477,12 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "ee887d2f-4144-4a5a-9b94-8034f1f2208d"
+                "x-example-value": "2d15f3f1-c157-40b7-b571-270c39b9932b"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.019383"
+                "x-example-value": "0.016739"
               },
               "Content-Length": {
                 "description": "",
@@ -868,6 +1510,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -881,12 +1553,12 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "8fa53fc1-c835-495d-9484-23e93a47e816"
+                "x-example-value": "3b6a764d-b412-4802-b31b-96b4e9099be1"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.016098"
+                "x-example-value": "0.016031"
               },
               "Content-Length": {
                 "description": "",
@@ -937,14 +1609,14 @@
               "properties": {
                 "uuid": {
                   "type": "string",
-                  "example": "4d765cb7-72fb-4363-a7a9-5203f9dea9b6",
+                  "example": "9f6f608d-33a6-451e-96f2-0c2c6ed9cb89",
                   "description": "A unique ID produced by the client to refer to this command"
                 },
                 "data": {
                   "type": "array",
                   "example": [
                     {
-                      "uuid": "9d08acf1-5a58-4418-87f9-956d56c2eb49",
+                      "uuid": "dac5f312-c5d5-4186-9459-42fa30aba57c",
                       "command": "BuildResponse",
                       "data": {
                         "additional_information_key": null,
@@ -961,7 +1633,7 @@
                         "agree_with_claimants_description_of_job_or_title": false,
                         "disagree_claimants_job_or_title": "lorem ipsum job title",
                         "agree_with_claimants_hours": false,
-                        "queried_hours": 32.0,
+                        "queried_hours": 101.01,
                         "agree_with_earnings_details": false,
                         "queried_pay_before_tax": 1000.0,
                         "queried_pay_before_tax_period": "Monthly",
@@ -980,7 +1652,7 @@
                       }
                     },
                     {
-                      "uuid": "b6ab94c4-6349-4374-adc7-a1354e34ff87",
+                      "uuid": "78d03258-ee3e-472a-a968-7dcfc99098e5",
                       "command": "BuildRespondent",
                       "data": {
                         "name": "dodgy_co",
@@ -1016,7 +1688,7 @@
                       }
                     },
                     {
-                      "uuid": "e645474d-7f19-4218-8e7d-f8ccff66c583",
+                      "uuid": "df9d3664-cd76-4d2a-8d14-9d4ead804ea3",
                       "command": "BuildRepresentative",
                       "data": {
                         "address_attributes": {
@@ -1066,6 +1738,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -1079,17 +1781,17 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "568b65c7-f399-41a3-af94-874f3c6ad004"
+                "x-example-value": "900c77cc-34b5-4589-8d3c-5ea644c8174e"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.073830"
+                "x-example-value": "0.044642"
               },
               "Content-Length": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "837"
+                "x-example-value": "677"
               }
             },
             "examples": {
@@ -1097,18 +1799,18 @@
                 "status": "accepted",
                 "meta": {
                   "BuildResponse": {
-                    "submitted_at": "2019-04-29T07:38:42.753Z",
-                    "reference": "142000036200",
+                    "submitted_at": "2019-09-26T11:37:50.219Z",
+                    "reference": "142000000200",
                     "office_address": "Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR",
-                    "office_phone_number": "0117 929 8261",
-                    "pdf_url": "http://localhost:9000/etapibuckettest/hXDJC3msVKrENEm7LL2WXo6w?response-content-disposition=attachment%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=accessKey1%2F20190429%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190429T073842Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=0f414dae6d7844385a17b82af6cf2f8f4309f36965f7a757d1e4a6c3b64a8760"
+                    "office_phone_number": "01224 593 137",
+                    "pdf_url": "http://localhost:10000/devstoreaccount1/et-api-container/s60sccj6ng7v0dxf0v9uo2gxyizp?sp=r&sv=2016-05-31&se=2019-09-26T12%3A37%3A50Z&rscd=attachment%3B+filename%3D%22et3_atos_export.pdf%22%3B+filename*%3DUTF-8%27%27et3_atos_export.pdf&sr=b&sig=hGC1jm80vGD%2FI4s1qPTZk%2BMvKkyzI3f%2FiXW2LpfsZrU%3D"
                   },
                   "BuildRespondent": {
                   },
                   "BuildRepresentative": {
                   }
                 },
-                "uuid": "4d765cb7-72fb-4363-a7a9-5203f9dea9b6"
+                "uuid": "9f6f608d-33a6-451e-96f2-0c2c6ed9cb89"
               }
             }
           },
@@ -1121,6 +1823,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -1134,12 +1866,12 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "c31d38de-07c6-4087-9e2d-8e27b935d868"
+                "x-example-value": "e909a6d8-1c58-49ca-98d7-f73a8c61624d"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.009365"
+                "x-example-value": "0.009002"
               },
               "Content-Length": {
                 "description": "",
@@ -1150,7 +1882,7 @@
             "examples": {
               "application/json": {
                 "status": "not_accepted",
-                "uuid": "2b8f4ab3-1fc2-449c-9bcb-c6f2c40f06ae",
+                "uuid": "a32388c0-f40d-4e39-aacc-50a9abdaa45f",
                 "errors": [
                   {
                     "status": 422,
@@ -1159,7 +1891,7 @@
                     "detail": "Invalid case number",
                     "source": "/data/0/case_number",
                     "command": "BuildResponse",
-                    "uuid": "19fe5efe-e3ed-4712-a900-810ee10198cd"
+                    "uuid": "07ad8d02-7562-4f24-81f6-9596056a61cc"
                   }
                 ]
               }
@@ -1197,14 +1929,14 @@
               "properties": {
                 "uuid": {
                   "type": "string",
-                  "example": "15736d0a-054a-460c-8644-61db149b5255",
+                  "example": "ead87c27-67f0-4559-96c7-432419b7d40b",
                   "description": "A unique ID produced by the client to refer to this command"
                 },
                 "data": {
                   "type": "object",
                   "example": {
                     "data_url": null,
-                    "data_from_key": "uazZKo37yaN8zNQfPmo45eQy",
+                    "data_from_key": "hhlf03s9tmrhnqipczlanz6p0oqj",
                     "filename": "simple_user_with_csv_group_claims.csv",
                     "checksum": "7ac66d9f4af3b498e4cf7b9430974618"
                   },
@@ -1232,6 +1964,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -1240,7 +2002,7 @@
               "ETag": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "W/\"1bd760328587e81211c7012271e3edf9\""
+                "x-example-value": "W/\"a4e22d5a1f6a315b76f1bbf249b5cfad\""
               },
               "Cache-Control": {
                 "description": "",
@@ -1250,12 +2012,12 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "9cdb330d-52a8-41b1-91d5-06f62a98fd71"
+                "x-example-value": "486cc6fe-a925-4d42-93c1-a702138a6d68"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.075323"
+                "x-example-value": "0.025940"
               },
               "Content-Length": {
                 "description": "",
@@ -1266,7 +2028,7 @@
             "examples": {
               "application/json": {
                 "status": "accepted",
-                "uuid": "15736d0a-054a-460c-8644-61db149b5255"
+                "uuid": "ead87c27-67f0-4559-96c7-432419b7d40b"
               }
             }
           },
@@ -1279,6 +2041,36 @@
               }
             },
             "headers": {
+              "X-Frame-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "SAMEORIGIN"
+              },
+              "X-XSS-Protection": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "1; mode=block"
+              },
+              "X-Content-Type-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "nosniff"
+              },
+              "X-Download-Options": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "noopen"
+              },
+              "X-Permitted-Cross-Domain-Policies": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "none"
+              },
+              "Referrer-Policy": {
+                "description": "",
+                "type": "string",
+                "x-example-value": "strict-origin-when-cross-origin"
+              },
               "Content-Type": {
                 "description": "",
                 "type": "string",
@@ -1292,12 +2084,12 @@
               "X-Request-Id": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "5308c092-5ecd-454d-8a6d-9bfbe86256c9"
+                "x-example-value": "e88e8bd3-637c-4fbe-a76b-3786f563ae09"
               },
               "X-Runtime": {
                 "description": "",
                 "type": "string",
-                "x-example-value": "0.065248"
+                "x-example-value": "0.018389"
               },
               "Content-Length": {
                 "description": "",
@@ -1308,7 +2100,7 @@
             "examples": {
               "application/json": {
                 "status": "not_accepted",
-                "uuid": "fd628e11-bba9-4623-bb05-cb88eb895cf4",
+                "uuid": "eea14395-6c03-41e2-994d-3e088ddfb441",
                 "errors": [
                   {
                     "status": 422,
@@ -1317,7 +2109,7 @@
                     "detail": "is invalid",
                     "source": "/data_from_key/0/date_of_birth",
                     "command": "ValidateClaimantsFile",
-                    "uuid": "fd628e11-bba9-4623-bb05-cb88eb895cf4"
+                    "uuid": "eea14395-6c03-41e2-994d-3e088ddfb441"
                   },
                   {
                     "status": 422,
@@ -1326,7 +2118,7 @@
                     "detail": "is not included in the list",
                     "source": "/data_from_key/1/title",
                     "command": "ValidateClaimantsFile",
-                    "uuid": "fd628e11-bba9-4623-bb05-cb88eb895cf4"
+                    "uuid": "eea14395-6c03-41e2-994d-3e088ddfb441"
                   }
                 ]
               }
@@ -1342,10 +2134,6 @@
   },
   "tags": [
     {
-      "name": "Blob Resource (Amazon mode)",
-      "description": "Signed Blob resource - amazon mode"
-    },
-    {
       "name": "Blob Resource (Azure mode)",
       "description": "Signed Blob resource - azure mode"
     },
@@ -1360,6 +2148,14 @@
     {
       "name": "Diversity response",
       "description": "Diversity response resource"
+    },
+    {
+      "name": "Export Claims",
+      "description": "Used by the admin to request that a list of claims are exported to an external system such as CCD"
+    },
+    {
+      "name": "Export Responses",
+      "description": "Used by the admin to request that a list of responses are exported to an external system such as CCD"
     },
     {
       "name": "Acas Certificate",

@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "4ebe1a1d-7634-44db-b943-12c69d35f002",
+  "uuid": "b4632b21-0fc9-4271-9e9c-0892f47a0263",
   "command": "ValidateClaimantsFile",
   "data": {
     "data_url": null,
-    "data_from_key": "An9RT4iSvnEatP5hVGCbWLQp",
+    "data_from_key": "prrxvx321r8ob3pviuq097haddjs",
     "filename": "simple_user_with_csv_group_claims.csv",
     "checksum": "7ac66d9f4af3b498e4cf7b9430974618"
   }
@@ -43,11 +43,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/validate&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;4ebe1a1d-7634-44db-b943-12c69d35f002&quot;,
+  &quot;uuid&quot;: &quot;b4632b21-0fc9-4271-9e9c-0892f47a0263&quot;,
   &quot;command&quot;: &quot;ValidateClaimantsFile&quot;,
   &quot;data&quot;: {
     &quot;data_url&quot;: null,
-    &quot;data_from_key&quot;: &quot;An9RT4iSvnEatP5hVGCbWLQp&quot;,
+    &quot;data_from_key&quot;: &quot;prrxvx321r8ob3pviuq097haddjs&quot;,
     &quot;filename&quot;: &quot;simple_user_with_csv_group_claims.csv&quot;,
     &quot;checksum&quot;: &quot;7ac66d9f4af3b498e4cf7b9430974618&quot;
   }
@@ -61,10 +61,16 @@ Cookie: </pre>
 
 #### Headers
 
-<pre>Content-Type: application/json; charset=utf-8
+<pre>X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Permitted-Cross-Domain-Policies: none
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: c1936630-f9b4-40cf-89aa-296602180f36
-X-Runtime: 0.061872
+X-Request-Id: 7c481087-c9ef-4867-b1c7-207f58a09449
+X-Runtime: 0.013859
 Content-Length: 324</pre>
 
 #### Status
@@ -73,4 +79,4 @@ Content-Length: 324</pre>
 
 #### Body
 
-<pre>{"status":"not_accepted","uuid":"4ebe1a1d-7634-44db-b943-12c69d35f002","errors":[{"status":422,"code":"invalid_columns","title":"file does not contain the correct columns","detail":"file does not contain the correct columns","source":"/base","command":"ValidateClaimantsFile","uuid":"4ebe1a1d-7634-44db-b943-12c69d35f002"}]}</pre>
+<pre>{"status":"not_accepted","uuid":"b4632b21-0fc9-4271-9e9c-0892f47a0263","errors":[{"status":422,"code":"invalid_columns","title":"file does not contain the correct columns","detail":"file does not contain the correct columns","source":"/base","command":"ValidateClaimantsFile","uuid":"b4632b21-0fc9-4271-9e9c-0892f47a0263"}]}</pre>

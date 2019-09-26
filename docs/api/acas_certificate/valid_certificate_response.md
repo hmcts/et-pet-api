@@ -37,11 +37,17 @@ Cookie: </pre>
 
 #### Headers
 
-<pre>Content-Type: application/json; charset=utf-8
+<pre>X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Permitted-Cross-Domain-Policies: none
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: application/json; charset=utf-8
 ETag: W/&quot;f7ef2c04560c5ebd089a879b36bb84c6&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 68327b9f-393e-4ade-8b9a-3f7fe2e52513
-X-Runtime: 0.410589
+X-Request-Id: 2a75454b-42c7-4444-9dd5-023ab256cb89
+X-Runtime: 0.165674
 Content-Length: 43217</pre>
 
 #### Status

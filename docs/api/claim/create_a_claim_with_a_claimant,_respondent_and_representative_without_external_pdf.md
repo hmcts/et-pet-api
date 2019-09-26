@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "106144b2-537b-4066-b4bc-2982531d9b9a",
+  "uuid": "89e6f914-e8aa-44a3-9b71-dcab4aaff40c",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "d250f3c3-2343-48f1-a6a5-bec2216922ee",
+      "uuid": "e8e7c5f5-b9b6-4b63-bdf9-b043709fed67",
       "command": "BuildClaim",
       "data": {
         "employment_details": {
@@ -62,7 +62,7 @@ Cookie: </pre>
         "case_type": "Single",
         "jurisdiction": "2",
         "office_code": "22",
-        "date_of_receipt": "2019-04-29T07:38:41+0000",
+        "date_of_receipt": "2019-09-26T11:37:49+0000",
         "other_known_claimant_names": "",
         "discrimination_claims": [
 
@@ -83,7 +83,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "24451846-9eac-4a4c-9c89-89bb3c4cb11f",
+      "uuid": "911148ab-f6fc-443f-ad4f-d2e22d96300b",
       "command": "BuildPrimaryRespondent",
       "data": {
         "name": "dodgy_co",
@@ -119,7 +119,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "1e414de6-84f9-4b6d-a98c-0cc70f295c54",
+      "uuid": "545ca8d5-acac-4226-ad9c-af9f3a64bff5",
       "command": "BuildPrimaryClaimant",
       "data": {
         "title": "Mr",
@@ -130,7 +130,8 @@ Cookie: </pre>
           "street": "Petty France",
           "locality": "London",
           "county": "Greater London",
-          "post_code": "SW1H 9AJ"
+          "post_code": "SW1H 9AJ",
+          "country": "United Kingdom"
         },
         "address_telephone_number": "01234 567890",
         "mobile_number": "01234 098765",
@@ -143,7 +144,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "32318832-f033-4639-929f-9be3f80ee6ec",
+      "uuid": "f80d96c1-3c2b-4cca-9c05-096ed0999140",
       "command": "BuildSecondaryClaimants",
       "data": [
         {
@@ -169,7 +170,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "581709a7-fb34-4323-a541-0ba14e4be901",
+      "uuid": "d32772a5-a245-43c5-b4bb-9e21de368111",
       "command": "BuildSecondaryRespondents",
       "data": [
         {
@@ -207,7 +208,7 @@ Cookie: </pre>
       ]
     },
     {
-      "uuid": "1bdf8ec9-a993-46e2-802a-c4a001070de3",
+      "uuid": "89f60bf0-7280-4149-8a0d-cc1eb998f7cf",
       "command": "BuildPrimaryRepresentative",
       "data": {
         "address_attributes": {
@@ -235,11 +236,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/claims/build_claim&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;106144b2-537b-4066-b4bc-2982531d9b9a&quot;,
+  &quot;uuid&quot;: &quot;89e6f914-e8aa-44a3-9b71-dcab4aaff40c&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;d250f3c3-2343-48f1-a6a5-bec2216922ee&quot;,
+      &quot;uuid&quot;: &quot;e8e7c5f5-b9b6-4b63-bdf9-b043709fed67&quot;,
       &quot;command&quot;: &quot;BuildClaim&quot;,
       &quot;data&quot;: {
         &quot;employment_details&quot;: {
@@ -267,7 +268,7 @@ Cookie: </pre>
         &quot;case_type&quot;: &quot;Single&quot;,
         &quot;jurisdiction&quot;: &quot;2&quot;,
         &quot;office_code&quot;: &quot;22&quot;,
-        &quot;date_of_receipt&quot;: &quot;2019-04-29T07:38:41+0000&quot;,
+        &quot;date_of_receipt&quot;: &quot;2019-09-26T11:37:49+0000&quot;,
         &quot;other_known_claimant_names&quot;: &quot;&quot;,
         &quot;discrimination_claims&quot;: [
 
@@ -288,7 +289,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;24451846-9eac-4a4c-9c89-89bb3c4cb11f&quot;,
+      &quot;uuid&quot;: &quot;911148ab-f6fc-443f-ad4f-d2e22d96300b&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -324,7 +325,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;1e414de6-84f9-4b6d-a98c-0cc70f295c54&quot;,
+      &quot;uuid&quot;: &quot;545ca8d5-acac-4226-ad9c-af9f3a64bff5&quot;,
       &quot;command&quot;: &quot;BuildPrimaryClaimant&quot;,
       &quot;data&quot;: {
         &quot;title&quot;: &quot;Mr&quot;,
@@ -335,7 +336,8 @@ Cookie: </pre>
           &quot;street&quot;: &quot;Petty France&quot;,
           &quot;locality&quot;: &quot;London&quot;,
           &quot;county&quot;: &quot;Greater London&quot;,
-          &quot;post_code&quot;: &quot;SW1H 9AJ&quot;
+          &quot;post_code&quot;: &quot;SW1H 9AJ&quot;,
+          &quot;country&quot;: &quot;United Kingdom&quot;
         },
         &quot;address_telephone_number&quot;: &quot;01234 567890&quot;,
         &quot;mobile_number&quot;: &quot;01234 098765&quot;,
@@ -348,7 +350,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;32318832-f033-4639-929f-9be3f80ee6ec&quot;,
+      &quot;uuid&quot;: &quot;f80d96c1-3c2b-4cca-9c05-096ed0999140&quot;,
       &quot;command&quot;: &quot;BuildSecondaryClaimants&quot;,
       &quot;data&quot;: [
         {
@@ -374,7 +376,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;581709a7-fb34-4323-a541-0ba14e4be901&quot;,
+      &quot;uuid&quot;: &quot;d32772a5-a245-43c5-b4bb-9e21de368111&quot;,
       &quot;command&quot;: &quot;BuildSecondaryRespondents&quot;,
       &quot;data&quot;: [
         {
@@ -412,7 +414,7 @@ Cookie: </pre>
       ]
     },
     {
-      &quot;uuid&quot;: &quot;1bdf8ec9-a993-46e2-802a-c4a001070de3&quot;,
+      &quot;uuid&quot;: &quot;89f60bf0-7280-4149-8a0d-cc1eb998f7cf&quot;,
       &quot;command&quot;: &quot;BuildPrimaryRepresentative&quot;,
       &quot;data&quot;: {
         &quot;address_attributes&quot;: {
@@ -445,11 +447,17 @@ Cookie: </pre>
 
 #### Headers
 
-<pre>Content-Type: application/json; charset=utf-8
+<pre>X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Permitted-Cross-Domain-Policies: none
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 416f28ac-8b43-45af-8e78-06d97ead34a6
-X-Runtime: 0.036581
-Content-Length: 931</pre>
+X-Request-Id: 2b73876b-9518-4fc6-8a03-87bfa6e6b667
+X-Runtime: 0.044935
+Content-Length: 773</pre>
 
 #### Status
 
@@ -457,4 +465,4 @@ Content-Length: 931</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"BuildClaim":{"reference":"222000000200","office":{"name":"London Central","code":22,"telephone":"020 7273 8603","address":"Victory House, 30-34 Kingsway, London WC2B 6EX","email":"londoncentralet@hmcts.gsi.gov.uk"},"pdf_url":"http://localhost:9000/etapibuckettest/5KL3ugfH8V8DEn7VaTsxZ2Eh?response-content-disposition=attachment%3B%20filename%3D%22et1_first_last.pdf%22%3B%20filename%2A%3DUTF-8%27%27et1_first_last.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190429%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190429T073842Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=4b81e1773553ef2908afa8e61a57a1a6af83a0f9af9a69eea606a6606ca1f15e"},"BuildPrimaryRespondent":{},"BuildPrimaryClaimant":{},"BuildSecondaryClaimants":{},"BuildSecondaryRespondents":{},"BuildPrimaryRepresentative":{}},"uuid":"106144b2-537b-4066-b4bc-2982531d9b9a"}</pre>
+<pre>{"status":"accepted","meta":{"BuildClaim":{"reference":"222000000200","office":{"name":"London Central","code":22,"telephone":"020 7273 8603","address":"Victory House, 30-34 Kingsway, London WC2B 6EX","email":"londoncentralet@justice.gov.uk"},"pdf_url":"http://localhost:10000/devstoreaccount1/et-api-container/zvemu82acg1d1r5xbdfpzxo6ean6?sp=r\u0026sv=2016-05-31\u0026se=2019-09-26T12%3A37%3A49Z\u0026rscd=attachment%3B+filename%3D%22et1_first_last.pdf%22%3B+filename*%3DUTF-8%27%27et1_first_last.pdf\u0026sr=b\u0026sig=cc7W%2FrBKy6R%2BiogTN6%2Flm4bAs%2BQ6wN48hT1esM%2FXdVA%3D"},"BuildPrimaryRespondent":{},"BuildPrimaryClaimant":{},"BuildSecondaryClaimants":{},"BuildSecondaryRespondents":{},"BuildPrimaryRepresentative":{}},"uuid":"89e6f914-e8aa-44a3-9b71-dcab4aaff40c"}</pre>

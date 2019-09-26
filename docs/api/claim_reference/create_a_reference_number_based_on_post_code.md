@@ -30,7 +30,7 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "dd0da189-1cf4-423a-9850-31455394fc4f",
+  "uuid": "232b5631-2d72-4e34-9ed4-1616b0a599a7",
   "command": "CreateReference",
   "async": false,
   "data": {
@@ -41,7 +41,7 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/references/create_reference&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;dd0da189-1cf4-423a-9850-31455394fc4f&quot;,
+  &quot;uuid&quot;: &quot;232b5631-2d72-4e34-9ed4-1616b0a599a7&quot;,
   &quot;command&quot;: &quot;CreateReference&quot;,
   &quot;async&quot;: false,
   &quot;data&quot;: {
@@ -57,12 +57,18 @@ Cookie: </pre>
 
 #### Headers
 
-<pre>Content-Type: application/json; charset=utf-8
-ETag: W/&quot;389d8cc7c8914f21f74ce1fea5e99d2c&quot;
+<pre>X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Permitted-Cross-Domain-Policies: none
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: application/json; charset=utf-8
+ETag: W/&quot;73b9255b00f49d218483fd7931a91905&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 95ccaf97-fa6a-44b2-9a78-13464e85a074
-X-Runtime: 0.028165
-Content-Length: 246</pre>
+X-Request-Id: b97f0ede-c9ca-4bb0-a08c-147d981f5074
+X-Runtime: 0.021731
+Content-Length: 287</pre>
 
 #### Status
 
@@ -70,4 +76,4 @@ Content-Length: 246</pre>
 
 #### Body
 
-<pre>{"status":"created","meta":{},"uuid":"dd0da189-1cf4-423a-9850-31455394fc4f","data":{"reference":"222000036100","office":{"code":"22","name":"London Central","address":"Victory House, 30-34 Kingsway, London WC2B 6EX","telephone":"020 7273 8603"}}}</pre>
+<pre>{"status":"created","meta":{},"uuid":"232b5631-2d72-4e34-9ed4-1616b0a599a7","data":{"reference":"222000000100","office":{"code":"22","name":"London Central","address":"Victory House, 30-34 Kingsway, London WC2B 6EX","telephone":"020 7273 8603","email":"londoncentralet@justice.gov.uk"}}}</pre>
