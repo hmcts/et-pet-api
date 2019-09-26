@@ -8,4 +8,6 @@ class Export < ApplicationRecord
 
   scope :claims, -> { where(resource_type: 'Claim') }
   scope :responses, -> { where(resource_type: 'Response') }
+
+  validates :state, inclusion: ['created', 'in_progress', 'complete']
 end

@@ -72,4 +72,6 @@ Rails.application.configure do
   end
   config.et_acas_api.server_time_zone = 'Europe/London'
   config.et_acas_api.service_url = ENV.fetch('ACAS_SERVICE_URL', 'https://testec.acas.org.uk/Lookup/ECService.svc')
+
+  config.hosts.clear
 end
