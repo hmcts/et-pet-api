@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: 1470abf0caad8f10358fd0b2fe464fc700c210b7
-  tag: v0.3.6
+  revision: f5aeb525c06bae4b1f949857d64a9abc0ca4615d
+  tag: v0.3.8
   specs:
-    et_exporter (0.3.6)
+    et_exporter (0.3.8)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (>= 5.2.3)
@@ -160,7 +160,7 @@ GEM
     dotenv-rails (2.7.5)
       dotenv (= 2.7.5)
       railties (>= 3.2, < 6.1)
-    erubi (1.8.0)
+    erubi (1.9.0)
     et-orbi (1.2.2)
       tzinfo
     factory_bot (5.0.2)
@@ -212,13 +212,13 @@ GEM
     mimemagic (0.3.3)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    minitest (5.11.3)
+    minitest (5.12.0)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     mustache (1.1.0)
     mustermann (1.0.3)
-    nio4r (2.5.1)
+    nio4r (2.5.2)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     nori (2.6.0)
