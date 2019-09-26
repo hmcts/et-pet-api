@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "2b8f4ab3-1fc2-449c-9bcb-c6f2c40f06ae",
+  "uuid": "a32388c0-f40d-4e39-aacc-50a9abdaa45f",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "19fe5efe-e3ed-4712-a900-810ee10198cd",
+      "uuid": "07ad8d02-7562-4f24-81f6-9596056a61cc",
       "command": "BuildResponse",
       "data": {
         "additional_information_key": null,
@@ -51,7 +51,7 @@ Cookie: </pre>
         "agree_with_claimants_description_of_job_or_title": false,
         "disagree_claimants_job_or_title": "lorem ipsum job title",
         "agree_with_claimants_hours": false,
-        "queried_hours": 32.0,
+        "queried_hours": 101.01,
         "agree_with_earnings_details": false,
         "queried_pay_before_tax": 1000.0,
         "queried_pay_before_tax_period": "Monthly",
@@ -70,7 +70,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "b5bb2567-9022-43a6-8550-0a88a230105b",
+      "uuid": "32037622-f31c-48c0-8016-cb5cfa2e7cd4",
       "command": "BuildRespondent",
       "data": {
         "name": "dodgy_co",
@@ -111,11 +111,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/respondents/build_response&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;2b8f4ab3-1fc2-449c-9bcb-c6f2c40f06ae&quot;,
+  &quot;uuid&quot;: &quot;a32388c0-f40d-4e39-aacc-50a9abdaa45f&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;19fe5efe-e3ed-4712-a900-810ee10198cd&quot;,
+      &quot;uuid&quot;: &quot;07ad8d02-7562-4f24-81f6-9596056a61cc&quot;,
       &quot;command&quot;: &quot;BuildResponse&quot;,
       &quot;data&quot;: {
         &quot;additional_information_key&quot;: null,
@@ -132,7 +132,7 @@ Cookie: </pre>
         &quot;agree_with_claimants_description_of_job_or_title&quot;: false,
         &quot;disagree_claimants_job_or_title&quot;: &quot;lorem ipsum job title&quot;,
         &quot;agree_with_claimants_hours&quot;: false,
-        &quot;queried_hours&quot;: 32.0,
+        &quot;queried_hours&quot;: 101.01,
         &quot;agree_with_earnings_details&quot;: false,
         &quot;queried_pay_before_tax&quot;: 1000.0,
         &quot;queried_pay_before_tax_period&quot;: &quot;Monthly&quot;,
@@ -151,7 +151,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;b5bb2567-9022-43a6-8550-0a88a230105b&quot;,
+      &quot;uuid&quot;: &quot;32037622-f31c-48c0-8016-cb5cfa2e7cd4&quot;,
       &quot;command&quot;: &quot;BuildRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -197,10 +197,16 @@ Cookie: </pre>
 
 #### Headers
 
-<pre>Content-Type: application/json; charset=utf-8
+<pre>X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Permitted-Cross-Domain-Policies: none
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: c31d38de-07c6-4087-9e2d-8e27b935d868
-X-Runtime: 0.009365
+X-Request-Id: e909a6d8-1c58-49ca-98d7-f73a8c61624d
+X-Runtime: 0.009002
 Content-Length: 290</pre>
 
 #### Status
@@ -209,4 +215,4 @@ Content-Length: 290</pre>
 
 #### Body
 
-<pre>{"status":"not_accepted","uuid":"2b8f4ab3-1fc2-449c-9bcb-c6f2c40f06ae","errors":[{"status":422,"code":"invalid_office_code","title":"Invalid case number","detail":"Invalid case number","source":"/data/0/case_number","command":"BuildResponse","uuid":"19fe5efe-e3ed-4712-a900-810ee10198cd"}]}</pre>
+<pre>{"status":"not_accepted","uuid":"a32388c0-f40d-4e39-aacc-50a9abdaa45f","errors":[{"status":422,"code":"invalid_office_code","title":"Invalid case number","detail":"Invalid case number","source":"/data/0/case_number","command":"BuildResponse","uuid":"07ad8d02-7562-4f24-81f6-9596056a61cc"}]}</pre>

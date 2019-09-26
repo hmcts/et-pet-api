@@ -30,7 +30,7 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "971c1815-471b-4c23-ac6e-5a6997575597",
+  "uuid": "4a6c0c15-6690-4a34-a204-d5fc971fa9f0",
   "command": "ValidateClaimantsFile",
   "data": {
     "data_url": null,
@@ -43,7 +43,7 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/validate&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;971c1815-471b-4c23-ac6e-5a6997575597&quot;,
+  &quot;uuid&quot;: &quot;4a6c0c15-6690-4a34-a204-d5fc971fa9f0&quot;,
   &quot;command&quot;: &quot;ValidateClaimantsFile&quot;,
   &quot;data&quot;: {
     &quot;data_url&quot;: null,
@@ -61,10 +61,16 @@ Cookie: </pre>
 
 #### Headers
 
-<pre>Content-Type: application/json; charset=utf-8
+<pre>X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Permitted-Cross-Domain-Policies: none
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 89ee6861-e428-4967-8bd0-c99348759d41
-X-Runtime: 0.028456
+X-Request-Id: 7824e902-6f41-47dd-b89f-3d3fb6e5cdf7
+X-Runtime: 0.006488
 Content-Length: 269</pre>
 
 #### Status
@@ -73,4 +79,4 @@ Content-Length: 269</pre>
 
 #### Body
 
-<pre>{"status":"not_accepted","uuid":"971c1815-471b-4c23-ac6e-5a6997575597","errors":[{"status":422,"code":"missing_file","title":"file is missing","detail":"file is missing","source":"/base","command":"ValidateClaimantsFile","uuid":"971c1815-471b-4c23-ac6e-5a6997575597"}]}</pre>
+<pre>{"status":"not_accepted","uuid":"4a6c0c15-6690-4a34-a204-d5fc971fa9f0","errors":[{"status":422,"code":"missing_file","title":"file is missing","detail":"file is missing","source":"/base","command":"ValidateClaimantsFile","uuid":"4a6c0c15-6690-4a34-a204-d5fc971fa9f0"}]}</pre>

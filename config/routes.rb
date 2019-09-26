@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       end
       namespace :exports do
         post "export_responses" => 'export_responses#create'
+        post "export_claims" => 'export_claims#create'
       end
       post "build_blob" => "build_blobs#create"
       post "validate" => "validation#validate"

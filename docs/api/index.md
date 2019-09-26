@@ -10,12 +10,6 @@ Acas Certificate Resource
 * [500 Error response (something wrong with the ACAS server)](acas_certificate/500_error_response_(something_wrong_with_the_acas_server).md)
 * [Valid certificate response](acas_certificate/valid_certificate_response.md)
 
-## Blob Resource (Amazon mode)
-
-Signed Blob resource - amazon mode
-
-* [Create a signed s3 object suitable for use in a HTML form for use with direct upload](blob_resource_(amazon_mode)/create_a_signed_s3_object_suitable_for_use_in_a_html_form_for_use_with_direct_upload.md)
-
 ## Blob Resource (Azure mode)
 
 Signed Blob resource - azure mode
@@ -41,6 +35,22 @@ Claim Reference resource
 Diversity response resource
 
 * [Create a diversity response](diversity_response/create_a_diversity_response.md)
+
+## Export Claims
+
+Used by the admin to request that a list of claims are exported to an external system such as CCD
+
+* [Attempting to export a claim to a non existent external system id](export_claims/attempting_to_export_a_claim_to_a_non_existent_external_system_id.md)
+* [Attempting to export none existent claims](export_claims/attempting_to_export_none_existent_claims.md)
+* [Export an existing claim](export_claims/export_an_existing_claim.md)
+
+## Export Responses
+
+Used by the admin to request that a list of responses are exported to an external system such as CCD
+
+* [Attempting to export a response to a non existent external system id](export_responses/attempting_to_export_a_response_to_a_non_existent_external_system_id.md)
+* [Attempting to export none existent responses](export_responses/attempting_to_export_none_existent_responses.md)
+* [Export an existing response](export_responses/export_an_existing_response.md)
 
 ## Response
 

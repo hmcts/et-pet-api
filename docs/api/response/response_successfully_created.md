@@ -30,11 +30,11 @@ Cookie: </pre>
 #### Body
 
 <pre>{
-  "uuid": "4d765cb7-72fb-4363-a7a9-5203f9dea9b6",
+  "uuid": "9f6f608d-33a6-451e-96f2-0c2c6ed9cb89",
   "command": "SerialSequence",
   "data": [
     {
-      "uuid": "9d08acf1-5a58-4418-87f9-956d56c2eb49",
+      "uuid": "dac5f312-c5d5-4186-9459-42fa30aba57c",
       "command": "BuildResponse",
       "data": {
         "additional_information_key": null,
@@ -51,7 +51,7 @@ Cookie: </pre>
         "agree_with_claimants_description_of_job_or_title": false,
         "disagree_claimants_job_or_title": "lorem ipsum job title",
         "agree_with_claimants_hours": false,
-        "queried_hours": 32.0,
+        "queried_hours": 101.01,
         "agree_with_earnings_details": false,
         "queried_pay_before_tax": 1000.0,
         "queried_pay_before_tax_period": "Monthly",
@@ -70,7 +70,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "b6ab94c4-6349-4374-adc7-a1354e34ff87",
+      "uuid": "78d03258-ee3e-472a-a968-7dcfc99098e5",
       "command": "BuildRespondent",
       "data": {
         "name": "dodgy_co",
@@ -106,7 +106,7 @@ Cookie: </pre>
       }
     },
     {
-      "uuid": "e645474d-7f19-4218-8e7d-f8ccff66c583",
+      "uuid": "df9d3664-cd76-4d2a-8d14-9d4ead804ea3",
       "command": "BuildRepresentative",
       "data": {
         "address_attributes": {
@@ -134,11 +134,11 @@ Cookie: </pre>
 #### cURL
 
 <pre class="request">curl &quot;http://localhost:3000/api/v2/respondents/build_response&quot; -d &#39;{
-  &quot;uuid&quot;: &quot;4d765cb7-72fb-4363-a7a9-5203f9dea9b6&quot;,
+  &quot;uuid&quot;: &quot;9f6f608d-33a6-451e-96f2-0c2c6ed9cb89&quot;,
   &quot;command&quot;: &quot;SerialSequence&quot;,
   &quot;data&quot;: [
     {
-      &quot;uuid&quot;: &quot;9d08acf1-5a58-4418-87f9-956d56c2eb49&quot;,
+      &quot;uuid&quot;: &quot;dac5f312-c5d5-4186-9459-42fa30aba57c&quot;,
       &quot;command&quot;: &quot;BuildResponse&quot;,
       &quot;data&quot;: {
         &quot;additional_information_key&quot;: null,
@@ -155,7 +155,7 @@ Cookie: </pre>
         &quot;agree_with_claimants_description_of_job_or_title&quot;: false,
         &quot;disagree_claimants_job_or_title&quot;: &quot;lorem ipsum job title&quot;,
         &quot;agree_with_claimants_hours&quot;: false,
-        &quot;queried_hours&quot;: 32.0,
+        &quot;queried_hours&quot;: 101.01,
         &quot;agree_with_earnings_details&quot;: false,
         &quot;queried_pay_before_tax&quot;: 1000.0,
         &quot;queried_pay_before_tax_period&quot;: &quot;Monthly&quot;,
@@ -174,7 +174,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;b6ab94c4-6349-4374-adc7-a1354e34ff87&quot;,
+      &quot;uuid&quot;: &quot;78d03258-ee3e-472a-a968-7dcfc99098e5&quot;,
       &quot;command&quot;: &quot;BuildRespondent&quot;,
       &quot;data&quot;: {
         &quot;name&quot;: &quot;dodgy_co&quot;,
@@ -210,7 +210,7 @@ Cookie: </pre>
       }
     },
     {
-      &quot;uuid&quot;: &quot;e645474d-7f19-4218-8e7d-f8ccff66c583&quot;,
+      &quot;uuid&quot;: &quot;df9d3664-cd76-4d2a-8d14-9d4ead804ea3&quot;,
       &quot;command&quot;: &quot;BuildRepresentative&quot;,
       &quot;data&quot;: {
         &quot;address_attributes&quot;: {
@@ -243,11 +243,17 @@ Cookie: </pre>
 
 #### Headers
 
-<pre>Content-Type: application/json; charset=utf-8
+<pre>X-Frame-Options: SAMEORIGIN
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+X-Download-Options: noopen
+X-Permitted-Cross-Domain-Policies: none
+Referrer-Policy: strict-origin-when-cross-origin
+Content-Type: application/json; charset=utf-8
 Cache-Control: no-cache
-X-Request-Id: 568b65c7-f399-41a3-af94-874f3c6ad004
-X-Runtime: 0.073830
-Content-Length: 837</pre>
+X-Request-Id: 900c77cc-34b5-4589-8d3c-5ea644c8174e
+X-Runtime: 0.044642
+Content-Length: 677</pre>
 
 #### Status
 
@@ -255,4 +261,4 @@ Content-Length: 837</pre>
 
 #### Body
 
-<pre>{"status":"accepted","meta":{"BuildResponse":{"submitted_at":"2019-04-29T07:38:42.753Z","reference":"142000036200","office_address":"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR","office_phone_number":"0117 929 8261","pdf_url":"http://localhost:9000/etapibuckettest/hXDJC3msVKrENEm7LL2WXo6w?response-content-disposition=attachment%3B%20filename%3D%22et3_atos_export.pdf%22%3B%20filename%2A%3DUTF-8%27%27et3_atos_export.pdf\u0026X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=accessKey1%2F20190429%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20190429T073842Z\u0026X-Amz-Expires=3600\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=0f414dae6d7844385a17b82af6cf2f8f4309f36965f7a757d1e4a6c3b64a8760"},"BuildRespondent":{},"BuildRepresentative":{}},"uuid":"4d765cb7-72fb-4363-a7a9-5203f9dea9b6"}</pre>
+<pre>{"status":"accepted","meta":{"BuildResponse":{"submitted_at":"2019-09-26T11:37:50.219Z","reference":"142000000200","office_address":"Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR","office_phone_number":"01224 593 137","pdf_url":"http://localhost:10000/devstoreaccount1/et-api-container/s60sccj6ng7v0dxf0v9uo2gxyizp?sp=r\u0026sv=2016-05-31\u0026se=2019-09-26T12%3A37%3A50Z\u0026rscd=attachment%3B+filename%3D%22et3_atos_export.pdf%22%3B+filename*%3DUTF-8%27%27et3_atos_export.pdf\u0026sr=b\u0026sig=hGC1jm80vGD%2FI4s1qPTZk%2BMvKkyzI3f%2FiXW2LpfsZrU%3D"},"BuildRespondent":{},"BuildRepresentative":{}},"uuid":"9f6f608d-33a6-451e-96f2-0c2c6ed9cb89"}</pre>
