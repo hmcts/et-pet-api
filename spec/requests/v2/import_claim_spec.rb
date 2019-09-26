@@ -229,8 +229,8 @@ RSpec.describe 'Import Claim Request', type: :request do
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, input_csv_file)
           file.download_blob_to(full_path)
-          input_csv_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_csv_file), __FILE__)
-          expect(full_path).to be_a_file_copy_of(input_csv_file_full_path.downcase)
+          input_csv_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_csv_file.downcase), __FILE__)
+          expect(full_path).to be_a_file_copy_of(input_csv_file_full_path)
         end
       end
     end
