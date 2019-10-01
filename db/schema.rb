@@ -297,6 +297,7 @@ ActiveRecord::Schema.define(version: 2019_10_01_070626) do
     t.string "export_queue"
     t.boolean "export_claims", default: false
     t.boolean "export_responses", default: false, null: false
+    t.string "export_feedback_queue", default: "default", null: false
     t.index ["reference"], name: "index_external_systems_on_reference", unique: true
   end
 
