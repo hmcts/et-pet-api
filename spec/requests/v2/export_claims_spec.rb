@@ -66,9 +66,9 @@ RSpec.describe 'Export Claims Request', type: :request do
       post '/api/v2/exports/export_claims', params: command.to_json, headers: default_headers
       run_background_jobs
 
-      # Assert - Check the example claim now has an export record
+      # Assert - Check the example claim now has an export record and will be marked as queued
       claim = Claim.find_by_reference(example_claim_reference)
-      expect(Export.where(external_system_id: example_external_system.id, resource: claim, state: 'created').count).to be 1
+      expect(Export.where(external_system_id: example_external_system.id, resource: claim, state: 'queued').count).to be 1
     end
 
     it 'returns identical data if called twice with the same uuid', background_jobs: :disable do
