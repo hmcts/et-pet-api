@@ -2,7 +2,7 @@ require 'rails_helper'
 RSpec.describe ClaimExportFeedbackReceivedHandler do
   subject(:handler) { described_class.new }
 
-  it 'adds an event with a status matching that given' do
+  it 'adds an event with a status, percent_complete and message matching that given' do
     # Arrange - Create an example export
     export = create(:export, :claim, :ccd)
     example_data = {
@@ -12,17 +12,18 @@ RSpec.describe ClaimExportFeedbackReceivedHandler do
       },
       'external_data' => {},
       'state' => 'in_progress',
-      'percent_complete' => 0
+      'percent_complete' => 12,
+      'message' => 'Still ongoing'
     }
 
     # Act - call the handler
     handler.handle(example_data.to_json)
 
     # Assert - Ensure an event has been added
-    expect(ExportEvent.where(export: export, state: 'in_progress').count).to be 1
+    expect(ExportEvent.where(export: export, state: 'in_progress', percent_complete: 12, message: 'Still ongoing').count).to be 1
   end
 
-  it 'sets the state to the state given' do
+  it 'sets the state, percent_complete and message to what was given' do
     # Arrange - Create an example export
     export = create(:export, :claim, :ccd)
     example_data = {
@@ -32,14 +33,15 @@ RSpec.describe ClaimExportFeedbackReceivedHandler do
       },
       'external_data' => {},
       'state' => 'in_progress',
-      'percent_complete' => 0
+      'percent_complete' => 12,
+      'message' => 'Still ongoing'
     }
 
     # Act - call the handler
     handler.handle(example_data.to_json)
 
     # Assert - Ensure an event has been added
-    expect(Export.find(export.id).state).to eql "in_progress"
+    expect(Export.find(export.id)).to have_attributes state: "in_progress", percent_complete: 12, message: 'Still ongoing'
   end
 
   it 'records the sidekiq jid in the data' do
@@ -52,7 +54,8 @@ RSpec.describe ClaimExportFeedbackReceivedHandler do
       },
       'external_data' => {},
       'state' => 'in_progress',
-      'percent_complete' => 0
+      'percent_complete' => 0,
+      'message' => 'Still ongoing'
     }
 
     # Act - call the handler
@@ -75,7 +78,8 @@ RSpec.describe ClaimExportFeedbackReceivedHandler do
         'case_type_id' => 'examplecasetypeid'
       },
       'state' => 'in_progress',
-      'percent_complete' => 0
+      'percent_complete' => 0,
+      'message' => 'Still ongoing'
     }
 
     # Act - call the handler

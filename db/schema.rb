@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_01_070626) do
+ActiveRecord::Schema.define(version: 2019_10_02_075518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -249,6 +249,8 @@ ActiveRecord::Schema.define(version: 2019_10_01_070626) do
     t.jsonb "data"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "percent_complete", default: 0, null: false
+    t.string "message"
     t.index ["export_id"], name: "index_export_events_on_export_id"
   end
 
@@ -272,6 +274,8 @@ ActiveRecord::Schema.define(version: 2019_10_01_070626) do
     t.bigint "external_system_id", null: false
     t.string "state", default: "created"
     t.jsonb "external_data", default: {}, null: false
+    t.integer "percent_complete", default: 0, null: false
+    t.string "message"
     t.index ["external_system_id"], name: "index_exports_on_external_system_id"
     t.index ["resource_id"], name: "index_exports_on_resource_id"
   end

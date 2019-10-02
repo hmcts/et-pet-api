@@ -2,7 +2,7 @@ require 'rails_helper'
 RSpec.describe ClaimExportSucceededHandler do
   subject(:handler) { described_class.new }
 
-  it 'adds an event with a status of complete' do
+  it 'adds an event with a status of complete and a percent_complete of 100' do
     # Arrange - Create an example export
     export = create(:export, :claim, :ccd)
     example_data = {
@@ -13,17 +13,18 @@ RSpec.describe ClaimExportSucceededHandler do
       'external_data' => {
         'case_id' => 'examplecaseid',
         'case_type_id' => 'examplecasetypeid'
-      }
+      },
+      'message' => 'Claim exported'
     }
 
     # Act - call the handler
     handler.handle(example_data.to_json)
 
     # Assert - Ensure an event has been added
-    expect(ExportEvent.where(export: export, state: 'complete').count).to be 1
+    expect(ExportEvent.where(export: export, state: 'complete', percent_complete: 100).count).to be 1
   end
 
-  it 'sets the state to complete' do
+  it 'sets the state to complete and the percent_complete to 100' do
     # Arrange - Create an example export
     export = create(:export, :claim, :ccd)
     example_data = {
@@ -34,14 +35,15 @@ RSpec.describe ClaimExportSucceededHandler do
       'external_data' => {
         'case_id' => 'examplecaseid',
         'case_type_id' => 'examplecasetypeid'
-      }
+      },
+      'message' => 'Claim exported'
     }
 
     # Act - call the handler
     handler.handle(example_data.to_json)
 
     # Assert - Ensure an event has been added
-    expect(Export.find(export.id).state).to eql "complete"
+    expect(Export.find(export.id)).to have_attributes state: "complete", percent_complete: 100
   end
 
   it 'records the sidekiq jid in the data' do
@@ -55,7 +57,8 @@ RSpec.describe ClaimExportSucceededHandler do
       'external_data' => {
         'case_id' => 'examplecaseid',
         'case_type_id' => 'examplecasetypeid'
-      }
+      },
+      'message' => 'Claim exported'
     }
 
     # Act - call the handler
@@ -76,7 +79,8 @@ RSpec.describe ClaimExportSucceededHandler do
       'external_data' => {
         'case_id' => 'examplecaseid',
         'case_type_id' => 'examplecasetypeid'
-      }
+      },
+      'message' => 'Claim exported'
     }
 
     # Act - call the handler
@@ -97,7 +101,8 @@ RSpec.describe ClaimExportSucceededHandler do
       'external_data' => {
         'case_id' => 'examplecaseid',
         'case_type_id' => 'examplecasetypeid'
-      }
+      },
+      'message' => 'Claim exported'
     }
 
     # Act - call the handler
