@@ -23,6 +23,25 @@ RSpec.describe ClaimExportFeedbackReceivedHandler do
     expect(ExportEvent.where(export: export, state: 'in_progress', percent_complete: 12, message: 'Still ongoing').count).to be 1
   end
 
+  it 'changes the status only if required' do
+    # Arrange - Create an example export
+    export = create(:export, :claim, :ccd)
+    example_data = {
+      'export_id' => export.id,
+      'sidekiq' => {
+        'jid' => 'examplejid'
+      },
+      'external_data' => {},
+      'state' => 'in_progress'
+    }
+
+    # Act - call the handler
+    handler.handle(example_data.to_json)
+
+    # Assert - Ensure an event has been added
+    expect(ExportEvent.where(export: export, state: 'in_progress').count).to be 1
+  end
+
   it 'sets the state, percent_complete and message to what was given' do
     # Arrange - Create an example export
     export = create(:export, :claim, :ccd)

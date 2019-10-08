@@ -3,6 +3,7 @@
 # @private
 # An internal join model not to be used directly
 class Export < ApplicationRecord
+  FINAL_STATES = ['complete', 'failed'].freeze
   belongs_to :resource, polymorphic: true
   belongs_to :external_system
   has_many :events, class_name: 'ExportEvent'
@@ -10,5 +11,5 @@ class Export < ApplicationRecord
   scope :claims, -> { where(resource_type: 'Claim') }
   scope :responses, -> { where(resource_type: 'Response') }
 
-  validates :state, inclusion: ['queued', 'created', 'in_progress', 'complete']
+  validates :state, inclusion: ['queued', 'created', 'in_progress', 'complete', 'erroring', 'failed']
 end
