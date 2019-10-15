@@ -28,10 +28,10 @@ gem 'wisper', '2.0.0'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem 'sidekiq', '~> 5.2'
+gem 'sidekiq', '~> 6.0'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
-gem 'sidekiq_alive', '~> 1.0'
+gem 'sidekiq_alive', '~> 2.0'
 gem 'sentry-raven', '~> 2.11'
 
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
