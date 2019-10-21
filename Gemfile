@@ -20,7 +20,7 @@ gem 'jbuilder', '~> 2.9'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # Wisper is used as an in process pub/sub to decouple events / commands
-gem 'wisper', '2.0.0'
+gem 'wisper', '~> 2.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -32,7 +32,7 @@ gem 'sidekiq', '~> 6.0'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sidekiq_alive', '~> 2.0'
-gem 'sentry-raven', '~> 2.11'
+gem 'sentry-raven', '~> 2.12'
 
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
@@ -55,11 +55,10 @@ gem 'httparty', '~> 0.17'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails', '~> 3.8'
+  gem 'rspec-rails', '~> 3.9'
   gem 'simplecov', '~> 0.17'
   gem 'dotenv-rails', '~> 2.4'
   gem 'site_prism', '~> 3.2'
-  gem 'rspec_api_documentation', '~> 6.1'
   gem 'bullet', '~> 6.0'
 end
 
@@ -68,7 +67,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring', '~> 2.1.0'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  gem 'rubocop', '~> 0.74'
+  gem 'rubocop', '~> 0.75'
   gem 'rubocop-rspec', '~> 1.33'
 end
 
