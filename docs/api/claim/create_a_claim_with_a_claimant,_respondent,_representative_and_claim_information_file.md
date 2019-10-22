@@ -166,6 +166,46 @@ Cookie: </pre>
           "gender": "Male",
           "date_of_birth": "1982-11-21",
           "special_needs": null
+        },
+        {
+          "title": "Mr",
+          "first_name": "First",
+          "last_name": "Last",
+          "address_attributes": {
+            "building": "102",
+            "street": "Petty France",
+            "locality": "London",
+            "county": "Greater London",
+            "post_code": "SW1H 9AJ"
+          },
+          "address_telephone_number": "01234 567890",
+          "mobile_number": "01234 098765",
+          "email_address": "test@digital.justice.gov.uk",
+          "fax_number": null,
+          "contact_preference": "Email",
+          "gender": "Male",
+          "date_of_birth": "1982-11-21",
+          "special_needs": null
+        },
+        {
+          "title": "Mr",
+          "first_name": "First",
+          "last_name": "Last",
+          "address_attributes": {
+            "building": "102",
+            "street": "Petty France",
+            "locality": "London",
+            "county": "Greater London",
+            "post_code": "SW1H 9AJ"
+          },
+          "address_telephone_number": "01234 567890",
+          "mobile_number": "01234 098765",
+          "email_address": "test@digital.justice.gov.uk",
+          "fax_number": null,
+          "contact_preference": "Email",
+          "gender": "Male",
+          "date_of_birth": "1982-11-21",
+          "special_needs": null
         }
       ]
     },
