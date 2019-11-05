@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_07_065552) do
+ActiveRecord::Schema.define(version: 2019_11_05_123156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -302,6 +302,7 @@ ActiveRecord::Schema.define(version: 2019_10_07_065552) do
     t.boolean "export_claims", default: false
     t.boolean "export_responses", default: false, null: false
     t.string "export_feedback_queue", default: "default", null: false
+    t.boolean "always_save_export", default: false
     t.index ["reference"], name: "index_external_systems_on_reference", unique: true
   end
 
