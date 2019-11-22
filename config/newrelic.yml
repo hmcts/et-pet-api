@@ -1,0 +1,67 @@
+#
+# This file configures the New Relic Agent.  New Relic monitors Ruby, Java,
+# .NET, PHP, Python, Node, and Go applications with deep visibility and low
+# overhead.  For more information, visit www.newrelic.com.
+#
+# Generated November 21, 2019, for version 6.7.0.359
+#
+# For full documentation of agent configuration options, please refer to
+# https://docs.newrelic.com/docs/agents/ruby-agent/installation-configuration/ruby-agent-configuration
+
+common: &default_settings
+  # Required license key associated with your New Relic account.
+  license_key: eu01xxba24c3c7e001738216cf64bfbcbe12NRAL
+
+  # Your application name. Renaming here affects where data displays in New
+  # Relic.  For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
+  app_name: ET-API
+
+  # To disable the agent regardless of other settings, uncomment the following:
+  # agent_enabled: false
+
+  # Logging level for log/newrelic_agent.log
+  log_level: debug
+  disable_rake: true
+  disable_samplers: true
+  disable_resque: true
+  disable_dj: true
+  disable_sinatra: true
+  disable_view_instrumentation: true
+  disable_activerecord_instrumentation: true
+  disable_data_mapper: true
+  disable_action_cable_instrumentation: true
+  disable_memcached: true
+  disable_memcache_client: true
+  disable_dalli: true
+  disable_memcache_instrumentation: true
+  disable_mongo: true
+  disable_vm_sampler: true
+  disable_memory_sampler: true
+  disable_cpu_sampler: true
+  disable_delayed_job_sampler: true
+  disable_active_record_4: true
+  disable_bunny: true
+  disable_curb: true
+  disable_puma_rack: true
+  disable_puma_rack_urlmap: true
+  disable_grape: true
+
+
+# Environment-specific settings are in this section.
+# RAILS_ENV or RACK_ENV (as appropriate) is used to determine the environment.
+# If your application has other named environments, configure them here.
+development:
+  <<: *default_settings
+  app_name: My application (Development)
+
+test:
+  <<: *default_settings
+  # It doesn't make sense to report to New Relic from automated test runs.
+  monitor_mode: false
+
+staging:
+  <<: *default_settings
+  app_name: My application (Staging)
+
+production:
+  <<: *default_settings
