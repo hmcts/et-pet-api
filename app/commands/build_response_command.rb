@@ -46,6 +46,7 @@ class BuildResponseCommand < BaseCommand
     meta.merge! submitted_at: root_object.date_of_receipt, reference: root_object.reference,
                 office_address: root_object.office.address,
                 office_phone_number: root_object.office.telephone,
+                office_email: root_object.office.email,
                 pdf_url: allocator_service.allocated_url
   end
 
