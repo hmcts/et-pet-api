@@ -170,6 +170,13 @@ RSpec.describe 'Create Response Request', type: :request do
           office_phone_number: '01224 593 137'
         )
       end
+
+      it 'returns the office email address in the metadata for the response', background_jobs: :disable do
+        # Assert - Make sure we get the reference in the metadata
+        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
+          office_email: 'bristolet@justice.gov.uk'
+        )
+      end
     end
 
     shared_examples 'a response with meta for the default office' do
