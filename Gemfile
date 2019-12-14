@@ -33,7 +33,7 @@ gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sidekiq_alive', '~> 2.0'
 gem 'sentry-raven', '~> 2.12'
-gem 'et_azure_insights', '0.2.1', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.2.1'
+gem 'et_azure_insights', '0.2.3', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.2.3'
 #gem 'et_azure_insights', path: '../../../et_azure_insights'
 gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsights-Ruby.git', ref: '5db6b4'
 gem 'newrelic_rpm', group: :fake_will_remove_soon
