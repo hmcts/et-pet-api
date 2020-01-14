@@ -165,8 +165,8 @@ GEM
       tzinfo
     factory_bot (5.1.1)
       activesupport (>= 4.2.0)
-    faker (2.7.0)
-      i18n (>= 1.6, < 1.8)
+    faker (2.10.1)
+      i18n (>= 1.6, < 2)
     faraday (0.17.0)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.13.1)
@@ -186,7 +186,7 @@ GEM
     httpi (2.4.4)
       rack
       socksify
-    i18n (1.7.0)
+    i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     iodine (0.7.36)
     jaro_winkler (1.5.4)
@@ -400,7 +400,7 @@ DEPENDENCIES
   et_exporter!
   et_fake_acas_server!
   factory_bot (~> 5.0)
-  faker (~> 2.1)
+  faker (~> 2.10)
   httparty (~> 0.17)
   iodine (~> 0.7.34)
   jbuilder (~> 2.9)
