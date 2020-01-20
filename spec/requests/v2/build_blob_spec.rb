@@ -11,7 +11,7 @@ RSpec.describe 'Build a blob using the configured cloud provider', type: :reques
   end
 
   describe 'POST /api/v2/build_blob in azure mode' do
-    include_context 'with cloud provider switching', cloud_provider: :azure
+    include_context 'with cloud provider switching', cloud_provider: :azure_test
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
 
     it 'provides a response with the data in it' do

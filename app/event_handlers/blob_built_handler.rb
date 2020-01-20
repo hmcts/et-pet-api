@@ -9,9 +9,8 @@ class BlobBuiltHandler
   end
 
   def build_service_for(blob)
-    configs = Rails.configuration.active_storage.service_configurations
-    config_choice = :azure_direct_upload
-    blob.service = ActiveStorage::Service.configure config_choice, configs
+    config = Rails.configuration.active_storage
+    blob.service = ActiveStorage::Service.configure config.service, config.service_configurations
   end
 
   def unsigned_url_for(blob)

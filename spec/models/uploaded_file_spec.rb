@@ -15,7 +15,7 @@ RSpec.describe UploadedFile, type: :model do
 
   describe '#url' do
     context 'when using azure cloud provider' do
-      include_context 'with cloud provider switching', cloud_provider: :azure
+      include_context 'with cloud provider switching', cloud_provider: :azure_test
       it 'returns an azurite test server url as we are in test mode' do
         uploaded_file.file = fixture_file
 
@@ -26,7 +26,7 @@ RSpec.describe UploadedFile, type: :model do
 
   describe '#download_blob_to' do
     context 'when in azure mode' do
-      include_context 'with cloud provider switching', cloud_provider: :azure
+      include_context 'with cloud provider switching', cloud_provider: :azure_test
       it 'downloads a file to the specified location' do
         # Arrange - Setup with a fixture file and save
         uploaded_file.file = fixture_file

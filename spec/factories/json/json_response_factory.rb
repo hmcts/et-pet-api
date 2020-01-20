@@ -132,7 +132,8 @@ FactoryBot.define do
       next if rtf_file_path.nil?
 
       key = ActiveStorage::Blob.generate_unique_secure_token
-      service = ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
+      config = Rails.configuration.active_storage
+      service = ActiveStorage::Service.configure :"#{config.service}_direct_upload", config.service_configurations
       signed_uri = service.url_for_direct_upload key, expires_in: 1.hour, content_type: nil, content_length: nil, checksum: nil
       headers = {
         "User-Agent": "Azure-Storage/0.15.0-preview (Ruby 2.5.1-p57; MacOS darwin17.6.0)",

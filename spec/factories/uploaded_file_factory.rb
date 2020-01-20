@@ -100,13 +100,8 @@ FactoryBot.define do
 
     after(:build) do |uploaded_file, evaluator|
       next if evaluator.file_to_attach.nil?
-
-      service_type = case ActiveStorage::Blob.service.class.name.demodulize # AzureStorageService, DiskService or S3Service
-                     when 'AzureStorageService' then :azure
-                     when 'DiskService' then :local
-                     else raise "Unknown storage service in use - #{ActiveStorage::Blob.service.class.name.demodulize}"
-               end
-      service_type = :"#{service_type}_direct_upload" if evaluator.upload_method == :direct_upload
+      config = Rails.configuration.active_storage
+      service_type = :"#{config.service}#{evaluator.upload_method == :direct_upload ? :"_direct_upload" : ''}"
       begin
         file = File.open(evaluator.file_to_attach[:filename], 'rb')
         blob = ActiveStorage::Blob.new filename: File.basename(evaluator.file_to_attach[:filename]),
