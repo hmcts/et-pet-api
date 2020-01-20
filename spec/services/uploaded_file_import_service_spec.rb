@@ -8,7 +8,7 @@ RSpec.describe UploadedFileImportService do
 
   describe '#import_file_url' do
     context 'when in azure mode' do
-      include_context 'with cloud provider switching', cloud_provider: :azure
+      include_context 'with cloud provider switching', cloud_provider: :azure_test
       it 'allows nil as meaning no import from url required' do
         # Arrange and Act - set to nil
         service.import_file_url(nil, into: uploaded_file)
@@ -38,7 +38,7 @@ RSpec.describe UploadedFileImportService do
   end
 
   describe '#import_from_key' do
-    include_context 'with cloud provider switching', cloud_provider: :azure
+    include_context 'with cloud provider switching', cloud_provider: :azure_test
     it 'imports from a key from the direct upload container' do
       # Arrange - Store a file in the direct upload container
       remote_file = create(:uploaded_file, :example_pdf, :direct_upload)

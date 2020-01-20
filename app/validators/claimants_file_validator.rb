@@ -60,15 +60,8 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
   end
 
   def create_direct_upload_service
-    ActiveStorage::Service.configure :"#{current_storage}_direct_upload", Rails.configuration.active_storage.service_configurations
-  end
-
-  def current_storage
-    case ActiveStorage::Blob.service.class.name.demodulize # AzureStorageService, DiskService or S3Service
-    when 'AzureStorageService' then :azure
-    when 'DiskService' then :local
-    else raise "Unknown storage service in use - #{ActiveStorage::Blob.service.class.name.demodulize}"
-    end
+    config = Rails.configuration.active_storage
+    ActiveStorage::Service.configure :"#{config.service}_direct_upload", config.service_configurations
   end
 
   def measure(&block)

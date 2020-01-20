@@ -456,7 +456,7 @@ RSpec.describe 'Create Claim Request', type: :request do
 
     # @TODO RST-1741 - When we are only using internally generated pdf's - all of the examples in this block must have their has_pdf_file set to false
     context 'with json involving external files' do
-      include_context 'with cloud provider switching', cloud_provider: :azure do
+      include_context 'with cloud provider switching', cloud_provider: :azure_test do
         context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using url' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',

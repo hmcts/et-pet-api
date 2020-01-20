@@ -99,7 +99,8 @@ module UploadedFileImportService
     end
 
     def direct_upload_service
-      @direct_upload_service ||= ActiveStorage::Service.configure :azure_direct_upload, Rails.configuration.active_storage.service_configurations
+      config = Rails.configuration.active_storage
+      @direct_upload_service ||= ActiveStorage::Service.configure :"#{config.service}_direct_upload", config.service_configurations
     end
   end
 

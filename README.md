@@ -83,99 +83,40 @@ server (I chose azurite as it has been the most reliable and most feature rich).
 details (https://github.com/Azure/Azurite) - you can install it on OSX and linux - or you can use docker (note that it
 is integrated into ./bin/dev/docker-support-services
 
-## Developing And Testing Using Docker
+### Developing And Testing Using The et_full_system gem
 
-### Initial Setup (Run once)
+Please refer to https://github.com/hmcts/et_full_system_gem for instructions on general use and starting an environment.
+Once you have an environment running, read on below ...
 
-```
-    ./bin/dev/docker ./bin/setup
-```
+#### Developing Locally In Full System
 
-### Running a server
-
-```
-
-./bin/dev/docker-server up
+The easiest way to develop is to use the full system to provide everything that you need (database, redis, azurite etc..)
+and use a special command to redirect the full system API URL to your local machine.
+The command to redirect to your local machine on port 3000 is (note you can use any free port) :-
 
 ```
-
-
-which will run a server on a randomly assigned port which is great if you don't want to do
-port forwarding (e.g. running automated tests doesnt rely on it - its just for traditional
-manual browser based testing).
-
-If you want to find out what this port is, just use 
-
+et_full_system docker local_api 3000
 ```
 
-docker ps
+Then, in this project directory run
+
+```
+et_full_system docker api_env > .env
+```
+
+which will setup all environment variables to the correct values to work in the full system environment.
+
+then run
 
 ```
 
-and look for something like this
+rails s
 
 ```
 
-CONTAINER ID        IMAGE               COMMAND                  CREATED                  STATUS                  PORTS                     NAMES
-ffefd71a2b99        dev_dev             "irb"                    Less than a second ago   Up Less than a second   0.0.0.0:32770->8080/tcp   dev_dev_1
-c8bd276535aa        postgres:9.3.5      "/docker-entrypoint.…"   Less than a second ago   Up 1 second             0.0.0.0:32769->5432/tcp   dev_db_1
-854adc82aba2        redis               "docker-entrypoint.s…"   3 minutes ago            Up 3 minutes            0.0.0.0:32768->6379/tcp   dev_redis_1
+which will run the web server.  The url is
 
-
-```
-
-where it can be seen that the 'dev' process is forwarding port 32770 to
-port 8080 in the docker container, allowing you to go to http://localhost:32770 on your 
-machine (depending if you need to setup yet another port forward if you are using a version
-of docker that doesnt forward straight to your localhost)
-
-or if you want to specify the port - lets say you just want it on port 3000 and have ensured
-that it is available - else it wont start.
-
-```
-
-PORT=3200 ./bin/dev/docker-server
-
-```
-
-which will run a server on port 3200
-
-
-### Killing The Server
-
-Sometimes you need to do this - if CTRL-C seems to stop really quickly !!
-
-```
-
-./bin/dev/docker-server down
-
-```
-
-### Running commands on the docker box
-
-If you want to connect to the same machine to run other commands whilst the server is running :-
-
-
-```
-
-./bin/dev/docker-exec bash
-
-```
-
-which will give you a bash session
-
-or you can run other commands - for example
-
-```
-
-./bin/dev/docker-exec bundle exec rails c
-
-```
-
-
-will give you a rails console
-
-
+http://api.et.127.0.0.1.nip.io:3100
 
 ### Running support services only
 

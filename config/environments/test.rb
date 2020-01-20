@@ -37,7 +37,7 @@ Rails.application.configure do
   config.action_controller.default_url_options = { host: 'example.com' }
 
   # As we do some s3 specific stuff, we have to use an azure server for testing (local server called azurite)
-  config.active_storage.service = :azure
+  config.active_storage.service = :azure_test
   config.active_storage.service_urls_expire_in = 10.days
 
   config.action_mailer.perform_caching = false

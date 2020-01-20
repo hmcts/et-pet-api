@@ -373,7 +373,7 @@ RSpec.describe 'Create Response Request', type: :request do
 
     context 'with json for a response with an rtf upload in azure mode' do
       rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
-      include_context 'with cloud provider switching', cloud_provider: :azure
+      include_context 'with cloud provider switching', cloud_provider: :azure_test
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',

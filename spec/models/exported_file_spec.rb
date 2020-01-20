@@ -15,7 +15,7 @@ RSpec.describe ExportedFile, type: :model do
 
   describe '#url' do
     context 'using azure cloud provider' do
-      include_context 'with cloud provider switching', cloud_provider: :azure
+      include_context 'with cloud provider switching', cloud_provider: :azure_test
       it 'returns an azurite test server url as we are in test mode' do
         exported_file.file = fixture_file
 
