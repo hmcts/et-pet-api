@@ -92,6 +92,18 @@ RSpec.describe 'Build a blob using the configured cloud provider', type: :reques
       expect(json_response).to include meta: a_hash_including(cloud_provider: 'azure')
     end
 
+    it 'uses the correct direct container' do
+      # Arrange - build the data
+      json_factory = FactoryBot.build(:json_build_blob_command)
+      json_data = json_factory.to_json
+
+      # Act - Make the request
+      post '/api/v2/build_blob', params: json_data, headers: default_headers
+
+      # Assert - Make sure the data is in the response
+      expect(json_response).to include data: a_hash_including(url: match(/et\-api\-direct\-test\-container/))
+    end
+
     it 'returns exactly the same data if called with the same uuid' do
       # Arrange - build the data, call the endpoint for the first time then reset the session ready for the main call
       json_data = FactoryBot.build(:json_build_blob_command).to_json
