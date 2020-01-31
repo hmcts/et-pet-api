@@ -24,7 +24,7 @@ FactoryBot.define do
       employment_at_site_number { 5 }
       disability { true }
       disability_information { 'Lorem ipsum disability' }
-      acas_certificate_number { 'AC123456/78/90' }
+      acas_certificate_number { 'R000100/18/68' }
       acas_exemption_code { nil }
     end
 
@@ -59,6 +59,10 @@ FactoryBot.define do
     trait :default_office do
       full
       association :work_address_attributes, :for_default_office, factory: :json_address_data
+    end
+
+    trait :manchester_office do
+      association :work_address_attributes, :for_manchester_office, factory: :json_address_data
     end
 
   end
