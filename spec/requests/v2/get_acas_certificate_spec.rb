@@ -7,9 +7,6 @@ require 'rails_helper'
 # acas response wanted.  (100, 200, 201 or 500)
 RSpec.describe 'GetAcasCertificate Request', type: :request do
   describe '/et_acas_api/certificates/<id>' do
-    before do
-      stub_request(:any, /fakeservice\.com/).to_rack(EtFakeAcasServer::Server)
-    end
     let(:default_headers) do
       {
         'Accept': 'application/json',

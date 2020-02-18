@@ -76,5 +76,13 @@ FactoryBot.define do
       post_code { 'FF1 1AA' }
     end
 
+    trait :for_manchester_office do
+      building { '106' }
+      street { 'Manc Street' }
+      locality { 'Manchester' }
+      county { 'Greater MAnchester' }
+      post_code { 'M1 1AQ' }
+    end
+
   end
 end
