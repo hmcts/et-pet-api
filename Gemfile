@@ -37,7 +37,7 @@ gem 'sentry-raven', '~> 2.12'
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
 # (and we need it for test environment)
-gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: '88b5f417f7eaf1739c24e57c6c9e28befa30d09f'
+gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', ref: 'd6c3f1822ccd084b443c06770ee1f08cbde0d015'
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 
 # Rubyzip used to produce and test zip files

@@ -18,15 +18,15 @@ GIT
 
 GIT
   remote: https://github.com/ministryofjustice/et_atos_file_transfer.git
-  revision: 88b5f417f7eaf1739c24e57c6c9e28befa30d09f
-  ref: 88b5f417f7eaf1739c24e57c6c9e28befa30d09f
+  revision: d6c3f1822ccd084b443c06770ee1f08cbde0d015
+  ref: d6c3f1822ccd084b443c06770ee1f08cbde0d015
   specs:
-    et_atos_file_transfer (0.1.1)
+    et_atos_file_transfer (0.1.2)
       azure-storage (~> 0.15.0.preview)
+      iodine (~> 0.7)
       jbuilder (~> 2.7)
       pg
       rails (> 5.2)
-      unicorn (~> 5.4)
 
 GIT
   remote: https://github.com/ministryofjustice/et_fake_acas_server.git
@@ -167,7 +167,7 @@ GEM
       activesupport (>= 4.2.0)
     faker (2.10.1)
       i18n (>= 1.6, < 2)
-    faraday (0.17.0)
+    faraday (0.17.3)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.13.1)
       faraday (>= 0.7.4, < 1.0)
@@ -192,7 +192,6 @@ GEM
     jaro_winkler (1.5.4)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
-    kgio (2.11.3)
     listen (3.2.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -263,7 +262,6 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.20.3, < 2.0)
     rainbow (3.0.0)
-    raindrops (0.19.1)
     rake (13.0.1)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
@@ -311,7 +309,7 @@ GEM
       nokogiri (>= 1.8.1)
       nori (~> 2.4)
       wasabi (~> 3.4)
-    sentry-raven (2.12.3)
+    sentry-raven (2.13.0)
       faraday (>= 0.7.6, < 1.0)
     sidekiq (6.0.5)
       connection_pool (>= 2.2.2)
@@ -365,9 +363,6 @@ GEM
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     unicode-display_width (1.6.0)
-    unicorn (5.5.3)
-      kgio (~> 2.6)
-      raindrops (~> 0.7)
     uniform_notifier (1.13.0)
     wasabi (3.5.0)
       httpi (~> 2.0)
