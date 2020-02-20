@@ -18,10 +18,10 @@ GIT
 
 GIT
   remote: https://github.com/ministryofjustice/et_atos_file_transfer.git
-  revision: d6c3f1822ccd084b443c06770ee1f08cbde0d015
-  ref: d6c3f1822ccd084b443c06770ee1f08cbde0d015
+  revision: d590511a14ecf2099903ad2ece98929213c29693
+  tag: v1.3.9
   specs:
-    et_atos_file_transfer (0.1.2)
+    et_atos_file_transfer (1.3.9)
       azure-storage (~> 0.15.0.preview)
       iodine (~> 0.7)
       jbuilder (~> 2.7)
