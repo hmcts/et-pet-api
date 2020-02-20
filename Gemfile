@@ -50,7 +50,7 @@ gem 'pdf-forms', '~> 1.2'
 gem 'azure-storage', '~> 0.15.0.preview', require: false
 
 # For general easy http access - mainly for test but used in app too
-gem 'httparty', '~> 0.17'
+gem 'httparty', '~> 0.18'
 gem 'dotenv-rails', '~> 2.4'
 
 group :development, :test do
