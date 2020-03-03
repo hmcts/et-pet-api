@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   namespace :api do
     namespace :v2 do
+      namespace :feedback do
+        post "build_feedback" => 'build_feedback#create'
+      end
       namespace :respondents do
         post "build_response" => 'build_responses#create'
       end
