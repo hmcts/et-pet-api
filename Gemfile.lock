@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/hmcts/et-azure-insights.git
-  revision: ed8447585cde3360c4cb893d43a97bce5f79e488
-  tag: v0.2.10
+  revision: 9c8a6836b895506538c76868cb7e971d98cf996d
+  tag: v0.2.11
   specs:
-    et_azure_insights (0.2.10)
+    et_azure_insights (0.2.11)
       application_insights (~> 0.5.7)
 
 GIT
@@ -403,7 +403,7 @@ DEPENDENCIES
   et_acas_api!
   et_atos_export!
   et_atos_file_transfer!
-  et_azure_insights (= 0.2.10)!
+  et_azure_insights (= 0.2.11)!
   et_exporter!
   et_fake_acas_server (~> 0.1)
   factory_bot (~> 5.0)
