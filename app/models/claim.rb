@@ -28,11 +28,11 @@ class Claim < ApplicationRecord
   accepts_nested_attributes_for :primary_claimant
   accepts_nested_attributes_for :uploaded_files
 
-  # A claim can only have one pdf file - this is it
+  # A claim can now have multiple pdf's but this method returns the application pdf
   #
   # @return [UploadedFile, nil] The pdf file if it exists
   def pdf_file
-    uploaded_files.detect { |f| f.filename.downcase.ends_with?('.pdf') }
+    uploaded_files.detect { |f| f.filename.end_with?('.pdf') && !f.filename.start_with?('acas') }
   end
 
   # A claim can only have one csv file - this is it

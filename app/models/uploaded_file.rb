@@ -4,4 +4,5 @@
 class UploadedFile < ApplicationRecord
   has_one_attached :file
   include StoredFileDownload
+  include StoredFileBase64Import
 end
