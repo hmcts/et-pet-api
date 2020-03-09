@@ -21,6 +21,18 @@ module EtApi
         email
       end
 
+      def new_feedback_email_html_for(email_address:, template_reference:)
+        email = EtApi::Test::EmailObjects::NewFeedbackEmailHtml.find(email_address: email_address, template_reference: template_reference)
+        raise "No HTML response for feedback email has been sent for email_address: #{email_address}" unless email.present?
+        email
+      end
+
+      def new_feedback_email_text_for(email_address:, template_reference:)
+        email = EtApi::Test::EmailObjects::NewFeedbackEmailText.find(email_address: email_address, template_reference: template_reference)
+        raise "No text response for feedback email has been sent for email_address: #{email_address}" unless email.present?
+        email
+      end
+
       private
 
       attr_accessor :deliveries
