@@ -224,7 +224,6 @@ GEM
     multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
-    newrelic_rpm (6.7.0.359)
     nio4r (2.5.2)
     nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
@@ -412,7 +411,6 @@ DEPENDENCIES
   iodine (~> 0.7.34)
   jbuilder (~> 2.9)
   listen (~> 3.2)
-  newrelic_rpm
   pdf-forms (~> 1.2)
   pg (>= 0.18, < 2.0)
   rails (~> 6.0.2.1)

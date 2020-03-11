@@ -36,7 +36,6 @@ gem 'sentry-raven', '~> 2.12'
 gem 'et_azure_insights', '0.2.12', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.2.12'
 #gem 'et_azure_insights', path: '../../../et_azure_insights'
 gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsights-Ruby.git', ref: '5db6b4'
-gem 'newrelic_rpm', group: :fake_will_remove_soon
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
 # (and we need it for test environment)
