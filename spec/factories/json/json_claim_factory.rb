@@ -22,6 +22,7 @@ FactoryBot.define do
       secondary_respondent_traits { [:full] }
       primary_representative_traits { [:full] }
       pdf_template { 'et1-v1-en' }
+      email_template { 'et1-v1-en' }
     end
 
     uuid { SecureRandom.uuid }
@@ -72,9 +73,13 @@ FactoryBot.define do
       pdf_template { 'et1-v1-cy' }
     end
 
+    trait :with_welsh_email do
+      email_template { 'et1-v1-cy' }
+    end
+
     after(:build) do |doc, evaluator|
       evaluator.instance_eval do
-        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildClaim', data: build(:json_claim_data, *claim_traits, pdf_template_reference: pdf_template, reference: reference, case_type: case_type))
+        doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildClaim', data: build(:json_claim_data, *claim_traits, pdf_template_reference: pdf_template, email_template_reference: email_template, reference: reference, case_type: case_type))
         doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildPrimaryRespondent', data: build(:json_respondent_data, *primary_respondent_traits))
         doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildPrimaryClaimant', data: build(:json_claimant_data, *primary_claimant_traits))
         doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildSecondaryClaimants', data: build_list(:json_claimant_data, number_of_secondary_claimants, *secondary_claimant_traits))
@@ -113,6 +118,8 @@ FactoryBot.define do
       miscellaneous_information { '' }
       is_unfair_dismissal { false }
       pdf_template_reference { "et1-v1-en" }
+      email_template_reference { "et1-v1-en" }
+      confirmation_email_recipients { ['confirmation_recipient@digital.justice.gov.uk'] }
     end
     trait :full do
       minimal

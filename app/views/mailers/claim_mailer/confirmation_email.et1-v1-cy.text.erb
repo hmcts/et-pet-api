@@ -1,0 +1,36 @@
+<% message.subject = "Tribiwnlys Cyflogaeth: hawliad wedi'i gyflwyno" %>
+Eich rhif hawliad: <%= @claim.submission_reference %>
+
+<%= @claim.primary_claimant.first_name %> <%= @claim.primary_claimant.last_name %>
+Diolch am gyflwyno eich hawliad i dribiwnlys cyflogaeth.
+==================================================
+
+BETH SY'N DIGWYDD NESAF
+
+Byddwn yn cysylltu â chi unwaith y byddwn wedi anfon eich hawliad at yr atebydd i egluro beth fydd yn digwydd nesaf. Ar hyn o bryd, mae’n cymryd oddeutu 25 diwrnod.
+Unwaith y byddwn wedi anfon eich hawliad atynt, mae gan yr atebydd 28 diwrnod i ymateb.
+
+==================================================
+
+MANYLION CYFLWYNO
+
+Hawliad wedi'i gwblhau:       Gweler y PDF sydd ynghlwm
+Hawliad wedi'i gyflwyno:      Cyflwynwyd ar <%= I18n.l @claim.date_of_receipt, format: '%d %B %Y', locale: 'cy' %>
+Swyddfa tribiwnlys:           Cymru, Tribiwnlys Cyflogaeth, 3ydd Llawr, Llys Ynadon Caerdydd a’r Fro, Plas Fitzalan, Caerdydd, CF24 0RA
+Dogfennau ychwanegol:         <%- if @claim.uploaded_files.not_hidden.not_pdf.empty? %>
+Dim
+<%- else %>
+<%- @claim.uploaded_files.not_hidden.not_pdf.each_with_index do |file, idx| %>
+<%= ' ' * 30 unless idx == 0 %><%= file.filename %>
+<% end %>
+<% end %>
+
+==================================================
+
+Mae eich adborth yn ein helpu i wella'r gwasanaeth hwn:
+https://www.gov.uk/done/employment-tribunals-make-a-claim
+
+Helpwch ni i gadw cofnodion cywir . Llenwch ein holiadur monitro amrywiaeth.
+https://employmenttribunals.service.gov.uk/en/apply/diversity
+
+Cysylltu â ni: http://www.justice.gov.uk/contacts/hmcts/tribunals/employment

@@ -1,0 +1,37 @@
+<% message.subject = 'Employment tribunal: claim submitted' %>
+Claim number: <%= @claim.submission_reference %>
+
+<%= @claim.primary_claimant.first_name %> <%= @claim.primary_claimant.last_name %>
+Thank you for submitting your claim to an employment tribunal.
+==================================================
+
+WHAT HAPPENS NEXT
+
+We'll contact you once we have sent your claim to the respondent and explain what happens next.
+At present, this is taking us an average of 25 days.
+Once we have sent them your claim, the respondent has 28 days to reply.
+
+==================================================
+
+SUBMISSION DETAILS
+
+Claim completed:       See attached PDF
+Claim submitted:       Submitted <%= @claim.date_of_receipt.strftime('%d %B %Y') %>
+Tribunal office:       <%= @office.name %>, <%= @office.email %>, <%= @office.telephone %>
+Additional documents:  <%- if @claim.uploaded_files.not_hidden.not_pdf.empty? %>
+None
+<%- else %>
+<%- @claim.uploaded_files.not_hidden.not_pdf.each_with_index do |file, idx| %>
+<%= ' ' * 23 unless idx == 0 %><%= file.filename %>
+<% end %>
+<% end %>
+
+==================================================
+
+Your feedback helps us improve this service:
+https://www.gov.uk/done/employment-tribunals-make-a-claim
+
+Help us keep track. Complete our diversity monitoring questionnaire.
+https://employmenttribunals.service.gov.uk/en/apply/diversity
+
+Contact us: http://www.justice.gov.uk/contacts/hmcts/tribunals/employment
