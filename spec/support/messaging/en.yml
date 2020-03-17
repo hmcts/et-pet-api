@@ -635,4 +635,19 @@ et1-v1-en:
     additional_information:
       additional_information:
         field_name: '15'
+  claim_email:
+    reference: Claim number
+    subject: 'Employment tribunal: claim submitted'
+    submission_info: 'Claim submitted:'
+    submission_date: Submitted %{date}
+    tribunal_office: 'Tribunal office:'
+    thank_you: Thank you for submitting your claim to an employment tribunal.
+    next_steps:
+      well_contact_you: "We'll contact you once we have sent your claim to the respondent and explain what happens next."
+      once_sent_claim: 'Once we have sent them your claim, the respondent has 28 days to reply.'
+    submission_details: Submission details
+    claim_completed: 'Claim completed:'
+    see_attached_pdf: See attached PDF
+    claim_submitted: 'Claim submitted:'
+    submitted_at: 'Submitted %{date}'
 

@@ -34,7 +34,17 @@ module EtApi
         result.is_a?(::I18n::MissingTranslation) ? raise(result) : result
       end
 
-      alias t translate
+      alias :t :translate
+
+      # Localizes certain objects, such as dates and numbers to local formatting.
+      def localize(object, locale: nil, format: nil, **options)
+        raise I18n::Disabled.new('l') if locale == false
+
+        format ||= :default
+        backend.localize(locale, object, format, options)
+      end
+
+      alias :l :localize
 
       private
 
@@ -54,9 +64,17 @@ module EtApi
         ::EtApi::Test::Messaging.instance.t(*args)
       end
 
+      def l(*args)
+        ::EtApi::Test::Messaging.instance.l(*args)
+      end
+
       class_methods do
         def t(*args)
           ::EtApi::Test::Messaging.instance.t(*args)
+        end
+
+        def l(*args)
+          ::EtApi::Test::Messaging.instance.l(*args)
         end
 
         def factory_translate(*args)
