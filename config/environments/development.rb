@@ -74,4 +74,6 @@ Rails.application.configure do
   config.et_acas_api.service_url = ENV.fetch('ACAS_SERVICE_URL', 'https://testec.acas.org.uk/Lookup/ECService.svc')
 
   config.hosts.clear
+
+  config.azure_insights.enable = false
 end
