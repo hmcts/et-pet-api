@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/hmcts/et-azure-insights.git
+  revision: b2d677431b449062c6f7cb8a0cae6b28c6f76d65
+  tag: v0.2.12
+  specs:
+    et_azure_insights (0.2.12)
+      application_insights (~> 0.5.7)
+
+GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
   revision: 8f5eeb4abd7f5595b0c42469bbec5895d031ad3b
   tag: v0.4.2
@@ -8,6 +16,13 @@ GIT
       pg
       rails (>= 5.2.3)
       sidekiq (>= 5.2.7)
+
+GIT
+  remote: https://github.com/microsoft/ApplicationInsights-Ruby.git
+  revision: 5db6b4ad65262d23f26b678143a4a1fd7939e5c2
+  ref: 5db6b4
+  specs:
+    application_insights (0.5.7)
 
 GIT
   remote: https://github.com/ministryofjustice/azure_env_secrets.git
@@ -377,6 +392,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  application_insights!
   azure-storage (~> 0.15.0.preview)
   azure_env_secrets!
   bullet (~> 6.0)
@@ -386,6 +402,7 @@ DEPENDENCIES
   et_acas_api!
   et_atos_export!
   et_atos_file_transfer!
+  et_azure_insights (= 0.2.12)!
   et_exporter!
   et_fake_acas_server (~> 0.1)
   factory_bot (~> 5.0)

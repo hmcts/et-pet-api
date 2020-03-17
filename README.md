@@ -29,6 +29,7 @@ rake docs:build
 ```
 
 
+
 and then look in the docs/api folder - you will see open_api.json which is for use with swagger.
 You can copy and paste this directly into swaggerhub or use a swagger UI (which hopefully, we will get built
 into this app one day so it can be viewed in dev environments)
