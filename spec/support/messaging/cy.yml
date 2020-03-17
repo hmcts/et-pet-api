@@ -318,6 +318,11 @@ et3-v1-cy:
     office_telephone: 'Rhif ffôn: %{telephone}'
     office_name: 'Diolch am gyflwyno eich ymateb. Mae wedi cael ei anfon i’r swyddfa ym %{office_name} a byddant yn cysylltu â chi maes o law.'
     subject: 'E-bost yn cadarnhau bod eich ymateb i’r hawliad Tribiwnlys Cyflogaeth ar-lein wedi cyrraedd'
+  claim_email:
+    reference: Eich rhif hawliad
+    subject: 'Tribiwnlys Cyflogaeth: cwblhau eich hawliad'
+    submission_info: 'Hawliad wedi''i gyflwyno:'
+    submission_date: "Cyflwynwyd ar %{date}"
 et1-v1-cy:
   claim_pdf_fields:
     your_details:
@@ -742,3 +747,18 @@ et1-v1-cy:
     additional_information:
       additional_information:
         field_name: '15'
+  claim_email:
+    reference: Eich rhif hawliad
+    subject: 'Tribiwnlys Cyflogaeth: hawliad wedi''i gyflwyno'
+    submission_info: 'Hawliad wedi''i gyflwyno:'
+    submission_date: "Cyflwynwyd ar %{date}"
+    tribunal_office: 'Swyddfa tribiwnlys:'
+    thank_you: "Diolch am gyflwyno eich hawliad i dribiwnlys cyflogaeth."
+    next_steps:
+      well_contact_you: Byddwn yn cysylltu â chi unwaith y byddwn wedi anfon eich hawliad at yr atebydd i egluro beth fydd yn digwydd nesaf. Ar hyn o bryd, mae’n cymryd oddeutu 25 diwrnod.
+      once_sent_claim: Unwaith y byddwn wedi anfon eich hawliad atynt, mae gan yr atebydd 28 diwrnod i ymateb.
+    submission_details: Manylion cyflwyno
+    claim_completed: 'Hawliad wedi''i gwblhau:'
+    see_attached_pdf: Gweler y PDF sydd ynghlwm
+    claim_submitted: 'Hawliad wedi''i gyflwyno:'
+    submitted_at: "Cyflwynwyd ar %{date}"

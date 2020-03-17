@@ -1,0 +1,131 @@
+<% message.subject = "Tribiwnlys Cyflogaeth: hawliad wedi'i gyflwyno" %>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+  <meta content="width=device-width" name="viewport"/>
+</head>
+<body>
+<table cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td colspan="2" style="padding-left:60px; background-color:#000000; height:53px;">
+      <img src="https://s3-eu-west-1.amazonaws.com/mojet-emails/govuk_logotype_email.png"/></td>
+  </tr>
+  <tr>
+    <td width="8%"><p>&nbsp;</p></td>
+    <td>
+      <table style="max-width:525px;" width="100%">
+        <tr>
+          <td style="padding-bottom:30px;">
+            <img src="https://s3-eu-west-1.amazonaws.com/mojet-emails/moj_logotype_email.png"/></td>
+        </tr>
+        <tr>
+          <td style="padding-left:20px; background-color:#28a197; color: #ffffff">
+            <p style="font-family:arial; font-size:19px; margin:20px 0px 5px;">Claim Eich rhif hawliad</p>
+            <p style="font-family:arial; font-size:40px; margin:0px 0px 20px; font-weight:bold;"><%= @claim.submission_reference %></p>
+          </td>
+        </tr>
+        <tr>
+          <td><p style="font-family:arial; font-size:19px"><%= @claim.primary_claimant.first_name %> <%= @claim.primary_claimant.last_name %></p></td>
+        </tr>
+        <tr>
+          <td><p style="font-family:arial; font-size:19px">Diolch am gyflwyno eich hawliad i dribiwnlys cyflogaeth.
+            tribunal.</p>
+            <p style="font-family:arial; font-size:19px; font-weight:bold; margin-top:50px;">Beth sy'n digwydd nesaf</p>
+            <ol>
+              <li style="font-family:arial; font-size:19px; line-height:26px;">
+                <p>Byddwn yn cysylltu â chi unwaith y byddwn wedi anfon eich hawliad at yr atebydd i egluro beth fydd yn digwydd nesaf. Ar hyn o bryd, mae’n cymryd oddeutu 25 diwrnod.</p>
+              </li>
+              <li style="font-family:arial; font-size:19px; line-height:26px;">
+                <p>Unwaith y byddwn wedi anfon eich hawliad atynt, mae gan yr atebydd 28 diwrnod i ymateb.
+                </p></li>
+            </ol>
+            <p style="font-family:arial; font-size:19px; font-weight:bold; margin-top:50px;">Manylion cyflwyno</p>
+            <table style="width:550px;padding-bottom:30px;">
+              <tr>
+                <td colspan="2">
+                  <hr style="border:0px; border-top:1px solid #bfc1c3; margin:0px;"/>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" width="185">
+                  <p style="font-family:arial; font-size:16px; color:#6F777B;">Hawliad wedi'i gwblhau:</p></td>
+                <td valign="top"><p style="font-family:arial; font-size:16px;">Gweler y PDF sydd ynghlwm</p></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <hr style="border:0px; border-top:1px solid #bfc1c3; margin:0px;"/>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" width="185">
+                  <p style="font-family:arial; font-size:16px; color:#6F777B;">Hawliad wedi'i gyflwyno:</p></td>
+                <td valign="top"><p style="font-family:arial; font-size:16px;">Cyflwynwyd ar <%= I18n.l @claim.date_of_receipt, format: '%d %B %Y', locale: 'cy' %></p></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <hr style="border:0px; border-top:1px solid #bfc1c3; margin:0px;"/>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" width="185">
+                  <p style="font-family:arial; font-size:16px; color:#6F777B;">Swyddfa tribiwnlys:</p></td>
+                <td valign="top">
+                  <p style="font-family:arial; font-size:16px;">Cymru, Tribiwnlys Cyflogaeth, 3ydd Llawr, Llys Ynadon Caerdydd a’r Fro, Plas Fitzalan, Caerdydd, CF24 0RA</p>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <hr style="border:0px; border-top:1px solid #bfc1c3; margin:0px;"/>
+                </td>
+              </tr>
+              <tr>
+                <td valign="top" width="185">
+                  <p style="font-family:arial; font-size:16px; color:#6F777B;">Dogfennau ychwanegol:</p></td>
+                <% if @claim.uploaded_files.not_hidden.not_pdf.empty? %>
+                  <td valign="top"><p style="font-family:arial; font-size:16px;">Dim</p></td>
+                <% else %>
+                  <td valign="top">
+                    <% @claim.uploaded_files.not_hidden.not_pdf.each do |file| %>
+                    <p style="font-family:arial; font-size:16px;"><%= file.filename %></p>
+                    <% end %>
+                  </td>
+                <% end %>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <hr style="border:0px; border-top:1px solid #bfc1c3; margin:0px;"/>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td><p style="font-family:arial; font-size:19px">
+            <a href="https://www.gov.uk/done/employment-tribunals-make-a-claim">Mae eich adborth</a> yn ein helpu i wella'r gwasanaeth hwn.
+          </p></td>
+        </tr>
+        <tr>
+          <td><p style="font-family:arial; font-size:19px">
+            Helpwch ni i gadw cofnodion cywir . Llenwch ein <a href="https://employmenttribunals.service.gov.uk/en/apply/diversity">holiadur monitro amrywiaeth</a>.
+          </p></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <table style="width:100%; padding:20px 0px 20px 60px; background-color:#dee0e2; height:100px; border-top:1px #a1acb2 solid;">
+        <tbody>
+        <tr>
+          <td><p style="font-family:arial; font-size:16px; padding-bottom:15px;">
+            <a href="http://www.justice.gov.uk/contacts/hmcts/tribunals/employment" style="color:#6F777B;" target="_blank">CCysylltu â ni</a></p></td>
+          <td><img src="https://s3-eu-west-1.amazonaws.com/mojet-emails/govuk_crest_email.png"/></td>
+        </tr>
+        </tbody>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

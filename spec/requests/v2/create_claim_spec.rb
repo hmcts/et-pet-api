@@ -13,6 +13,9 @@ RSpec.describe 'Create Claim Request', type: :request do
     end
     let(:errors) { [] }
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
+    let(:emails_sent) do
+      EtApi::Test::EmailsSent.new
+    end
 
     shared_context 'with fake sidekiq' do
       around do |example|
@@ -77,6 +80,8 @@ RSpec.describe 'Create Claim Request', type: :request do
       let(:input_secondary_respondents_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildSecondaryRespondents' }.data }
       let(:input_primary_representative_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildPrimaryRepresentative' }.try(:data) }
       let(:input_claim_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaim' }.data }
+      let(:input_claimants_file_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimantsFile' }.try(:data) }
+      let(:input_claim_details_file_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimDetailsFile' }.try(:data) }
       let(:output_reference) { json_response.dig('meta', 'BuildClaim', 'reference') }
       let(:output_filename_pdf) { "#{output_reference}_ET1_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.pdf" }
       let(:output_filename_txt) { "#{output_reference}_ET1_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.txt" }
@@ -362,6 +367,35 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
     end
 
+    shared_examples 'email validation using standard template' do
+      it 'sends an HTML email to the respondent with the pdf attached using the standard template' do
+        reference = json_response.dig(:meta, 'BuildClaim', :reference)
+        email_sent = emails_sent.new_claim_html_email_for(reference: reference, template_reference: 'et1-v1-en')
+        expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory,reference: reference)
+      end
+
+      it 'sends a plain text email to the respondent with the pdf attached using the standard template' do
+        reference = json_response.dig(:meta, 'BuildClaim', :reference)
+        email_sent = emails_sent.new_claim_text_email_for(reference: reference, template_reference: 'et1-v1-en')
+        expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory, reference: reference)
+      end
+    end
+
+    shared_examples 'email validation using welsh template' do
+      it 'sends an HTML email to the respondent with the pdf attached using the welsh template' do
+        reference = json_response.dig(:meta, 'BuildClaim', :reference)
+        email_sent = emails_sent.new_claim_html_email_for(reference: reference, template_reference: 'et1-v1-cy')
+        expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory, reference: reference)
+      end
+
+      it 'sends a plain text email to the respondent with the pdf attached using the welsh template' do
+        reference = json_response.dig(:meta, 'BuildClaim', :reference)
+        email_sent = emails_sent.new_claim_text_email_for(reference: reference, template_reference: 'et1-v1-cy')
+        expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory, reference: reference)
+      end
+    end
+
+
     context 'with json for single claimant and respondent, no representatives, no reference number and an external pdf' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
@@ -373,6 +407,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with no representatives'
       include_examples 'a claim exported with an attached acas certificate'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant and respondent, no representatives and no reference number' do
@@ -386,6 +421,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant and respondent (with no work address), no representatives, no reference number and an external pdf' do
@@ -398,6 +434,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant and respondent (with no work address), no representatives, no reference number' do
@@ -411,6 +448,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant and respondent, no representatives and an external pdf' do
@@ -424,6 +462,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant and respondent but no representatives' do
@@ -438,6 +477,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for multiple claimants, 1 respondent, no representatives and an external pdf' do
@@ -452,6 +492,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with multiple claimants from json'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for multiple claimants, 1 respondent and no representatives' do
@@ -467,6 +508,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with multiple claimants from json'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     # @TODO RST-1741 - When we are only using internally generated pdf's - all of the examples in this block must have their has_pdf_file set to false
@@ -485,6 +527,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with no representatives'
           include_examples 'a claim exported to primary ATOS with a csv file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload' do
@@ -500,6 +543,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with no representatives'
           include_examples 'a claim exported to primary ATOS with a csv file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using url but uppercased filename' do
@@ -515,6 +559,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with no representatives'
           include_examples 'a claim exported to primary ATOS with a csv file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload but uppercased filename' do
@@ -530,6 +575,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with no representatives'
           include_examples 'a claim exported to primary ATOS with a csv file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for multiple claimants, single respondent and representative - with csv file uploaded using url' do
@@ -545,6 +591,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with a representative'
           include_examples 'a claim exported to primary ATOS with a csv file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for multiple claimants, single respondent and representative - with csv file uploaded using direct upload' do
@@ -560,6 +607,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with a representative'
           include_examples 'a claim exported to primary ATOS with a csv file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for multiple claimants, multiple respondents but no representatives - with csv file uploaded using url' do
@@ -575,6 +623,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with multiple respondents'
           include_examples 'a claim exported to primary ATOS with no representatives'
           include_examples 'a claim exported to primary ATOS with a csv file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for multiple claimants, multiple respondents but no representatives - with csv file uploaded using direct upload' do
@@ -590,6 +639,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with multiple respondents'
           include_examples 'a claim exported to primary ATOS with no representatives'
           include_examples 'a claim exported to primary ATOS with a csv file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using url' do
@@ -605,6 +655,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with multiple respondents'
           include_examples 'a claim exported to primary ATOS with a representative'
           include_examples 'a claim exported to primary ATOS with a csv file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using direct upload' do
@@ -620,6 +671,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with multiple respondents'
           include_examples 'a claim exported to primary ATOS with a representative'
           include_examples 'a claim exported to primary ATOS with a csv file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for single claimant, single respondent and representative - with rtf file uploaded using url' do
@@ -634,6 +686,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with a representative'
           include_examples 'a claim exported to primary ATOS with an rtf file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for single claimant, single respondent and representative - with rtf file uploaded using direct upload' do
@@ -648,6 +701,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with a representative'
           include_examples 'a claim exported to primary ATOS with an rtf file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for single claimant, single respondent and representative - with rtf file uploaded using url with uppercased extension' do
@@ -662,6 +716,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with a representative'
           include_examples 'a claim exported to primary ATOS with an rtf file'
+          include_examples 'email validation using standard template'
         end
 
         context 'with json for single claimant, single respondent and representative - with rtf file uploaded using direct upload with uppercased extension' do
@@ -676,6 +731,7 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with a representative'
           include_examples 'a claim exported to primary ATOS with an rtf file'
+          include_examples 'email validation using standard template'
         end
       end
     end
@@ -691,6 +747,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant, respondent and representative' do
@@ -705,12 +762,13 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant, respondent and representative using welsh template' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_welsh_pdf, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: false) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_welsh_pdf, :with_welsh_email, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: false) }
       include_context 'with background jobs running'
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
@@ -719,6 +777,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using welsh template'
     end
 
     context 'with json for single claimant, respondent and representative with non alphanumerics in names' do
@@ -740,6 +799,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant, respondent and representative with unicode chars in phone number' do
@@ -769,7 +829,7 @@ RSpec.describe 'Create Claim Request', type: :request do
         respondent[:address_telephone_number] = "01234 777666"
         expect(staging_folder.et1_txt_file(output_filename_txt)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
       end
-
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for multiple claimants, 1 respondent, a representative and external pdf' do
@@ -784,6 +844,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with multiple claimants from json'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for multiple claimants, 1 respondent and a representative' do
@@ -799,6 +860,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with multiple claimants from json'
       include_examples 'a claim exported to primary ATOS with single respondent'
       include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant, multiple respondents, no representatives and external pdf' do
@@ -812,6 +874,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with multiple respondents'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant and multiple respondents but no representatives' do
@@ -826,6 +889,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with multiple respondents'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for multiple claimant, multiple respondents, no representatives with external pdf' do
@@ -840,6 +904,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with multiple claimants from json'
       include_examples 'a claim exported to primary ATOS with multiple respondents'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for multiple claimant, multiple respondents but no representatives' do
@@ -855,6 +920,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with multiple claimants from json'
       include_examples 'a claim exported to primary ATOS with multiple respondents'
       include_examples 'a claim exported to primary ATOS with no representatives'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant, multiple respondents, a representative and external pdf' do
@@ -868,6 +934,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with multiple respondents'
       include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant, multiple respondents and a representative' do
@@ -882,6 +949,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with multiple respondents'
       include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for multiple claimants, multiple respondents, a representative and external pdf' do
@@ -896,6 +964,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with multiple claimants from json'
       include_examples 'a claim exported to primary ATOS with multiple respondents'
       include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for multiple claimants, multiple respondents and a representative' do
@@ -911,6 +980,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'a claim exported to primary ATOS with multiple claimants from json'
       include_examples 'a claim exported to primary ATOS with multiple respondents'
       include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json for single claimant, single respondent with postcode that routes to default office' do
@@ -921,6 +991,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any claim variation'
       include_examples 'a claim exported to secondary ATOS'
+      include_examples 'email validation using standard template'
     end
 
     context 'with json creating an error for single claimant (with no address) and respondent, no representatives' do
