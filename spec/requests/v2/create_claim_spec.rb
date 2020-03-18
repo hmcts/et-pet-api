@@ -765,6 +765,20 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'email validation using standard template'
     end
 
+    context 'with json for single claimant, respondent and representative with worked notice period or paid in lieu' do
+      include_context 'with fake sidekiq'
+      include_context 'with setup for claims',
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: false, claim_traits: [:full, :worked_notice_period]) }
+      include_context 'with background jobs running'
+      include_examples 'any claim variation'
+      include_examples 'a claim exported to primary ATOS'
+      include_examples 'a claim exported to primary ATOS with internally generated pdf'
+      include_examples 'a claim with provided reference number'
+      include_examples 'a claim exported to primary ATOS with single claimant'
+      include_examples 'a claim exported to primary ATOS with single respondent'
+      include_examples 'a claim exported to primary ATOS with a representative'
+    end
+
     context 'with json for single claimant, respondent and representative using welsh template' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',

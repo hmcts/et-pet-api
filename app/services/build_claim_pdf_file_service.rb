@@ -128,6 +128,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, ed[:average_hours_worked_per_week], :earnings_and_benefits, :average_weekly_hours
     apply_field result, ed[:benefit_details], :earnings_and_benefits, :benefits
     apply_field result, ed[:enrolled_in_pension_scheme], :earnings_and_benefits, :employers_pension_scheme
+    apply_field result, ed[:worked_notice_period_or_paid_in_lieu], :earnings_and_benefits, :paid_for_notice_period
     apply_field result, ed[:notice_pay_period_type] == 'monthly' ? ed[:notice_pay_period_count] : '', :earnings_and_benefits, :notice_period, :months
     apply_field result, ed[:notice_pay_period_type] == 'weekly' ? ed[:notice_pay_period_count] : '', :earnings_and_benefits, :notice_period, :weeks
     apply_field result, ed[:gross_pay]&.to_s, :earnings_and_benefits, :pay_before_tax, :amount

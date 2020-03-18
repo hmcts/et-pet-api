@@ -516,6 +516,10 @@ et1-v1-cy:
           unselected_value: 'Off'
       paid_for_notice_period:
         field_name: '6.3 tick boxes'
+        select_values:
+          false: 'no'
+          true: 'yes'
+        unselected_value: 'Off'
       notice_period:
         weeks:
           field_name: '6.3 weeks'
