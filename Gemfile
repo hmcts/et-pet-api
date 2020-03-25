@@ -76,7 +76,7 @@ group :test do
   gem 'database_cleaner', '~> 1.7'
   gem 'factory_bot', '~> 5.0'
   gem 'rspec-eventually', '~> 0.2.2'
-  gem 'faker', '~> 2.10'
+  gem 'faker', '~> 2.11'
   gem 'webmock', '~> 3.7'
   gem 'et_fake_acas_server', '~> 0.1'
 end

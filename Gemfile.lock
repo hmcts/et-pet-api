@@ -174,7 +174,7 @@ GEM
       sinatra-contrib (~> 2.0)
     factory_bot (5.1.1)
       activesupport (>= 4.2.0)
-    faker (2.10.2)
+    faker (2.11.0)
       i18n (>= 1.6, < 2)
     faraday (0.17.3)
       multipart-post (>= 1.2, < 3)
@@ -406,7 +406,7 @@ DEPENDENCIES
   et_exporter!
   et_fake_acas_server (~> 0.1)
   factory_bot (~> 5.0)
-  faker (~> 2.10)
+  faker (~> 2.11)
   httparty (~> 0.17)
   iodine (~> 0.7.34)
   jbuilder (~> 2.9)
