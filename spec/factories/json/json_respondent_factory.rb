@@ -14,12 +14,12 @@ FactoryBot.define do
       association :work_address_attributes, :the_shard, factory: :json_address_data
       contact { 'John Smith' }
       dx_number { "" }
-      address_telephone_number { '' }
-      work_address_telephone_number { '' }
-      alt_phone_number { '' }
+      address_telephone_number { '01234 567890' }
+      work_address_telephone_number { '43210 567890' }
+      alt_phone_number { '01234 567891' }
       contact_preference { 'email' }
       email_address { 'john@dodgyco.com' }
-      fax_number { '' }
+      fax_number { '01234 666123' }
       organisation_employ_gb { 10 }
       employment_at_site_number { 5 }
       disability { true }

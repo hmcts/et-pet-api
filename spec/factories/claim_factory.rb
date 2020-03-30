@@ -19,6 +19,8 @@ FactoryBot.define do
     office_code { 22 }
     date_of_receipt { Time.zone.now }
     pdf_template_reference { "et1-v1-en" }
+    claim_details { 'claim details field' }
+    miscellaneous_information { 'miscellaneous information' }
 
     after(:build) do |claim, evaluator|
       claim.primary_claimant = build(:claimant) if claim.primary_claimant.blank? && evaluator.number_of_claimants > 0

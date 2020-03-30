@@ -1,5 +1,6 @@
 require_relative './base'
 require_relative '../../helpers/office_helper'
+require_relative '../../helpers/claim_helper'
 module EtApi
   module Test
     module EmailObjects

@@ -9,6 +9,11 @@ FactoryBot.define do
       last_name { "O'Malley" }
     end
 
+    trait :no_gender_first_last do
+      mr_first_last
+      gender { 'N/K' }
+    end
+
     trait :mr_na_unicode do
       mr_first_last
       first_name { 'n/a' }

@@ -233,6 +233,7 @@ et1-v1-en:
         select_values:
           Female: 'female'
           Male: 'male'
+          'N/K': 'Off'
         unselected_value: 'Off'
       building:
         field_name: '1.5 number'
@@ -594,41 +595,53 @@ et1-v1-en:
       respondent4:
         name:
           field_name: '13 R4 name'
-        building:
-          field_name: '13 R4 number'
-        street:
-          field_name: '13 R4 street'
-        locality:
-          field_name: '13 R4 town city'
-        county:
-          field_name: '13 R4 county'
-        post_code:
-          field_name: '13 R4 postcode'
-        telephone_number:
-          field_name: '13 R4 phone number'
-        have_acas:
-          field_name: 'Check Box22'
-        acas_number:
-          field_name: 'Text23'
+        address:
+          building:
+            field_name: '13 R4 number'
+          street:
+            field_name: '13 R4 street'
+          locality:
+            field_name: '13 R4 town city'
+          county:
+            field_name: '13 R4 county'
+          post_code:
+            field_name: '13 R4 postcode'
+          telephone_number:
+            field_name: '13 R4 phone number'
+        acas:
+          have_acas:
+            field_name: 'Check Box22'
+            unselected_value: 'Off'
+            select_values:
+              true: 'Yes'
+              false: 'no'
+          acas_number:
+            field_name: 'Text23'
       respondent5:
         name:
           field_name: '13 R5 name'
-        building:
-          field_name: '13 R5 number'
-        street:
-          field_name: 'R5 street'
-        locality:
-          field_name: 'R5 town city'
-        county:
-          field_name: 'R5 county'
-        post_code:
-          field_name: 'R5 postcode'
-        telephone_number:
-          field_name: 'R5 phone number'
-        have_acas:
-          field_name: 'Check Box29'
-        acas_number:
-          field_name: 'Text30'
+        address:
+          building:
+            field_name: '13 R5 number'
+          street:
+            field_name: 'R5 street'
+          locality:
+            field_name: 'R5 town city'
+          county:
+            field_name: 'R5 county'
+          post_code:
+            field_name: 'R5 postcode'
+          telephone_number:
+            field_name: 'R5 phone number'
+        acas:
+          have_acas:
+            field_name: 'Check Box29'
+            unselected_value: 'Off'
+            select_values:
+              true: 'Yes'
+              false: 'no'
+          acas_number:
+            field_name: 'Text30'
     final_check:
       satisfied:
         field_name: '14 satisfied tick box'

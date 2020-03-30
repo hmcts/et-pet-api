@@ -51,12 +51,12 @@ module EtApi
           end
 
           def weekly_notice_period(employment)
-            return '' if employment['notice_pay_period_type']&.to_sym != :weekly
+            return '' if employment['notice_pay_period_type']&.to_sym != :weeks
             employment['notice_pay_period_count'].to_s
           end
 
           def monthly_notice_period(employment)
-            return '' if employment['notice_pay_period_type']&.to_sym != :monthly
+            return '' if employment['notice_pay_period_type']&.to_sym != :months
             employment['notice_pay_period_count'].to_s
           end
         end

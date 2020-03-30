@@ -108,14 +108,34 @@ FactoryBot.define do
       date_of_receipt { Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S%z') }
 
       other_known_claimant_names { "" }
-      discrimination_claims { [] }
-      pay_claims { [] }
+      discrimination_claims do
+        [
+          "sex_including_equal_pay",
+          "disability",
+          "race",
+          "age",
+          "pregnancy_or_maternity",
+          "religion_or_belief",
+          "sexual_orientation",
+          "marriage_or_civil_partnership",
+          "gender_reassignment"
+        ]
+      end
+      pay_claims do
+        [
+          "redundancy",
+          "notice",
+          "holiday",
+          "arrears",
+          "other"
+        ]
+      end
       desired_outcomes { [] }
-      other_claim_details { "" }
-      claim_details { "" }
+      other_claim_details { "Other claim details" }
+      claim_details { "Claim details" }
       other_outcome { "" }
       send_claim_to_whistleblowing_entity { false }
-      miscellaneous_information { '' }
+      miscellaneous_information { 'Miscellaneous Information' }
       is_unfair_dismissal { false }
       pdf_template_reference { "et1-v1-en" }
       email_template_reference { "et1-v1-en" }
