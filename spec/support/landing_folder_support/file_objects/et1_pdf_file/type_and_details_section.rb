@@ -24,13 +24,13 @@ module EtApi
                 discriminated_religion: claim.discrimination_claims.include?('religion_or_belief'),
                 claiming_redundancy_payment: claim.pay_claims.include?('redundancy'),
                 owed: owed_anything?(claim),
-                owed_notice_pay: claim.pay_claims.include?('pay_notice'),
-                owed_holiday_pay: claim.pay_claims.include?('pay_holiday'),
-                owed_arrears_of_pay: claim.pay_claims.include?('pay_arrears'),
-                owed_other_payments: claim.pay_claims.include?('pay_other'),
+                owed_notice_pay: claim.pay_claims.include?('notice'),
+                owed_holiday_pay: claim.pay_claims.include?('holiday'),
+                owed_arrears_of_pay: claim.pay_claims.include?('arrears'),
+                owed_other_payments: claim.pay_claims.include?('other'),
                 other_type_of_claim: claim.other_claim_details.present?,
                 other_type_of_claim_details: claim.other_claim_details || '',
-                claim_description: claim.description
+                claim_description: claim.claim_details
             }
             expect(mapped_field_values).to include expected_values
           end

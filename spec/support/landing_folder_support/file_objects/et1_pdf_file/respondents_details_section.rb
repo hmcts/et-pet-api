@@ -54,7 +54,7 @@ module EtApi
                 locality: resp.address_attributes.locality,
                 county: resp.address_attributes.county,
                 post_code: formatted_post_code(resp.address_attributes.post_code),
-                telephone_number: resp.telephone_number || ''
+                telephone_number: resp.address_telephone_number || ''
               },
               acas: {
                 have_acas: resp.acas_certificate_number.present?,

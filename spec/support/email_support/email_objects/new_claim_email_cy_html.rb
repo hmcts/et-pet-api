@@ -1,5 +1,6 @@
 require_relative './base'
 require_relative '../../helpers/office_helper'
+require_relative './new_claim_email_en_html.rb'
 module EtApi
   module Test
     module EmailObjects

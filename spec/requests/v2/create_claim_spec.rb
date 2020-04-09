@@ -846,6 +846,22 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_examples 'email validation using standard template'
     end
 
+    context 'with json for single claimant with N/K gender, 1 respondent and a representative' do
+      include_context 'with fake sidekiq'
+      include_context 'with setup for claims',
+                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: false, primary_claimant_traits: [:no_gender_first_last]) }
+      include_context 'with background jobs running'
+      include_examples 'any claim variation'
+      include_examples 'a claim exported to primary ATOS'
+      include_examples 'a claim exported to primary ATOS with internally generated pdf'
+      include_examples 'a claim with provided reference number'
+      include_examples 'a claim exported to primary ATOS with single claimant'
+      include_examples 'a claim exported to primary ATOS with single respondent'
+      include_examples 'a claim exported to primary ATOS with a representative'
+      include_examples 'email validation using standard template'
+    end
+
+
     context 'with json for multiple claimants, 1 respondent, a representative and external pdf' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
@@ -894,7 +910,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     context 'with json for single claimant and multiple respondents but no representatives' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 0, has_pdf_file: false) }
+        json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 4, number_of_representatives: 0, has_pdf_file: false) }
       include_context 'with background jobs running'
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
