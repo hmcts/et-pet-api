@@ -648,6 +648,13 @@ et1-v1-en:
     additional_information:
       additional_information:
         field_name: '15'
+    official_use_only:
+      tribunal_office:
+        field_name: 'tribunal office'
+      case_number:
+        field_name: 'case number'
+      date_received:
+        field_name: 'date received'
   claim_email:
     reference: Claim number
     subject: 'Employment tribunal: claim submitted'

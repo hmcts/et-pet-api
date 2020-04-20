@@ -25,6 +25,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
 
   def pdf_fields
     result = {}
+    apply_office_use_only_fields(result)
     apply_your_details_fields(result)
     apply_respondents_details_fields(result)
     apply_secondary_respondents_details_fields(result)
@@ -62,6 +63,11 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, primary_claimant.date_of_birth.year, :your_details, :dob_year
     apply_field result, primary_claimant.email_address, :your_details, :email_address
     apply_field result, primary_claimant.address_telephone_number, :your_details, :telephone_number
+  end
+
+  def apply_office_use_only_fields(result)
+    apply_field result, format_date(source.date_of_receipt), :official_use_only, :date_received
+    apply_field result, source.office&.name, :official_use_only, :tribunal_office
   end
 
   def apply_respondents_details_fields(result)

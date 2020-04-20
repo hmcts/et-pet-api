@@ -7,6 +7,7 @@ module EtApi
       # Represents the ET3 PDF file and provides assistance in validating its contents
       class Et1PdfFile < BasePdfFile
         def has_correct_contents_for?(claim:, claimants:, respondents:, representative:) # rubocop:disable Naming/PredicateName
+          Et1PdfFileSection::OfficialUseOnlySection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim, respondent: respondents.first)
           Et1PdfFileSection::YourDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
           Et1PdfFileSection::RespondentsDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
           Et1PdfFileSection::MultipleCasesSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
