@@ -31,14 +31,13 @@ module EtApi
         end
 
         def has_reference_element?(reference)
-          submission_reference = claim_submission_reference_for(reference: reference)
-          claim_number.has_value?(text: submission_reference)
+          claim_number.has_value?(text: reference)
         end
 
         def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:) # rubocop:disable Naming/PredicateName
           office = office_for(case_number: reference)
           aggregate_failures 'validating content' do
-            assert_reference_element(claim_submission_reference_for(reference: reference))
+            assert_reference_element(reference)
             expect(has_correct_subject?).to be true
             expect(assert_correct_to_address_for?(input_data)).to be true
             assert_office_information(office)

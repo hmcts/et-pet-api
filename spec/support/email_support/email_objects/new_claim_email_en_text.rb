@@ -32,8 +32,7 @@ module EtApi
         end
 
         def has_reference?(reference)
-          submission_reference = claim_submission_reference_for(reference: reference)
-          lines.any? {|l| l.strip == "#{t('claim_email.reference', locale: template_reference)}: #{submission_reference}"}
+          lines.any? {|l| l.strip == "#{t('claim_email.reference', locale: template_reference)}: #{reference}"}
         end
 
         def assert_reference(reference)
