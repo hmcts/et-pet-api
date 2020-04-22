@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2020_03_12_134523) do
+ActiveRecord::Schema.define(version: 2020_04_22_051542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -243,6 +242,16 @@ ActiveRecord::Schema.define(version: 2020_03_12_134523) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.string "attached_to_type", null: false
+    t.bigint "attached_to_id", null: false
+    t.string "name", null: false
+    t.jsonb "data", default: {}
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["attached_to_type", "attached_to_id"], name: "index_events_on_attached_to_type_and_attached_to_id"
   end
 
   create_table "export_events", force: :cascade do |t|

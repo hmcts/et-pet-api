@@ -4,6 +4,7 @@ class Response < ApplicationRecord
   has_many :response_uploaded_files, dependent: :destroy
   has_many :uploaded_files, through: :response_uploaded_files
   has_many :pre_allocated_file_keys, as: :allocated_to, dependent: :destroy, inverse_of: :allocated_to
+  has_many :events, as: :attached_to
 
   def office
     @office ||= Office.find_by(code: office_code)
