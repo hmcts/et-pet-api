@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.2.1'
+gem 'rails', '~> 6.0.3.2'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/ministryofjustice/azure_env_secrets.git', tag: 'v0.1.3'
@@ -57,7 +57,7 @@ gem 'dotenv-rails', '~> 2.4'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails', '~> 3.9'
+  gem 'rspec-rails', '~> 4.0'
   gem 'simplecov', '~> 0.17'
   gem 'site_prism', '~> 3.2'
   gem 'bullet', '~> 6.0'
@@ -74,7 +74,7 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 1.7'
-  gem 'factory_bot', '~> 5.0'
+  gem 'factory_bot', '~> 6.0'
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 2.10'
   gem 'webmock', '~> 3.7'
