@@ -212,7 +212,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     return nil if val.nil? && optional
 
     match = val.match(/\A\s*(\S+)\s*(\d\w\w)\s*\z/)
-    return val.slice(0, 7) unless match
+    return val.slice(0, 7) unless match && match[1].length <= 4
 
     spaces = 4 - match[1].length
     val = "#{match[1]}#{' ' * spaces}#{match[2]}"
