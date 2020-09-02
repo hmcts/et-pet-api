@@ -6,6 +6,7 @@ class PrepareClaimHandler
       ClaimPdfFileHandler.new.handle(claim)
     end
     claim.save if claim.changed?
+    claim.events.claim_prepared.create
     EventService.publish('ClaimPrepared', claim)
   end
 

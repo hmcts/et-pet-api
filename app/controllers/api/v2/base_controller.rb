@@ -32,6 +32,8 @@ module Api
       def indexed_attribute_to_json_path(attribute)
         "/#{attribute.to_s.gsub(/\[(\d*)\]/, '/\1').tr('.', '/')}"
       end
+
+      attr_accessor :cached_root_object
     end
   end
 end

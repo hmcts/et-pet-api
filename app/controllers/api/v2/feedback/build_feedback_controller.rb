@@ -13,6 +13,7 @@ module Api
           root_object = {}
           result = CommandService.dispatch root_object: root_object, **p
           render locals: { result: result }, status: (result.valid? ? :created : :unprocessable_entity)
+          self.cached_root_object = root_object
         end
 
         private
