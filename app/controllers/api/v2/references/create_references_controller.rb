@@ -1,7 +1,7 @@
 module Api
   module V2
     module References
-      class CreateReferencesController < ::ApplicationController
+      class CreateReferencesController < ::Api::V2::BaseController
         include CacheCommandResults
 
         cache_command_results only: :create

@@ -2,13 +2,14 @@ module EtAtosExport
   module ExportServiceExporters
     class ResponseExporter
       def initialize(system:,
-        responses_to_export: Export.responses.where(external_system_id: system.id).includes(:resource),
-        response_export_service: ResponseExportService)
+        responses_to_export: Export.responses.incomplete.where(external_system_id: system.id).includes(:resource),
+        response_export_service: ResponseExportService, events_service: Rails.application.event_service)
         self.responses_to_export = responses_to_export
         self.response_export_service = response_export_service
         self.exports = []
         self.exceptions = []
         self.system = system
+        self.events_service = events_service
       end
 
       def export(to:)
@@ -23,9 +24,11 @@ module EtAtosExport
         report_exceptions
       end
 
-      def mark_responses_as_exported
-        # Destroy each individually to
-        responses_to_export.where(id: exports.map(&:id)).delete_all
+      def mark_responses_as_exported(filename:)
+        exports.each do |export|
+          events_service.publish('ResponseExportedToAtosQueue', export.resource, filename)
+        end
+        responses_to_export.where(id: exports.map(&:id)).mark_as_complete
       end
 
       def exported_count
@@ -78,7 +81,7 @@ module EtAtosExport
         end
       end
 
-      attr_accessor :response_export_service, :responses_to_export, :exports, :exceptions, :system
+      attr_accessor :response_export_service, :responses_to_export, :exports, :exceptions, :system, :events_service
     end
   end
 end

@@ -1,12 +1,13 @@
 module EtAtosExport
   module ExportServiceExporters
     class ClaimExporter
-      def initialize(system:, claims_to_export: Export.claims.where(external_system_id: system.id).includes(:resource), claim_export_service: ::EtAtosExport::ClaimExportService)
+      def initialize(system:, claims_to_export: Export.claims.where(external_system_id: system.id).incomplete.includes(:resource), claim_export_service: ::EtAtosExport::ClaimExportService, events_service: Rails.application.event_service)
         self.claims_to_export = claims_to_export
         self.claim_export_service = claim_export_service
         self.exports = []
         self.exceptions = []
         self.system = system
+        self.events_service = events_service
       end
 
       def export(to:)
@@ -21,9 +22,12 @@ module EtAtosExport
         report_exceptions
       end
 
-      def mark_claims_as_exported
+      def mark_claims_as_exported(filename:)
         # Destroy each individually to
-        claims_to_export.where(id: exports.map(&:id)).delete_all
+        exports.each do |export|
+          events_service.publish('ClaimExportedToAtosQueue', export.resource, filename)
+        end
+        claims_to_export.where(id: exports.map(&:id)).mark_as_complete
       end
 
       def exported_count
@@ -81,7 +85,7 @@ module EtAtosExport
         end
       end
 
-      attr_accessor :claim_export_service, :claims_to_export, :exports, :exceptions, :system
+      attr_accessor :claim_export_service, :claims_to_export, :exports, :exceptions, :system, :events_service
     end
   end
 end

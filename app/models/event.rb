@@ -3,6 +3,8 @@ class Event < ApplicationRecord
   enum name: {
     confirmation_email_sent: 'ConfirmationEmailSent',
     claim_prepared: 'ClaimPrepared',
-    claim_queued_for_export: 'ClaimQueuedForExport'
+    claim_queued_for_export: 'ClaimQueuedForExport',
+    claim_exported_to_atos_queue: 'ClaimExportedToAtosQueue',
+    response_exported_to_atos_queue: 'ResponseExportedToAtosQueue'
   }
 end

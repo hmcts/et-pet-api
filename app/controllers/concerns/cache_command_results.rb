@@ -1,6 +1,10 @@
 module CacheCommandResults
   extend ActiveSupport::Concern
 
+  included do
+    attr_accessor :cached_root_object
+  end
+
   class_methods do
     def cache_command_results(*args)
       around_action :cache_command_results, *args
@@ -14,12 +18,12 @@ module CacheCommandResults
     if cached
       render plain: cached.response_body, headers: cached.response_headers, status: cached.response_status
     else
-      body = yield
-      cache_command_results_save(body)
+      yield
+      cache_command_results_save
     end
   end
 
-  def cache_command_results_save(body)
+  def cache_command_results_save
     request.body.rewind
     request_body = request.body.read
     request.body.rewind
@@ -27,7 +31,7 @@ module CacheCommandResults
       id: params[:uuid],
       request_body: request_body,
       request_headers: cache_command_results_request_headers,
-      response_body: body,
+      response_body: response.body,
       response_headers: response.headers.as_json,
       response_status: response.status
     }

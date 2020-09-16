@@ -3,7 +3,7 @@
 module Api
   module V2
     module Feedback
-      class BuildFeedbackController < ::ApplicationController
+      class BuildFeedbackController < ::Api::V2::BaseController
         include CacheCommandResults
 
         cache_command_results only: :create
