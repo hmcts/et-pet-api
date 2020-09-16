@@ -96,6 +96,14 @@ FactoryBot.define do
   factory :json_import_claim_commands, class: ::EtApi::Test::Json::Document, parent: :json_build_claim_commands do
     command { 'ImportClaim' }
   end
+  factory :json_repair_claim_command, class: ::EtApi::Test::Json::Document do
+    transient do
+      claim_id { nil }
+    end
+    uuid { SecureRandom.uuid }
+    command { 'RepairClaim' }
+    data { { claim_id: claim_id } }
+  end
   factory :json_claim_data, class: ::EtApi::Test::Json::Node do
     trait :minimal do
       example_employment_details

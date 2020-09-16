@@ -2,15 +2,15 @@
 
 module Api
   module V2
-    module Respondents
-      class BuildResponsesController < ::Api::V2::BaseController
+    module Claims
+      class RepairClaimsController < ::Api::V2::BaseController
         include CacheCommandResults
 
         cache_command_results only: :create
 
         def create
-          root_object = ::Response.new
-          command = CommandService.command_for(**build_response_params.merge(command: 'CreateResponse').to_h.symbolize_keys)
+          root_object = ::Claim.find_by(id: repair_claims_params.dig(:data, :claim_id))
+          command = CommandService.command_for(**repair_claims_params.merge(command: 'RepairClaim').symbolize_keys)
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object
             render locals: { result: result }, status: (result.valid? ? :accepted : :unprocessable_entity)
@@ -22,8 +22,8 @@ module Api
 
         private
 
-        def build_response_params
-          params.permit(:uuid, :command, data: [:uuid, :command, data: {}]).to_h
+        def repair_claims_params
+          params.permit!.to_h.slice(:uuid, :command, :data)
         end
       end
     end

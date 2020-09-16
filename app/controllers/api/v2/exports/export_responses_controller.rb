@@ -12,6 +12,7 @@ module Api
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object
             render locals: { result: result }, status: (result.valid? ? :accepted : :unprocessable_entity)
+            self.cached_root_object = root_object
           else
             render locals: { command: command }, status: :bad_request, template: 'api/v2/shared/command_errors'
           end

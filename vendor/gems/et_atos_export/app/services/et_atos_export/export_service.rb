@@ -22,8 +22,8 @@ module EtAtosExport
         export_all to: dir
         next if exported_count.zero?
         zip_files from: dir
-        persist_zip_file
-        mark_all_as_exported
+        filename = persist_zip_file
+        mark_all_as_exported(filename: filename)
       end
     ensure
       remove_zip_if_exists
@@ -39,9 +39,9 @@ module EtAtosExport
       self.exported_count = claim_exporter.exported_count + response_exporter.exported_count
     end
 
-    def mark_all_as_exported
-      claim_exporter.mark_claims_as_exported
-      response_exporter.mark_responses_as_exported
+    def mark_all_as_exported(filename:)
+      claim_exporter.mark_claims_as_exported(filename: filename)
+      response_exporter.mark_responses_as_exported(filename: filename)
     end
 
     def zip_filename
@@ -68,6 +68,7 @@ module EtAtosExport
         file_attributes = { io: file, filename: filename, content_type: "application/zip" }
         exported_file.create!(file_attributes: file_attributes, filename: filename, external_system_id: system.id)
       end
+      filename
     end
   end
 end

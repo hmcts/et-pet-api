@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       namespace :claims do
         post "build_claim" => 'build_claims#create'
         post "import_claim" => 'import_claims#create'
+        post "repair_claim" => 'repair_claims#create'
       end
       namespace :exports do
         post "export_responses" => 'export_responses#create'
