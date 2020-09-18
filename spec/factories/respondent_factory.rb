@@ -30,6 +30,7 @@ FactoryBot.define do
       email_address { 'john@dodgyco.com' }
       dx_number { 'dx1234567890' }
       fax_number { '02222 222222' }
+      allow_video_attendance { true }
       organisation_employ_gb { 10 }
       organisation_more_than_one_site { true }
       employment_at_site_number { 5 }

@@ -1,0 +1,343 @@
+et3-v2-en:
+  response_pdf_fields:
+    header:
+      case_number:
+        field_name: 'case number'
+      date_received:
+        field_name: 'date_received'
+      rtf:
+        field_name: 'RTF'
+        select_values:
+          true: 'Additional RTF'
+          false: ''
+    claimant:
+      claimants_name:
+        field_name: "1.1 Claimant's name"
+    respondent:
+      name:
+        field_name: '2.1 name'
+      contact:
+        field_name: '2.2 name of contact'
+      address:
+        building:
+          field_name: "2.3 Respondent's address: number or name"
+        street:
+          field_name: "2.3 Respondent's address: street"
+        locality:
+          field_name: "2.3 Respondent's address: town city"
+        county:
+          field_name: "2.3 Respondent's address: county"
+        post_code:
+          field_name: "2.3 Respondent's address: postcode"
+      address_dx_number:
+        field_name: '2.3 dx number'
+      phone_number:
+        field_name: '2.4 phone number'
+      mobile_number:
+        field_name: '2.4 mobile number'
+      contact_preference:
+        field_name:
+          - '2.5 Email'
+          - '2.5 Post'
+          - '2.5 Fax'
+        select_values:
+          email:
+            - email
+            - 'Off'
+            - 'Off'
+          post:
+            - 'Off'
+            - post
+            - 'Off'
+          fax:
+            - 'Off'
+            - 'Off'
+            - fax
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+      email_address:
+        field_name: '2.6 email address'
+      fax_number:
+        field_name: '2.6 fax number'
+      allow_video_attendance:
+        field_name: 'Check Box1'
+        select_values:
+          yes: 'Yes'
+          no: 'no'
+        unselected_value: 'Off'
+      employ_gb:
+        field_name: '2.7 number of employees'
+      multi_site_gb:
+        field_name:
+          - "2.8 more than one site - yes"
+          - "2.8 more than one site - no"
+        select_values:
+          false:
+            - "Off"
+            - "no"
+          true:
+            - "yes"
+            - "Off"
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      employment_at_site_number:
+        field_name: '2.9 employees employed at that site'
+    acas:
+      agree:
+        field_name:
+          - '3.1 early conciliation details - yes'
+          - '3.1 early conciliation details - no'
+        select_values:
+          false:
+            - 'Off'
+            - 'No'
+          true:
+            - 'Yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      disagree_explanation:
+        field_name: '3.1 If no, please explain why'
+    employment_details:
+      agree_with_dates:
+        field_name:
+          - '4.1 dates correct - yes'
+          - '4.1 dates correct - no'
+        select_values:
+          false:
+            - 'Off'
+            - 'no'
+          true:
+            - 'yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      employment_start:
+        field_name: '4.1 employment started'
+      employment_end:
+        field_name: '4.1 employment ended'
+      disagree_with_dates_reason:
+        field_name: "4.1 reasons you disagree with the claimant's dates"
+      continuing:
+        field_name:
+          - '4.2 employment continuing - yes'
+          - '4.2 employment continuing - no'
+        select_values:
+          false:
+            - 'Off'
+            - 'no'
+          true:
+            - 'yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      agree_with_job_title:
+        field_name:
+          - '4.3 job description correct - yes'
+          - '4.3 job description correct - no'
+        select_values:
+          false:
+            - 'Off'
+            - 'no'
+          true:
+            - 'yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      correct_job_title:
+        field_name: '4.3 correct details'
+    earnings:
+      agree_with_hours:
+        field_name:
+          - "5.1 claimant's hours of work are correct - yes"
+          - "5.1 claimant's hours of work are correct - no"
+        select_values:
+          false:
+            - 'Off'
+            - 'no'
+          true:
+            - 'yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      correct_hours:
+        field_name: 'Work hours details'
+      agree_with_earnings:
+        field_name:
+          - '5.2 earning details correct - yes'
+          - '5.2 earning details correct - no'
+        select_values:
+          false:
+            - 'Off'
+            - 'no'
+          true:
+            - 'yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      correct_pay_before_tax:
+        field_name: '5.2 pay before tax'
+      correct_pay_before_tax_period:
+        field_name:
+          - '5.2 pay before tax - weekly'
+          - '5.2 pay before tax - monthly'
+        select_values:
+          Monthly:
+            - 'Off'
+            - 'monthly'
+          Weekly:
+            - 'weekly'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      correct_take_home_pay:
+        field_name: '5.2 normal take-home pay'
+      correct_take_home_pay_period:
+        field_name:
+          - '5.2 take-home pay - weekly'
+          - '5.2 take-home pay - monthly'
+        select_values:
+          Monthly:
+            - 'Off'
+            - 'monthly'
+          Weekly:
+            - 'weekly'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      agree_with_notice_period:
+        field_name:
+          - '5.3 period of notice information - correct'
+          - '5.3 period of notice information - not correct'
+        select_values:
+          no:
+            - 'Off'
+            - 'no'
+          yes:
+            - 'yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      disagree_notice_period_reason:
+        field_name: '5.3 if information is not correct'
+      agree_with_pension_benefits:
+        field_name:
+          - '5.4 pension details - correct'
+          - '5.4 pension details - not correct'
+        select_values:
+          no:
+            - 'Off'
+            - 'no'
+          yes:
+            - 'yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      disagree_pension_benefits_reason:
+        field_name: '5.4 if not correct, details'
+    response:
+      defend_claim:
+        field_name:
+          - '6.1 defend the claim - yes'
+          - '6.1 defend the claim - no'
+        select_values:
+          no:
+            - 'Off'
+            - 'no'
+          yes:
+            - 'yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      defend_claim_facts:
+        field_name: '6.1 if yes, facts in defence'
+    contract_claim:
+      make_employer_contract_claim:
+        field_name: "7.2 Employer's Contract Claim - yes"
+        select_values:
+          true: 'yes'
+          false: 'Off'
+      information:
+        field_name: "7.3 details of Employer's Contract Claim"
+    representative:
+      name:
+        field_name: '8.1 name of your representative'
+      organisation_name:
+        field_name: "8.2 Name of representative's organisation"
+      address:
+        building:
+          field_name: "8.3 representative's number or name"
+        street:
+          field_name: "8.3 representative's street"
+        locality:
+          field_name: "8.3 representative's town or city"
+        county:
+          field_name: "8.3 representative's county"
+        post_code:
+          field_name: "8.3 representative's postcode"
+      dx_number:
+        field_name: "8.4 representative's DX number"
+      phone_number:
+        field_name: '8.5 phone number'
+      mobile_number:
+        field_name: '8.6 mobile phone number'
+      reference:
+        field_name: "8.7 representative's reference for correspondence"
+      contact_preference:
+        field_name:
+          - 8.8 email
+          - 8.8 post
+          - 8.8 fax
+        select_values:
+          email:
+            - 'email'
+            - 'Off'
+            - 'Off'
+          fax:
+            - 'Off'
+            - 'Off'
+            - 'fax'
+          post:
+            - 'Off'
+            - 'post'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+      email_address:
+        field_name: '8.9 email address'
+      fax_number:
+        field_name: '8.10 fax number'
+    disability:
+      has_disability:
+        field_name:
+          - '9.1 disability - yes'
+          - '9.1 disability - no'
+        select_values:
+          no:
+            - 'Off'
+            - 'no'
+          yes:
+            - 'yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      information:
+        field_name: '9.1 details of disability'
+

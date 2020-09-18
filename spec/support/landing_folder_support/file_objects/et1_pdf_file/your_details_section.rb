@@ -21,7 +21,8 @@ module EtApi
                 telephone_number: claimant.address_telephone_number,
                 alternative_telephone_number: claimant.mobile_number,
                 email_address: claimant.email_address,
-                correspondence: claimant.contact_preference
+                correspondence: claimant.contact_preference,
+                allow_video_attendance: claimant.allow_video_attendance
             }
             expect(mapped_field_values).to include expected_values
           end

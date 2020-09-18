@@ -23,6 +23,7 @@ module EtApi
               contact_preference: respondent.fetch(:contact_preference, nil),
               email_address: respondent.fetch(:email_address, ''),
               fax_number: respondent.fetch(:fax_number, ''),
+              allow_video_attendance: respondent[:allow_video_attendance],
               employ_gb: respondent[:organisation_employ_gb].to_s,
               multi_site_gb: respondent[:organisation_more_than_one_site],
               employment_at_site_number: respondent[:employment_at_site_number].to_s

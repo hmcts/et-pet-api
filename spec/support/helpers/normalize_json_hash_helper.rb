@@ -8,7 +8,7 @@ module EtApi
       end
 
       def normalize_json_claimant(json_hash)
-        h = json_hash.symbolize_keys
+        h = json_hash.symbolize_keys.except(:allow_video_attendance)
         h[:address] = normalize_json_address(h.delete(:address_attributes))
         h[:date_of_birth] = Date.parse(h[:date_of_birth])
         h

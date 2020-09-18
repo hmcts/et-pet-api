@@ -165,6 +165,7 @@ ActiveRecord::Schema.define(version: 2020_09_16_093109) do
     t.datetime "updated_at", null: false
     t.string "fax_number"
     t.text "special_needs"
+    t.boolean "allow_video_attendance"
     t.index ["address_id"], name: "index_claimants_on_address_id"
   end
 
@@ -387,6 +388,7 @@ ActiveRecord::Schema.define(version: 2020_09_16_093109) do
     t.string "disability_information"
     t.string "acas_certificate_number"
     t.string "acas_exemption_code"
+    t.boolean "allow_video_attendance"
     t.index ["address_id"], name: "index_respondents_on_address_id"
     t.index ["work_address_id"], name: "index_respondents_on_work_address_id"
   end

@@ -6,9 +6,10 @@ module EtApi
         class HeaderSection < ::EtApi::Test::FileObjects::Et3PdfFileSection::Base
           def has_contents_for?(response:) # rubocop:disable Naming/PredicateName
             # @TODO Review this conditional after march 2019 - once the pdf has been sorted, it should have the date_received and rtf fields
-            if template == 'et3-v1-cy'
+            if template == 'et3-v2-cy'
               expected_values = {
-                case_number: response[:case_number]
+                case_number: response[:case_number],
+                date_received: formatted_date(Time.zone.now)
               }
               expect(mapped_field_values).to eql(expected_values)
             else
