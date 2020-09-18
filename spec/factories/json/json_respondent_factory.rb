@@ -28,6 +28,10 @@ FactoryBot.define do
       acas_exemption_code { nil }
     end
 
+    trait :et3 do
+      allow_video_attendance { true }
+    end
+
     trait :no_work_address do
       association :work_address_attributes, :empty, factory: :json_address_data
     end

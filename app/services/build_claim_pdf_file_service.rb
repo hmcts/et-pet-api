@@ -6,7 +6,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   include PdfBuilder::ActiveStorage
   PAY_CLAIMS = ['redundancy', 'notice', 'holiday', 'arrears', 'other'].freeze
 
-  def self.call(source, template_reference: 'et1-v1-en')
+  def self.call(source, template_reference: 'et1-v2-en')
     new(source, template_reference: template_reference).call
   end
 
@@ -63,6 +63,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, primary_claimant.date_of_birth.year, :your_details, :dob_year
     apply_field result, primary_claimant.email_address, :your_details, :email_address
     apply_field result, primary_claimant.address_telephone_number, :your_details, :telephone_number
+    apply_field result, primary_claimant.allow_video_attendance, :your_details, :allow_video_attendance
   end
 
   def apply_office_use_only_fields(result)
@@ -194,6 +195,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, rep&.mobile_number, :your_representative, :alternative_telephone_number
     apply_field result, rep&.dx_number, :your_representative, :dx_number
     apply_field result, rep&.email_address, :your_representative, :email_address
+    apply_field result, nil, :your_representative, :communication_preference
   end
 
   def apply_disability_section(result)

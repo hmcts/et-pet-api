@@ -21,6 +21,7 @@ FactoryBot.define do
       contact_preference { 'Email' }
       gender { 'Male' }
       date_of_birth { Date.parse('21/11/1982') }
+      allow_video_attendance { true }
     end
 
     trait :tamara_swift do

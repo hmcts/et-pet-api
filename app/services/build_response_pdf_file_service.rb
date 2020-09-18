@@ -5,7 +5,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
   include PdfBuilder::PreAllocation
   include PdfBuilder::ActiveStorage
 
-  def self.call(source, template_reference: 'et3-v1-en')
+  def self.call(source, template_reference: 'et3-v2-en')
     new(source, template_reference: template_reference).call
   end
 
@@ -64,6 +64,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, respondent.contact_preference, :respondent, :contact_preference
     apply_field result, respondent.email_address, :respondent, :email_address
     apply_field result, respondent.fax_number, :respondent, :fax_number
+    apply_field result, respondent.allow_video_attendance, :respondent, :allow_video_attendance
     apply_field result, respondent.organisation_employ_gb, :respondent, :employ_gb
     apply_field result, respondent.organisation_more_than_one_site, :respondent, :multi_site_gb
     apply_field result, respondent.employment_at_site_number, :respondent, :employment_at_site_number

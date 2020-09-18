@@ -3,6 +3,8 @@ require 'securerandom'
 
 FactoryBot.define do
   factory :json_claimant_data, class: ::EtApi::Test::Json::Document do
+    allow_video_attendance { true }
+
     trait :mr_na_o_malley do
       mr_first_last
       first_name { 'n/a' }
@@ -49,6 +51,7 @@ FactoryBot.define do
       gender { 'Male' }
       date_of_birth { '1982-11-21' }
       special_needs { nil }
+      allow_video_attendance { true }
     end
 
     trait :invalid_address_keys do

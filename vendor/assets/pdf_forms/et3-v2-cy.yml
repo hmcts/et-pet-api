@@ -1,0 +1,342 @@
+---
+header:
+  case_number:
+    field_name: Text2
+  date_received:
+    field_name: Text3
+  rtf:
+    field_name: false
+claimant:
+  claimants_name:
+    field_name: undefined
+respondent:
+  name:
+    field_name: undefined_2
+  contact:
+    field_name: undefined_3
+  address:
+    building:
+      field_name: Rhif neu enw
+    street:
+      field_name: Stryd
+    locality:
+      field_name: nas
+    county:
+      field_name: r
+    post_code:
+      field_name: Text13
+  address_dx_number:
+    field_name: undefined_5
+  phone_number:
+    field_name: ynystodydydd
+  mobile_number:
+    field_name: Rhif ffôn symudol os ywn wahanol
+  contact_preference:
+    field_name:
+      - Check Box4
+      - Check Box5
+      - Check Box6
+    select_values:
+      email:
+        - 'Yes'
+        - 'Off'
+        - 'Off'
+      post:
+        - 'Off'
+        - 'Yes'
+        - 'Off'
+      fax:
+        - 'Off'
+        - 'Off'
+        - 'Yes'
+  email_address:
+    field_name: e
+  fax_number:
+    field_name: undefined_6
+  allow_video_attendance:
+    field_name:
+      - Check Box7
+      - Check Box8
+    select_values:
+      yes:
+        - 'Yes'
+        - 'Off'
+      no:
+        - 'Off'
+        - 'Yes'
+    unselected_value:
+      - 'Off'
+      - 'Off'
+  employ_gb:
+    field_name: ogedig gan y
+  multi_site_gb:
+    field_name:
+    - Check Box10
+    - Check Box9
+    select_values:
+      false:
+      - 'Off'
+      - 'Yes'
+      true:
+      - 'Yes'
+      - 'Off'
+    unselected_value:
+    - 'Off'
+    - 'Off'
+  employment_at_site_number:
+    field_name: saflebleroeddyrhawlyddyngweithio
+acas:
+  agree:
+    field_name:
+      - 'Check Box12'
+      - 'Check Box11'
+    select_values:
+      false:
+        - 'Off'
+        - 'Yes'
+      true:
+        - 'Yes'
+        - 'Off'
+    unselected_value:
+      - 'Off'
+      - 'Off'
+  disagree_explanation:
+    field_name: Text4
+employment_details:
+  agree_with_dates:
+    field_name:
+    - Check Box13
+    - Check Box14
+    select_values:
+      false:
+      - 'Off'
+      - 'Yes'
+      true:
+      - 'Yes'
+      - 'Off'
+    unselected_value:
+    - 'Off'
+    - 'Off'
+  employment_start:
+    field_name: Pa bryd ddechreuodd ei gyflogaeth
+  employment_end:
+    field_name: ben
+  disagree_with_dates_reason:
+    field_name: adau
+  continuing:
+    field_name:
+    - Check Box15
+    - Check Box16
+    select_values:
+      false:
+      - 'Off'
+      - 'Yes'
+      true:
+      - 'Yes'
+      - 'Off'
+    unselected_value:
+    - 'Off'
+    - 'Off'
+  agree_with_job_title:
+    field_name:
+      - 'Check Box18'
+      - 'Check Box17'
+    select_values:
+      false:
+        - 'Off'
+        - 'Yes'
+      true:
+        - 'Yes'
+        - 'Off'
+    unselected_value:
+      - 'Off'
+      - 'Off'
+  correct_job_title:
+    field_name: onsyngywir
+earnings:
+  agree_with_hours:
+    field_name:
+      - 'Check Box19'
+      - 'Check Box20'
+    select_values:
+      false:
+        - 'Off'
+        - 'Yes'
+      true:
+        - 'Yes'
+        - 'Off'
+    unselected_value:
+      - 'Off'
+      - 'Off'
+  correct_hours:
+    field_name: awryrwythnos
+  agree_with_earnings:
+    field_name:
+    - Check Box22
+    - Check Box21
+    select_values:
+      false:
+      - 'Off'
+      - 'Yes'
+      true:
+      - 'Yes'
+      - 'Off'
+    unselected_value:
+    - 'Off'
+    - 'Off'
+  correct_pay_before_tax:
+    field_name: fill_4
+  correct_pay_before_tax_period:
+    field_name:
+      - 'Check Box23'
+      - 'Check Box24'
+    select_values:
+      Monthly:
+        - 'Off'
+        - 'Yes'
+      Weekly:
+        - 'Yes'
+        - 'Off'
+    unselected_value:
+      - 'Off'
+      - 'Off'
+  correct_take_home_pay:
+    field_name: fill_5
+  correct_take_home_pay_period:
+    field_name:
+    - Check Box25
+    - Check Box26
+    select_values:
+      Monthly:
+      - 'Off'
+      - 'Yes'
+      Weekly:
+      - 'Yes'
+      - 'Off'
+    unselected_value:
+    - 'Off'
+    - 'Off'
+  agree_with_notice_period:
+    field_name:
+      - 'Check Box28'
+      - 'Check Box27'
+    select_values:
+      false:
+        - 'Off'
+        - 'Yes'
+      true:
+        - 'Yes'
+        - 'Off'
+    unselected_value:
+      - 'Off'
+      - 'Off'
+  disagree_notice_period_reason:
+    field_name: weithioei gyfnodorybuddeglurwchbeth
+  agree_with_pension_benefits:
+    field_name:
+      - 'Check Box30'
+      - 'Check Box29'
+    select_values:
+      false:
+        - 'Off'
+        - 'Yes'
+      true:
+        - 'Yes'
+        - 'Off'
+    unselected_value:
+      - 'Off'
+      - 'Off'
+  disagree_pension_benefits_reason:
+    field_name: Osnacydyntrhowchymanylionsyngywir
+response:
+  defend_claim:
+    field_name:
+      - 'Check Box31'
+      - 'Check Box32'
+    select_values:
+      false:
+        - 'Off'
+        - 'Yes'
+      true:
+        - 'Yes'
+        - 'Off'
+    unselected_value:
+      - 'Off'
+      - 'Off'
+  defend_claim_facts:
+    field_name: Gweler y Can
+contract_claim:
+  make_employer_contract_claim:
+    field_name: Check Box33
+    select_values:
+      true: 'Yes'
+      false: 'Off'
+  information:
+    field_name: Rhowchgefndiramanylioneichhawl adisodDy l echgynnwys pobdyddiadpwys g gweleryCan awamragorowybodaethynghy chpa fanylionydy echeucynnwysRow1
+representative:
+  name:
+    field_name: chi
+  organisation_name:
+    field_name: undefined_9
+  address:
+    building:
+      field_name: Rhif neu enw_2
+    street:
+      field_name: Stryd_2
+    locality:
+      field_name: nas_2
+    county:
+      field_name: r_2
+    post_code:
+      field_name: Text10
+  dx_number:
+    field_name: undefined_11
+  phone_number:
+    field_name: Text5
+  mobile_number:
+    field_name: Text6
+  reference:
+    field_name: Text7
+  contact_preference:
+    field_name:
+    - Check Box36
+    - Check Box35
+    - Check Box34
+    select_values:
+      email:
+      - 'Yes'
+      - 'Off'
+      - 'Off'
+      fax:
+      - 'Off'
+      - 'Off'
+      - 'Yes'
+      post:
+      - 'Off'
+      - 'Yes'
+      - 'Off'
+    unselected_value:
+    - 'Off'
+    - 'Off'
+    - 'Off'
+  email_address:
+    field_name: Text8
+  fax_number:
+    field_name: Text9
+disability:
+  has_disability:
+    field_name:
+      - 'Check Box37'
+      - 'Check Box36'
+    select_values:
+      false:
+        - 'Off'
+        - 'Yes'
+      true:
+        - 'Yes'
+        - 'Off'
+    unselected_value:
+      - 'Off'
+      - 'Off'
+  information:
+    field_name: gynnwysargyferunrhywwrandawiadaua

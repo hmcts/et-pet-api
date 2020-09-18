@@ -13,6 +13,7 @@ class BuildRespondentCommand < BaseCommand
   attribute :disability_information, :string
   attribute :acas_certificate_number, :string
   attribute :acas_exemption_code, :string
+  attribute :allow_video_attendance, :boolean
 
   attribute :name, :string
   attribute :address_attributes, :address_hash, default: {}

@@ -313,18 +313,6 @@ RSpec.describe 'Import Claim Request', type: :request do
       include_examples 'a claim with no representatives'
     end
 
-    context 'with json for multiple claimants, 1 respondent, no representatives and an external pdf' do
-      include_context 'with fake sidekiq'
-      include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 0, has_pdf_file: true) }
-      include_context 'with background jobs running'
-      include_examples 'any claim variation'
-      include_examples 'a claim imported with externally generated pdf'
-      include_examples 'a claim with multiple claimants from json'
-      include_examples 'a claim with single respondent'
-      include_examples 'a claim with no representatives'
-    end
-
     context 'with json for multiple claimants, 1 respondent and no representatives' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
@@ -335,18 +323,6 @@ RSpec.describe 'Import Claim Request', type: :request do
       include_examples 'a claim with multiple claimants from json'
       include_examples 'a claim with single respondent'
       include_examples 'a claim with no representatives'
-    end
-
-    context 'with json for single claimant, respondent, representative and external pdf' do
-      include_context 'with fake sidekiq'
-      include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: true) }
-      include_context 'with background jobs running'
-      include_examples 'any claim variation'
-      include_examples 'a claim imported with externally generated pdf'
-      include_examples 'a claim with single claimant'
-      include_examples 'a claim with single respondent'
-      include_examples 'a claim with a representative'
     end
 
     context 'with json for single claimant, respondent and representative' do
@@ -393,18 +369,6 @@ RSpec.describe 'Import Claim Request', type: :request do
       include_examples 'a claim with a representative'
     end
 
-    context 'with json for multiple claimants, 1 respondent, a representative and external pdf' do
-      include_context 'with fake sidekiq'
-      include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: true) }
-      include_context 'with background jobs running'
-      include_examples 'any claim variation'
-      include_examples 'a claim imported with externally generated pdf'
-      include_examples 'a claim with multiple claimants from json'
-      include_examples 'a claim with single respondent'
-      include_examples 'a claim with a representative'
-    end
-
     context 'with json for multiple claimants, 1 respondent and a representative' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
@@ -417,18 +381,6 @@ RSpec.describe 'Import Claim Request', type: :request do
       include_examples 'a claim with a representative'
     end
 
-    context 'with json for single claimant, multiple respondents, no representatives and external pdf' do
-      include_context 'with fake sidekiq'
-      include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 0, has_pdf_file: true) }
-      include_context 'with background jobs running'
-      include_examples 'any claim variation'
-      include_examples 'a claim imported with externally generated pdf'
-      include_examples 'a claim with single claimant'
-      include_examples 'a claim with multiple respondents'
-      include_examples 'a claim with no representatives'
-    end
-
     context 'with json for single claimant and multiple respondents but no representatives' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
@@ -437,18 +389,6 @@ RSpec.describe 'Import Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim imported with internally generated pdf'
       include_examples 'a claim with single claimant'
-      include_examples 'a claim with multiple respondents'
-      include_examples 'a claim with no representatives'
-    end
-
-    context 'with json for multiple claimant, multiple respondents, no representatives with external pdf' do
-      include_context 'with fake sidekiq'
-      include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 0, has_pdf_file: true) }
-      include_context 'with background jobs running'
-      include_examples 'any claim variation'
-      include_examples 'a claim imported with externally generated pdf'
-      include_examples 'a claim with multiple claimants from json'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with no representatives'
     end
@@ -465,18 +405,6 @@ RSpec.describe 'Import Claim Request', type: :request do
       include_examples 'a claim with no representatives'
     end
 
-    context 'with json for single claimant, multiple respondents, a representative and external pdf' do
-      include_context 'with fake sidekiq'
-      include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 1, has_pdf_file: true) }
-      include_context 'with background jobs running'
-      include_examples 'any claim variation'
-      include_examples 'a claim imported with externally generated pdf'
-      include_examples 'a claim with single claimant'
-      include_examples 'a claim with multiple respondents'
-      include_examples 'a claim with a representative'
-    end
-
     context 'with json for single claimant, multiple respondents and a representative' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
@@ -485,18 +413,6 @@ RSpec.describe 'Import Claim Request', type: :request do
       include_examples 'any claim variation'
       include_examples 'a claim imported with internally generated pdf'
       include_examples 'a claim with single claimant'
-      include_examples 'a claim with multiple respondents'
-      include_examples 'a claim with a representative'
-    end
-
-    context 'with json for multiple claimants, multiple respondents, a representative and external pdf' do
-      include_context 'with fake sidekiq'
-      include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 1, has_pdf_file: true) }
-      include_context 'with background jobs running'
-      include_examples 'any claim variation'
-      include_examples 'a claim imported with externally generated pdf'
-      include_examples 'a claim with multiple claimants from json'
       include_examples 'a claim with multiple respondents'
       include_examples 'a claim with a representative'
     end
@@ -519,10 +435,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using url' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 0, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 0, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with multiple claimants from csv'
           include_examples 'a claim with single respondent'
           include_examples 'a claim with no representatives'
@@ -532,10 +448,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 0, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 0, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with multiple claimants from csv'
           include_examples 'a claim with single respondent'
           include_examples 'a claim with no representatives'
@@ -545,10 +461,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using url but uppercased filename' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with multiple claimants from csv'
           include_examples 'a claim with single respondent'
           include_examples 'a claim with no representatives'
@@ -558,10 +474,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload but uppercased filename' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_direct_upload_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_direct_upload_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with multiple claimants from csv'
           include_examples 'a claim with single respondent'
           include_examples 'a claim with no representatives'
@@ -571,10 +487,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for multiple claimants, single respondent and representative - with csv file uploaded using url' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with multiple claimants from csv'
           include_examples 'a claim with single respondent'
           include_examples 'a claim with a representative'
@@ -584,10 +500,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for multiple claimants, single respondent and representative - with csv file uploaded using direct upload' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with multiple claimants from csv'
           include_examples 'a claim with single respondent'
           include_examples 'a claim with a representative'
@@ -597,10 +513,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for multiple claimants, multiple respondents but no representatives - with csv file uploaded using url' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 0, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 0, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with multiple claimants from csv'
           include_examples 'a claim with multiple respondents'
           include_examples 'a claim with no representatives'
@@ -610,10 +526,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for multiple claimants, multiple respondents but no representatives - with csv file uploaded using direct upload' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 0, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 0, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with multiple claimants from csv'
           include_examples 'a claim with multiple respondents'
           include_examples 'a claim with no representatives'
@@ -623,10 +539,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using url' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 1, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 1, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with multiple claimants from csv'
           include_examples 'a claim with multiple respondents'
           include_examples 'a claim with a representative'
@@ -636,10 +552,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using direct upload' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 1, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 1, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with multiple claimants from csv'
           include_examples 'a claim with multiple respondents'
           include_examples 'a claim with a representative'
@@ -649,10 +565,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for single claimant, single respondent and representative - with rtf file uploaded using url' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_rtf, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_rtf, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with single claimant'
           include_examples 'a claim with single respondent'
           include_examples 'a claim with a representative'
@@ -662,10 +578,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for single claimant, single respondent and representative - with rtf file uploaded using direct upload' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with single claimant'
           include_examples 'a claim with single respondent'
           include_examples 'a claim with a representative'
@@ -675,10 +591,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for single claimant, single respondent and representative - with rtf file uploaded using url with uppercased extension' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_rtf_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_rtf_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with single claimant'
           include_examples 'a claim with single respondent'
           include_examples 'a claim with a representative'
@@ -688,10 +604,10 @@ RSpec.describe 'Import Claim Request', type: :request do
         context 'with json for single claimant, single respondent and representative - with rtf file uploaded using direct upload with uppercased extension' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_rtf_direct_upload_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: true) }
+                          json_factory: -> { FactoryBot.build(:json_import_claim_commands, :with_rtf_direct_upload_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, has_pdf_file: false) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
-          include_examples 'a claim imported with externally generated pdf'
+          include_examples 'a claim imported with internally generated pdf'
           include_examples 'a claim with single claimant'
           include_examples 'a claim with single respondent'
           include_examples 'a claim with a representative'
@@ -703,7 +619,7 @@ RSpec.describe 'Import Claim Request', type: :request do
     context 'with json creating an error for single claimant (with no address) and respondent, no representatives' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full], primary_claimant_traits: [:mr_first_last, :invalid_address_keys], has_pdf_file: true) }
+        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full], primary_claimant_traits: [:mr_first_last, :invalid_address_keys], has_pdf_file: false) }
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
 
@@ -722,7 +638,7 @@ RSpec.describe 'Import Claim Request', type: :request do
     context 'with json creating an error for single claimant and respondent (with no address), no representatives' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full, :invalid_address_keys], has_pdf_file: true) }
+        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full, :invalid_address_keys], has_pdf_file: false) }
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
 
@@ -741,7 +657,7 @@ RSpec.describe 'Import Claim Request', type: :request do
     context 'with json creating an error for single claimant, respondent and representative (invalid address)' do
       include_context 'with fake sidekiq'
       include_context 'with setup for claims',
-        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_representative_traits: [:full, :invalid_address_keys], has_pdf_file: true) }
+        json_factory: -> { FactoryBot.build(:json_import_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_representative_traits: [:full, :invalid_address_keys], has_pdf_file: false) }
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
 
