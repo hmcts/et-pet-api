@@ -1,4 +1,4 @@
-class RepopulateMissingRtfFilesFrom1409 < ActiveRecord::Migration[6.0]
+class RepopulateMissingRtfFilesFrom1409v2 < ActiveRecord::Migration[6.0]
   class Command < ActiveRecord::Base
     self.table_name = :commands
   end
