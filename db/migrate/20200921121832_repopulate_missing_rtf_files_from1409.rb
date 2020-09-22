@@ -16,10 +16,12 @@ class RepopulateMissingRtfFilesFrom1409 < ActiveRecord::Migration[6.0]
       claim = Claim.where(reference: reference).first
       next if claim.nil? || claim.uploaded_files.where('filename LIKE ?', '%.rtf').count > 0
 
+      announce "Adding new RTF file for claim id #{claim.id} reference #{claim.reference}"
       input_data = file_command['data']
       uploaded_file = claim.uploaded_files.create(input_data.merge(import_file_url: input_data.delete('data_url'), import_from_key: input_data.delete('data_from_key')))
       UploadedFileImportService.import_file_url(uploaded_file.import_file_url, into: uploaded_file)
       claim.save(touch:false)
+      announce "Added new RTF file for claim id #{claim.id} reference #{claim.reference}"
     end
   end
 
