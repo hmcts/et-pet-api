@@ -60,7 +60,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 4.0'
   gem 'simplecov', '~> 0.17'
-  gem 'site_prism', '~> 3.2'
+  gem 'site_prism', '~> 3.6'
   gem 'bullet', '~> 6.0'
 end
 
