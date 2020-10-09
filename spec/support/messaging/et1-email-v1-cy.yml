@@ -1,0 +1,16 @@
+et1-v1-cy:
+  claim_email:
+    reference: Eich rhif hawliad
+    subject: 'Tribiwnlys Cyflogaeth: hawliad wedi''i gyflwyno'
+    submission_info: 'Hawliad wedi''i gyflwyno:'
+    submission_date: "%{date}"
+    tribunal_office: 'Swyddfa tribiwnlys:'
+    thank_you: "Diolch am gyflwyno eich hawliad i dribiwnlys cyflogaeth."
+    next_steps:
+      well_contact_you: Byddwn yn cysylltu â chi unwaith y byddwn wedi anfon eich hawliad at yr atebydd i egluro beth fydd yn digwydd nesaf. Ar hyn o bryd, mae’n cymryd oddeutu 25 diwrnod.
+      once_sent_claim: Unwaith y byddwn wedi anfon eich hawliad atynt, mae gan yr atebydd 28 diwrnod i ymateb.
+    submission_details: Manylion cyflwyno
+    claim_completed: 'Hawliad wedi''i gwblhau:'
+    see_attached_pdf: Gweler y PDF sydd ynghlwm
+    claim_submitted: 'Hawliad wedi''i gyflwyno:'
+    submitted_at: "Cyflwynwyd ar %{date}"

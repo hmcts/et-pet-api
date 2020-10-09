@@ -19,6 +19,7 @@ FactoryBot.define do
     office_code { 22 }
     date_of_receipt { Time.zone.now }
     pdf_template_reference { "et1-v2-en" }
+    email_template_reference { "et1-v1-en" }
     claim_details { 'claim details field' }
     miscellaneous_information { 'miscellaneous information' }
 
@@ -26,6 +27,10 @@ FactoryBot.define do
       claim.primary_claimant = build(:claimant) if claim.primary_claimant.blank? && evaluator.number_of_claimants > 0
       claim.secondary_claimants.concat build_list(:claimant, [evaluator.number_of_claimants - 1,0].max)
       claim.claimant_count += evaluator.number_of_claimants
+    end
+
+    trait :with_welsh_email do
+      email_template_reference { 'et1-v1-cy' }
     end
 
     trait :with_pdf_file do

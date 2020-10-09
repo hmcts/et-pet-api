@@ -1,13 +1,13 @@
-et1-v2-en:
+et1-v1-en:
   claim_pdf_fields:
     your_details:
       title:
         field_name: '1.1 title tick boxes'
         select_values:
-          Miss: Your details - 1.1 Title - tickbox - Miss
-          Mr: Your details - 1.1 Title - tickbox - Mr
-          Mrs: Your details - 1.1 Title - tickbox - Mrs
-          Ms: Your details - 1.1 Title - tickbox - Ms
+          Miss: 'miss'
+          Mr: 'mr'
+          Mrs: 'mrs'
+          Ms: 'ms'
         unselected_value: 'Off'
       first_name:
         field_name: '1.2 first names'
@@ -49,12 +49,6 @@ et1-v2-en:
           Fax: 'fax'
           Post: 'post'
         unselected_value: 'Off'
-      allow_video_attendance:
-        field_name: 'Check Box2'
-        select_values:
-          yes: 'Yes'
-          no: 'no'
-        unselected_value: 'Off'
     respondents_details:
       name:
         field_name: '2.1'
@@ -94,10 +88,10 @@ et1-v2-en:
         telephone_number:
           field_name: '2.3 phone number'
       additional_respondents:
-        field_name: Check Box7
+        field_name: 2.4 tick box
         select_values:
           false: 'Off'
-          true: 'Yes'
+          true: 'yes'
       respondent2:
         name:
           field_name: '2.4 R2 name'
@@ -376,12 +370,7 @@ et1-v2-en:
       email_address:
         field_name: '11.8 email'
       communication_preference:
-        field_name: 11.9 tick boxes
-        unselected_value: 'Off'
-        select_values:
-          email: email
-          fax: fax
-          post: post
+        field_name: '11.9 tick boxes'
       fax_number:
         field_name: '11.10 fax number'
     disability:
@@ -446,10 +435,7 @@ et1-v2-en:
             field_name: 'Text30'
     final_check:
       satisfied:
-        field_name: 14 satisfied tick box
-        select_values:
-          false: 'Off'
-          true: 'yes'
+        field_name: '14 satisfied tick box'
     additional_information:
       additional_information:
         field_name: '15'
@@ -460,19 +446,3 @@ et1-v2-en:
         field_name: 'case number'
       date_received:
         field_name: 'date received'
-  claim_email:
-    reference: Claim number
-    subject: 'Employment tribunal: claim submitted'
-    submission_info: 'Claim submitted:'
-    submission_date: Submitted %{date}
-    tribunal_office: 'Tribunal office:'
-    thank_you: Thank you for submitting your claim to an employment tribunal.
-    next_steps:
-      well_contact_you: "We'll contact you once we have sent your claim to the respondent and explain what happens next."
-      once_sent_claim: 'Once we have sent them your claim, the respondent has 28 days to reply.'
-    submission_details: Submission details
-    claim_completed: 'Claim completed:'
-    see_attached_pdf: See attached PDF
-    claim_submitted: 'Claim submitted:'
-    submitted_at: 'Submitted %{date}'
-

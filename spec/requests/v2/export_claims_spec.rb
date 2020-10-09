@@ -2,6 +2,8 @@
 
 require 'rails_helper'
 RSpec.describe 'Export Claims Request', type: :request do
+  include_context 'with gov uk notify emails sent monitor'
+
   shared_context 'with fake sidekiq' do
     around do |example|
       begin
