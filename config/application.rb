@@ -54,9 +54,9 @@ module EtApi
     config.govuk_notify = ActiveSupport::OrderedOptions.new
     if ENV.key?('GOVUK_NOTIFY_API_KEY_LIVE')
       config.govuk_notify.enabled = true
-      config.govuk_notify.live_api_key = ENV.key?('GOVUK_NOTIFY_API_KEY_LIVE')
-      config.govuk_notify.team_api_key = ENV.key?('GOVUK_NOTIFY_API_KEY_TEAM')
-      config.govuk_notify.test_api_key = ENV.key?('GOVUK_NOTIFY_API_KEY_TEST')
+      config.govuk_notify.live_api_key = ENV['GOVUK_NOTIFY_API_KEY_LIVE']
+      config.govuk_notify.team_api_key = ENV['GOVUK_NOTIFY_API_KEY_TEAM']
+      config.govuk_notify.test_api_key = ENV['GOVUK_NOTIFY_API_KEY_TEST']
       config.govuk_notify.mode = :live
     else
       config.govuk_notify.enabled = false
