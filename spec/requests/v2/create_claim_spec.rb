@@ -4,6 +4,8 @@
 #  using the direct upload method - but we couldnt remove until the old url method has stopped being used.
 require 'rails_helper'
 RSpec.describe 'Create Claim Request', type: :request do
+  include_context 'with gov uk notify emails sent monitor'
+
   describe 'POST /api/v2/claims/build_claim' do
     let(:default_headers) do
       {
@@ -13,9 +15,6 @@ RSpec.describe 'Create Claim Request', type: :request do
     end
     let(:errors) { [] }
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
-    let(:emails_sent) do
-      EtApi::Test::EmailsSent.new
-    end
 
     shared_context 'with fake sidekiq' do
       around do |example|
@@ -368,33 +367,20 @@ RSpec.describe 'Create Claim Request', type: :request do
     end
 
     shared_examples 'email validation using standard template' do
-      it 'sends an HTML email to the respondent with the pdf attached using the standard template' do
+      it 'sends a govuk notify email to the respondent with the pdf attached using the standard template' do
         reference = json_response.dig(:meta, 'BuildClaim', :reference)
-        email_sent = emails_sent.new_claim_html_email_for(reference: reference, template_reference: 'et1-v1-en')
+        email_sent = emails_sent.new_claim_email_for(reference: reference, template_reference: 'et1-v1-en')
         expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory,reference: reference)
-      end
-
-      it 'sends a plain text email to the respondent with the pdf attached using the standard template' do
-        reference = json_response.dig(:meta, 'BuildClaim', :reference)
-        email_sent = emails_sent.new_claim_text_email_for(reference: reference, template_reference: 'et1-v1-en')
-        expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory, reference: reference)
       end
     end
 
     shared_examples 'email validation using welsh template' do
-      it 'sends an HTML email to the respondent with the pdf attached using the welsh template' do
+      it 'sends a govuk notify email to the respondent with the pdf attached using the welsh template' do
         reference = json_response.dig(:meta, 'BuildClaim', :reference)
-        email_sent = emails_sent.new_claim_html_email_for(reference: reference, template_reference: 'et1-v1-cy')
-        expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory, reference: reference)
-      end
-
-      it 'sends a plain text email to the respondent with the pdf attached using the welsh template' do
-        reference = json_response.dig(:meta, 'BuildClaim', :reference)
-        email_sent = emails_sent.new_claim_text_email_for(reference: reference, template_reference: 'et1-v1-cy')
+        email_sent = emails_sent.new_claim_email_for(reference: reference, template_reference: 'et1-v1-cy')
         expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory, reference: reference)
       end
     end
-
 
     context 'with json for single claimant and respondent, no representatives, no reference number and an external pdf' do
       include_context 'with fake sidekiq'

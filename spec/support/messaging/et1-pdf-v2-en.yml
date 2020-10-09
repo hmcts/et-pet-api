@@ -1,13 +1,13 @@
-et1-v1-cy:
+et1-v2-en:
   claim_pdf_fields:
     your_details:
       title:
         field_name: '1.1 title tick boxes'
         select_values:
-          Miss: 'miss'
-          Mr: 'mr'
-          Mrs: 'mrs'
-          Ms: 'ms'
+          Miss: Your details - 1.1 Title - tickbox - Miss
+          Mr: Your details - 1.1 Title - tickbox - Mr
+          Mrs: Your details - 1.1 Title - tickbox - Mrs
+          Ms: Your details - 1.1 Title - tickbox - Ms
         unselected_value: 'Off'
       first_name:
         field_name: '1.2 first names'
@@ -49,6 +49,12 @@ et1-v1-cy:
           Fax: 'fax'
           Post: 'post'
         unselected_value: 'Off'
+      allow_video_attendance:
+        field_name: 'Check Box2'
+        select_values:
+          yes: 'Yes'
+          no: 'no'
+        unselected_value: 'Off'
     respondents_details:
       name:
         field_name: '2.1'
@@ -88,10 +94,10 @@ et1-v1-cy:
         telephone_number:
           field_name: '2.3 phone number'
       additional_respondents:
-        field_name: 2.4 tick box
+        field_name: Check Box7
         select_values:
           false: 'Off'
-          true: 'yes'
+          true: 'Yes'
       respondent2:
         name:
           field_name: '2.4 R2 name'
@@ -370,7 +376,12 @@ et1-v1-cy:
       email_address:
         field_name: '11.8 email'
       communication_preference:
-        field_name: '11.9 tick boxes'
+        field_name: 11.9 tick boxes
+        unselected_value: 'Off'
+        select_values:
+          email: email
+          fax: fax
+          post: post
       fax_number:
         field_name: '11.10 fax number'
     disability:
@@ -435,7 +446,10 @@ et1-v1-cy:
             field_name: 'Text30'
     final_check:
       satisfied:
-        field_name: '14 satisfied tick box'
+        field_name: 14 satisfied tick box
+        select_values:
+          false: 'Off'
+          true: 'yes'
     additional_information:
       additional_information:
         field_name: '15'
@@ -446,18 +460,4 @@ et1-v1-cy:
         field_name: 'case number'
       date_received:
         field_name: 'date received'
-  claim_email:
-    reference: Eich rhif hawliad
-    subject: 'Tribiwnlys Cyflogaeth: hawliad wedi''i gyflwyno'
-    submission_info: 'Hawliad wedi''i gyflwyno:'
-    submission_date: "Cyflwynwyd ar %{date}"
-    tribunal_office: 'Swyddfa tribiwnlys:'
-    thank_you: "Diolch am gyflwyno eich hawliad i dribiwnlys cyflogaeth."
-    next_steps:
-      well_contact_you: Byddwn yn cysylltu â chi unwaith y byddwn wedi anfon eich hawliad at yr atebydd i egluro beth fydd yn digwydd nesaf. Ar hyn o bryd, mae’n cymryd oddeutu 25 diwrnod.
-      once_sent_claim: Unwaith y byddwn wedi anfon eich hawliad atynt, mae gan yr atebydd 28 diwrnod i ymateb.
-    submission_details: Manylion cyflwyno
-    claim_completed: 'Hawliad wedi''i gwblhau:'
-    see_attached_pdf: Gweler y PDF sydd ynghlwm
-    claim_submitted: 'Hawliad wedi''i gyflwyno:'
-    submitted_at: "Cyflwynwyd ar %{date}"
+

@@ -40,6 +40,7 @@ gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsigh
 # (and we need it for test environment)
 gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', tag: 'v1.3.9'
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
+gem 'notifications-ruby-client', '~> 5.3'
 
 # Rubyzip used to produce and test zip files
 gem 'rubyzip', '~> 2.0'
