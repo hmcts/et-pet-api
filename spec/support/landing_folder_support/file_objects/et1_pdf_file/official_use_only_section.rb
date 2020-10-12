@@ -11,7 +11,7 @@ module EtApi
             office_data = office_from_respondent(respondent)
             expected_values = {
               tribunal_office: office_data['name'],
-              date_received: formatted_date(Time.zone.parse(claim.date_of_receipt))
+              date_received: formatted_date(ActiveSupport::TimeZone[claim.time_zone].parse(claim.date_of_receipt))
             }
             expect(mapped_field_values).to include expected_values
           end

@@ -100,5 +100,11 @@ RSpec.describe BuildClaimPdfFileService do
         end
       end
     end
+
+    context 'when submitted between 00:00 and 00:59 during BST' do
+      let(:claim) { build(:claim, :example_data, date_of_receipt: ActiveSupport::TimeZone['London'].parse('1 July 2020')) }
+
+      include_examples 'for any claim variation'
+    end
   end
 end

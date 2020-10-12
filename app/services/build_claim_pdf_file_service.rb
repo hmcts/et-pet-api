@@ -6,8 +6,8 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   include PdfBuilder::ActiveStorage
   PAY_CLAIMS = ['redundancy', 'notice', 'holiday', 'arrears', 'other'].freeze
 
-  def self.call(source, template_reference: 'et1-v2-en')
-    new(source, template_reference: template_reference).call
+  def self.call(source, template_reference: 'et1-v2-en', time_zone: 'London')
+    new(source, template_reference: template_reference, time_zone: time_zone).call
   end
 
   def call
@@ -224,8 +224,8 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   def format_date(date, optional: false)
     return nil if date.nil? && optional
 
-    date = Date.parse(date) if date.is_a?(String)
-    date.strftime "%d/%m/%Y"
+    date = ActiveSupport::TimeZone['London'].parse(date) if date.is_a?(String)
+    date.in_time_zone(time_zone).strftime "%d/%m/%Y"
   end
 
   def owed_anything?
