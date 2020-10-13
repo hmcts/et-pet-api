@@ -114,6 +114,7 @@ FactoryBot.define do
       jurisdiction { '2' }
       office_code { '22' }
       date_of_receipt { Time.zone.now.strftime('%Y-%m-%dT%H:%M:%S%z') }
+      time_zone { 'London' }
 
       other_known_claimant_names { "" }
       discrimination_claims do

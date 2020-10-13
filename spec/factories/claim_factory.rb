@@ -22,6 +22,7 @@ FactoryBot.define do
     email_template_reference { "et1-v1-en" }
     claim_details { 'claim details field' }
     miscellaneous_information { 'miscellaneous information' }
+    time_zone { 'London' }
 
     after(:build) do |claim, evaluator|
       claim.primary_claimant = build(:claimant) if claim.primary_claimant.blank? && evaluator.number_of_claimants > 0
