@@ -5,12 +5,28 @@ class PrepareClaimHandler
       ClaimImportMultipleClaimantsHandler.new.handle(claim)
       ClaimPdfFileHandler.new.handle(claim)
     end
+    rename_csv_file(claim: claim)
+    rename_rtf_file(claim: claim)
     claim.save if claim.changed?
     claim.events.claim_prepared.create
     EventService.publish('ClaimPrepared', claim)
   end
 
   private
+
+  def rename_csv_file(claim:)
+    file = claim.claimants_csv_file
+    return if file.nil?
+    claimant = claim.primary_claimant
+    file.filename = "et1a_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.csv"
+  end
+
+  def rename_rtf_file(claim:)
+    file = claim.rtf_file
+    return if file.nil?
+    claimant = claim.primary_claimant
+    file.filename = "et1_attachment_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.rtf"
+  end
 
   def with_acas_in_background(claim)
     return yield if claim.primary_respondent.acas_certificate_number.blank?
