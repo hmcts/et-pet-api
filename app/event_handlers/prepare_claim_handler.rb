@@ -19,6 +19,7 @@ class PrepareClaimHandler
     return if file.nil?
     claimant = claim.primary_claimant
     file.filename = "et1a_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.csv"
+    file.save
   end
 
   def rename_rtf_file(claim:)
@@ -26,6 +27,7 @@ class PrepareClaimHandler
     return if file.nil?
     claimant = claim.primary_claimant
     file.filename = "et1_attachment_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.rtf"
+    file.save
   end
 
   def with_acas_in_background(claim)
