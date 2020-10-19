@@ -78,7 +78,7 @@ group :test do
   gem 'factory_bot', '~> 6.0'
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 2.10'
-  gem 'webmock', '~> 3.7'
+  gem 'webmock', '~> 3.9'
   gem 'et_fake_acas_server', '~> 0.1'
 end
 
