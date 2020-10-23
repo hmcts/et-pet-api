@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe BuildResponseCommand do
-  subject(:command) { described_class.new(uuid: uuid, data: data) }
+  subject(:command) { described_class.new(uuid: uuid, data: data).tap(&:valid?) }
 
   let(:uuid) { SecureRandom.uuid }
   let(:data) { build(:json_response_data, :full, case_number: '2234567/2016').as_json }

@@ -33,6 +33,7 @@ FactoryBot.define do
       "22#{20000000 + n}00"
     end
     association :respondent
+    association :office, code: 22
 
     trait :with_representative do
       association :representative, :example_data
