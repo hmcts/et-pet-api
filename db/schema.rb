@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_12_111151) do
+ActiveRecord::Schema.define(version: 2020_10_23_053043) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -439,6 +439,8 @@ ActiveRecord::Schema.define(version: 2020_10_12_111151) do
     t.datetime "updated_at", null: false
     t.string "pdf_template_reference", null: false
     t.string "email_template_reference", null: false
+    t.integer "office_id"
+    t.index ["office_id"], name: "index_responses_on_office_id"
     t.index ["representative_id"], name: "index_responses_on_representative_id"
     t.index ["respondent_id"], name: "index_responses_on_respondent_id"
   end

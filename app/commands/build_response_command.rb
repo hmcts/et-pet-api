@@ -61,6 +61,7 @@ class BuildResponseCommand < BaseCommand
   def apply_root_attributes(input_data, to:)
     to.attributes = input_data
     office_code = to.case_number[0..1]
+    to.office = Office.find_by(code: office_code)
     to.reference = "#{office_code}#{reference_service.next_number}00"
     to.date_of_receipt = Time.zone.now
   end

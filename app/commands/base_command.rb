@@ -1,6 +1,7 @@
 class BaseCommand
   include ActiveModel::Model
   include ActiveModel::Attributes
+  include ActiveModel::Validations::Callbacks
   attr_reader :uuid, :command_name
 
   # Creates a new command
