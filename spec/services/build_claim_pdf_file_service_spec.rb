@@ -60,6 +60,30 @@ RSpec.describe BuildClaimPdfFileService do
       include_examples 'for any claim variation'
     end
 
+    context 'with a respondent with no acas (joint claimant has acas number)' do
+      let(:claim) { build(:claim, :example_data, primary_respondent: build(:respondent, :example_data, :no_acas_joint_claimant)) }
+
+      include_examples 'for any claim variation'
+    end
+
+    context 'with a respondent with no acas (no jurisdiction)' do
+      let(:claim) { build(:claim, :example_data, primary_respondent: build(:respondent, :example_data, :no_acas_no_jurisdiction)) }
+
+      include_examples 'for any claim variation'
+    end
+
+    context 'with a respondent with no acas (employer contacted acas)' do
+      let(:claim) { build(:claim, :example_data, primary_respondent: build(:respondent, :example_data, :no_acas_employer_contacted)) }
+
+      include_examples 'for any claim variation'
+    end
+
+    context 'with a respondent with no acas (interim_relief)' do
+      let(:claim) { build(:claim, :example_data, primary_respondent: build(:respondent, :example_data, :no_acas_interim_relief)) }
+
+      include_examples 'for any claim variation'
+    end
+
     context 'with a pre allocated s3 key to allow for providing the url before the file is uploaded' do
       let(:claim) { build(:claim, :example_data) }
 

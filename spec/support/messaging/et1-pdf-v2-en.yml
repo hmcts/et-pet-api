@@ -80,6 +80,38 @@ et1-v2-en:
           unselected_value: 'Off'
         acas_number:
           field_name: 'Text2'
+        no_acas_number_reason:
+          field_name:
+            - Check Box3
+            - Check Box4
+            - Check Box5
+            - Check Box6
+          select_values:
+            joint_claimant_has_acas_number:
+              - 'Yes'
+              - 'Off'
+              - 'Off'
+              - 'Off'
+            acas_has_no_jurisdiction:
+              - 'Off'
+              - 'Yes'
+              - 'Off'
+              - 'Off'
+            employer_contacted_acas:
+              - 'Off'
+              - 'Off'
+              - 'Yes'
+              - 'Off'
+            interim_relief:
+              - 'Off'
+              - 'Off'
+              - 'Off'
+              - 'Yes'
+          unselected_value:
+            - 'Off'
+            - 'Off'
+            - 'Off'
+            - 'Off'
       different_address:
         building:
           field_name: '2.3 number'
