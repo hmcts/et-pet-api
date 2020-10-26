@@ -23,7 +23,8 @@ module EtApi
                 },
                 acas: {
                     have_acas: respondents.first.acas_certificate_number.present?,
-                    acas_number: respondents.first.acas_certificate_number || ''
+                    acas_number: respondents.first.acas_certificate_number || '',
+                    no_acas_number_reason: respondents.first.acas_exemption_code
                 },
                 different_address: {
                     building: respondents.first.work_address_attributes&.building || '',

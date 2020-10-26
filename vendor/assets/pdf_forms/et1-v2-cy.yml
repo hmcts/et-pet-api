@@ -150,6 +150,38 @@ respondents_details:
         - 'Off'
     acas_number:
       field_name: 'cynnar'
+    no_acas_number_reason:
+      field_name:
+        - Check Box17
+        - Check Box16
+        - Check Box15
+        - Check Box14
+      select_values:
+        joint_claimant_has_acas_number:
+          - 'Yes'
+          - 'Off'
+          - 'Off'
+          - 'Off'
+        acas_has_no_jurisdiction:
+          - 'Off'
+          - 'Yes'
+          - 'Off'
+          - 'Off'
+        employer_contacted_acas:
+          - 'Off'
+          - 'Off'
+          - 'Yes'
+          - 'Off'
+        interim_relief:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+          - 'Yes'
+      unselected_value:
+        - 'Off'
+        - 'Off'
+        - 'Off'
+        - 'Off'
   different_address:
     building:
       field_name: Rhifneuenw_3

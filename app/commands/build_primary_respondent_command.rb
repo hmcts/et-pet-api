@@ -20,7 +20,10 @@ class BuildPrimaryRespondentCommand < BaseCommand
 
   validates :address_attributes, presence: true, address: true
   validates :work_address_attributes, address: { allow_empty: true }
-
+  validates_inclusion_of :acas_exemption_code,
+                         in: ['joint_claimant_has_acas_number', 'acas_has_no_jurisdiction',
+                                                    'employer_contacted_acas', 'interim_relief'],
+                         allow_blank: true
   def apply(root_object, **_args)
     root_object.build_primary_respondent(attributes)
   end

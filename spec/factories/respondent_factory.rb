@@ -38,6 +38,27 @@ FactoryBot.define do
       disability { false }
     end
 
+    trait :no_acas_joint_claimant do
+      acas_certificate_number { nil }
+      acas_exemption_code { 'joint_claimant_has_acas_number' }
+    end
+
+    trait :no_acas_no_jurisdiction do
+      acas_certificate_number { nil }
+      acas_exemption_code { 'acas_has_no_jurisdiction' }
+    end
+
+    trait :no_acas_employer_contacted do
+      acas_certificate_number { nil }
+      acas_exemption_code { 'employer_contacted_acas' }
+    end
+
+    trait :no_acas_interim_relief do
+      acas_certificate_number { nil }
+      acas_exemption_code { 'interim_relief' }
+    end
+
+
     trait :mr_na_o_malley do
       example_data
       name { "n/a O'Malley" }
