@@ -62,7 +62,17 @@ FactoryBot.define do
     trait :example_response_text do
       filename { 'et3_atos_export.txt' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'text/plain', filename: Rails.root.join('spec', 'fixtures', 'et3.txt') } }
+      file_to_attach do
+        new_file        = Tempfile.new(crlf_newline: true)
+        original_filename = Rails.root.join('spec', 'fixtures', 'et3.txt')
+        File.open(original_filename, 'r') do |f|
+          f.lines.each do |line|
+            new_file.puts line
+          end
+        end
+        new_file.close
+        {content_type: 'text/plain', file: new_file, filename: original_filename}
+      end
     end
 
     trait :example_response_rtf do
@@ -98,12 +108,16 @@ FactoryBot.define do
       upload_method { :direct_upload }
     end
 
+    trait :upload_to_blob do
+      upload_method { :azure_test }
+    end
+
     after(:build) do |uploaded_file, evaluator|
       next if evaluator.file_to_attach.nil?
       config = Rails.configuration.active_storage
       service_type = :"#{config.service}#{evaluator.upload_method == :direct_upload ? :"_direct_upload" : ''}"
       begin
-        file = File.open(evaluator.file_to_attach[:filename], 'rb')
+        file = evaluator.file_to_attach[:file]&.open || File.open(evaluator.file_to_attach[:filename], 'rb')
         blob = ActiveStorage::Blob.new filename: File.basename(evaluator.file_to_attach[:filename]),
                                        content_type: evaluator.file_to_attach[:content_type]
         blob.service = ActiveStorage::Service.configure service_type, Rails.configuration.active_storage.service_configurations

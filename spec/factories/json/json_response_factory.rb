@@ -7,8 +7,11 @@ FactoryBot.define do
       pdf_template { 'et3-v2-en' }
       email_template { 'et3-v1-en' }
       response_traits { [:full] }
+      response_attrs { {} }
       respondent_traits { [:full, :et3] }
+      respondent_attrs { {} }
       representative_traits { nil }
+      representative_attrs { {} }
     end
     uuid { SecureRandom.uuid }
     command { 'SerialSequence' }
@@ -62,16 +65,25 @@ FactoryBot.define do
       evaluator.instance_eval do
         if response_traits
           doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildResponse',
-                                           data: build(:json_response_data, *response_traits, pdf_template_reference: pdf_template, email_template_reference: email_template))
+                                           data: build(:json_response_data, *response_traits, pdf_template_reference: pdf_template, email_template_reference: email_template, **response_attrs.symbolize_keys))
         end
         if respondent_traits
-          doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, *respondent_traits))
+          doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRespondent', data: build(:json_respondent_data, *respondent_traits, **respondent_attrs.symbolize_keys))
         end
         if representative_traits
-          doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, *representative_traits))
+          doc.data << build(:json_command, uuid: SecureRandom.uuid, command: 'BuildRepresentative', data: build(:json_representative_data, *representative_traits, **representative_attrs.symbolize_keys))
         end
       end
     end
+  end
+
+  factory :json_repair_response_command, class: ::EtApi::Test::Json::Document do
+    transient do
+      response_id { nil }
+    end
+    uuid { SecureRandom.uuid }
+    command { 'RepairResponse' }
+    data { { response_id: response_id } }
   end
 
   factory :json_response_data, class: ::EtApi::Test::Json::Node do

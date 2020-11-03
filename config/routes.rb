@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       end
       namespace :respondents do
         post "build_response" => 'build_responses#create'
+        post "repair_response" => 'repair_responses#create'
       end
       namespace :diversity do
         post "build_diversity_response" => 'build_diversity_responses#create'
