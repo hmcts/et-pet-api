@@ -54,7 +54,15 @@ RSpec.describe 'Repair Response Request', type: :request do
               address_attributes: build(:json_address_data, response_to_repair.respondent.address.attributes),
               **response_to_repair.respondent.attributes.symbolize_keys
       end
-      let(:input_representative_attributes) { response_to_repair.representative&.attributes&.to_h&.with_indifferent_access || {} }
+      let(:input_representative_attributes) do
+        if response_to_repair.representative.present?
+          build :json_respondent_data,
+                address_attributes: build(:json_address_data, response_to_repair.representative.address.attributes),
+                **response_to_repair.representative.attributes.symbolize_keys
+        else
+          {}
+        end
+      end
 
       def perform_action
         post '/api/v2/respondents/repair_response', params: input_json.to_json, headers: default_headers
@@ -235,6 +243,16 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_examples 'any response variation'
       include_examples 'a response exported to primary ATOS'
       let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command) }
+    end
+
+    context 'with json for a response with a respondent and a representative' do
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response'
+      include_context 'with background jobs running'
+      include_examples 'any response variation'
+      include_examples 'a response exported to primary ATOS'
+      let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command, :with_representative) }
     end
 
     context 'with json for a response with an rtf upload that has not yet been processed' do

@@ -70,7 +70,16 @@ FactoryBot.define do
                                 .to_h
                                 .with_indifferent_access
                                 .slice(:name, :contact, :address_telephone_number, :alt_phone_number, :dx_number, :fax_number, :organisation_more_than_one_site, :disability, :disability_information)
-                                .merge(address_attributes: db_source.respondent.address.attributes.to_h.with_indifferent_access.slice(:building, :street, :locality, :county, :post_code))
+                                .merge(address_attributes: db_source.respondent.address.attributes.to_h.with_indifferent_access.slice(:building, :street, :locality, :county, :post_code)),
+              representative_attrs: db_source
+                                    .representative&.attributes
+                                      &.to_h
+                                      &.with_indifferent_access
+                                      &.slice(:name, :organisation_name, :address_telephone_number, :mobile_number, :email_address, :representative_type, :dx_number, :reference, :contact_preference, :fax_number)
+                                      &.merge(address_attributes: db_source.representative.address.attributes.to_h.with_indifferent_access.slice(:building, :street, :locality, :county, :post_code)),
+              representative_traits: db_source.representative.present? ? [] : nil
+
+
 
       end
       request_body { request_body_factory.to_json }

@@ -66,7 +66,7 @@ FactoryBot.define do
         new_file        = Tempfile.new(crlf_newline: true)
         original_filename = Rails.root.join('spec', 'fixtures', 'et3.txt')
         File.open(original_filename, 'r') do |f|
-          f.lines.each do |line|
+          f.each_line do |line|
             new_file.puts line
           end
         end

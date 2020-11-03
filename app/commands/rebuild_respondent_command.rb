@@ -7,7 +7,7 @@ class RebuildRespondentCommand < BuildRespondentCommand
     if root_object.respondent.work_address_id && new_attributes.key?('work_address_attributes')
       new_attributes['work_address_attributes'].merge!('id' => root_object.respondent.work_address_id)
     end
-    root_object.respondent.attributes = attributes
+    root_object.respondent.attributes = new_attributes
     root_object.respondent.save(touch: false)
   end
 end
