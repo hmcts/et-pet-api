@@ -1,5 +1,6 @@
 require 'notifications/client'
 class ClaimEmailHandler
+  MAX_FILE_SIZE = (2 * 1024 * 1024)
   def handle(claim, config: Rails.application.config.govuk_notify)
     send_email(claim, config: config) unless has_no_recipients?(claim) || sent?(claim)
   end
@@ -26,8 +27,8 @@ class ClaimEmailHandler
     rtf_file = download_to_tempfile claim.uploaded_files.et1_rtf.first
     csv_file = download_to_tempfile claim.uploaded_files.et1_csv.first
     link_to_pdf = Notifications.prepare_upload(pdf_file)
-    link_to_rtf = rtf_file.present? ? Notifications.prepare_upload(rtf_file) : I18n.t('et1_confirmation_email.rtf_not_submitted', locale: locale)
-    link_to_csv = csv_file.present? ? Notifications.prepare_upload(csv_file) : I18n.t('et1_confirmation_email.csv_not_submitted', locale: locale)
+    link_to_rtf = rtf_file.present? && rtf_file.size < MAX_FILE_SIZE ? Notifications.prepare_upload(rtf_file) : I18n.t('et1_confirmation_email.rtf_not_submitted', locale: locale)
+    link_to_csv = csv_file.present? && csv_file.size < MAX_FILE_SIZE ? Notifications.prepare_upload(csv_file) : I18n.t('et1_confirmation_email.csv_not_submitted', locale: locale)
 
     office = OfficeService.lookup_by_case_number(claim.reference)
     claim.confirmation_email_recipients.each do |email_recipient|
