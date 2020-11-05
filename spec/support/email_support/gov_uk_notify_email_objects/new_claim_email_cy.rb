@@ -28,7 +28,7 @@ module EtApi
             expect(mail.dig('personalisation', 'has_claimants_file')).to eql 'no'
           end
           if claim_details_file.present?
-            expect(attached_info_file).to include 'file', 'is_csv'
+            expect(attached_info_file).to match /Rydych wedi llwyddo i lwytho dogfen ychwanegol o’ enw .* gyda’ch hawliad\. Maint y ffeil yw .*\./
             expect(mail.dig('personalisation', 'has_additional_info')).to eql 'yes'
           else
             expect(attached_info_file).to eq 'Dim ffeil ychwanegol wedi’i llwytho i fyny'
