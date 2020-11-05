@@ -79,6 +79,7 @@ en:
   et1_confirmation_email:
     rtf_not_submitted: no additional file
     csv_not_submitted: no additional file
+    rtf_submitted: You successfully uploaded an additional document named %{name} with your claim. The file size is %{size}.
 
 
 

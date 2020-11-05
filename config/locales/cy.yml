@@ -206,3 +206,4 @@ cy:
   et1_confirmation_email:
     rtf_not_submitted: Dim ffeil ychwanegol wedi’i llwytho i fyny
     csv_not_submitted: Dim ffeil ychwanegol wedi’i llwytho i fyny
+    rtf_submitted: Rydych wedi llwyddo i lwytho dogfen ychwanegol o’ enw %{name} gyda’ch hawliad. Maint y ffeil yw %{size}.
