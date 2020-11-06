@@ -48,7 +48,7 @@ module EtApi
             assert_claimant(primary_claimant_data)
             expect(attached_pdf_file).to include 'file', 'is_csv'
             if claimants_file.present?
-              expect(attached_claimants_file).to include 'file', 'is_csv'
+              expect(attached_claimants_file).to match /You successfully uploaded a group claim csv file named .* with your claim\. The file size is .*\./
               expect(mail.dig('personalisation', 'has_claimants_file')).to eql 'yes'
             else
               expect(attached_claimants_file).to eq 'no additional file'

@@ -1,6 +1,5 @@
 require 'notifications/client'
 class ClaimEmailHandler
-  MAX_FILE_SIZE = (2 * 1024 * 1024)
   def handle(claim, config: Rails.application.config.govuk_notify)
     send_email(claim, config: config) unless has_no_recipients?(claim) || sent?(claim)
   end
@@ -25,7 +24,7 @@ class ClaimEmailHandler
 
     pdf_file = download_to_tempfile claim.uploaded_files.et1_pdf.first
     rtf_uploaded_file = claim.uploaded_files.et1_rtf.first
-    csv_file = download_to_tempfile claim.uploaded_files.et1_csv.first
+    csv_uploaded_file = claim.uploaded_files.et1_csv.first
     link_to_pdf = Notifications.prepare_upload(pdf_file)
     rtf_text = if rtf_uploaded_file.present?
                  file_size = number_helper.number_to_human_size rtf_uploaded_file.file.byte_size,
@@ -37,12 +36,21 @@ class ClaimEmailHandler
                else
                  I18n.t('et1_confirmation_email.rtf_not_submitted', locale: locale)
                end
-    link_to_csv = csv_file.present? && csv_file.size < MAX_FILE_SIZE ? Notifications.prepare_upload(csv_file) : I18n.t('et1_confirmation_email.csv_not_submitted', locale: locale)
+    csv_text = if csv_uploaded_file.present?
+                    file_size = number_helper.number_to_human_size csv_uploaded_file.file.byte_size,
+                                                                   locale: locale
+                    I18n.t 'et1_confirmation_email.csv_submitted',
+                           name:   csv_uploaded_file.filename,
+                           size:   file_size,
+                           locale: locale
+                  else
+                    I18n.t('et1_confirmation_email.csv_not_submitted', locale: locale)
+                  end
 
     office = OfficeService.lookup_by_case_number(claim.reference)
     claim.confirmation_email_recipients.each do |email_recipient|
       response = send_email_to_recipient claim, client, find_template_id(client, template_reference),
-                                         locale, email_recipient, link_to_pdf, rtf_uploaded_file, rtf_text, csv_file, link_to_csv, office
+                                         locale, email_recipient, link_to_pdf, rtf_uploaded_file, rtf_text, csv_uploaded_file, csv_text, office
       record_event(claim, email_recipient, response)
     end
   end
@@ -65,7 +73,7 @@ class ClaimEmailHandler
     end
   end
 
-  def send_email_to_recipient(claim, client, template_id, locale, email_recipient, link_to_pdf, rtf_file, rtf_text, csv_file, link_to_csv, office)
+  def send_email_to_recipient(claim, client, template_id, locale, email_recipient, link_to_pdf, rtf_file, rtf_text, csv_file, csv_text, office)
     client.send_email email_address: email_recipient,
                                        template_id: template_id,
                                        personalisation: {
@@ -80,7 +88,7 @@ class ClaimEmailHandler
                                          'has_additional_info': rtf_file.present? ? 'yes' : 'no',
                                          'link_to_additional_info': rtf_text,
                                          'has_claimants_file': csv_file.present? ? 'yes' : 'no',
-                                         'link_to_claimants_file': link_to_csv
+                                         'link_to_claimants_file': csv_text
                                        }
   rescue Notifications::Client::RequestError => ex
     ex
