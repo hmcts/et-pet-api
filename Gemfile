@@ -53,7 +53,7 @@ gem 'azure-storage', '~> 0.15.0.preview', require: false
 
 # For general easy http access - mainly for test but used in app too
 gem 'httparty', '~> 0.17'
-gem 'dotenv-rails', '~> 2.4'
+gem 'dotenv-rails', '~> 2.7'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
