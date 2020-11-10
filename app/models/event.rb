@@ -6,6 +6,11 @@ class Event < ApplicationRecord
     claim_prepared: 'ClaimPrepared',
     claim_queued_for_export: 'ClaimQueuedForExport',
     claim_exported_to_atos_queue: 'ClaimExportedToAtosQueue',
-    response_exported_to_atos_queue: 'ResponseExportedToAtosQueue'
+    response_exported_to_atos_queue: 'ResponseExportedToAtosQueue',
+    response_repair_requested: 'ResponseRepairRequested',
+    response_re_prepared: 'ResponseRePrepared',
+    response_recreated_pdf: 'ResponseReCreatedPdf',
+    response_deleted_broken_file: 'ResponseDeletedBrokenFile',
+    response_repair_file_failed: 'ResponseRepairFileFailed'
   }
 end

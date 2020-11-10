@@ -21,6 +21,7 @@ class Claim < ApplicationRecord
   has_many :pre_allocated_file_keys, as: :allocated_to, dependent: :destroy, inverse_of: :allocated_to
   belongs_to :office, foreign_key: :office_code, primary_key: :code
   has_many :events, as: :attached_to
+  has_many :commands, as: :root_object
 
   before_save :cache_claimant_count
   # @TODO RST-1080 Refactoring Tasks - 'uploaded_files' really needs renaming as these files are not only

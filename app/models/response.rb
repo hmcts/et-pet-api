@@ -6,6 +6,7 @@ class Response < ApplicationRecord
   has_many :pre_allocated_file_keys, as: :allocated_to, dependent: :destroy, inverse_of: :allocated_to
   has_many :events, as: :attached_to
   belongs_to :office
+  has_many :commands, as: :root_object
 
   def office_code
     reference[0..1]

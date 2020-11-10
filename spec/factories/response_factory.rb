@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :response do
     transient do
       ready_for_export_to { [] }
+      additional_information_key { nil }
     end
     date_of_receipt { Time.zone.now }
     case_number { '2212345/2016' }
@@ -82,6 +83,16 @@ FactoryBot.define do
     trait :example_data do
       reference { "222000000300" }
       association :respondent, :example_data
+    end
+
+    trait :broken_with_files_missing do
+      example_data
+    end
+
+    trait :with_command do
+      after(:build) do |instance, evaluator|
+        instance.commands = [build(:build_response_command, :from_db, db_source: instance, additional_information_key: evaluator.additional_information_key)]
+      end
     end
   end
 end

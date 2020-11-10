@@ -4,6 +4,7 @@ module EtAtosExport
       include RenderToFile
       def self.call(response)
         filename = 'et3_atos_export.txt'
+        return if output_file_present?(response: response, filename: filename)
         response.uploaded_files.build filename: filename,
                                       file: raw_text_file(filename, response: response)
       end
@@ -27,7 +28,12 @@ module EtAtosExport
         office_service.lookup_by_case_number(response.case_number)
       end
 
+      def self.output_file_present?(response:, filename:)
+        response.uploaded_files.any? { |u| u.filename == filename }
+      end
+
       private_class_method :raw_text_file, :render, :office_for
+      private_class_method :output_file_present?
     end
   end
 end
