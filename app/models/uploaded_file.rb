@@ -16,4 +16,8 @@ class UploadedFile < ApplicationRecord
   scope :et3_pdf, -> { where('filename LIKE ?', 'et3_atos_export.pdf') }
   scope :et3_input_rtf, -> { where('filename LIKE ?', 'additional_information.rtf') }
   scope :et3_output_rtf, -> { where('filename LIKE ?', 'et3_atos_export.rtf') }
+
+  def to_be_imported?
+    import_from_key.present? || import_file_url.present?
+  end
 end

@@ -1,5 +1,6 @@
 class ResponseRepairRequestedHandler
   def handle(response)
+    response.events.response_repair_requested.create
     original_command = response.commands.first
     request_json = ::JSON.parse(original_command.request_body).deep_symbolize_keys
     return unless request_json[:data].is_a?(Array)
