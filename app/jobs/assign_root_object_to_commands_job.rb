@@ -2,7 +2,7 @@
 
 # A sidekiq job to assign root object to commands (as there was a period of about
 #  6 months when they were not assigned)
-class EventJob < ApplicationJob
+class AssignRootObjectToCommandsJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
