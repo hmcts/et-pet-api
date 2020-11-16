@@ -7,3 +7,13 @@ export_claims_job:
       job_class: EtAtosExport::ClaimsExportJob
       arguments:
         -
+assign_root_object_to_commands:
+  cron: "0 0 12 * *"
+  class: "ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper"
+  description: "AssignRootObjectToCommandsJob"
+  args:
+    -
+      job_class: AssignRootObjectToCommandsJob
+      arguments:
+        -
+
