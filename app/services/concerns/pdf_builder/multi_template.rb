@@ -27,8 +27,7 @@ module PdfBuilder
 
     def apply_field(result, field_value, *path)
       field_def = yaml_data.dig(*path)
-      raise "Field #{path} does not exist in the file #{yaml_file}" unless field_def
-      return if field_def[:field_name] == false
+      return if field_def.nil? || field_def[:field_name] == false
 
       if field_def.key?(:select_values)
         apply_selected_value_for(result, field_def, field_value)
