@@ -14,7 +14,7 @@ module EtAtosExport
 
       def export(to:)
         responses_to_export.each do |response_export|
-          with_exception_logging do
+          with_exception_logging(response_export) do
             moving_afterwards(to: to) do |tempdir|
               export_files(response_export.resource, to: tempdir)
             end
@@ -62,15 +62,17 @@ module EtAtosExport
         text.gsub(/\s/, '_').gsub(/\W/, '').parameterize(separator: '_', preserve_case: true)
       end
 
-      def with_exception_logging
+      def with_exception_logging(response_export)
         yield
       rescue StandardError => ex
-        exceptions << ex
+        [response_export.id, response_export.resource_id, ex]
       end
 
       def report_exceptions
-        exceptions.each do |exception|
-          Raven.capture_exception(exception)
+        exceptions.each do |(id, response_id, exception)|
+          Raven.extra_context(export_id: id, response_id: response_id) do
+            Raven.capture_exception(exception)
+          end
         end
       end
 
