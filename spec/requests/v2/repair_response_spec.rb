@@ -306,6 +306,34 @@ RSpec.describe 'Repair Response Request', type: :request do
       end
     end
 
+    context 'with json for a response with an rtf upload that has been processed but attachment is not present' do
+      let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
+      rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
+      include_context 'with cloud provider switching', cloud_provider: :azure_test
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response'
+      include_context 'with background jobs running'
+      include_examples 'any response variation'
+
+      let(:uploaded_file) do
+        create(:uploaded_file, :direct_upload, :example_response_input_rtf).tap do |uploaded_file|
+          uploaded_file.file.attachment.delete
+        end
+      end
+      let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key, uploaded_files: [uploaded_file]) }
+      it 'includes the rtf file in the staging folder' do
+        reference = response_to_repair.reference
+        respondent_name = response_to_repair.respondent.name.gsub(/ /, '_')
+        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name}.rtf"
+        Dir.mktmpdir do |dir|
+          full_path = File.join(dir, output_filename_rtf)
+          staging_folder.extract(output_filename_rtf, to: full_path)
+          expect(full_path).to be_a_file_copy_of(rtf_file_path)
+        end
+      end
+    end
+
     context 'with json for a response with an rtf upload that has been processed successfully' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
       rtf_file_path = Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf').to_s

@@ -16,7 +16,9 @@ class RebuildResponseAdditionalInformationFileCommand < BuildResponseAdditionalI
     uploaded_file = root_object.uploaded_files.et3_input_rtf.first
     return if uploaded_file.nil?
 
-    service = uploaded_file.file.service
+    service = uploaded_file.file.attachment&.service
+    delete_rtf_file(root_object) && return if service.nil?
+
     service.blobs.get_blob_properties(service.container, uploaded_file.file.blob.key)
     true
   rescue ::Azure::Core::Http::HTTPError
@@ -26,7 +28,7 @@ class RebuildResponseAdditionalInformationFileCommand < BuildResponseAdditionalI
   def delete_rtf_file(root_object)
     uploaded_file = root_object.uploaded_files.et3_input_rtf.first
     string_io = StringIO.new("This file is uploaded only to allow the deletion of the blob to work without error")
-    uploaded_file.file.blob.upload(string_io, identify: false)
+    uploaded_file.file.attachment&.blob&.upload(string_io, identify: false)
     root_object.uploaded_files.et3_input_rtf.destroy_all
   end
 end
