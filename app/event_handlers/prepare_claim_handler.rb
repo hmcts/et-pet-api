@@ -40,6 +40,11 @@ class PrepareClaimHandler
       uploaded_file = claim.uploaded_files.build(filename: "acas_#{claim.primary_respondent.name}.pdf")
       uploaded_file.import_base64(cert.certificate_base64, content_type: 'application/pdf')
       claim.updated_at = Time.now.utc
+      claim.events.claim_acas_requested.create data: { status: 'found' }
+    elsif cert.nil?
+      claim.events.claim_acas_requested.create data: { status: 'timeout' }
+    else
+      claim.events.claim_acas_requested.create data: { status: cert }
     end
   end
 

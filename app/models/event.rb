@@ -6,6 +6,7 @@ class Event < ApplicationRecord
     claim_prepared: 'ClaimPrepared',
     claim_queued_for_export: 'ClaimQueuedForExport',
     claim_exported_to_atos_queue: 'ClaimExportedToAtosQueue',
+    claim_acas_requested: 'ClaimAcasRequested',
     response_exported_to_atos_queue: 'ResponseExportedToAtosQueue',
     response_repair_requested: 'ResponseRepairRequested',
     response_re_prepared: 'ResponseRePrepared',
