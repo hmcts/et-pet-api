@@ -61,7 +61,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 4.0'
   gem 'simplecov', '~> 0.17'
   gem 'site_prism', '~> 3.2'
-  gem 'bullet', '~> 6.0'
+  gem 'bullet', '~> 6.1'
 end
 
 group :development do
