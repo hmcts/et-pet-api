@@ -46,7 +46,7 @@ gem 'notifications-ruby-client', '~> 5.3'
 gem 'rubyzip', '~> 2.0'
 
 # Pdf forms to test pdf content and also to produce them
-gem 'pdf-forms', '~> 1.2'
+gem 'pdf-forms', '~> 1.3'
 
 # Azure
 gem 'azure-storage', '~> 0.15.0.preview', require: false
