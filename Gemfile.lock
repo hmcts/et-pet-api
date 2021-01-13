@@ -172,7 +172,7 @@ GEM
       ruby-mcrypt (~> 0.2)
       sinatra (~> 2.0, >= 2.0.3)
       sinatra-contrib (~> 2.0)
-    factory_bot (6.0.2)
+    factory_bot (6.1.0)
       activesupport (>= 5.0.0)
     faker (2.13.0)
       i18n (>= 1.6, < 2)
@@ -410,7 +410,7 @@ DEPENDENCIES
   et_azure_insights (= 0.2.12)!
   et_exporter!
   et_fake_acas_server (~> 0.1)
-  factory_bot (~> 6.0)
+  factory_bot (~> 6.1)
   faker (~> 2.10)
   httparty (~> 0.17)
   iodine (~> 0.7.34)
