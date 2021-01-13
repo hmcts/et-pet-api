@@ -32,13 +32,14 @@ gem 'sidekiq', '~> 6.1'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sidekiq_alive', '~> 2.0'
-gem 'sentry-raven', '~> 2.12'
+gem 'sentry-raven', '~> 3.1'
 gem 'et_azure_insights', '0.2.12', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.2.12'
 gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsights-Ruby.git', ref: '5db6b4'
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
 # (and we need it for test environment)
-gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', tag: 'v1.3.9'
+gem 'et_atos_file_transfer', path: '/home/garytaylor/sync/customers/moj/et/et_atos_file_transfer'
+#gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', tag: 'v1.3.9'
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 gem 'notifications-ruby-client', '~> 5.3'
 
@@ -49,7 +50,7 @@ gem 'rubyzip', '~> 2.0'
 gem 'pdf-forms', '~> 1.3'
 
 # Azure
-gem 'azure-storage', '~> 0.15.0.preview', require: false
+gem 'azure-storage-blob', '~> 2.0', '>= 2.0.1'
 
 # For general easy http access - mainly for test but used in app too
 gem 'httparty', '~> 0.17'
