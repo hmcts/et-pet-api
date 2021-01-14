@@ -22,7 +22,7 @@ class ReprepareResponseHandler
   def uploaded_file_faulty?(uploaded_file)
     return true unless uploaded_file.present? && uploaded_file.file.attachment.present?
     service = uploaded_file.file.service
-    service.blobs.get_blob_properties(service.container, uploaded_file.file.blob.key)
+    service.client.get_blob_properties(service.container, uploaded_file.file.blob.key)
     false
   rescue ::Azure::Core::Http::HTTPError
     true

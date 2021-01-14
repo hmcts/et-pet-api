@@ -58,7 +58,7 @@ RSpec.describe UploadedFileAllocatorService do
         # Act - get the url
         result = service.allocated_url
 
-        expect(result).to start_with("#{ActiveStorage::Blob.service.blobs.generate_uri}/#{ActiveStorage::Blob.service.container}")
+        expect(result).to start_with("#{ActiveStorage::Blob.service.client.generate_uri}/#{ActiveStorage::Blob.service.container}")
       end
     end
   end

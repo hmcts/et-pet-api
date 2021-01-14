@@ -119,8 +119,8 @@ FactoryBot.define do
       begin
         file = evaluator.file_to_attach[:file]&.open || File.open(evaluator.file_to_attach[:filename], 'rb')
         blob = ActiveStorage::Blob.new filename: File.basename(evaluator.file_to_attach[:filename]),
-                                       content_type: evaluator.file_to_attach[:content_type]
-        blob.service = ActiveStorage::Service.configure service_type, Rails.configuration.active_storage.service_configurations
+                                       content_type: evaluator.file_to_attach[:content_type],
+                                       service_name: service_type
         blob.upload(file)
         uploaded_file.file.attach(blob)
       ensure

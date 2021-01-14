@@ -61,7 +61,7 @@ RSpec.describe BuildResponsePdfFileService do
           # Arrange - Create a pre allocation
           response.save
           blob = ActiveStorage::Blob.new(filename: 'et3_atos_export.pdf', byte_size: 0, checksum: 0)
-          original_url = blob.service_url(expires_in: 1.hour)
+          original_url = blob.url(expires_in: 1.hour)
           PreAllocatedFileKey.create(allocated_to: response, key: blob.key, filename: 'et3_atos_export.pdf')
 
           # Act

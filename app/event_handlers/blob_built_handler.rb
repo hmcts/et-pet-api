@@ -10,12 +10,12 @@ class BlobBuiltHandler
 
   def build_service_for(blob)
     config = Rails.configuration.active_storage
-    blob.service = ActiveStorage::Service.configure "#{config.service}_direct_upload", config.service_configurations
+    blob.service_name = :"#{config.service}_direct_upload"
   end
 
   def unsigned_url_for(blob)
     service = blob.service
-    service.blobs.generate_uri("#{service.container}/#{blob.key}")
+    service.client.generate_uri("#{service.container}/#{blob.key}")
   end
 
   private

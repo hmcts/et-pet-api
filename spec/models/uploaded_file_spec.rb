@@ -19,7 +19,7 @@ RSpec.describe UploadedFile, type: :model do
       it 'returns an azurite test server url as we are in test mode' do
         uploaded_file.file = fixture_file
 
-        expect(uploaded_file.url).to start_with("#{ActiveStorage::Blob.service.blobs.generate_uri}/#{ActiveStorage::Blob.service.container}")
+        expect(uploaded_file.url).to start_with("#{ActiveStorage::Blob.service.client.generate_uri}/#{ActiveStorage::Blob.service.container}")
       end
     end
   end
