@@ -2,11 +2,10 @@ require 'active_storage/service/azure_storage_service'
 RSpec.configure do |c|
   c.before(:suite) do
     ActiveStorage::Blob.service # Ensures that the active storage system is configured
-    config = Rails.configuration.active_storage
-    azure_service = ActiveStorage::Service.configure :"#{config.service}", config.service_configurations
-    direct_upload_service = ActiveStorage::Service.configure :"#{config.service}_direct_upload", config.service_configurations
+    azure_service = ActiveStorage::Blob.services.fetch(:azure_test)
+    direct_upload_service = ActiveStorage::Blob.services.fetch(:azure_test_direct_upload)
     [azure_service, direct_upload_service].each do |service|
-      client = service.blobs
+      client = service.client
       container_name = service.container
       containers = client.list_containers
       client.create_container(container_name) unless containers.map(&:name).include?(container_name)

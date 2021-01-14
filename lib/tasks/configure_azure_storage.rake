@@ -1,19 +1,10 @@
-require 'azure/storage'
+require 'azure/storage/blob'
 
 desc "Configure azure storage containers - can be run at any point - but with caution"
 task "configure_azure_storage_containers" => :environment do
-  options = {
-    storage_account_name: ENV.fetch('AZURE_STORAGE_ACCOUNT', 'devstoreaccount1'),
-    storage_access_key: ENV.fetch('AZURE_STORAGE_ACCESS_KEY', 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==')
-  }
-  options[:storage_blob_host] = ENV['AZURE_STORAGE_BLOB_HOST'] if ENV.key?('AZURE_STORAGE_BLOB_HOST')
-  options[:use_path_style_uri] = ENV['AZURE_STORAGE_BLOB_FORCE_PATH_STYLE'] == 'true' if ENV.key?('AZURE_STORAGE_BLOB_FORCE_PATH_STYLE')
-
-  direct_upload_client_options = options.merge storage_account_name: ENV.fetch('AZURE_STORAGE_DIRECT_UPLOAD_ACCOUNT', 'devstoreaccount1'),
-                                               storage_access_key: ENV.fetch('AZURE_STORAGE_DIRECT_UPLOAD_ACCESS_KEY', 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==')
-  client = Azure::Storage.client options
-  direct_upload_client = Azure::Storage.client direct_upload_client_options
-
+  ActiveStorage::Blob.service # Ensures that the active storage system is configured
+  client = ActiveStorage::Blob.services.fetch(:azure_test).client
+  direct_upload_client = ActiveStorage::Blob.services.fetch(:azure_test_direct_upload).client
   container_name = ENV.fetch('AZURE_STORAGE_CONTAINER', 'et-api-container')
   direct_container_name = ENV.fetch('AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER', 'et-api-direct-container')
 

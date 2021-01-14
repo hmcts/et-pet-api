@@ -100,7 +100,7 @@ module UploadedFileImportService
 
     def direct_upload_service
       config = Rails.configuration.active_storage
-      @direct_upload_service ||= ActiveStorage::Service.configure :"#{config.service}_direct_upload", config.service_configurations
+      @direct_upload_service ||= ActiveStorage::Blob.services.fetch(:"#{config.service}_direct_upload")
     end
   end
 
