@@ -16,12 +16,14 @@ module EtAtosExport
       end
 
       def self.render(response)
-        ApplicationController.render "et_atos_export/file_builders/export_response.txt.erb", locals: {
-          response: response,
-          respondent: response.respondent,
-          representative: response.representative,
-          office: office_for(response)
-        }
+        ApplicationController.render "et_atos_export/file_builders/export_response",
+                                     locals:  {
+                                       response:       response,
+                                       respondent:     response.respondent,
+                                       representative: response.representative,
+                                       office:         office_for(response)
+                                     },
+                                     formats: [:txt]
       end
 
       def self.office_for(response, office_service: OfficeService)

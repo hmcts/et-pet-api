@@ -8,16 +8,17 @@ RSpec.configure do |c|
       client = service.client
       container_name = service.container
       containers = client.list_containers
-      client.create_container(container_name) unless containers.map(&:name).include?(container_name)
+      client.delete_container(container_name) if containers.map(&:name).include?(container_name)
+      Timeout.timeout 30 do
+        loop do
+          client.create_container(container_name)
+          break
+        rescue Azure::Core::Http::HTTPError => ex
+          raise unless ex.status_code == 409
 
-      # Empty container
-      puts "Emptying container #{container_name}"
-      time =Benchmark.ms do
-        client.list_blobs(container_name).each do |blob|
-          client.delete_blob container_name, blob.name
+          sleep 1
         end
       end
-      puts "Emptied container #{container_name} in #{time}ms"
     end
   end
 end
