@@ -31,7 +31,7 @@ RSpec.describe ValidateClaimantsFileCommand do
         command.valid?
 
         # Assert
-        expect(command.errors.details).to include \
+        expect(command.errors.details.to_hash).to include \
           'data_from_key[0].date_of_birth': a_collection_containing_exactly(
             a_hash_including(error: :invalid, uuid: data.uuid, command: data.command)
           ),
@@ -45,7 +45,7 @@ RSpec.describe ValidateClaimantsFileCommand do
         command.valid?
 
         # Assert
-        expect(command.errors.messages).to include \
+        expect(command.errors.messages.to_hash).to include \
           'data_from_key[0].date_of_birth': a_collection_containing_exactly('is invalid'),
           'data_from_key[1].title': a_collection_containing_exactly('is not included in the list')
       end
@@ -74,7 +74,7 @@ RSpec.describe ValidateClaimantsFileCommand do
         command.valid?
 
         # Assert
-        expect(command.errors.details).to include \
+        expect(command.errors.details.to_hash).to include \
           'base': a_collection_containing_exactly(
           a_hash_including(error: :invalid_columns, uuid: data.uuid, command: data.command)
         )
@@ -85,7 +85,7 @@ RSpec.describe ValidateClaimantsFileCommand do
         command.valid?
 
         # Assert
-        expect(command.errors.messages).to include \
+        expect(command.errors.messages.to_hash).to include \
           'base': a_collection_containing_exactly('file does not contain the correct columns')
       end
     end
@@ -104,7 +104,7 @@ RSpec.describe ValidateClaimantsFileCommand do
         command.valid?
 
         # Assert
-        expect(command.errors.details).to include \
+        expect(command.errors.details.to_hash).to include \
           'base': a_collection_containing_exactly(
           a_hash_including(error: :empty_file, uuid: data.uuid, command: data.command)
         )
@@ -115,7 +115,7 @@ RSpec.describe ValidateClaimantsFileCommand do
         command.valid?
 
         # Assert
-        expect(command.errors.messages).to include \
+        expect(command.errors.messages.to_hash).to include \
           'base': a_collection_containing_exactly('file is empty')
       end
     end
@@ -134,7 +134,7 @@ RSpec.describe ValidateClaimantsFileCommand do
         command.valid?
 
         # Assert
-        expect(command.errors.details).to include \
+        expect(command.errors.details.to_hash).to include \
           'base': a_collection_containing_exactly(
           a_hash_including(error: :missing_file, uuid: data.uuid, command: data.command)
         )
@@ -145,7 +145,7 @@ RSpec.describe ValidateClaimantsFileCommand do
         command.valid?
 
         # Assert
-        expect(command.errors.messages).to include \
+        expect(command.errors.messages.to_hash).to include \
           'base': a_collection_containing_exactly('file is missing')
       end
 
