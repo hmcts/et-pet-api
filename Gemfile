@@ -38,8 +38,7 @@ gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsigh
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
 # Note that we are now using it as a separate service, but we need this gem just for the model for now
 # (and we need it for test environment)
-gem 'et_atos_file_transfer', path: '/home/garytaylor/sync/customers/moj/et/et_atos_file_transfer'
-#gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', tag: 'v1.3.9'
+gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', tag: 'v2.0.0'
 gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 gem 'notifications-ruby-client', '~> 5.3'
 
