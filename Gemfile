@@ -74,7 +74,7 @@ group :development do
 end
 
 group :test do
-  gem 'database_cleaner', '~> 1.7'
+  gem 'database_cleaner', '~> 2.0'
   gem 'factory_bot', '~> 6.1'
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 2.15'
