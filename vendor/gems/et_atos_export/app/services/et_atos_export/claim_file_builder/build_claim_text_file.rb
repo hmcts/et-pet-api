@@ -16,12 +16,14 @@ module EtAtosExport
       end
 
       def self.render(claim)
-        ApplicationController.render "et_atos_export/file_builders/export.txt.erb", locals: {
-          claim: claim, primary_claimant: claim.primary_claimant,
-          primary_respondent: claim.primary_respondent,
-          primary_representative: claim.primary_representative,
-          additional_respondents: claim.secondary_respondents.includes(:address)
-        }
+        ApplicationController.render "et_atos_export/file_builders/export",
+                                     locals:  {
+                                       claim:                  claim, primary_claimant: claim.primary_claimant,
+                                       primary_respondent:     claim.primary_respondent,
+                                       primary_representative: claim.primary_representative,
+                                       additional_respondents: claim.secondary_respondents.includes(:address)
+                                     },
+                                     formats: [:txt]
       end
 
       private_class_method :raw_text_file, :render

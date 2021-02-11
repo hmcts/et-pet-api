@@ -13,46 +13,46 @@ FormVersion: 2
 
 ## Intro:<%= ' ' %>
 
-**In the claim of: <%= response.claimants_name %>
-**Case number: <%= response.case_number %>
-**Tribunal office: <%= office.email %>
+**In the claim of: <%= raw response.claimants_name %>
+**Case number: <%= raw response.case_number %>
+**Tribunal office: <%= raw office.email %>
 
 ## Section 1: Claimant's name
 
-~1.1 Claimant's name: <%= response.claimants_name %>
+~1.1 Claimant's name: <%= raw response.claimants_name %>
 
 ## Section 2: Your organisation's details
 
-~2.1 Name of your organisation: <%= respondent.name %>
-Contact name: <%= respondent.contact %>
+~2.1 Name of your organisation: <%= raw respondent.name %>
+Contact name: <%= raw respondent.contact %>
 ~2.2 Address
 <% respondent.address.tap do |address| %>
-Address 1: <%= address.building %>
-Address 2: <%= address.street %>
-Address 3: <%= address.locality %>
-Address 4: <%= address.county %>
-Postcode: <%= address.post_code %>
+Address 1: <%= raw address.building %>
+Address 2: <%= raw address.street %>
+Address 3: <%= raw address.locality %>
+Address 4: <%= raw address.county %>
+Postcode: <%= raw address.post_code %>
 <% end %>
-~2.3 Phone number: <%= respondent.address_telephone_number %>
-Mobile number: <%= respondent.alt_phone_number %>
+~2.3 Phone number: <%= raw respondent.address_telephone_number %>
+Mobile number: <%= raw respondent.alt_phone_number %>
 ~2.4 How would you prefer us to communicate with you?: <%= respondent.contact_preference %>
-E-mail address: <%= respondent.email_address %>
+E-mail address: <%= raw respondent.email_address %>
 
 ## Section 7: Your representative
 
-~7.1 Representative's name: <%= representative.try(:name) %>
-~7.2 Name of the representative's organisation: <%= representative.try(:organisation_name) %>
+~7.1 Representative's name: <%= raw representative.try(:name) %>
+~7.2 Name of the representative's organisation: <%= raw representative.try(:organisation_name) %>
 <% representative.try(:address).tap do |address| %>
-Representative's Address 1: <%= address.try(:building) %>
-Representative's Address 2: <%= address.try(:street) %>
-Representative's Address 3: <%= address.try(:locality) %>
-Representative's Address 4: <%= address.try(:county) %>
-Representative's Postcode: <%= address.try(:post_code) %>
+Representative's Address 1: <%= raw address.try(:building) %>
+Representative's Address 2: <%= raw address.try(:street) %>
+Representative's Address 3: <%= raw address.try(:locality) %>
+Representative's Address 4: <%= raw address.try(:county) %>
+Representative's Postcode: <%= raw address.try(:post_code) %>
 <% end %>
-~7.4 Representative's Phone number: <%= representative.try(:address_telephone_number) %>
-~7.5 Representative's Reference: <%= representative.try(:reference) %>
+~7.4 Representative's Phone number: <%= raw representative.try(:address_telephone_number) %>
+~7.5 Representative's Reference: <%= raw representative.try(:reference) %>
 ~7.6 How would they prefer us to communicate with them?: <%= representative.try(:contact_preference) %>
-Representative's E-mail address: <%= representative.try(:email_address) %>
+Representative's E-mail address: <%= raw representative.try(:email_address) %>
 
 **Version: Jadu 1.0
 <%= "\n" %>

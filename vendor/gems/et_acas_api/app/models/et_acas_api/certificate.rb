@@ -1,5 +1,7 @@
 module EtAcasApi
-  class Certificate < NullDbRecord
+  class Certificate
+    include ActiveModel::Model
+    include ActiveModel::Attributes
     attribute :claimant_name, :string
     attribute :certificate_number, :string
     attribute :message, :string

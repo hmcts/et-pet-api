@@ -14,6 +14,7 @@ module PdfBuilder
         blob.content_type = 'application/pdf'
         blob.metadata = nil
         blob.key = pre_allocated_key(filename)
+        blob.service_name = Rails.configuration.active_storage.service
         blob.upload render_to_file
       end
     end

@@ -22,7 +22,7 @@ RSpec.describe UploadedFileImportService do
         remote_file = create(:uploaded_file, :example_pdf)
 
         # Act - Import it
-        service.import_file_url(remote_file.file.service_url, into: uploaded_file)
+        service.import_file_url(remote_file.file.url, into: uploaded_file)
 
         # Assert - Make sure the file is imported
         Dir.mktmpdir do |dir|

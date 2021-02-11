@@ -171,7 +171,7 @@ module EtAcasApi
     end
 
     def wsdl_document
-      ActionController::Base.render('et_acas_api/wsdl/wsdl.txt.erb', locals: { service_url: service_url })
+      ActionController::Base.render('et_acas_api/wsdl/wsdl', locals: { service_url: service_url }, formats: [:text])
     end
 
     attr_accessor :service_url, :current_time, :acas_rsa_certificate,

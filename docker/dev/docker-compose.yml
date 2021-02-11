@@ -15,7 +15,7 @@ services:
     networks:
       - api
   azurite:
-    image: mcr.microsoft.com/azurestorage-azurite:2.6.7
+    image: mcr.microsoft.com/azure-storage/azurite:3.10.0
     ports:
       - ${AZURE_BLOB_PORT:-10000}:10000
     volumes:
@@ -24,6 +24,7 @@ services:
       executable: blob
     networks:
       - api
+    command: azurite-blob -l /data --blobHost 0.0.0.0 -d /data/debug.log --loose
 
 
 volumes:

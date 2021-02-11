@@ -1,3 +1,5 @@
+require "active_support/core_ext/integer/time"
+
 # The test environment is used exclusively to run your application's
 # test suite. You never need to work with it otherwise. Remember that
 # your test database is "scratch space" for the test suite and is wiped
@@ -5,8 +7,9 @@
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-  
+
   config.cache_classes = true
+  config.action_view.cache_template_loading = true
 
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
@@ -36,7 +39,7 @@ Rails.application.configure do
   config.action_controller.allow_forgery_protection = false
   config.action_controller.default_url_options = { host: 'example.com' }
 
-  # As we do some s3 specific stuff, we have to use an azure server for testing (local server called azurite)
+  # As we do some azure specific stuff, we have to use an azure server for testing (local server called azurite)
   config.active_storage.service = :azure_test
   config.active_storage.service_urls_expire_in = 10.days
 
@@ -53,10 +56,18 @@ Rails.application.configure do
 
   config.service_now_inbox_email = "fake@servicenow.fake.com"
 
+  # Raise exceptions for disallowed deprecations.
+  config.active_support.disallowed_deprecation = :raise
+
+  # Tell Active Support which deprecation messages to disallow.
+  config.active_support.disallowed_deprecation_warnings = []
 
   # Raises error for missing translations.
-  # config.action_view.raise_on_missing_translations = true
-  #
+  # config.i18n.raise_on_missing_translations = true
+
+  # Annotate rendered view with file names.
+  # config.action_view.annotate_rendered_view_with_filenames = true
+
   config.et_acas_api.acas_rsa_certificate = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__))
   config.et_acas_api.rsa_certificate = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__))
   config.et_acas_api.rsa_private_key = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__))

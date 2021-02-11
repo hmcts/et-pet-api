@@ -19,7 +19,7 @@ class RebuildResponseAdditionalInformationFileCommand < BuildResponseAdditionalI
     service = uploaded_file.file.attachment&.service
     delete_rtf_file(root_object) && return if service.nil?
 
-    service.blobs.get_blob_properties(service.container, uploaded_file.file.blob.key)
+    service.client.get_blob_properties(service.container, uploaded_file.file.blob.key)
     true
   rescue ::Azure::Core::Http::HTTPError
     delete_rtf_file(root_object)

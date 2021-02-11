@@ -8,7 +8,7 @@ module StoredFileDownload
   #
   # @return [String] The url to download from
   def url
-    file.service_url
+    file.url
   end
 
   # Downloads the stored file to the local file system

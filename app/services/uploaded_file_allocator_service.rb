@@ -5,7 +5,7 @@ class UploadedFileAllocatorService
   end
 
   def allocated_url
-    blob.service_url expires_in: 1.hour
+    blob.url expires_in: 1.hour
   end
 
   private

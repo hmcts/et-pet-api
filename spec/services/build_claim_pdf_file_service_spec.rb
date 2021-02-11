@@ -92,7 +92,7 @@ RSpec.describe BuildClaimPdfFileService do
           # Arrange - Create a pre allocation
           claim.save
           blob = ActiveStorage::Blob.new(filename: correct_filename, byte_size: 0, checksum: 0)
-          original_url = blob.service_url(expires_in: 1.hour)
+          original_url = blob.url(expires_in: 1.hour)
           PreAllocatedFileKey.create(allocated_to: claim, key: blob.key, filename: correct_filename)
 
           # Act

@@ -74,7 +74,7 @@ FactoryBot.define do
       next unless evaluator.upload_method == :url
 
       uploaded_file = create(:uploaded_file, *evaluator.uploaded_file_traits)
-      obj.data_url = uploaded_file.file.blob.service_url
+      obj.data_url = uploaded_file.file.blob.url
     end
 
     after(:build) do |obj, evaluator|
