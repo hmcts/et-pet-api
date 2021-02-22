@@ -76,7 +76,7 @@ en:
         export_claims_command:
           external_system_not_found: The external system with an id of %{external_system_id} was not found
           claim_not_found: A claim with an id of %{claim_id} was not found
-        redirect_claim_command:
+        assign_claim_command:
           office_not_found: The office with an id of %{office_id} was not found
           claim_not_found: A claim with an id of %{claim_id} was not found
   et1_confirmation_email:

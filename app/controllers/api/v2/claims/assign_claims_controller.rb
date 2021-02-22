@@ -3,14 +3,14 @@
 module Api
   module V2
     module Claims
-      class RedirectClaimsController < ::Api::V2::BaseController
+      class AssignClaimsController < ::Api::V2::BaseController
         include CacheCommandResults
 
         cache_command_results only: :create
 
         def create
-          root_object = ::Claim.find_by(id: redirect_claims_params.dig(:data, :claim_id))
-          command = CommandService.command_for(**redirect_claims_params.merge(command: 'RedirectClaim').symbolize_keys)
+          root_object = ::Claim.find_by(id: assign_claims_params.dig(:data, :claim_id))
+          command = CommandService.command_for(**assign_claims_params.merge(command: 'AssignClaim').symbolize_keys)
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object
             render locals: { result: result }, status: (result.valid? ? :accepted : :unprocessable_entity)
@@ -22,7 +22,7 @@ module Api
 
         private
 
-        def redirect_claims_params
+        def assign_claims_params
           params.permit!.to_h.slice(:uuid, :command, :data)
         end
       end

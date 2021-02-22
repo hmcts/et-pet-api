@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Redirect Claim Request', type: :request do
+RSpec.describe 'Assign Claim Request', type: :request do
   include_context 'with gov uk notify emails sent monitor'
 
   shared_context 'with fake sidekiq' do
@@ -31,7 +31,7 @@ RSpec.describe 'Redirect Claim Request', type: :request do
     end
   end
 
-  describe 'POST /api/v2/claims/redirect_claim' do
+  describe 'POST /api/v2/claims/assign_claim' do
     let(:default_headers) do
       {
         'Accept': 'application/json',
@@ -57,10 +57,10 @@ RSpec.describe 'Redirect Claim Request', type: :request do
 
     it 'returns 202 accepted' do
       # Arrange - Setup the claim record and provide the ids
-      command = FactoryBot.build(:json_redirect_claim_command, claim_id: example_claim.id, office_id: new_office.id)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id)
 
       # Act - Run the command and all background jobs
-      post '/api/v2/claims/redirect_claim', params: command.to_json, headers: default_headers
+      post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
 
       # Assert - Check the http status
       expect(response).to have_http_status(:accepted)
@@ -68,10 +68,10 @@ RSpec.describe 'Redirect Claim Request', type: :request do
 
     it 'creates a new export record with the correct status' do
       # Arrange - Setup the response record and provide the ids
-      command = FactoryBot.build(:json_redirect_claim_command, claim_id: example_claim.id, office_id: new_office.id)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id)
 
       # Act - Run the command and all background jobs
-      post '/api/v2/claims/redirect_claim', params: command.to_json, headers: default_headers
+      post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
       run_background_jobs
 
       # Assert - Check the example claim now has an export record and will be marked as queued
@@ -81,13 +81,13 @@ RSpec.describe 'Redirect Claim Request', type: :request do
 
     it 'returns identical data if called twice with the same uuid', background_jobs: :disable do
       # Arrange - get the response from the first call and reset the session ready for the second
-      command = FactoryBot.build(:json_redirect_claim_command, claim_id: example_claim.id, office_id: new_office.id)
-      post '/api/v2/claims/redirect_claim', params: command.to_json, headers: default_headers
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id)
+      post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
       response1 = JSON.parse(response.body).with_indifferent_access
       reset!
 
       # Act - Call the endpoint for the second time
-      post '/api/v2/claims/redirect_claim', params: command.to_json, headers: default_headers
+      post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
       response2 = JSON.parse(response.body).with_indifferent_access
 
       # Arrange - check they are identical
@@ -96,9 +96,9 @@ RSpec.describe 'Redirect Claim Request', type: :request do
 
     it 'creates no more records if called a second time with same uuid', background_jobs: :disable do
       # Arrange - setup the action to perform twice, but call it once in setup
-      command = FactoryBot.build(:json_redirect_claim_command, claim_id: example_claim.id, office_id: new_office.id)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id)
       perform_action = -> {
-        post '/api/v2/claims/redirect_claim', params: command.to_json, headers: default_headers
+        post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
         run_background_jobs
       }
       perform_action.call
@@ -110,10 +110,10 @@ RSpec.describe 'Redirect Claim Request', type: :request do
 
     it 'returns errors if the office is not found' do
       # Arrange - Setup the claim record and provide the ids
-      command = FactoryBot.build(:json_redirect_claim_command, claim_id: example_claim.id, office_id: -1)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: -1)
 
       # Act - Run the command and all background jobs
-      post '/api/v2/claims/redirect_claim', params: command.to_json, headers: default_headers
+      post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
 
       # Assert - Check the response is a bad request with the error message populated
       aggregate_failures 'validate status and body' do
@@ -124,7 +124,7 @@ RSpec.describe 'Redirect Claim Request', type: :request do
           "errors" => a_collection_including(
                         a_hash_including "status" => 422,
                                          "code" => "office_not_found",
-                                         "command" => "RedirectClaim",
+                                         "command" => "AssignClaim",
                                          "detail" => "The office with an id of -1 was not found"
           )
       end
@@ -132,10 +132,10 @@ RSpec.describe 'Redirect Claim Request', type: :request do
 
     it 'returns error if claim not found' do
       # Arrange - Setup the response record and provide the ids
-      command = FactoryBot.build(:json_redirect_claim_command, claim_id: -1, office_id: new_office.id)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: -1, office_id: new_office.id)
 
       # Act - Run the command and all background jobs
-      post '/api/v2/claims/redirect_claim', params: command.to_json, headers: default_headers
+      post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
 
       # Assert - Check the response is a bad request with the error message populated
       aggregate_failures 'validate status and body' do
@@ -146,7 +146,7 @@ RSpec.describe 'Redirect Claim Request', type: :request do
           "errors" => a_collection_including(
                         a_hash_including("status" => 422,
                                          "code" => "claim_not_found",
-                                         "command" => "RedirectClaim",
+                                         "command" => "AssignClaim",
                                          "detail" => "A claim with an id of -1 was not found")
 
           )
