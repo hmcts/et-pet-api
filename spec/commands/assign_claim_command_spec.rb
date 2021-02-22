@@ -20,7 +20,7 @@ RSpec.describe AssignClaimCommand do
 
       # Assert
       aggregate_failures "Validating events raised" do
-        expect(mock_event_service).to have_received(:publish).with('ClaimExported', external_system_id: new_office_external_system.id, claim_id: example_claim.id)
+        expect(mock_event_service).to have_received(:publish).with('ClaimManuallyAssigned', claim: example_claim)
       end
     end
 

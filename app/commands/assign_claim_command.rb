@@ -10,10 +10,7 @@ class AssignClaimCommand < BaseCommand
   def apply(root_object, meta: {}, external_systems_repo: ExternalSystem)
     claim.update office_code: office.code
     claim.events.claim_manually_assigned.create data: { office_code: office.code }
-    external_systems_repo.containing_office_code(office.code).exporting_claims.each do |external_system|
-      event_service.publish('ClaimExported', external_system_id: external_system.id, claim_id: claim_id)
-    end
-
+    event_service.publish('ClaimManuallyAssigned', claim: claim)
   end
 
   private
