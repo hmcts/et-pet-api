@@ -1,6 +1,7 @@
 class AssignClaimCommand < BaseCommand
   attribute :office_id, :integer
   attribute :claim_id, :integer
+  attribute :user_id, :integer
 
   validate :validate_office_presence
   validate :validate_claim_presence
@@ -9,7 +10,7 @@ class AssignClaimCommand < BaseCommand
 # @param [Hash] meta - Not used in this command
   def apply(root_object, meta: {}, external_systems_repo: ExternalSystem)
     claim.update office_code: office.code
-    claim.events.claim_manually_assigned.create data: { office_code: office.code }
+    claim.events.claim_manually_assigned.create data: { office_code: office.code, user_id: user_id }
     event_service.publish('ClaimManuallyAssigned', claim: claim)
   end
 

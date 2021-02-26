@@ -51,13 +51,14 @@ RSpec.describe 'Assign Claim Request', type: :request do
     end
     let(:example_claim) { Claim.find_by_reference example_claim_reference }
     let(:new_office) { Office.find_by_code(24) }
+    let(:example_user_id) { 123 }
 
 
     include_context 'with fake sidekiq'
 
     it 'returns 202 accepted' do
       # Arrange - Setup the claim record and provide the ids
-      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id, user_id: example_user_id)
 
       # Act - Run the command and all background jobs
       post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
@@ -68,7 +69,7 @@ RSpec.describe 'Assign Claim Request', type: :request do
 
     it 'creates a new export record with the correct status' do
       # Arrange - Setup the response record and provide the ids
-      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id, user_id: example_user_id)
 
       # Act - Run the command and all background jobs
       post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
@@ -81,7 +82,7 @@ RSpec.describe 'Assign Claim Request', type: :request do
 
     it 'returns identical data if called twice with the same uuid', background_jobs: :disable do
       # Arrange - get the response from the first call and reset the session ready for the second
-      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id, user_id: example_user_id)
       post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
       response1 = JSON.parse(response.body).with_indifferent_access
       reset!
@@ -96,7 +97,7 @@ RSpec.describe 'Assign Claim Request', type: :request do
 
     it 'creates no more records if called a second time with same uuid', background_jobs: :disable do
       # Arrange - setup the action to perform twice, but call it once in setup
-      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id, user_id: example_user_id)
       perform_action = -> {
         post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
         run_background_jobs
@@ -108,9 +109,21 @@ RSpec.describe 'Assign Claim Request', type: :request do
       expect { perform_action }.not_to change(Export, :count)
     end
 
+    it 'creates events in the claim' do
+      # Arrange - Setup the claim record and provide the ids
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id, user_id: example_user_id)
+
+      # Act - Run the command and all background jobs
+      post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
+
+      # Assert - check the database for the events
+      expect(example_claim.reload.events.claim_manually_assigned.last.data).to include 'office_code' => new_office.code,
+                                                                                       'user_id' => example_user_id
+    end
+
     it 'returns errors if the office is not found' do
       # Arrange - Setup the claim record and provide the ids
-      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: -1)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: -1, user_id: example_user_id)
 
       # Act - Run the command and all background jobs
       post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
@@ -132,7 +145,7 @@ RSpec.describe 'Assign Claim Request', type: :request do
 
     it 'returns error if claim not found' do
       # Arrange - Setup the response record and provide the ids
-      command = FactoryBot.build(:json_assign_claim_command, claim_id: -1, office_id: new_office.id)
+      command = FactoryBot.build(:json_assign_claim_command, claim_id: -1, office_id: new_office.id, user_id: example_user_id)
 
       # Act - Run the command and all background jobs
       post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers

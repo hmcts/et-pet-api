@@ -207,13 +207,15 @@ FactoryBot.define do
     transient do
       claim_id { nil }
       office_id { nil }
+      user_id { nil }
     end
     uuid { SecureRandom.uuid }
     command { 'AssignClaim' }
     data do
       {
         office_id: office_id,
-        claim_id: claim_id
+        claim_id: claim_id,
+        user_id: user_id
       }
     end
   end
