@@ -7,6 +7,7 @@ class Event < ApplicationRecord
     claim_queued_for_export: 'ClaimQueuedForExport',
     claim_exported_to_atos_queue: 'ClaimExportedToAtosQueue',
     claim_acas_requested: 'ClaimAcasRequested',
+    claim_manually_assigned: 'ClaimManuallyAssigned',
     response_exported_to_atos_queue: 'ResponseExportedToAtosQueue',
     response_repair_requested: 'ResponseRepairRequested',
     response_re_prepared: 'ResponseRePrepared',

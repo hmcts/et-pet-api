@@ -202,3 +202,21 @@ FactoryBot.define do
     end
   end
 end
+FactoryBot.define do
+  factory :json_assign_claim_command, class: ::EtApi::Test::Json::Document do
+    transient do
+      claim_id { nil }
+      office_id { nil }
+      user_id { nil }
+    end
+    uuid { SecureRandom.uuid }
+    command { 'AssignClaim' }
+    data do
+      {
+        office_id: office_id,
+        claim_id: claim_id,
+        user_id: user_id
+      }
+    end
+  end
+end

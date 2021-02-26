@@ -9,6 +9,7 @@ Rails.application.config.after_initialize do |app|
   app.event_service.subscribe('ClaimCreated', PrepareClaimHandler, async: true, in_process: false)
   app.event_service.subscribe('ClaimImported', PrepareImportedClaimHandler, async: true, in_process: false)
   app.event_service.subscribe('ClaimExported', ClaimExportedHandler, async: true, in_process: false)
+  app.event_service.subscribe('ClaimManuallyAssigned', ClaimManuallyAssignedHandler, async: false, in_process: true)
   app.event_service.subscribe('ClaimPreparedForAtosExport', ClaimExportHandler, async: false, in_process: true)
   app.event_service.subscribe('ClaimExportedToAtosQueue', ClaimExportedToAtosQueueHandler, async: false, in_process: true)
   app.event_service.subscribe('ClaimPrepared', ClaimEmailHandler, async: true, in_process: false)
