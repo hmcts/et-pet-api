@@ -35,6 +35,12 @@ FactoryBot.define do
       file_to_attach { { content_type: 'text/csv', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims.csv') } }
     end
 
+    trait :example_claim_claimants_csv_with_spaces do
+      filename { 'et1a_first_last.csv' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'text/csv', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_csv_group_claims_with_spaces.csv') } }
+    end
+
     trait :empty_csv do
       filename { 'et1a_first_last.csv' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
