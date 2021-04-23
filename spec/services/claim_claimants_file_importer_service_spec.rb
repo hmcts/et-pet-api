@@ -39,6 +39,24 @@ RSpec.describe ClaimClaimantsFileImporterService do
       end
     end
 
+    context "with simple csv with leading and trailing spaces" do
+      let(:example_file_trait) { :example_claim_claimants_csv_with_spaces }
+
+      context 'with saved claim' do
+        it 'imports the rows from the csv file into the claims claimants' do
+          # Act
+          service.call
+
+          # Assert
+          map = lambda do |c|
+            c[:address] = an_object_having_attributes(c[:address])
+            an_object_having_attributes(c)
+          end
+          expect(claim.secondary_claimants.includes(:address)).to match_array normalize_claimants_from_file.map(&map)
+        end
+      end
+    end
+
     context "with csv full of horrible encoding issues" do
       let(:example_file_trait) { :example_claim_claimants_csv_bad_encoding }
 

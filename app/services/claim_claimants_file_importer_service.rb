@@ -67,18 +67,18 @@ class ClaimClaimantsFileImporterService
   end
 
   def build_claimant_from(row)
-    Claimant.new title: row["Title"], first_name: row['First name'].try(:downcase),
-                 last_name: row['Last name'].try(:downcase), date_of_birth: row['Date of birth'],
+    Claimant.new title: row["Title"]&.strip, first_name: row['First name']&.downcase&.strip,
+                 last_name: row['Last name']&.downcase&.strip, date_of_birth: row['Date of birth']&.strip,
                  address_attributes: address_from_row(row)
   end
 
   def address_from_row(row)
     {
-      building: row['Building number or name'].try(:downcase),
-      street: row['Street'].try(:downcase),
-      locality: row['Town/city'].try(:downcase),
-      county: row['County'].try(:downcase),
-      post_code: row['Postcode'].try(:downcase)
+      building: row['Building number or name']&.downcase&.strip,
+      street: row['Street']&.downcase&.strip,
+      locality: row['Town/city']&.downcase&.strip,
+      county: row['County']&.downcase&.strip,
+      post_code: row['Postcode']&.downcase&.strip
     }
   end
 
