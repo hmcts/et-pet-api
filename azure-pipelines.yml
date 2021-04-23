@@ -55,15 +55,15 @@ jobs:
       export ENABLE_COVERAGE=true
       export DB_USERNAME=postgres
       export DB_PORT=5433
-      CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
-      ./bin/dev/docker-support-services up -d
-      ./bin/wait-for-it.sh localhost:5433
-      sleep 5
-      ./bin/wait-for-it.sh localhost:5433
-      ./bin/wait-for-it.sh localhost:10000
-      RAILS_ENV=test bundle install && bundle exec rails db:create db:migrate
-      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-      chmod +x ./cc-test-reporter
+      export CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
+      ./bin/dev/docker-support-services up -d && \
+      ./bin/wait-for-it.sh localhost:5433 && \
+      sleep 5 && \
+      ./bin/wait-for-it.sh localhost:5433 && \
+      ./bin/wait-for-it.sh localhost:10000 && \
+      RAILS_ENV=test bundle install && bundle exec rails db:create db:migrate && \
+      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && \
+      chmod +x ./cc-test-reporter && \
       ./cc-test-reporter before-build
     displayName: 'before script'
 
@@ -72,13 +72,9 @@ jobs:
       export DB_USERNAME=postgres
       export DB_PORT=5433
       CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
-      RAILS_ENV=test bundle exec rspec
-      RAILS_ENV=test cd vendor/gems/et_acas_api; BUNDLE_GEMFILE=$PWD/Gemfile bundle install; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rake db:create db:migrate; BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rspec
-      RAILS_ENV=test bundle exec codeclimate-test-reporter
-      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-      chmod +x ./cc-test-reporter
+      RAILS_ENV=test bundle exec rspec && \
+      RAILS_ENV=test cd vendor/gems/et_acas_api && BUNDLE_GEMFILE=$PWD/Gemfile bundle install && BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rake db:create db:migrate && BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rspec && \
       export
-      # ./cc-test-reporter after-build --exit-code 0
     displayName: 'script'
 
 
