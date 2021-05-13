@@ -3,4 +3,6 @@ class ExternalSystem < ApplicationRecord
 
   scope :containing_office_code, ->(office_code) { where('? = ANY (office_codes)', office_code) }
   scope :exporting_claims, -> { where(export_claims: true) }
+
+  accepts_nested_attributes_for :configurations
 end
