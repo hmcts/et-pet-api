@@ -76,4 +76,81 @@ ExternalSystemConfiguration.create external_system_id: ccd_glasgow.id,
 ExternalSystemConfiguration.create external_system_id: ccd_glasgow.id,
   key: 'multiples_case_type_id', value: 'Glasgow_Multiples_Dev'
 
-
+ExternalSystem.create! name: 'CCD Test1',
+                      reference: 'ccd_test1',
+                      enabled: true,
+                      export_claims: true,
+                      export_responses: false,
+                      export_queue: 'external_system_ccd',
+                      office_codes: [60],
+                      configurations_attributes: [
+                              { key: 'case_type_id', value: 'Test1' },
+                              { key: 'multiples_case_type_id',value: 'Test1_Multiples' },
+                              { key: 'extra_headers', value: { force_failures: { token_stage: [401] } }.to_json},
+                              { key: 'send_request_id', value: 'true' }
+                            ]
+ExternalSystem.create! name: 'CCD Test2',
+                      reference: 'ccd_test2',
+                      enabled: true,
+                      export_claims: true,
+                      export_responses: false,
+                      export_queue: 'external_system_ccd',
+                      office_codes: [61],
+                      configurations_attributes: [
+                              { key: 'case_type_id', value: 'Test2' },
+                              { key: 'multiples_case_type_id',value: 'Test2_Multiples' },
+                              { key: 'extra_headers', value: { force_failures: { token_stage: [401, 401, 401] } }.to_json},
+                              { key: 'send_request_id', value: 'true' }
+                            ]
+ExternalSystem.create! name: 'CCD Test3',
+                      reference: 'ccd_test3',
+                      enabled: true,
+                      export_claims: true,
+                      export_responses: false,
+                      export_queue: 'external_system_ccd',
+                      office_codes: [62],
+                      configurations_attributes: [
+                              { key: 'case_type_id', value: 'Test3' },
+                              { key: 'multiples_case_type_id',value: 'Test3_Multiples' },
+                              { key: 'extra_headers', value: { force_failures: { token_stage: [401, 401, 401, 401, 401, 504, 401] } }.to_json},
+                              { key: 'send_request_id', value: 'true' }
+                            ]
+ExternalSystem.create! name: 'CCD Test4',
+                      reference: 'ccd_test4',
+                      enabled: true,
+                      export_claims: true,
+                      export_responses: false,
+                      export_queue: 'external_system_ccd',
+                      office_codes: [63],
+                      configurations_attributes: [
+                              { key: 'case_type_id', value: 'Test4' },
+                              { key: 'multiples_case_type_id',value: 'Test4_Multiples' },
+                              { key: 'extra_headers', value: { force_failures: { token_stage: [401] } }.to_json},
+                              { key: 'send_request_id', value: 'true' }
+                            ]
+ExternalSystem.create! name: 'CCD Test5',
+                      reference: 'ccd_test5',
+                      enabled: true,
+                      export_claims: true,
+                      export_responses: false,
+                      export_queue: 'external_system_ccd',
+                      office_codes: [64],
+                      configurations_attributes: [
+                              { key: 'case_type_id', value: 'Test5' },
+                              { key: 'multiples_case_type_id',value: 'Test5_Multiples' },
+                              { key: 'extra_headers', value: { force_failures: { token_stage: [401, 401, 401] } }.to_json},
+                              { key: 'send_request_id', value: 'true' }
+                            ]
+ExternalSystem.create! name: 'CCD Test6',
+                      reference: 'ccd_test6',
+                      enabled: true,
+                      export_claims: true,
+                      export_responses: false,
+                      export_queue: 'external_system_ccd',
+                      office_codes: [65],
+                      configurations_attributes: [
+                              { key: 'case_type_id', value: 'Test6' },
+                              { key: 'multiples_case_type_id',value: 'Test5_Multiples' },
+                              { key: 'extra_headers', value: { force_failures: { token_stage: [401, 401, 401, 504, 504, 401] } }.to_json},
+                              { key: 'send_request_id', value: 'true' }
+                            ]

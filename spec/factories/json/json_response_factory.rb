@@ -128,7 +128,7 @@ FactoryBot.define do
     end
 
     trait :invalid_case_number do
-      case_number { '6554321/2017' }
+      case_number { '7554321/2017' }
     end
 
     trait :invalid_queried_hours do
