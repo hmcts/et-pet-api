@@ -4,6 +4,10 @@ FactoryBot.define do
     address
     association :work_address, factory: :address
 
+    trait :unique_name do
+      sequence(:name) { |idx| "Respondent Name#{idx}" }
+    end
+
     trait :example_data do
       name { 'Respondent Name' }
       contact { 'Respondent Contact Name' }
@@ -17,7 +21,7 @@ FactoryBot.define do
 
       work_address_telephone_number { '03333 423554' }
       address_telephone_number { '02222 321654' }
-      acas_certificate_number { 'AC123456/78/90' }
+      acas_certificate_number { 'NE000100/78/90' }
       association :work_address,
         factory: :address,
         building: '110',

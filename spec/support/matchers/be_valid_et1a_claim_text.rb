@@ -7,7 +7,13 @@ module EtApi
     # This is because it is unknown how the receiving system would react to any differences from the example
     class BeValidEt1aClaimTextMatcher # rubocop:disable Metrics/ClassLength
       include ::RSpec::Matchers
+
+      def initialize(claim:)
+        @claim = claim
+      end
+
       def matches?(actual)
+        respondent = @claim.primary_respondent
         actual_lines = actual.lines("\r\n").map { |l| l.gsub(/\r\n\z/, '') }
         aggregate_failures 'Match content against a standard ET1 Claim Text File' do
           expect(actual_lines[0]).to eql 'ET1a - Online Application to an Employment Tribunal'
@@ -23,7 +29,7 @@ module EtApi
           expect(actual_lines[10]).to eql ""
           expect(actual_lines[11]).to eql "FormVersion: 2"
           expect(actual_lines[12]).to eql ""
-          expect(actual_lines[13]).to eql "The following claimants are represented by  (if applicable) and the relevant required information for all the additional claimants is the same as stated in the main claim of First Last v Respondent Name"
+          expect(actual_lines[13]).to eql "The following claimants are represented by  (if applicable) and the relevant required information for all the additional claimants is the same as stated in the main claim of First Last v #{respondent.name}"
           expect(actual_lines[14]).to eql ''
           expect(actual_lines[15]).to eql ''
           expect(actual_lines[16]).to eql '## Section et1a: claim'
@@ -183,6 +189,6 @@ module EtApi
   end
 end
 
-def be_valid_et1a_claim_text
-  ::EtApi::Test::BeValidEt1aClaimTextMatcher.new
+def be_valid_et1a_claim_text(*args)
+  ::EtApi::Test::BeValidEt1aClaimTextMatcher.new(*args)
 end

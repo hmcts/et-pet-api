@@ -22,7 +22,7 @@ RSpec.describe EtAtosExport::ClaimFileBuilder::BuildClaimantsTextFile do
 
         # Assert
         uploaded_file = claim.uploaded_files.where(filename: 'et1a_First_Last.txt').first
-        expect(uploaded_file.file.download).to be_valid_et1a_claim_text
+        expect(uploaded_file.file.download).to be_valid_et1a_claim_text(claim: claim)
       end
     end
   end

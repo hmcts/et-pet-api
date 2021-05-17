@@ -8,10 +8,10 @@ GIT
 
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: 081c1752c6bb5f925d1f1c487a8e05ca7c0bb53c
-  tag: v0.4.5
+  revision: eb94dded7382d5a6afd8b65b32e4ea754bffc239
+  tag: v0.4.6
   specs:
-    et_exporter (0.4.5)
+    et_exporter (0.4.6)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (>= 5.2.3)

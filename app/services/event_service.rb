@@ -10,7 +10,7 @@ class EventService
   include Singleton
 
   class << self
-    delegate :publish, :subscribe, :unsubscribe, :ignoring_events, to: :instance
+    delegate :publish, :subscribe, :unsubscribe, :ignoring_events, :test, to: :instance
   end
 
   delegate :publish, to: :publisher
@@ -36,6 +36,15 @@ class EventService
     yield
   ensure
     self.ignore_events = false
+  end
+
+  def test
+    previous_handlers = handlers.dup
+    previous_handler_procs = handler_procs.dup
+    yield
+  ensure
+    handlers.keep_if { |h| previous_handlers.include?(h) }
+    handler_procs.keep_if { |k, v| previous_handler_procs[k] == v }
   end
 
   private

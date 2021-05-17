@@ -87,4 +87,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
-gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v0.4.5'
+gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v0.4.6'
