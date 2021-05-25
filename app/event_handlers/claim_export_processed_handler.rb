@@ -9,6 +9,6 @@ class ClaimExportProcessedHandler
     result = FetchAcasCertificatesService.call(export.resource)
     raise "There was a problem fetching acas certificates - will retry" unless result.success?
 
-    Rails.application.event_service.publish('ExportClaimFilesAdded', export, result.new_files)
+    Rails.application.event_service.publish('ExportedClaimFilesAdded', export, data['external_data'], result.new_files)
   end
 end
