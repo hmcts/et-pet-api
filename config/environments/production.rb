@@ -46,7 +46,7 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :redis_cache_store, { url: config.redis_url }
 
   config.service_now_inbox_email = ENV['SERVICE_NOW_EMAIL']
 

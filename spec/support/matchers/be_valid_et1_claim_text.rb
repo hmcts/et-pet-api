@@ -7,9 +7,10 @@ module EtApi
     # This is because it is unknown how the receiving system would react to any differences from the example
     class BeValidEt1ClaimTextMatcher # rubocop:disable Metrics/ClassLength
       include ::RSpec::Matchers
-      def initialize(multiple_claimants: false, representative: true)
+      def initialize(multiple_claimants: false, representative: true, claim:)
         self.multiple_claimants = multiple_claimants
         self.representative = representative
+        self.claim = claim
       end
 
       def matches?(actual)
@@ -48,7 +49,7 @@ module EtApi
           expect(actual_lines[30]).to eql "## Section 2: Respondent's details"
           expect(actual_lines[31]).to eql ""
           expect(actual_lines[32]).to eql "~2.1 Give the name of your employer or the organisation or person you are complaining about (the respondent):"
-          expect(actual_lines[33]).to eql "Respondent name: Respondent Name"
+          expect(actual_lines[33]).to eql "Respondent name: #{claim.primary_respondent.name}"
           expect(actual_lines[34]).to eql "~2.2 Address:"
           expect(actual_lines[35]).to eql "Respondent Address 1: 108"
           expect(actual_lines[36]).to eql "Respondent Address 2: Regent Street"
@@ -139,7 +140,7 @@ module EtApi
 
       private
 
-      attr_accessor :multiple_claimants, :representative
+      attr_accessor :multiple_claimants, :representative, :claim
     end
   end
 end
