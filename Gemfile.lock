@@ -204,7 +204,7 @@ GEM
       socksify
     i18n (1.8.8)
       concurrent-ruby (~> 1.0)
-    iodine (0.7.43)
+    iodine (0.7.44)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
     jwt (2.2.2)
@@ -425,7 +425,7 @@ DEPENDENCIES
   factory_bot (~> 6.1)
   faker (~> 2.15)
   httparty (~> 0.17)
-  iodine (~> 0.7.43)
+  iodine (~> 0.7.44)
   jbuilder (~> 2.10)
   listen (~> 3.4)
   notifications-ruby-client (~> 5.3)
