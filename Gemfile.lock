@@ -290,7 +290,7 @@ GEM
       ffi (~> 1.0)
     redis (4.2.5)
     regexp_parser (2.0.3)
-    rexml (3.2.4)
+    rexml (3.2.5)
     rspec-core (3.10.1)
       rspec-support (~> 3.10.0)
     rspec-eventually (0.2.2)
@@ -393,7 +393,7 @@ GEM
       addressable
       httpi (~> 2.0)
       nokogiri (>= 1.4.2)
-    webmock (3.11.2)
+    webmock (3.13.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -447,7 +447,7 @@ DEPENDENCIES
   spring (~> 2.1)
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
-  webmock (~> 3.11)
+  webmock (~> 3.13)
   wisper (~> 2.0)
 
 BUNDLED WITH
