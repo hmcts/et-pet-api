@@ -58,7 +58,7 @@ Rails.application.configure do
   config.active_job.queue_adapter = :sidekiq
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_options = { from: 'no-reply@digital.justice.gov.uk' }
+  config.action_mailer.default_options = { from: 'no-reply@employmenttribunals.service.gov.uk' }
 
   config.action_mailer.smtp_settings = {
     address: ENV['SMTP_HOSTNAME'],
