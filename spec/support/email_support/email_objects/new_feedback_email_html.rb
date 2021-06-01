@@ -37,7 +37,7 @@ module EtApi
         end
 
         def has_valid_email_headers?(email_address)
-          mail.to.include?("fake@servicenow.fake.com") && mail.from.include?(email_address)
+          mail.to.include?("fake@servicenow.fake.com")
         end
 
         private
