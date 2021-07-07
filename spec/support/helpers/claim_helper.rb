@@ -9,5 +9,5 @@ module EtApi
   end
 end
 RSpec.configure do |c|
-  c.include ::EtApi::Test::OfficeHelper
+  c.include ::EtApi::Test::ClaimHelper
 end

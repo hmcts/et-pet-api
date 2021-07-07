@@ -52,6 +52,14 @@ RSpec.describe OfficeService do
       expect(result).to be_a(Office).and(have_attributes(code: 41))
     end
 
+    it 'finds office 23 when BN1 4LF is provided' do
+      # Act
+      result = service.lookup_postcode('BN14LF')
+
+      # Assert
+      expect(result).to be_a(Office).and(have_attributes(code: 23))
+    end
+
     it 'returns the default office given a post code which is not covered using pre configured data' do
       # Act
       result = service.lookup_postcode('FF1 1AA')

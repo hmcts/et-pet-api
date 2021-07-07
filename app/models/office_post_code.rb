@@ -7,6 +7,7 @@ class OfficePostCode < ApplicationRecord
 
   scope :active, -> { where.not(postcode: nil) }
   scope :with_partial_match, lambda { |postcode|
-    active.where("? ILIKE concat(postcode, '%')", postcode).order(Arel.sql('length(postcode) DESC'))
+    trimmed = postcode.gsub(/\d[a-zA-Z]{2}\z/, '').strip
+    active.where("? ILIKE concat(postcode, '%')", trimmed).order(Arel.sql('length(postcode) DESC'))
   }
 end

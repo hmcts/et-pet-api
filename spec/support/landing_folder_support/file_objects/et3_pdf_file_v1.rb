@@ -1,5 +1,5 @@
 require 'rspec/matchers'
-require_relative './base_pdf_file'
+require_relative './et3_pdf_file'
 module EtApi
   module Test
     module FileObjects
