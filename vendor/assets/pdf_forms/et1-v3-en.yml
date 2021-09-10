@@ -150,6 +150,39 @@ respondents_details:
         - 'Off'
     acas_number:
       field_name: 2.3 please give the Acas early conciliation certificate number
+    no_acas_number_reason:
+#      TODO Failing error the value is set to nil, probably having something to do with the apostrophes in the first and second choices ? line 156 and line 157
+      field_name:
+        - 2.3 why don't you have an Acas early conciliation certificate number? Another person I'm making the claim with has an Acas early conciliation certificate number
+        - 2.3 why don't you have an Acas early conciliation certificate number? Acas doesn’t have the power to conciliate on some or all of my claim
+        - 2.3 why don't you have an Acas early conciliation certificate number? My employer has already been in touch with Acas
+        - 2.3 why don't you have an Acas early conciliation certificate number? My claim consists only of a complaint of unfair dismissal which contains an application for interim relief. (See guidance)
+      select_values:
+        joint_claimant_has_acas_number:
+          - 'Yes'
+          - 'Off'
+          - 'Off'
+          - 'Off'
+        acas_has_no_jurisdiction:
+          - 'Off'
+          - 'Yes'
+          - 'Off'
+          - 'Off'
+        employer_contacted_acas:
+          - 'Off'
+          - 'Off'
+          - 'Yes'
+          - 'Off'
+        interim_relief:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+          - 'Yes'
+      unselected_value:
+        - 'Off'
+        - 'Off'
+        - 'Off'
+        - 'Off'
   different_address:
     building:
       field_name: 2.4 Full, different working address - Number or name

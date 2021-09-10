@@ -121,6 +121,38 @@ et1-v3-cy:
             - 'Off'
         acas_number:
           field_name: 'f tystysgrif cymodi cynnar'
+        no_acas_number_reason:
+          field_name:
+            - Mae gan rywun arall rwy
+            - toggle_4
+            - Mae fy nghyflogwr eisoes wedi bod mewn cysylltiad ag Acas
+            - Mae fy hawl
+          select_values:
+            joint_claimant_has_acas_number:
+              - 'On'
+              - 'Off'
+              - 'Off'
+              - 'Off'
+            acas_has_no_jurisdiction:
+              - 'Off'
+              - 'On'
+              - 'Off'
+              - 'Off'
+            employer_contacted_acas:
+              - 'Off'
+              - 'Off'
+              - 'On'
+              - 'Off'
+            interim_relief:
+              - 'Off'
+              - 'Off'
+              - 'Off'
+              - 'On'
+          unselected_value:
+            - 'Off'
+            - 'Off'
+            - 'Off'
+            - 'Off'
       different_address:
         building:
           field_name: Rhif neu enw_3
