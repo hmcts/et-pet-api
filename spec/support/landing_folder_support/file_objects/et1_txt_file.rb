@@ -180,7 +180,7 @@ module EtApi
         def has_claimant_for?(claimant, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
           a = claimant[:address]
           has_claimant_section? errors: errors, indent: indent,
-                                title: end_with(claimant[:title]),
+                                title: end_with(claimant[:title] || ''),
                                 first_name: end_with(claimant[:first_name]),
                                 last_name: end_with(claimant[:last_name]),
                                 date_of_birth: end_with(claimant[:date_of_birth].strftime('%d/%m/%Y')),

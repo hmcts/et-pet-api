@@ -47,7 +47,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   def apply_your_details_fields(result)
     primary_claimant = source.primary_claimant
     pca = primary_claimant.address
-    apply_field result, primary_claimant.title, :your_details, :title unless primary_claimant.title.nil?
+    apply_field result, primary_claimant.title, :your_details, :title
     apply_field result, primary_claimant.first_name, :your_details, :first_name
     apply_field result, primary_claimant.last_name, :your_details, :last_name
     apply_field result, primary_claimant.gender, :your_details, :gender

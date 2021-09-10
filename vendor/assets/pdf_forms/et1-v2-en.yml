@@ -7,7 +7,6 @@ your_details:
       Mr: Your details - 1.1 Title - tickbox - Mr
       Mrs: Your details - 1.1 Title - tickbox - Mrs
       Ms: Your details - 1.1 Title - tickbox - Ms
-      '': 'Off'
     unselected_value: 'Off'
   first_name:
     field_name: 1.2 first names

@@ -14,6 +14,7 @@ FactoryBot.define do
     trait :no_gender_first_last do
       mr_first_last
       gender { 'N/K' }
+      title { nil }
     end
 
     trait :mr_na_unicode do
