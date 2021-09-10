@@ -1,0 +1,661 @@
+et1-v3-en:
+  claim_pdf_fields:
+    your_details:
+      title:
+        field_name:
+          - 1.1 Title Mr
+          - 1.1 Title Mrs
+          - 1.1 Title Miss
+          - 1.1 Title Ms
+        select_values:
+          Miss:
+            - 'Off'
+            - 'Off'
+            - 'Miss'
+            - 'Off'
+          Mr:
+            - 'Mister'
+            - 'Off'
+            - 'Off'
+            - 'Off'
+          Mrs:
+            - 'Off'
+            - 'Missus'
+            - 'Off'
+            - 'Off'
+          Ms:
+            - 'Off'
+            - 'Off'
+            - 'Off'
+            - 'Miz'
+          '':
+            - 'Off'
+            - 'Off'
+            - 'Off'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+          - 'Off'
+      first_name:
+        field_name: '1.2 first names'
+      last_name:
+        field_name: '1.3 surname'
+      dob_day:
+        field_name: '1.4 DOB day'
+      dob_month:
+        field_name: '1.4 DOB month'
+      dob_year:
+        field_name: '1.4 DOB year'
+      gender:
+        field_name:
+          - 1.4 gender - Male
+          - 1.4 gender - Female
+        select_values:
+          Female:
+            - 'Off'
+            - Female
+          Male:
+            - Male
+            - 'Off'
+          'N/K':
+            - 'Off'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      building:
+        field_name: '1.5 number'
+      street:
+        field_name: '1.5 street'
+      locality:
+        field_name: '1.5 town city'
+      county:
+        field_name: '1.5 county'
+      post_code:
+        field_name: '1.5 postcode'
+      telephone_number:
+        field_name: '1.6 phone number'
+      alternative_telephone_number:
+        field_name: '1.7 mobile number'
+      email_address:
+        field_name: '1.9 email'
+      correspondence:
+        field_name:
+          - 1.8 How should we contact you - Email
+          - 1.8 How should we contact you - Post
+          - 1.8 How should we contact you - Fax
+        select_values:
+          Email:
+            - Email
+            - 'Off'
+            - 'Off'
+          Fax:
+            - 'Off'
+            - 'Off'
+            - Fax
+          Post:
+            - 'Off'
+            - Post
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+      allow_video_attendance:
+        field_name:
+          - 1.11 Able to take part in a hearing by video - yes
+          - 1.11 Able to take part in a hearing by video - no
+        select_values:
+          yes:
+            - 'Yes'
+            - 'Off'
+          no:
+            - 'No'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+    respondents_details:
+      name:
+        field_name: '2.1 Give the name of your employer or the person or organisation you are claiming against'
+      address:
+        building:
+          field_name: '2.2 number'
+        street:
+          field_name: '2.2 street'
+        locality:
+          field_name: '2.2 town city'
+        county:
+          field_name: '2.2 county'
+        post_code:
+          field_name: '2.2 postcode'
+        telephone_number:
+          field_name: '2.2 phone number'
+      acas:
+        have_acas:
+          field_name:
+            - 2.3 Do you have an Acas early conciliation certificate number? Yes
+            - 2.3 Do you have an Acas early conciliation certificate number? No
+          select_values:
+            true:
+              - 'Yes'
+              - 'Off'
+            false:
+              - 'Off'
+              - 'no'
+          unselected_value:
+            - 'Off'
+            - 'Off'
+        acas_number:
+          field_name: '2.3 please give the Acas early conciliation certificate number'
+      different_address:
+        building:
+          field_name: '2.4 Full, different working address - Number or name'
+        street:
+          field_name: '2.4 Full, different working address - Street'
+        locality:
+          field_name: '2.4 Full, different working address - Town or city'
+        county:
+          field_name: '2.4 Full, different working address - County'
+        post_code:
+          field_name: '2.4 Full, different working address - postcode'
+        telephone_number:
+          field_name: '2.4 Full, different working address - phone number'
+      additional_respondents:
+        field_name: 2.5 If there are other respondents please tick this box and put their names and addresses here
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      respondent2:
+        name:
+          field_name: '2.5 R2 name'
+        address:
+          building:
+            field_name: '2.5 R2 number'
+          street:
+            field_name: '2.5 R2 street'
+          locality:
+            field_name: '2.5 R2 town'
+          county:
+            field_name: '2.5 R2 county'
+          post_code:
+            field_name: '2.5 R2 postcode'
+          telephone_number:
+            field_name: '2.5 R2 phone number'
+        acas:
+          have_acas:
+            field_name:
+              - 2.6 Do you have an Acas early conciliation certificate number? Yes
+              - 2.6 Do you have an Acas early conciliation certificate number? No
+            select_values:
+              true:
+                - 'Yes'
+                - 'Off'
+              false:
+                - 'Off'
+                - 'no'
+            unselected_value:
+              - 'Off'
+              - 'Off'
+          acas_number:
+            field_name: 2.6 please give the Acas early conciliation certificate number
+      respondent3:
+        name:
+          field_name: '2.7 R3 name'
+        address:
+          building:
+            field_name: '2.7 R3 number'
+          street:
+            field_name: '2.7 R3 street'
+          locality:
+            field_name: '2.7 R3 town city'
+          county:
+            field_name: '2.7 R3 county'
+          post_code:
+            field_name: '2.7 R3 postcode'
+          telephone_number:
+            field_name: '2.7 R3 phone number'
+        acas:
+          have_acas:
+            field_name:
+              - 2.8 Do you have an Acas early conciliation certificate number? Yes
+              - 2.8 Do you have an Acas early conciliation certificate number? No
+            select_values:
+              true:
+                - 'Yes'
+                - 'Off'
+              false:
+                - 'Off'
+                - 'no'
+            unselected_value:
+              - 'Off'
+              - 'Off'
+          acas_number:
+            field_name: 2.8 please give the Acas early conciliation certificate number
+    multiple_cases:
+      have_similar_claims:
+        field_name:
+          - 3.1 Are you aware that your claim is one of a number of claims against the same employer arising from the same, or similar, circumstances? Yes
+          - 3.1 Are you aware that your claim is one of a number of claims against the same employer arising from the same, or similar, circumstances? No
+        unselected_value:
+          - 'Off'
+          - 'Off'
+        select_values:
+          false:
+            - 'Off'
+            - 'No'
+          true:
+            - 'Yes'
+            - 'Off'
+      other_claimants:
+        field_name: '3.1 if yes, give the names of any other claimants'
+    not_your_employer:
+      claim_type:
+        field_name: '4.1 where the respondent was not your employer, state the type pf claim you are making'
+    employment_details:
+      job_title:
+        field_name: '5.2 Please say what job you do or did'
+      start_date:
+        field_name: '5.1 employment start'
+      employment_continuing:
+        field_name:
+          - 5.1 Is your employment continuing? Yes
+          - 5.1 Is your employment continuing? No
+        select_values:
+          false:
+            - 'Off'
+            - 'no'
+          true:
+            - 'Yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      ended_date:
+        field_name: '5.1 employment end'
+      ending_date:
+        field_name: '5.1 not ended'
+    earnings_and_benefits:
+      average_weekly_hours:
+        field_name: '6.1 How many hours on average do, or did you work each week in the job this claim is about?'
+      pay_before_tax:
+        amount:
+          field_name: '6.2 pay before tax'
+        period:
+          field_name:
+            - 6.2 pay before tax - weekly
+            - 6.2 pay before tax - monthly
+          select_values:
+            weekly:
+              - 'Weekly'
+              - 'Off'
+            monthly:
+              - 'Off'
+              - 'Monthly'
+          unselected_value:
+            - 'Off'
+            - 'Off'
+      pay_after_tax:
+        amount:
+          field_name: '6.2 normal pay'
+        period:
+          field_name:
+            - 6.2 normal pay - weekly
+            - 6.2 normal pay - monthly
+          select_values:
+            weekly:
+              - 'Weekly'
+              - 'Off'
+            monthly:
+              - 'Off'
+              - 'Monthly'
+          unselected_value:
+            - 'Off'
+            - 'Off'
+      paid_for_notice_period:
+        field_name:
+          - 6.3 If your employment has ended, did you work (or were you paid for) a period of notice? Yes
+          - 6.3 If your employment has ended, did you work (or were you paid for) a period of notice? No
+        select_values:
+          false:
+            - 'Off'
+            - 'No'
+          true:
+            - 'Yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+#TODO related to the test commented out in earnings_and_benefits_section.rb cause by supposedly the apostrophe
+#      notice_period:
+#        weeks:
+#          field_name: '6.3 If Yes, how many weeks’ notice did you work, or were you paid for?'
+#        months:
+#          field_name: '6.3 If Yes, how many months’ notice did you work, or were you paid for?'
+#      employers_pension_scheme:
+#        field_name:
+#          - 6.4 Were you in your employer’s pension scheme? Yes
+#          - 6.4 Were you in your employer’s pension scheme? No
+#        unselected_value:
+#          - 'Off'
+#          - 'Off'
+#        select_values:
+#          false:
+#            - 'Off'
+#            - 'No'
+#          true:
+#            - 'Yes'
+#            - 'Off'
+      benefits:
+        field_name: '6.5 If you received any other benefits, e.g. company car, medical insurance, etc, from your employer, please give details'
+    what_happened_since:
+      have_another_job:
+        field_name:
+          - 7.1 Have you got another job? Yes
+          - 7.1 Have you got another job? No
+        unselected_value:
+          - 'Off'
+          - 'Off'
+        select_values:
+          false:
+            - 'Off'
+            - 'No'
+          true:
+            - 'Yes'
+            - 'Off'
+      start_date:
+        field_name: '7.2 Please say when you started (or will start) work'
+      salary:
+        field_name: '7.3 Please say how much you are now earning (or will earn)'
+    type_and_details:
+      unfairly_dismissed:
+        field_name: 8.1 I was unfairly dismissed (including constructive dismissal)
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      discriminated:
+        field_name: 8.1 I was discriminated against on the grounds of
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      discriminated_age:
+        field_name: 8.1 age
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      discriminated_race:
+        field_name: 8.1 race
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      discriminated_gender_reassignment:
+        field_name: 8.1 gender reassignment
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      discriminated_disability:
+        field_name: 8.1 disability
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      discriminated_pregnancy:
+        field_name: 8.1 pregnancy or maternity
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      discriminated_marriage:
+        field_name: 8.1 marriage or civil partnership
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      discriminated_sexual_orientation:
+        field_name: 8.1 sexual orientation
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      discriminated_sex:
+        field_name: 8.1 sex (including equal pay)
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      discriminated_religion:
+        field_name: 8.1 religion or belief
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      claiming_redundancy_payment:
+        field_name: 8.1 I am claiming a redundancy payment
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      owed:
+        field_name: 8.1 owed
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      owed_notice_pay:
+        field_name: 8.1 notice pay
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      owed_holiday_pay:
+        field_name: 8.1 holiday pay
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      owed_arrears_of_pay:
+        field_name: 8.1 arrears of pay
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      owed_other_payments:
+        field_name: 8.1 other payments
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      other_type_of_claim:
+        field_name: 8.1 another type of claim
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      other_type_of_claim_details:
+        field_name: '8.1 other type of claim'
+      claim_description:
+        field_name: '8.2 Please set out the background and details of your claim in the space below'
+    what_do_you_want:
+      prefer_re_instatement:
+        field_name: 9.1 If claiming unfair dismissal, to get your old job back and compensation (reinstatement)
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      prefer_re_engagement:
+        field_name: 9.1 If claiming unfair dismissal, to get another job with the same employer or associated employer and compensation (re-engagement)
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      prefer_compensation:
+        field_name: 9.1 Compensation only
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      prefer_recommendation:
+        field_name: 9.1 If claiming discrimination, a recommendation (see Guidance)
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      compensation:
+        field_name: '9.2 What compensation or remedy are you seeking?'
+    information_to_regulators:
+#TODO test commented for the reason of the apostrophes which supposedly cause a change of data from false to nil by going through pdftk information_to_regulators_section.rb
+#      whistle_blowing:
+#        field_name: '10.1 If your claim consists of, or includes, a claim that you are making a protected disclosure under the Employment Rights Act 1996 (otherwise known as a ‘whistleblowing’ claim), please tick the box if you want a copy of this form, or information from it, to be forwarded on your behalf to a relevant regulator (known as a ‘prescribed person’ under the relevant legislation) by tribunal staff. (See Guidance)'
+#        select_values:
+#          false: 'Off'
+#          true: 'yes'
+    your_representative:
+      name_of_representative:
+        field_name: '11.1 Name of representative'
+      name_of_organisation:
+        field_name: '11.2 Name of organisation'
+      building:
+        field_name: "11.3 Representative's address: number or name"
+      street:
+        field_name: "11.3 Representative's address: street"
+      locality:
+        field_name: "11.3 Representative's address: town or city"
+      county:
+        field_name: "11.3 Representative's address: county"
+      post_code:
+        field_name: "11.3 Representative's address: postcode"
+      dx_number:
+        field_name: "11.4 Representative's DX number (if known)"
+      telephone_number:
+        field_name: '11.5 Phone number'
+      alternative_telephone_number:
+        field_name: '11.6 mobile number (if different)'
+      reference:
+        field_name: '11.7 Their reference for correspondence'
+      email_address:
+        field_name: '11.8 Email address'
+      communication_preference:
+        field_name:
+          - 11.9 How would you prefer us to communicate with them? Email
+          - 11.9 How would you prefer us to communicate with them? Post
+          - 11.9 How would you prefer us to communicate with them? Fax
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+        select_values:
+          email:
+            - 'Email'
+            - 'Off'
+            - 'Off'
+          fax:
+            - 'Off'
+            - 'Off'
+            - 'Fax'
+          post:
+            - 'Off'
+            - 'Post'
+            - 'Off'
+      fax_number:
+        field_name: '11.10 Fax number'
+    disability:
+      has_special_needs:
+        field_name:
+          - 12.1 Do you have a disability? Yes
+          - 12.1 Do you have a disability? No
+        unselected_value:
+          - 'Off'
+          - 'Off'
+        select_values:
+          false:
+            - 'Off'
+            - 'no'
+          true:
+            - 'Yes'
+            - 'Off'
+      special_needs:
+        field_name: '12.1 If you have a disability, give details'
+    additional_respondents:
+      respondent4:
+        name:
+          field_name: '13 R4 name'
+        address:
+          building:
+            field_name: '13 R4 number'
+          street:
+            field_name: '13 R4 street'
+          locality:
+            field_name: '13 R4 town city'
+          county:
+            field_name: '13 R4 county'
+          post_code:
+            field_name: '13 R4 postcode'
+          telephone_number:
+            field_name: '13 R4 phone number'
+        acas:
+          have_acas:
+            field_name:
+              - 13 R4 Do you have an Acas early conciliation certificate number? Yes
+              - 13 R4 Do you have an Acas early conciliation certificate number? No
+            unselected_value:
+              - 'Off'
+              - 'Off'
+            select_values:
+              true:
+                - 'Yes'
+                - 'Off'
+              false:
+                - 'Off'
+                - 'no'
+          acas_number:
+            field_name: '13 R4 please give the Acas early conciliation certificate number'
+      respondent5:
+        name:
+          field_name: '13 R5 name'
+        address:
+          building:
+            field_name: '13 R5 number'
+          street:
+            field_name: '13 R5 street'
+          locality:
+            field_name: '13 R5 town city'
+          county:
+            field_name: '13 R5 county'
+          post_code:
+            field_name: '13 R5 postcode'
+          telephone_number:
+            field_name: '13 R5 phone number'
+        acas:
+          have_acas:
+            field_name:
+              - 13 R5 Do you have an Acas early conciliation certificate number? Yes
+              - 13 R5 Do you have an Acas early conciliation certificate number? No
+            unselected_value:
+              - 'Off'
+              - 'Off'
+            select_values:
+              true:
+                - 'Yes'
+                - 'Off'
+              false:
+                - 'Off'
+                - 'No'
+          acas_number:
+            field_name: '13 R5 please give the Acas early conciliation certificate number'
+    final_check:
+      satisfied:
+        field_name: 14 satisfied tick box
+        select_values:
+          false: 'Off'
+          true: 'yes'
+    additional_information:
+      additional_information:
+        field_name: '15 Additional information'
+    official_use_only:
+      tribunal_office:
+        field_name: 'tribunal office'
+      case_number:
+        field_name: 'case number'
+      date_received:
+        field_name: 'date received'
+  claim_email:
+    reference: Claim number
+    subject: 'Employment tribunal: claim submitted'
+    submission_info: 'Claim submitted:'
+    submission_date: Submitted %{date}
+    tribunal_office: 'Tribunal office:'
+    thank_you: Thank you for submitting your claim to an employment tribunal.
+    next_steps:
+      well_contact_you: "We'll contact you once we have sent your claim to the respondent and explain what happens next."
+      once_sent_claim: 'Once we have sent them your claim, the respondent has 28 days to reply.'
+    submission_details: Submission details
+    claim_completed: 'Claim completed:'
+    see_attached_pdf: See attached PDF
+    claim_submitted: 'Claim submitted:'
+    submitted_at: 'Submitted %{date}'
+
