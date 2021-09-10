@@ -22,7 +22,7 @@ module EtApi
                     'period': employment['net_pay_period_type']
                 },
                 paid_for_notice_period: employment['worked_notice_period_or_paid_in_lieu'],
-                #TODO Issue caused by the apostrophe supposedly change the right data to nil going through pdftk
+                # @TODO Issue caused by the apostrophe supposedly change the right data to nil going through pdftk
                 # notice_period: {
                 #     weeks: weekly_notice_period(employment),
                 #     months: monthly_notice_period(employment)

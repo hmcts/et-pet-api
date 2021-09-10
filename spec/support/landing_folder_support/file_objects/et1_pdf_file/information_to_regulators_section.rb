@@ -6,7 +6,7 @@ module EtApi
         class InformationToRegulatorsSection < EtApi::Test::FileObjects::Et1PdfFileSection::Base
           def has_contents_for?(claim:)
             expected_values = {
-                #TODO commented out for the reason of having an apostrophe supposedly causing a change in the data from false to nil going through pdftk
+                # @TODO commented out for the reason of having an apostrophe supposedly causing a change in the data from false to nil going through pdftk
                 # whistle_blowing: claim.send_claim_to_whistleblowing_entity.present?,
             }
             # expect(mapped_field_values).to include expected_values
