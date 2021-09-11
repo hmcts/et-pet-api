@@ -151,7 +151,6 @@ et1-v3-en:
         acas_number:
           field_name: '2.3 please give the Acas early conciliation certificate number'
         no_acas_number_reason:
-#          @TODO Failing error the value is set to nil, probably having something to do with the apostrophes in the first and second choices ? line 156 and line 157
           field_name:
             - 2.3 why don't you have an Acas early conciliation certificate number? Another person I'm making the claim with has an Acas early conciliation certificate number
             - 2.3 why don't you have an Acas early conciliation certificate number? Acas doesn’t have the power to conciliate on some or all of my claim
@@ -361,26 +360,25 @@ et1-v3-en:
         unselected_value:
           - 'Off'
           - 'Off'
-#TODO related to the test commented out in earnings_and_benefits_section.rb cause by supposedly the apostrophe
-#      notice_period:
-#        weeks:
-#          field_name: '6.3 If Yes, how many weeks’ notice did you work, or were you paid for?'
-#        months:
-#          field_name: '6.3 If Yes, how many months’ notice did you work, or were you paid for?'
-#      employers_pension_scheme:
-#        field_name:
-#          - 6.4 Were you in your employer’s pension scheme? Yes
-#          - 6.4 Were you in your employer’s pension scheme? No
-#        unselected_value:
-#          - 'Off'
-#          - 'Off'
-#        select_values:
-#          false:
-#            - 'Off'
-#            - 'No'
-#          true:
-#            - 'Yes'
-#            - 'Off'
+      notice_period:
+        weeks:
+          field_name: '6.3 If Yes, how many weeks’ notice did you work, or were you paid for?'
+        months:
+          field_name: '6.3 If Yes, how many months’ notice did you work, or were you paid for?'
+      employers_pension_scheme:
+        field_name:
+          - 6.4 Were you in your employer’s pension scheme? Yes
+          - 6.4 Were you in your employer’s pension scheme? No
+        unselected_value:
+          - 'Off'
+          - 'Off'
+        select_values:
+          false:
+            - 'Off'
+            - 'No'
+          true:
+            - 'Yes'
+            - 'Off'
       benefits:
         field_name: '6.5 If you received any other benefits, e.g. company car, medical insurance, etc, from your employer, please give details'
     what_happened_since:
@@ -521,12 +519,11 @@ et1-v3-en:
       compensation:
         field_name: '9.2 What compensation or remedy are you seeking?'
     information_to_regulators:
-#TODO test commented for the reason of the apostrophes which supposedly cause a change of data from false to nil by going through pdftk information_to_regulators_section.rb
-#      whistle_blowing:
-#        field_name: '10.1 If your claim consists of, or includes, a claim that you are making a protected disclosure under the Employment Rights Act 1996 (otherwise known as a ‘whistleblowing’ claim), please tick the box if you want a copy of this form, or information from it, to be forwarded on your behalf to a relevant regulator (known as a ‘prescribed person’ under the relevant legislation) by tribunal staff. (See Guidance)'
-#        select_values:
-#          false: 'Off'
-#          true: 'yes'
+    whistle_blowing:
+      field_name: '10.1 If your claim consists of, or includes, a claim that you are making a protected disclosure under the Employment Rights Act 1996 (otherwise known as a ‘whistleblowing’ claim), please tick the box if you want a copy of this form, or information from it, to be forwarded on your behalf to a relevant regulator (known as a ‘prescribed person’ under the relevant legislation) by tribunal staff. (See Guidance)'
+      select_values:
+        false: 'Off'
+        true: 'yes'
     your_representative:
       name_of_representative:
         field_name: '11.1 Name of representative'
