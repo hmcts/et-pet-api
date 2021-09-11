@@ -8,7 +8,7 @@ module PdfBuilder
     extend ActiveSupport::Concern
 
     def builder
-      @builder ||= PdfForms.new('pdftk', utf8_fields: true)
+      @builder ||= PdfForms.new('pdftk', utf8_fields: true, data_format: 'XFdf')
     end
 
     private
