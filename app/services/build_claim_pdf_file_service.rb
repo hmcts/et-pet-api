@@ -6,7 +6,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   include PdfBuilder::ActiveStorage
   PAY_CLAIMS = ['redundancy', 'notice', 'holiday', 'arrears', 'other'].freeze
 
-  def self.call(source, template_reference: 'et1-v3-en', time_zone: 'London')
+  def self.call(source, template_reference: 'et1-v3-en', time_zone: 'London', **)
     new(source, template_reference: template_reference, time_zone: time_zone).call
   end
 

@@ -7,11 +7,22 @@ module PdfBuilder
   module Rendering
     extend ActiveSupport::Concern
 
+    def initialize(source, use_xfdf: true, **kw_args)
+      super(source, **kw_args)
+      self.use_xfdf = use_xfdf
+    end
+
     def builder
-      @builder ||= PdfForms.new('pdftk', utf8_fields: true, data_format: 'XFdf')
+      opts = {
+        utf8_fields: true
+      }
+      opts[:data_format] = 'XFdf' if use_xfdf
+      @builder ||= PdfForms.new('pdftk', opts)
     end
 
     private
+
+    attr_accessor :use_xfdf
 
     def render_to_file
       tempfile = Tempfile.new
