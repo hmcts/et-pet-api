@@ -1,0 +1,661 @@
+et1-v3-cy:
+  claim_pdf_fields:
+    your_details:
+      title:
+        field_name: salutation
+        select_values:
+          Miss: 'Miss'
+          Mr: 'Mr'
+          Mrs: 'Mrs'
+          Ms: 'Ms'
+        unselected_value: 'Off'
+      first_name:
+        field_name: undefined
+      last_name:
+        field_name: undefined_2
+      dob_day:
+        field_name: undefined_3
+      dob_month:
+        field_name: undefined_4
+      dob_year:
+        field_name: undefined_5
+      gender:
+        field_name:
+          - Gwryw
+          - Benyw
+        select_values:
+          Female:
+            - 'Off'
+            - 'On'
+          Male:
+            - 'On'
+            - 'Off'
+          'N/K':
+            - 'Off'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      building:
+        field_name: Rhif neu enw
+      street:
+        field_name: Stryd
+      locality:
+        field_name: TrefDinas
+      county:
+        field_name: Sir
+      post_code:
+        field_name: Cod post
+      telephone_number:
+        field_name: 'undefined_6'
+      alternative_telephone_number:
+        field_name: 'n wahanol'
+      email_address:
+        field_name: dogfennau
+      correspondence:
+        field_name:
+          - Ebost
+          - Post
+          - Ffacs
+        select_values:
+          Email:
+            - 'On'
+            - 'Off'
+            - 'Off'
+          Post:
+            - 'Off'
+            - 'On'
+            - 'Off'
+          Fax:
+            - 'Off'
+            - 'Off'
+            - 'On'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+      allow_video_attendance:
+        field_name:
+          - gallaf
+          - Na allaf
+        select_values:
+          false:
+            - 'Off'
+            - 'On'
+          true:
+            - 'On'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+    respondents_details:
+      name:
+        field_name: angen gallwch ychwanegu rhagor o atebwyr
+      address:
+        building:
+          field_name: Rhif neu enw_2
+        street:
+          field_name: Stryd_2
+        locality:
+          field_name: TrefDinas_2
+        county:
+          field_name: Sir_2
+        post_code:
+          field_name: Cod post_2
+        telephone_number:
+          field_name: Rhif ffôn
+      acas:
+        have_acas:
+          field_name:
+            - Oes
+            - Nac oes
+          select_values:
+            true:
+              - 'On'
+              - 'Off'
+            false:
+              - 'Off'
+              - 'On'
+          unselected_value:
+            - 'Off'
+            - 'Off'
+        acas_number:
+          field_name: 'f tystysgrif cymodi cynnar'
+        no_acas_number_reason:
+          field_name:
+            - Mae gan rywun arall rwy
+            - toggle_4
+            - Mae fy nghyflogwr eisoes wedi bod mewn cysylltiad ag Acas
+            - Mae fy hawl
+          select_values:
+            joint_claimant_has_acas_number:
+              - 'On'
+              - 'Off'
+              - 'Off'
+              - 'Off'
+            acas_has_no_jurisdiction:
+              - 'Off'
+              - 'On'
+              - 'Off'
+              - 'Off'
+            employer_contacted_acas:
+              - 'Off'
+              - 'Off'
+              - 'On'
+              - 'Off'
+            interim_relief:
+              - 'Off'
+              - 'Off'
+              - 'Off'
+              - 'On'
+          unselected_value:
+            - 'Off'
+            - 'Off'
+            - 'Off'
+            - 'Off'
+      different_address:
+        building:
+          field_name: Rhif neu enw_3
+        street:
+          field_name: Stryd_3
+        locality:
+          field_name: TrefDinas_3
+        county:
+          field_name: Sir_3
+        post_code:
+          field_name: Cod post_3
+        telephone_number:
+          field_name: undefined_8
+      additional_respondents:
+        field_name: Os oes atebwyr eraill ticiwch y blwch hwn a rhowch eu henwau
+        select_values:
+          false: 'Off'
+          true: 'On'
+      respondent2:
+        name:
+          field_name: undefined_9
+        address:
+          building:
+            field_name: Rhif neu enw_4
+          street:
+            field_name: Stryd_4
+          locality:
+            field_name: TrefDinas_4
+          county:
+            field_name: Sir_4
+          post_code:
+            field_name: Cod post_4
+          telephone_number:
+            field_name: undefined_10
+        acas:
+          have_acas:
+            field_name:
+              - Oes_2
+              - Nac oes_2
+            unselected_value:
+              - 'Off'
+              - 'Off'
+            select_values:
+              true:
+                - 'On'
+                - 'Off'
+              false:
+                - 'Off'
+                - 'On'
+          acas_number:
+            field_name: f tystysgrif cymodi cynnar_2
+      respondent3:
+        name:
+          field_name: undefined_11
+        address:
+          building:
+            field_name: Rhif neu enw_5
+          street:
+            field_name: Stryd_5
+          locality:
+            field_name: TrefDinas_5
+          county:
+            field_name: Sir_5
+          post_code:
+            field_name: Cod post_5
+          telephone_number:
+            field_name: undefined_12
+        acas:
+          have_acas:
+            field_name:
+              - Oes_3
+              - Nac oes_3
+            unselected_value:
+              - 'Off'
+              - 'Off'
+            select_values:
+              true:
+                - 'On'
+                - 'Off'
+              false:
+                - 'Off'
+                - 'On'
+          acas_number:
+            field_name: f tystysgrif cymodi cynnar_3
+    multiple_cases:
+      have_similar_claims:
+        field_name:
+          - Ydw
+          - Nac ydw
+        unselected_value:
+          - 'Off'
+          - 'Off'
+        select_values:
+          false:
+            - 'Off'
+            - 'On'
+          true:
+            - 'On'
+            - 'Off'
+      other_claimants:
+        field_name: hyn yn ein galluogi i gysylltu eich hawliad gyda
+    not_your_employer:
+      claim_type:
+        field_name: 'Ewch i Ran 8'
+    employment_details:
+      job_title:
+        field_name: Nodwch pa swydd yr ydychyr oeddech yn ei
+      start_date:
+        field_name: undefined_13
+      employment_continuing:
+        field_name:
+          - Ydw_2
+          - Nac Ydw
+        select_values:
+          false:
+            - 'Off'
+            - 'On'
+          true:
+            - 'On'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      ended_date:
+        field_name: undefined_14
+      ending_date:
+        field_name: chi mewn cyfnod rhybudd os ydych pa bryd y
+    earnings_and_benefits:
+      average_weekly_hours:
+        field_name: 'swydd y maer hawliad hwn yn gysylltiedig â hi'
+      pay_before_tax:
+        amount:
+          field_name: fill_4
+        period:
+          field_name:
+            - Wythnosol
+            - Misol
+          select_values:
+            weekly:
+              - 'On'
+              - 'Off'
+            monthly:
+              - 'Off'
+              - 'On'
+          unselected_value:
+            - 'Off'
+            - 'Off'
+      pay_after_tax:
+        amount:
+          field_name: fill_5
+        period:
+          field_name:
+            - Wythnosol_2
+            - Misol_2
+          select_values:
+            weekly:
+              - 'On'
+              - 'Off'
+            monthly:
+              - 'Off'
+              - 'On'
+          unselected_value:
+            - 'Off'
+            - 'Off'
+      paid_for_notice_period:
+        field_name:
+          - Oeddwn
+          - Nac oeddwn
+        select_values:
+          false:
+            - 'Off'
+            - 'On'
+          true:
+            - 'On'
+            - 'off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      notice_period:
+        weeks:
+          field_name: wythnos
+        months:
+          field_name: mis
+      employers_pension_scheme:
+        field_name:
+          - Oeddwn_2
+          - Nac oeddwn_2
+        select_values:
+          false:
+            - 'Off'
+            - 'On'
+          true:
+            - 'On'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+      benefits:
+        field_name: car cwmni yswiriant meddygol ayb gan eich
+    what_happened_since:
+      have_another_job:
+        field_name:
+          - Oes_4
+          - Nac oes_4
+        unselected_value:
+          - 'Off'
+          - 'Off'
+        select_values:
+          false:
+            - 'Off'
+            - 'On'
+          true:
+            - 'On'
+            - 'Off'
+      start_date:
+        field_name: Nodwch pa bryd ddechreuodd y swydd neu pa
+      salary:
+        field_name: fill_6
+    type_and_details:
+      unfairly_dismissed:
+        field_name: Cefais fy niswyddo
+        select_values:
+          false: 'Off'
+          true: 'On'
+      discriminated:
+        field_name: Gwahan
+        select_values:
+          false: 'Off'
+          true: 'On'
+      discriminated_age:
+        field_name: oedran
+        select_values:
+          false: 'Off'
+          true: 'On'
+      discriminated_race:
+        field_name: hil
+        select_values:
+          false: 'Off'
+          true: 'On'
+      discriminated_gender_reassignment:
+        field_name: ailbennu rhywedd
+        select_values:
+          false: 'Off'
+          true: 'On'
+      discriminated_disability:
+        field_name: anabledd
+        select_values:
+          false: 'Off'
+          true: 'On'
+      discriminated_pregnancy:
+        field_name: beich
+        select_values:
+          false: 'Off'
+          true: 'On'
+      discriminated_marriage:
+        field_name: priodas neu bartneriaeth sifil
+        select_values:
+          false: 'Off'
+          true: 'On'
+      discriminated_sexual_orientation:
+        field_name: cyfeiriadedd rhywiol
+        select_values:
+          false: 'Off'
+          true: 'On'
+      discriminated_sex:
+        field_name: rhyw gan gynnwys cyflog cyfartal
+        select_values:
+          false: 'Off'
+          true: 'On'
+      discriminated_religion:
+        field_name: crefydd neu gred
+        select_values:
+          false: 'Off'
+          true: 'On'
+      claiming_redundancy_payment:
+        field_name: Rwy
+        select_values:
+          false: 'Off'
+          true: 'On'
+      owed:
+        field_name: Mae arnynt arian i mi sef
+        select_values:
+          false: 'Off'
+          true: 'On'
+      owed_notice_pay:
+        field_name: tâl cyfnod rhybudd
+        select_values:
+          false: 'Off'
+          true: 'On'
+      owed_holiday_pay:
+        field_name: tâl gwyliau
+        select_values:
+          false: 'Off'
+          true: 'On'
+      owed_arrears_of_pay:
+        field_name: tâl dyledus
+        select_values:
+          false: 'Off'
+          true: 'On'
+      owed_other_payments:
+        field_name: taliadau eraill
+        select_values:
+          false: 'Off'
+          true: 'On'
+      other_type_of_claim:
+        field_name: Rwy_2
+        select_values:
+          false: 'Off'
+          true: 'On'
+      other_type_of_claim_details:
+        field_name: Nodwch natur yr hawliad Darperir enghreifftiau yn y Canllaw
+      claim_description:
+        field_name: Tudalen 7
+    what_do_you_want:
+      prefer_re_instatement:
+        field_name: Os ydych yn hawlio am ddiswyddo annheg i gael eich hen swydd yn ôl ac iawndal adfer
+        select_values:
+          false: 'Off'
+          true: 'On'
+      prefer_re_engagement:
+        field_name: Os ydych yn hawlio am ddiswyddo annheg i gael swydd arall gyda
+        select_values:
+          false: 'Off'
+          true: 'On'
+      prefer_compensation:
+        field_name: Iawndal yn unig
+        select_values:
+          false: 'Off'
+          true: 'On'
+      prefer_recommendation:
+        field_name: Os ydych yn hawlio am wahaniaethu argymhelliad gweler y Canllaw
+        select_values:
+          false: 'Off'
+          true: 'On'
+      compensation:
+        field_name: rwymedi arall gan y Tribiwnlys nad ydych wedii nodin barod rhowch hyn isod os gwelwch yn dda
+    information_to_regulators:
+      whistle_blowing:
+        field_name: blwch os hoffech gopi or ffurflen hon neu wybodaeth ohoni gael ei hanfon ar eich rhan i reolydd
+        select_values:
+          false: 'Off'
+          true: 'On'
+    your_representative:
+      name_of_representative:
+        field_name: 'llenwch yr wybodaeth ganlynol os gwelwch yn dda  Byddwn yn cysylltu â'
+      name_of_organisation:
+        field_name: undefined_15
+      building:
+        field_name: Rhif neu enw_6
+      street:
+        field_name: Stryd_6
+      locality:
+        field_name: TrefDinas_6
+      county:
+        field_name: Sir_6
+      post_code:
+        field_name: Cod post_6
+      dx_number:
+        field_name: undefined_16
+      telephone_number:
+        field_name: undefined_17
+      alternative_telephone_number:
+        field_name: n wahanol_2
+      reference:
+        field_name: Eu cyfeirnod ar gyfer gohebiaeth
+      email_address:
+        field_name: undefined_18
+      communication_preference:
+        field_name:
+          - Ebost_2
+          - Post_2
+          - Ffacs_2
+        select_values:
+          email:
+            - 'On'
+            - 'Off'
+            - 'Off'
+          post:
+            - 'Off'
+            - 'On'
+            - 'Off'
+          fax:
+            - 'Off'
+            - 'Off'
+            - 'On'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+      fax_number:
+        field_name: undefined_19
+    disability:
+      has_special_needs:
+        field_name:
+          - Oes_5
+          - Nac oes_5
+        unselected_value:
+          - 'Off'
+          - 'Off'
+        select_values:
+          false:
+            - 'Off'
+            - 'On'
+          true:
+            - 'On'
+            - 'Off'
+      special_needs:
+        field_name: gynnwys ar gyfer unrhyw wrandawiadau a
+    additional_respondents:
+      respondent4:
+        name:
+          field_name: undefined_20
+        address:
+          building:
+            field_name: Rhif neu enw_7
+          street:
+            field_name: Stryd_7
+          locality:
+            field_name: TrefDinas_7
+          county:
+            field_name: Sir_7
+          post_code:
+            field_name: Cod post_7
+          telephone_number:
+            field_name: undefined_21
+        acas:
+          have_acas:
+            field_name:
+              - Oes_6
+              - Nac
+            unselected_value:
+              - 'Off'
+              - 'Off'
+            select_values:
+              true:
+                - 'On'
+                - 'Off'
+              false:
+                - 'Off'
+                - 'On'
+          acas_number:
+            field_name: f tystysgrif cymodi cynnar_4
+      respondent5:
+        name:
+          field_name: undefined_22
+        address:
+          building:
+            field_name: Rhif neu enw_8
+          street:
+            field_name: Stryd_8
+          locality:
+            field_name: TrefDinas_8
+          county:
+            field_name: Sir_8
+          post_code:
+            field_name: Cod post_8
+          telephone_number:
+            field_name: undefined_23
+        acas:
+          have_acas:
+            field_name:
+              - A oes gennych rif tystysgrif cymodi cynnar
+              - Oes_7
+            unselected_value:
+              - 'Off'
+              - 'Off'
+            select_values:
+              true:
+                - 'On'
+                - 'Off'
+              false:
+                - 'Off'
+                - 'On'
+          acas_number:
+            field_name: f tystysgrif cymodi cynnar_5
+    final_check:
+      satisfied:
+        field_name: toggle_6
+        select_values:
+          false: 'Off'
+          true: 'On'
+    additional_information:
+      additional_information:
+        field_name: wrthym pam
+    official_use_only:
+      tribunal_office:
+        field_name: Swyddfa Tribiwnlys
+      case_number:
+        field_name: Rhif yr achos
+      date_received:
+        field_name: Dyddiad derbyn
+  claim_email:
+    reference: Eich rhif hawliad
+    subject: 'Tribiwnlys Cyflogaeth: hawliad wedi''i gyflwyno'
+    submission_info: 'Hawliad wedi''i gyflwyno:'
+    submission_date: "Cyflwynwyd ar %{date}"
+    tribunal_office: 'Swyddfa tribiwnlys:'
+    thank_you: "Diolch am gyflwyno eich hawliad i dribiwnlys cyflogaeth."
+    next_steps:
+      well_contact_you: Byddwn yn cysylltu â chi unwaith y byddwn wedi anfon eich hawliad at yr atebydd i egluro beth fydd yn digwydd nesaf. Ar hyn o bryd, mae’n cymryd oddeutu 25 diwrnod.
+      once_sent_claim: Unwaith y byddwn wedi anfon eich hawliad atynt, mae gan yr atebydd 28 diwrnod i ymateb.
+    submission_details: Manylion cyflwyno
+    claim_completed: 'Hawliad wedi''i gwblhau:'
+    see_attached_pdf: Gweler y PDF sydd ynghlwm
+    claim_submitted: 'Hawliad wedi''i gyflwyno:'
+    submitted_at: "Cyflwynwyd ar %{date}"

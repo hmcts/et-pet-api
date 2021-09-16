@@ -55,7 +55,7 @@ module EtApi
           expect(actual_lines[36]).to eql "Respondent Address 2: Regent Street"
           expect(actual_lines[37]).to eql "Respondent Address 3: London"
           expect(actual_lines[38]).to eql "Respondent Address 4: Greater London"
-          expect(actual_lines[39]).to eql "Respondent Postcode: SW1H 9QR"
+          expect(actual_lines[39]).to eql "Respondent Postcode: G1 2FF"
           expect(actual_lines[40]).to eql "Respondent Phone: 02222 321654"
           expect(actual_lines[41]).to eql "~2.3 If you worked at an address different from the one you have given at 2.2, please give the full address:"
           expect(actual_lines[42]).to eql "Alternative Respondent Address1: 110"

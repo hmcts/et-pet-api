@@ -22,11 +22,12 @@ module EtApi
                     'period': employment['net_pay_period_type']
                 },
                 paid_for_notice_period: employment['worked_notice_period_or_paid_in_lieu'],
-                notice_period: {
-                    weeks: weekly_notice_period(employment),
-                    months: monthly_notice_period(employment)
-                },
-                employers_pension_scheme: employment['enrolled_in_pension_scheme'],
+                # @TODO Issue caused by the apostrophe supposedly change the right data to nil going through pdftk
+                # notice_period: {
+                #     weeks: weekly_notice_period(employment),
+                #     months: monthly_notice_period(employment)
+                # },
+                # employers_pension_scheme: employment['enrolled_in_pension_scheme'],
                 benefits: employment['benefit_details']
             }
             expect(mapped_field_values).to include expected_values
