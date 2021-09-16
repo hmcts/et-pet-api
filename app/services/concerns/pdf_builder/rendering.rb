@@ -16,7 +16,7 @@ module PdfBuilder
       opts = {
         utf8_fields: true
       }
-      opts[:data_format] = 'XFdf' if use_xfdf
+      opts[:data_format] = 'XFdfEnhanced' if use_xfdf
       @builder ||= PdfForms.new('pdftk', opts)
     end
 
@@ -33,6 +33,22 @@ module PdfBuilder
 
     def fill_in_pdf_form(template_path:, data:, to:)
       builder.fill_form(template_path, to, data)
+    end
+  end
+end
+
+# coding: UTF-8
+
+require 'rexml/document'
+
+module PdfForms
+  # Map keys and values to Adobe's XFDF format.
+  # This extends the standard PdfForm version which does not respect spaces in the data.
+  class XFdfEnhanced < XFdf
+    private
+
+    def quote(value)
+      REXML::Text.new(value.to_s, true).to_s
     end
   end
 end

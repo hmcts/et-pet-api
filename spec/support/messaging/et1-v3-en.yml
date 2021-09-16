@@ -227,7 +227,7 @@ et1-v3-en:
                 - 'Off'
               false:
                 - 'Off'
-                - 'no'
+                - 'No'
             unselected_value:
               - 'Off'
               - 'Off'
@@ -260,7 +260,7 @@ et1-v3-en:
                 - 'Off'
               false:
                 - 'Off'
-                - 'no'
+                - 'No'
             unselected_value:
               - 'Off'
               - 'Off'

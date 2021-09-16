@@ -227,7 +227,7 @@ respondents_details:
             - 'Off'
           false:
             - 'Off'
-            - 'no'
+            - 'No'
         unselected_value:
           - 'Off'
           - 'Off'
@@ -260,7 +260,7 @@ respondents_details:
             - 'Off'
           false:
             - 'Off'
-            - 'no'
+            - 'No'
         unselected_value:
           - 'Off'
           - 'Off'

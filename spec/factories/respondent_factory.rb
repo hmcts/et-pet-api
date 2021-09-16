@@ -17,7 +17,7 @@ FactoryBot.define do
         street: 'Regent Street',
         locality: 'London',
         county: 'Greater London',
-        post_code: 'SW1H 9QR'
+        post_code: 'G1 2FF'
 
       work_address_telephone_number { '03333 423554' }
       address_telephone_number { '02222 321654' }

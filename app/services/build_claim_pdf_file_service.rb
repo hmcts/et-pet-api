@@ -100,7 +100,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
 
       apply_field result, resp&.name, pdf_section, pdf_field, :name
       apply_field result, resp&.acas_certificate_number, pdf_section, pdf_field, :acas, :acas_number
-      apply_field result, resp&.acas_certificate_number&.present?, pdf_section, pdf_field, :acas, :have_acas
+      apply_field result, resp&.acas_certificate_number.present?, pdf_section, pdf_field, :acas, :have_acas
       apply_field result, resp&.address&.building, pdf_section, pdf_field, :address, :building
       apply_field result, resp&.address&.street, pdf_section, pdf_field, :address, :street
       apply_field result, resp&.address&.locality, pdf_section, pdf_field, :address, :locality

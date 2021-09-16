@@ -8,7 +8,7 @@ module EtApi
           EMPTY_RESPONDENT = {
             name: '',
             address: { building: '', street: '', locality: '', county: '', post_code: '', telephone_number: ''}.freeze,
-            acas: { have_acas: nil, acas_number: ''}.freeze
+            acas: { have_acas: false, acas_number: ''}.freeze
           }.freeze
           def has_contents_for?(respondents:)
             expected_values = {
@@ -59,7 +59,7 @@ module EtApi
               },
               acas: {
                 have_acas: resp.acas_certificate_number.present?,
-                acas_number: resp.acas_certificate_number
+                acas_number: resp.acas_certificate_number || ''
               }
               
             }
