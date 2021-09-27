@@ -55,7 +55,7 @@ module EtApi
               expect(mail.dig('personalisation', 'has_claimants_file')).to eql 'no'
             end
             if claim_details_file.present?
-              expect(attached_info_file).to match /You successfully uploaded an additional document named .* with your claim\. The file size is .*\./
+              expect(attached_info_file).to match /You successfully uploaded an additional document named #{claim_details_file[:filename]} with your claim\. The file size is .*\./
               expect(mail.dig('personalisation', 'has_additional_info')).to eql 'yes'
             else
               expect(attached_info_file).to eq 'no additional file'

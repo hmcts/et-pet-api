@@ -6,7 +6,7 @@ class PrepareClaimHandler
       ClaimPdfFileHandler.new.handle(claim)
     end
     rename_csv_file(claim: claim)
-    rename_rtf_file(claim: claim)
+    copy_rtf_file(claim: claim)
     claim.save if claim.changed?
     claim.events.claim_prepared.create
     EventService.publish('ClaimPrepared', claim)
@@ -22,12 +22,17 @@ class PrepareClaimHandler
     file.save
   end
 
-  def rename_rtf_file(claim:)
+  def copy_rtf_file(claim:)
     file = claim.rtf_file
-    return if file.nil?
     claimant = claim.primary_claimant
-    file.filename = "et1_attachment_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.rtf"
-    file.save
+    filename = "et1_attachment_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.rtf"
+    return if file.nil? || output_file_present?(claim: claim, filename: filename)
+
+    claim.uploaded_files.create filename: filename, file: file.file.blob, checksum: file.checksum
+  end
+
+  def output_file_present?(claim:, filename:)
+    claim.uploaded_files.any? { |u| u.filename == filename }
   end
 
   def with_acas_in_background(claim)
