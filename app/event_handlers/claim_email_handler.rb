@@ -18,7 +18,9 @@ class ClaimEmailHandler
     return unless config.enabled
 
     api_key = config["#{config.mode}_api_key"]
-    client = Notifications::Client.new(api_key)
+    args = []
+    args << config.custom_url unless config.custom_url === false
+    client = Notifications::Client.new(api_key, *args)
 
     locale = template_reference.split('-').last
 
