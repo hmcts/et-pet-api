@@ -1,17 +1,23 @@
 et1-v1-en:
   claim_email:
-    reference: Claim number
+    reference: 'Claim number:'
     subject: 'Employment tribunal: claim submitted'
     submission_info: 'Claim submitted:'
     submission_date: '%{date}'
     tribunal_office: 'Tribunal office:'
+    tribunal_office_contact: 'Contact:'
     thank_you: Thank you for submitting your claim to an employment tribunal.
     next_steps:
       well_contact_you: "We'll contact you once we have sent your claim to the respondent and explain what happens next."
       once_sent_claim: 'Once we have sent them your claim, the respondent has 28 days to reply.'
     submission_details: Submission details
     claim_completed: 'Claim completed:'
-    see_attached_pdf: See attached PDF
+    see_attached_pdf: Please use the link below to download a copy of your claim.
     claim_submitted: 'Claim submitted:'
     submitted_at: 'Submitted %{date}'
+    additional_information_file: 
+      label: Additional Information File
+      
+
+    group_claim_file: Group Claim File
 

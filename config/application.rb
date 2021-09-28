@@ -56,6 +56,7 @@ module EtApi
     end
 
     config.govuk_notify = ActiveSupport::OrderedOptions.new
+    config.govuk_notify.custom_url = ENV.fetch('GOVUK_NOTIFY_CUSTOM_URL', false)
     if ENV.key?('GOVUK_NOTIFY_API_KEY_LIVE')
       config.govuk_notify.enabled = true
       config.govuk_notify.live_api_key = ENV['GOVUK_NOTIFY_API_KEY_LIVE']

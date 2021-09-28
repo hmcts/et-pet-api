@@ -5,12 +5,17 @@ module EtApi
     class GovUkNotifyEmailsSentMonitor
       include Singleton
 
-      attr_reader :deliveries
-
       def start
-        deliveries.clear
-        WebMock.stub_request(:any, /https:\/\/api\.notifications\.service\.gov\.uk/).to_rack(RackHandler.new(deliveries))
+        WebMock.stub_request(:any, /https:\/\/api\.notifications\.service\.gov\.uk/).to_rack(GovFakeNotify::RootApp)
         self
+      end
+
+      def deliveries(config: Rails.application.config.govuk_notify)
+        api_key = config["#{config.mode}_api_key"]
+        args = []
+        args << config.custom_url unless config.custom_url === false
+        client = Notifications::Client.new(api_key, *args)
+        client.get_notifications(template_type: :email).collection
       end
 
       def empty?
@@ -39,54 +44,6 @@ module EtApi
         else
           raise "Unknown template reference #{template_reference}"
         end
-      end
-
-      private
-
-      def initialize(*)
-        @deliveries = []
-      end
-
-      class RackHandler < Sinatra::Application
-        def initialize(deliveries)
-          super()
-          @deliveries = deliveries
-        end
-
-        get '/v2/templates' do |*args|
-          content_type 'application/json'
-          {
-            templates: [
-              {
-                id: 'correct-template-id-en',
-                name: 'et1-confirmation-email-v1-en'
-              },
-              {
-                id: 'correct-template-id-cy',
-                name: 'et1-confirmation-email-v1-cy'
-              }
-            ]
-          }.to_json
-        end
-
-        post '/v2/notifications/email' do
-          data = JSON.parse request.body.read
-          deliveries << data
-          {
-            id: 'response-id',
-            reference: 'valid-reference',
-            content: 'Any old content will do',
-            template: {
-
-            },
-            uri: 'https://fake.com/callback'
-          }.to_json
-        end
-
-        private
-
-        attr_reader :deliveries
-
       end
     end
   end
