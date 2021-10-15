@@ -6,7 +6,7 @@ module EtApi
     module FileObjects
       # Represents the ET3 PDF file and provides assistance in validating its contents
       class Et1PdfFile < BasePdfFile
-        def has_correct_contents_for?(claim:, claimants:, respondents:, representative:) # rubocop:disable Naming/PredicateName
+        def has_correct_contents_for?(claim:, claimants:, respondents:, representative:, assert_missing_et1a: true) # rubocop:disable Naming/PredicateName
           Et1PdfFileSection::OfficialUseOnlySection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim, respondent: respondents.first)
           Et1PdfFileSection::YourDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
           Et1PdfFileSection::RespondentsDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
@@ -23,15 +23,16 @@ module EtApi
           Et1PdfFileSection::AdditionalRespondentsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
           Et1PdfFileSection::FinalCheckSection.new(field_values, lookup_root, template: template).has_contents_for?
           Et1PdfFileSection::AdditionalInformationSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
+          Et1PdfFileSection::MultipleClaimFormSection.new(field_values, lookup_root, template: template).has_contents_for?(claimants: claimants, assert_missing: assert_missing_et1a)
           true
         end
 
-        def has_correct_contents_from_db_for?(claim:, errors: [], indent: 1)
+        def has_correct_contents_from_db_for?(claim:, errors: [], indent: 1, assert_missing_et1a: true)
           respondents = respondents_json(claim)
           claimants = claimants_json(claim)
           representative = representative_json(claim)
           claim = claim_json(claim)
-          has_correct_contents_for?(claim: claim, claimants: claimants, respondents: respondents, representative: representative)
+          has_correct_contents_for?(claim: claim, claimants: claimants, respondents: respondents, representative: representative, assert_missing_et1a: assert_missing_et1a)
         end
 
         private
