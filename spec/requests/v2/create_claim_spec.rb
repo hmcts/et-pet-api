@@ -327,7 +327,7 @@ RSpec.describe 'Create Claim Request', type: :request do
     end
 
     # @TODO RST-1741 - Once we only generating pdf's internally for et1 - the examples in here can be merged with the normal output folder shared examples
-    shared_examples 'a claim exported to primary ATOS with internally generated pdf' do
+    shared_examples 'a claim exported to primary ATOS with internally generated pdf' do |assert_missing_et1a: true|
       it 'returns the expected pdf url which will return 404 when fetched before background jobs run', background_jobs: :disable do
         # Assert - Make sure we get the pdf url in the metadata and it returns a 404 when accessed
         url = json_response.dig(:meta, 'BuildClaim', 'pdf_url')
@@ -348,7 +348,8 @@ RSpec.describe 'Create Claim Request', type: :request do
           claim: input_claim_factory,
           claimants: [input_primary_claimant_factory] + input_secondary_claimants_factory,
           respondents: [input_primary_respondent_factory] + input_secondary_respondents_factory,
-          representative: input_primary_representative_factory
+          representative: input_primary_representative_factory,
+          assert_missing_et1a: assert_missing_et1a
         )
       end
     end
@@ -785,7 +786,8 @@ RSpec.describe 'Create Claim Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any claim variation'
       include_examples 'a claim exported to primary ATOS'
-      include_examples 'a claim exported to primary ATOS with internally generated pdf'
+      # We cannot verify an et1a correctly as there are clashing field names between the et1 and et1a forms
+      include_examples 'a claim exported to primary ATOS with internally generated pdf', assert_missing_et1a: false
       include_examples 'a claim with provided reference number'
       include_examples 'a claim exported to primary ATOS with single claimant'
       include_examples 'a claim exported to primary ATOS with single respondent'

@@ -19,10 +19,10 @@ GIT
 
 GIT
   remote: https://github.com/hmcts/gov_fake_notify.git
-  revision: 93d8f03e2a975b3f1f0309e8bcb9d56fbce14642
-  tag: v1.1.1
+  revision: 76264d2359b5b21ffb1e8e1cdc3c89909092fef2
+  tag: v1.1.2
   specs:
-    gov_fake_notify (1.1.1)
+    gov_fake_notify (1.1.2)
       activemodel (>= 5.2.3)
       iodine (~> 0.7)
       jwt (~> 2.2, >= 2.2.3)
@@ -305,7 +305,7 @@ GEM
     redis (4.2.5)
     regexp_parser (2.0.3)
     rexml (3.2.4)
-    roda (3.48.0)
+    roda (3.49.0)
       rack
     rspec-core (3.10.1)
       rspec-support (~> 3.10.0)

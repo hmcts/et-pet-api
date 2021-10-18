@@ -17,9 +17,28 @@ module EtApi
           self.lookup_root = lookup_root
         end
 
+        def assert_is_missing
+          lookup = t("#{lookup_root}.#{i18n_section}", locale: template)
+          fields_found = []
+          return if key_missing?(lookup, fields_found, [])
+
+          raise RSpec::Expectations::ExpectationNotMetError, "Expected whole section to be missing but found these fields :- #{fields_found}"
+        end
+
         private
 
         attr_accessor :field_values, :template, :lookup_root
+
+        def key_missing?(lookup, fields_found, path)
+          lookup.each do |(key, value)|
+            if value.key?(:field_name)
+              fields_found << (path + [key]).join('.') if field_values.keys.include?(value[:field_name])
+            elsif value.is_a?(Hash)
+              key_missing?(value, fields_found, path + [key])
+            end
+          end
+          fields_found.empty?
+        end
 
         def i18n_section
           self.class.name.demodulize.underscore.gsub(/_section\z/, '')

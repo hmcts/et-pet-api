@@ -60,6 +60,12 @@ RSpec.describe BuildClaimPdfFileService do
       include_examples 'for any claim variation'
     end
 
+    context 'with 10 secondary claimants' do
+      let(:claim) { build(:claim, :example_data_multiple_claimants, uploaded_files: []) }
+
+      include_examples 'for any claim variation'
+    end
+
     context 'with a respondent with no acas (joint claimant has acas number)' do
       let(:claim) { build(:claim, :example_data, primary_respondent_traits: %i[example_data no_acas_joint_claimant]) }
 
@@ -125,7 +131,8 @@ RSpec.describe BuildClaimPdfFileService do
           uploaded_file.download_blob_to(full_path)
           File.open full_path do |file|
             et1_file = EtApi::Test::FileObjects::Et1PdfFile.new(file, template: 'et1-v3-cy', lookup_root: 'claim_pdf_fields')
-            expect(et1_file).to have_correct_contents_from_db_for(errors: errors, claim: claim), -> { errors.join("\n") }
+            # We exclude missing et1a because we have clashing field names between et1 and et1a forms in welsh
+            expect(et1_file).to have_correct_contents_from_db_for(errors: errors, claim: claim, assert_missing_et1a: false), -> { errors.join("\n") }
           end
         end
       end

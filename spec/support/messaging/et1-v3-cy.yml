@@ -644,6 +644,185 @@ et1-v3-cy:
         field_name: Rhif yr achos
       date_received:
         field_name: Dyddiad derbyn
+    multiple_claim_form:
+      represented_by:
+        field_name: Cynrychiolir yr hawlwyr canlynol gan
+      main_claim_name:
+        field_name: enwir isod
+      additional_claimant_1:
+        title:
+          field_name: salutation_2
+          select_values:
+            Miss: Miss_2
+            Mr: Mr_2
+            Mrs: Mrs_2
+            Ms: Ms_2
+          unselected_value: 'Off'
+        first_name:
+          field_name: undefined_23
+        last_name:
+          field_name: undefined_24
+        dob_day:
+          field_name: undefined_25
+        dob_month:
+          field_name: undefined_26
+        dob_year:
+          field_name: undefined_27
+        building:
+          field_name: Rhif neu enw_9
+        street:
+          field_name: Stryd_9
+        locality:
+          field_name: TrefDinas_9
+        county:
+          field_name: Sir_9
+        post_code:
+          field_name: undefined_28
+      additional_claimant_2:
+        title:
+          field_name: salutation_3
+          select_values:
+            Miss: Miss_3
+            Mr: Mr_3
+            Mrs: Mrs_3
+            Ms: Ms_3
+          unselected_value: 'Off'
+        first_name:
+          field_name: undefined_29
+        last_name:
+          field_name: undefined_30
+        dob_day:
+          field_name: undefined_31
+        dob_month:
+          field_name: undefined_32
+        dob_year:
+          field_name: undefined_33
+        building:
+          field_name: Rhif neu enw_10
+        street:
+          field_name: Stryd_10
+        locality:
+          field_name: TrefDinas_10
+        county:
+          field_name: Sir_10
+        post_code:
+          field_name: undefined_34
+      additional_claimant_3:
+        title:
+          field_name: salutation_4
+          select_values:
+            Miss: Miss_4
+            Mr: Mr_4
+            Mrs: Mrs_4
+            Ms: Ms_4
+          unselected_value: 'Off'
+        first_name:
+          field_name: undefined_35
+        last_name:
+          field_name: undefined_36
+        dob_day:
+          field_name: undefined_37
+        dob_month:
+          field_name: undefined_38
+        dob_year:
+          field_name: undefined_39
+        building:
+          field_name: Rhif neu enw_11
+        street:
+          field_name: Stryd_11
+        locality:
+          field_name: TrefDinas_11
+        county:
+          field_name: Sir_11
+        post_code:
+          field_name: undefined_40
+      additional_claimant_4:
+        title:
+          field_name: salutation_5
+          select_values:
+            Miss: Miss_5
+            Mr: Mr_5
+            Mrs: Mrs_5
+            Ms: Ms_5
+          unselected_value: 'Off'
+        first_name:
+          field_name: undefined_41
+        last_name:
+          field_name: undefined_42
+        dob_day:
+          field_name: undefined_43
+        dob_month:
+          field_name: undefined_44
+        dob_year:
+          field_name: undefined_45
+        building:
+          field_name: Rhif neu enw_12
+        street:
+          field_name: Stryd_12
+        locality:
+          field_name: TrefDinas_12
+        county:
+          field_name: Sir_12
+        post_code:
+          field_name: undefined_46
+      additional_claimant_5:
+        title:
+          field_name: salutation_6
+          select_values:
+            Miss: Miss_6
+            Mr: Mr_6
+            Mrs: Mrs_6
+            Ms: Ms_6
+          unselected_value: 'Off'
+        first_name:
+          field_name: undefined_47
+        last_name:
+          field_name: undefined_48
+        dob_day:
+          field_name: undefined_49
+        dob_month:
+          field_name: undefined_50
+        dob_year:
+          field_name: undefined_51
+        building:
+          field_name: Rhif neu enw_13
+        street:
+          field_name: Stryd_13
+        locality:
+          field_name: TrefDinas_13
+        county:
+          field_name: Sir_13
+        post_code:
+          field_name: undefined_52
+      additional_claimant_6:
+        title:
+          field_name: salutation_7
+          select_values:
+            Miss: Miss
+            Mr: Mr
+            Mrs: Mrs
+            Ms: Ms
+          unselected_value: 'Off'
+        first_name:
+          field_name: undefined_53
+        last_name:
+          field_name: undefined_54
+        dob_day:
+          field_name: undefined_55
+        dob_month:
+          field_name: undefined_56
+        dob_year:
+          field_name: undefined_57
+        building:
+          field_name: Rhif neu enw_14
+        street:
+          field_name: Stryd_14
+        locality:
+          field_name: TrefDinas_14
+        county:
+          field_name: Sir_14
+        post_code:
+          field_name: undefined_58
   claim_email:
     reference: Eich rhif hawliad
     subject: 'Tribiwnlys Cyflogaeth: hawliad wedi''i gyflwyno'
