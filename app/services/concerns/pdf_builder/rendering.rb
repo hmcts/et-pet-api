@@ -7,9 +7,10 @@ module PdfBuilder
   module Rendering
     extend ActiveSupport::Concern
 
-    def initialize(source, use_xfdf: true, **kw_args)
+    def initialize(source, use_xfdf: true, flatten: Rails.configuration.flatten_pdf, **kw_args)
       super(source, **kw_args)
       self.use_xfdf = use_xfdf
+      self.flatten = flatten
     end
 
     def builder
@@ -17,12 +18,13 @@ module PdfBuilder
         utf8_fields: true
       }
       opts[:data_format] = 'XFdfEnhanced' if use_xfdf
+      opts[:flatten] = true if flatten
       @builder ||= PdfForms.new('pdftk', opts)
     end
 
     private
 
-    attr_accessor :use_xfdf
+    attr_accessor :use_xfdf, :flatten
 
     def render_to_file
       tempfile = Tempfile.new
