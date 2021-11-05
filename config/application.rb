@@ -72,5 +72,6 @@ module EtApi
     default_redis_database = ENV.fetch('REDIS_DATABASE', '1')
     default_redis_url = "redis://#{default_redis_host}:#{default_redis_port}/#{default_redis_database}"
     config.redis_url = ENV.fetch('REDIS_URL', default_redis_url)
+    config.flatten_pdf = ENV.fetch('FLATTEN_PDF', "false") == 'true'
   end
 end
