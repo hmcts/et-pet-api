@@ -4,7 +4,7 @@ RSpec.describe CreateClaimCommand do
   subject(:command) { described_class.new(**data) }
 
   let(:uuid) { SecureRandom.uuid }
-  let(:data) { build(:json_build_claim_commands, :with_csv, :with_rtf, :with_pdf).as_json }
+  let(:data) { build(:json_build_claim_commands, :with_csv, :with_rtf).as_json }
   let(:root_object) { build(:claim) }
   let(:example_meta_hash) { { example: :meta } }
   let(:mock_commands) { OpenStruct.new }
@@ -93,14 +93,6 @@ RSpec.describe CreateClaimCommand do
 
       # Assert
       expect(example_meta_hash).to include "BuildPrimaryRepresentative" => { dummy_key_for_build_primary_representative: :dummy_value_for_build_primary_representative }
-    end
-
-    it 'dispatches to BuildPdfFile' do
-      # Act
-      command.apply(root_object, meta: example_meta_hash)
-
-      # Assert
-      expect(example_meta_hash).to include "BuildPdfFile" => { dummy_key_for_build_pdf_file: :dummy_value_for_build_pdf_file }
     end
 
     it 'dispatches to BuildClaimantsFile' do
@@ -195,15 +187,6 @@ RSpec.describe CreateClaimCommand do
       # Assert
       input_data = data[:data].detect {|c| c[:command] == 'BuildPrimaryRepresentative'}
       expect(mock_command_classes.build_primary_representative).to have_received(:new).with(async: true, **input_data)
-    end
-
-    it 'creates the BuildPdfFile command with the correct data' do
-      # Act
-      command.apply(root_object, meta: example_meta_hash)
-
-      # Assert
-      input_data = data[:data].detect {|c| c[:command] == 'BuildPdfFile'}
-      expect(mock_command_classes.build_pdf_file).to have_received(:new).with(async: true, **input_data)
     end
 
     it 'creates the BuildClaimantsFile command with the correct data' do
