@@ -20,7 +20,7 @@ module EtApi
                   locality: claimant&.address_attributes&.locality || '',
                   county: claimant&.address_attributes&.county || '',
                   post_code: formatted_post_code(claimant&.address_attributes&.post_code, optional: claimant.nil?) || '',
-                
+
                 }
                 acc
               end
