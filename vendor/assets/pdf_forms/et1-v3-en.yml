@@ -112,8 +112,8 @@ your_details:
         - 'Yes'
         - 'Off'
       no:
-        - 'No'
         - 'Off'
+        - 'No'
     unselected_value:
       - 'Off'
       - 'Off'
