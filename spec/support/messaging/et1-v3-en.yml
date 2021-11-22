@@ -107,8 +107,8 @@ et1-v3-en:
             - 'Yes'
             - 'Off'
           no:
-            - 'No'
             - 'Off'
+            - 'No'
         unselected_value:
           - 'Off'
           - 'Off'
