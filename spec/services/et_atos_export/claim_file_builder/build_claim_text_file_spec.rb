@@ -12,8 +12,8 @@ RSpec.describe EtAtosExport::ClaimFileBuilder::BuildClaimTextFile do
         builder.call(claim)
 
         # Assert
-        expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_First_Last.txt',
-                                                                            file: be_a_stored_file
+        expect(claim.uploaded_files.filter(&:system_file_scope?)).to include an_object_having_attributes filename: 'et1_First_Last.txt',
+                                                                             file: be_a_stored_file
 
       end
 
@@ -23,7 +23,7 @@ RSpec.describe EtAtosExport::ClaimFileBuilder::BuildClaimTextFile do
         claim.save
 
         # Assert
-        uploaded_file = claim.uploaded_files.where(filename: 'et1_First_Last.txt').first
+        uploaded_file = claim.uploaded_files.system_file_scope.where(filename: 'et1_First_Last.txt').first
         expect(uploaded_file.file.download).to be_valid_et1_claim_text(claim: claim)
       end
     end
@@ -36,8 +36,8 @@ RSpec.describe EtAtosExport::ClaimFileBuilder::BuildClaimTextFile do
         builder.call(claim)
 
         # Assert
-        expect(claim.uploaded_files).to include an_object_having_attributes filename: 'et1_First_Last.txt',
-                                                                            file: be_a_stored_file
+        expect(claim.uploaded_files.filter(&:system_file_scope?)).to include an_object_having_attributes filename: 'et1_First_Last.txt',
+                                                                             file: be_a_stored_file
 
       end
 
@@ -47,7 +47,7 @@ RSpec.describe EtAtosExport::ClaimFileBuilder::BuildClaimTextFile do
         claim.save
 
         # Assert
-        uploaded_file = claim.uploaded_files.where(filename: 'et1_First_Last.txt').first
+        uploaded_file = claim.uploaded_files.system_file_scope.where(filename: 'et1_First_Last.txt').first
         expect(uploaded_file.file.download).to be_valid_et1_claim_text(claim: claim)
       end
     end

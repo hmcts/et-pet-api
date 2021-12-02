@@ -59,7 +59,7 @@ module EtAtosExport
       end
 
       def claim_has_rtf?(claim:)
-        claim.uploaded_files.any? { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.rtf') }
+        claim.uploaded_files.system_file_scope.any? { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.rtf') }
       end
 
       def replacing_special(text)

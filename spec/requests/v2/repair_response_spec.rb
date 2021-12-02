@@ -289,7 +289,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_examples 'any response variation'
 
       let(:uploaded_file) do
-        create(:uploaded_file, :direct_upload, :example_response_input_rtf).tap do |uploaded_file|
+        create(:uploaded_file, :direct_upload, :example_response_input_rtf, :user_file_scope).tap do |uploaded_file|
           uploaded_file.file.blob.delete
         end
       end
@@ -317,7 +317,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_examples 'any response variation'
 
       let(:uploaded_file) do
-        create(:uploaded_file, :direct_upload, :example_response_input_rtf).tap do |uploaded_file|
+        create(:uploaded_file, :direct_upload, :example_response_input_rtf, :user_file_scope).tap do |uploaded_file|
           uploaded_file.file.attachment.delete
         end
       end
@@ -346,10 +346,10 @@ RSpec.describe 'Repair Response Request', type: :request do
 
       let(:uploaded_files) do
         [
-          build(:uploaded_file, :upload_to_blob, :example_response_input_rtf),
-          build(:uploaded_file, :upload_to_blob, :example_response_rtf),
-          build(:uploaded_file, :upload_to_blob, :example_response_text),
-          build(:uploaded_file, :upload_to_blob, :example_response_pdf)
+          build(:uploaded_file, :upload_to_blob, :example_response_input_rtf, :user_file_scope),
+          build(:uploaded_file, :upload_to_blob, :example_response_rtf, :system_file_scope),
+          build(:uploaded_file, :upload_to_blob, :example_response_text, :system_file_scope),
+          build(:uploaded_file, :upload_to_blob, :example_response_pdf, :system_file_scope)
         ]
       end
       let(:respondent_name) { 'Fred Bloggs' }
@@ -381,8 +381,8 @@ RSpec.describe 'Repair Response Request', type: :request do
 
       let(:uploaded_files) do
         [
-          create(:uploaded_file, :upload_to_blob, :example_response_text),
-          create(:uploaded_file, :upload_to_blob, :example_response_pdf).tap do |uploaded_file|
+          create(:uploaded_file, :upload_to_blob, :example_response_text, :system_file_scope),
+          create(:uploaded_file, :upload_to_blob, :example_response_pdf, :system_file_scope).tap do |uploaded_file|
             uploaded_file.file.blob.delete
           end
         ]
@@ -408,10 +408,10 @@ RSpec.describe 'Repair Response Request', type: :request do
 
       let(:uploaded_files) do
         [
-          create(:uploaded_file, :upload_to_blob, :example_response_text).tap do |uploaded_file|
+          create(:uploaded_file, :upload_to_blob, :example_response_text, :system_file_scope).tap do |uploaded_file|
             uploaded_file.file.blob.delete
           end,
-          create(:uploaded_file, :upload_to_blob, :example_response_pdf)
+          create(:uploaded_file, :upload_to_blob, :example_response_pdf, :system_file_scope)
         ]
       end
       let(:respondent_name) { 'Fred Bloggs' }
@@ -435,12 +435,12 @@ RSpec.describe 'Repair Response Request', type: :request do
 
       let(:uploaded_files) do
         [
-          build(:uploaded_file, :upload_to_blob, :example_response_input_rtf),
-          build(:uploaded_file, :upload_to_blob, :example_response_rtf).tap do |uploaded_file|
+          build(:uploaded_file, :upload_to_blob, :example_response_input_rtf, :user_file_scope),
+          build(:uploaded_file, :upload_to_blob, :example_response_rtf, :system_file_scope).tap do |uploaded_file|
             uploaded_file.file.blob.delete
           end,
-          build(:uploaded_file, :upload_to_blob, :example_response_text),
-          build(:uploaded_file, :upload_to_blob, :example_response_pdf)
+          build(:uploaded_file, :upload_to_blob, :example_response_text, :system_file_scope),
+          build(:uploaded_file, :upload_to_blob, :example_response_pdf, :system_file_scope)
         ]
       end
       let(:respondent_name) { 'Fred Bloggs' }

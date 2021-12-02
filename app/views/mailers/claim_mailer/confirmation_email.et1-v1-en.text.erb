@@ -18,10 +18,10 @@ SUBMISSION DETAILS
 Claim completed:       See attached PDF
 Claim submitted:       Submitted <%= @claim.date_of_receipt.strftime('%d %B %Y') %>
 Tribunal office:       <%= @office.name %>, <%= @office.email %>, <%= @office.telephone %>
-Additional documents:  <%- if @claim.uploaded_files.not_hidden.not_pdf.empty? %>
+Additional documents:  <%- if @claim.uploaded_files.user_file_scope.not_pdf.empty? %>
 None
 <%- else %>
-<%- @claim.uploaded_files.not_hidden.not_pdf.each_with_index do |file, idx| %>
+<%- @claim.uploaded_files.user_file_scope.not_pdf.each_with_index do |file, idx| %>
 <%= ' ' * 23 unless idx == 0 %><%= file.filename %>
 <% end %>
 <% end %>

@@ -15,7 +15,7 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
     office_filename = "et1_#{scrubber claimant.first_name}_#{scrubber claimant.last_name}_trimmed.pdf"
 
     blobs_for_pdf_files(citizen_filename, office_filename).each do |blob|
-      source.uploaded_files.build filename: blob.filename, file: blob
+      source.uploaded_files.system_file_scope.build filename: blob.filename, file: blob
     end
   end
 
@@ -34,8 +34,8 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
 
     path_specs = [{ et1.output_file.path => ['1-12'] }]
     path_specs << { et1a.output_file.path => ['13-15'] } if et1a
-    
-    
+
+
     [
       Tempfile.new.tap { |file| builder.cat(*path_specs, { et1.output_file.path => ['13-15'] }, file.path) },
       Tempfile.new.tap { |file| builder.cat(*path_specs, file.path) }

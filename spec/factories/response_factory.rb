@@ -46,31 +46,31 @@ FactoryBot.define do
 
     trait :with_pdf_file do
       after(:build) do |response, _evaluator|
-        response.uploaded_files << build(:uploaded_file, :example_response_pdf)
+        response.uploaded_files << build(:uploaded_file, :example_response_pdf, :system_file_scope)
       end
     end
 
     trait :with_text_file do
       after(:build) do |response, _evaluator|
-        response.uploaded_files << build(:uploaded_file, :example_response_text)
+        response.uploaded_files << build(:uploaded_file, :example_response_text, :system_file_scope)
       end
     end
 
     trait :with_rtf_file do
       after(:build) do |response, _evaluator|
-        response.uploaded_files << build(:uploaded_file, :example_response_rtf)
+        response.uploaded_files << build(:uploaded_file, :example_response_rtf, :system_file_scope)
       end
     end
 
     trait :with_input_rtf_file do
       after(:build) do |response, _evaluator|
-        response.uploaded_files << build(:uploaded_file, :example_response_input_rtf)
+        response.uploaded_files << build(:uploaded_file, :example_response_input_rtf, :user_file_scope)
       end
     end
 
     trait :with_wrong_input_rtf_file do
       after(:build) do |response, _evaluator|
-        response.uploaded_files << build(:uploaded_file, :example_response_wrong_input_rtf)
+        response.uploaded_files << build(:uploaded_file, :example_response_wrong_input_rtf, :user_file_scope)
       end
     end
 

@@ -12,8 +12,8 @@ RSpec.describe ::EtAtosExport::ResponseFileBuilder::BuildResponseTextFile do
         builder.call(response)
 
         # Assert
-        expect(response.uploaded_files).to include an_object_having_attributes filename: 'et3_atos_export.txt',
-                                                                               file: be_a_stored_file
+        expect(response.uploaded_files.filter(&:system_file_scope?)).to include an_object_having_attributes filename: 'et3_atos_export.txt',
+                                                                                                 file: be_a_stored_file
 
       end
 
@@ -23,7 +23,7 @@ RSpec.describe ::EtAtosExport::ResponseFileBuilder::BuildResponseTextFile do
         response.save!
 
         # Assert
-        uploaded_file = response.uploaded_files.where(filename: 'et3_atos_export.txt').first
+        uploaded_file = response.uploaded_files.system_file_scope.where(filename: 'et3_atos_export.txt').first
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, 'et3_atos_export.txt')
           uploaded_file.download_blob_to(full_path)
@@ -40,7 +40,7 @@ RSpec.describe ::EtAtosExport::ResponseFileBuilder::BuildResponseTextFile do
         response.save!
 
         # Assert
-        uploaded_file = response.uploaded_files.where(filename: 'et3_atos_export.txt').first
+        uploaded_file = response.uploaded_files.system_file_scope.where(filename: 'et3_atos_export.txt').first
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, 'et3_atos_export.txt')
           uploaded_file.download_blob_to(full_path)
@@ -53,13 +53,13 @@ RSpec.describe ::EtAtosExport::ResponseFileBuilder::BuildResponseTextFile do
     end
 
     context 'with a representative' do
-      let(:response) { build(:response, :example_data, :with_representative) }
+      let(:response) { create(:response, :example_data, :with_representative) }
 
       include_examples 'for any response variation'
     end
 
     context 'without a representative' do
-      let(:response) { build(:response, :example_data, :without_representative) }
+      let(:response) { create(:response, :example_data, :without_representative) }
 
       include_examples 'for any response variation'
     end

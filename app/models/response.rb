@@ -17,7 +17,7 @@ class Response < ApplicationRecord
   end
 
   def pdf_file
-    uploaded_files.detect { |file| file.filename == 'et3_atos_export.pdf' }
+    uploaded_files.system_file_scope.detect { |file| file.filename == 'et3_atos_export.pdf' }
   end
 
   private

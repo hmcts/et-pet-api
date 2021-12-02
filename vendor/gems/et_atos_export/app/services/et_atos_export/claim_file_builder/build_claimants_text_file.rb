@@ -5,8 +5,8 @@ module EtAtosExport
       include RenderToFile
       def self.call(claim)
         filename = filename_for(claim: claim, prefix: 'et1a', extension: 'txt')
-        claim.uploaded_files.build filename: filename,
-                                   file: raw_claimants_text_file(filename, claim: claim)
+        claim.uploaded_files.system_file_scope.build filename: filename,
+                                                     file: raw_claimants_text_file(filename, claim: claim)
       end
 
       def self.raw_claimants_text_file(filename, claim:)

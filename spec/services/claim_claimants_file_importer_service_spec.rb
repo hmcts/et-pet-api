@@ -6,7 +6,7 @@ RSpec.describe ClaimClaimantsFileImporterService do
   let(:built_claim) do
     claimant = build(:claimant)
     build :claim,
-      uploaded_files: [build(:uploaded_file, example_file_trait, filename: "et1a_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.csv")],
+      uploaded_files: [build(:uploaded_file, example_file_trait, :user_file_scope, filename: "et1a_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.csv")],
       primary_claimant: claimant
   end
   let(:claim) { built_claim.tap(&:save!) }

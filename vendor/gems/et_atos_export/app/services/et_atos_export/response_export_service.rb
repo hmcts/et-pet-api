@@ -23,14 +23,14 @@ module EtAtosExport
     #
     # @return [UploadedFile] The text file
     def export_txt
-      response.uploaded_files.detect { |f| f.filename == 'et3_atos_export.txt' }
+      response.uploaded_files.system_file_scope.detect { |f| f.filename == 'et3_atos_export.txt' }
     end
 
     # Exports the rtf file for use by ExportService
     #
     # @return [UploadedFile] The rtf file
     def export_rtf
-      response.uploaded_files.detect { |f| f.filename == 'et3_atos_export.rtf' }
+      response.uploaded_files.system_file_scope.detect { |f| f.filename == 'et3_atos_export.rtf' }
     end
 
     attr_accessor :response, :exports

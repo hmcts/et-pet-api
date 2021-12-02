@@ -15,7 +15,7 @@ RSpec.describe BuildClaimantsFileCommand do
       command.apply(root_object)
 
       # Assert
-      expect(root_object.uploaded_files).to include an_object_having_attributes(data.except('data_from_key', 'data_url'))
+      expect(root_object.uploaded_files.filter(&:user_file_scope?)).to include an_object_having_attributes(data.except('data_from_key', 'data_url'))
     end
   end
 end

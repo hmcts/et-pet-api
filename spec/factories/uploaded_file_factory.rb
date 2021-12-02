@@ -118,6 +118,14 @@ FactoryBot.define do
       upload_method { :azure_test }
     end
 
+    trait :user_file_scope do
+      file_scope { 'user' }
+    end
+
+    trait :system_file_scope do
+      file_scope { 'system' }
+    end
+
     after(:build) do |uploaded_file, evaluator|
       next if evaluator.file_to_attach.nil?
       config = Rails.configuration.active_storage

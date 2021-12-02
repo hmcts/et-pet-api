@@ -43,7 +43,7 @@ class FetchAcasCertificatesService
 
       cert = certificate_for(respondent)
       if cert.is_a?(::EtAcasApi::Certificate)
-        uploaded_file = claim.uploaded_files.build(filename: "acas_#{respondent.name}.pdf")
+        uploaded_file = claim.uploaded_files.system_file_scope.build(filename: "acas_#{respondent.name}.pdf")
         uploaded_file.import_base64(cert.certificate_base64, content_type: 'application/pdf')
         claim.events.claim_acas_requested.build data: { status: 'found' }
         to_remove << respondent_id

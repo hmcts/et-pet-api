@@ -17,10 +17,10 @@ MANYLION CYFLWYNO
 Hawliad wedi'i gwblhau:       Gweler y PDF sydd ynghlwm
 Hawliad wedi'i gyflwyno:      Cyflwynwyd ar <%= I18n.l @claim.date_of_receipt, format: '%d %B %Y', locale: 'cy' %>
 Swyddfa tribiwnlys:           Cymru, Tribiwnlys Cyflogaeth, 3ydd Llawr, Llys Ynadon Caerdydd a’r Fro, Plas Fitzalan, Caerdydd, CF24 0RA
-Dogfennau ychwanegol:         <%- if @claim.uploaded_files.not_hidden.not_pdf.empty? %>
+Dogfennau ychwanegol:         <%- if @claim.uploaded_files.user_file_scope.not_pdf.empty? %>
 Dim
 <%- else %>
-<%- @claim.uploaded_files.not_hidden.not_pdf.each_with_index do |file, idx| %>
+<%- @claim.uploaded_files.user_file_scope.not_pdf.each_with_index do |file, idx| %>
 <%= ' ' * 30 unless idx == 0 %><%= file.filename %>
 <% end %>
 <% end %>

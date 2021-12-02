@@ -24,8 +24,6 @@ class Claim < ApplicationRecord
   has_many :commands, as: :root_object
 
   before_save :cache_claimant_count
-  # @TODO RST-1080 Refactoring Tasks - 'uploaded_files' really needs renaming as these files are not only
-  #   uploaded files but can be generated internally too
 
   accepts_nested_attributes_for :secondary_claimants
   accepts_nested_attributes_for :primary_claimant
@@ -35,14 +33,14 @@ class Claim < ApplicationRecord
   #
   # @return [UploadedFile, nil] The pdf file if it exists
   def pdf_file
-    uploaded_files.detect { |f| f.filename.end_with?('.pdf') && !f.filename.start_with?('acas') }
+    uploaded_files.system_file_scope.detect { |f| f.filename.end_with?('.pdf') && !f.filename.start_with?('acas') }
   end
 
   # A claim can only have one csv file - this is it
   #
   # @return [UploadedFile, nil] The csv file if it exists
   def claimants_csv_file
-    uploaded_files.detect { |f| f.filename.downcase.ends_with?('.csv') }
+    uploaded_files.user_file_scope.detect { |f| f.filename.downcase.ends_with?('.csv') }
   end
 
   def multiple_claimants?
