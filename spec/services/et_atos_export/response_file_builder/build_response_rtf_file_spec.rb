@@ -6,14 +6,14 @@ RSpec.describe EtAtosExport::ResponseFileBuilder::BuildResponseRtfFile do
   let(:errors) { [] }
 
   describe '#call' do
-    let(:response) { build(:response, :with_input_rtf_file) }
+    let(:response) { create(:response, :with_input_rtf_file) }
 
     it 'stores an ET3 response file with the correct filename' do
       # Act
       builder.call(response)
 
       # Assert
-      expect(response.uploaded_files).to include an_object_having_attributes filename: 'et3_atos_export.rtf',
+      expect(response.uploaded_files.filter(&:system_file_scope?)).to include an_object_having_attributes filename: 'et3_atos_export.rtf',
                                                                              file: be_a_stored_file
     end
 
@@ -23,10 +23,10 @@ RSpec.describe EtAtosExport::ResponseFileBuilder::BuildResponseRtfFile do
       response.save!
 
       # Assert
-      uploaded_file = response.uploaded_files.where(filename: 'et3_atos_export.rtf').first
+      uploaded_file = response.uploaded_files.system_file_scope.where(filename: 'et3_atos_export.rtf').first
       Dir.mktmpdir do |dir|
         original_path = File.join(dir, 'original.rtf')
-        original_file = response.uploaded_files.detect { |f| f.filename == 'additional_information.rtf' }
+        original_file = response.uploaded_files.user_file_scope.detect { |f| f.filename == 'additional_information.rtf' }
 
         full_path = File.join(dir, 'et3_atos_export.rtf')
         uploaded_file.download_blob_to(full_path)

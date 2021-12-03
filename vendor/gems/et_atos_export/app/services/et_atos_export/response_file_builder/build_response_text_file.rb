@@ -5,8 +5,8 @@ module EtAtosExport
       def self.call(response)
         filename = 'et3_atos_export.txt'
         return if output_file_present?(response: response, filename: filename)
-        response.uploaded_files.build filename: filename,
-                                      file: raw_text_file(filename, response: response)
+        response.uploaded_files.system_file_scope.build filename: filename,
+                                                        file: raw_text_file(filename, response: response)
       end
 
       def self.raw_text_file(filename, response:)
@@ -31,7 +31,7 @@ module EtAtosExport
       end
 
       def self.output_file_present?(response:, filename:)
-        response.uploaded_files.any? { |u| u.filename == filename }
+        response.uploaded_files.system_file_scope.any? { |u| u.filename == filename }
       end
 
       private_class_method :raw_text_file, :render, :office_for

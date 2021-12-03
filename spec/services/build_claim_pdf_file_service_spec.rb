@@ -30,7 +30,7 @@ RSpec.describe BuildClaimPdfFileService do
         claim.save!
 
         # Assert
-        uploaded_file = claim.uploaded_files.where(filename: correct_filename).first
+        uploaded_file = claim.uploaded_files.system_file_scope.where(filename: correct_filename).first
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, correct_filename)
           uploaded_file.download_blob_to(full_path)
@@ -125,7 +125,7 @@ RSpec.describe BuildClaimPdfFileService do
         claim.save!
 
         # Assert
-        uploaded_file = claim.uploaded_files.where(filename: correct_filename).first
+        uploaded_file = claim.uploaded_files.system_file_scope.where(filename: correct_filename).first
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, correct_filename)
           uploaded_file.download_blob_to(full_path)

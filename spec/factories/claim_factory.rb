@@ -41,31 +41,31 @@ FactoryBot.define do
 
     trait :with_pdf_file do
       after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :example_pdf)
+        claim.uploaded_files << build(:uploaded_file, :example_pdf, :system_file_scope)
       end
     end
 
     trait :with_text_file do
       after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :example_claim_text)
+        claim.uploaded_files << build(:uploaded_file, :example_claim_text, :system_file_scope)
       end
     end
 
     trait :with_rtf_file do
       after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :example_claim_rtf)
+        claim.uploaded_files << build(:uploaded_file, :example_claim_rtf, :system_file_scope)
       end
     end
 
     trait :with_claimants_text_file do
       after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :example_claim_claimants_text)
+        claim.uploaded_files << build(:uploaded_file, :example_claim_claimants_text, :system_file_scope)
       end
     end
 
     trait :with_claimants_csv_file do
       after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :example_claim_claimants_csv)
+        claim.uploaded_files << build(:uploaded_file, :example_claim_claimants_csv, :user_file_scope)
       end
     end
 
@@ -130,8 +130,7 @@ FactoryBot.define do
           build(:claimant, :eulalia_hammes)
         ]
       end
-      uploaded_files { [build(:uploaded_file, :example_data), build(:uploaded_file, :example_claim_claimants_csv)] }
+      uploaded_files { [build(:uploaded_file, :example_data, :system_file_scope), build(:uploaded_file, :example_claim_claimants_csv, :user_file_scope)] }
     end
-
   end
 end

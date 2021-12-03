@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_28_074000) do
+ActiveRecord::Schema.define(version: 2021_11_29_142635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -466,6 +466,8 @@ ActiveRecord::Schema.define(version: 2021_07_28_074000) do
     t.datetime "updated_at", null: false
     t.string "import_file_url"
     t.string "import_from_key"
+    t.string "file_scope", default: "system"
+    t.index ["file_scope"], name: "index_uploaded_files_on_file_scope"
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"

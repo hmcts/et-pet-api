@@ -14,6 +14,6 @@ class ClaimMailer < ApplicationMailer
   private
 
   def user_files
-    @claim.uploaded_files.not_hidden
+    @claim.uploaded_files.user_file_scope
   end
 end

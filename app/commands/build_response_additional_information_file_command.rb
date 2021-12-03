@@ -5,7 +5,7 @@ class BuildResponseAdditionalInformationFileCommand < BaseCommand
   attribute :data_url, :string
 
   def apply(root_object, **_args)
-    root_object.uploaded_files.build merged_input_data
+    root_object.uploaded_files.user_file_scope.build merged_input_data
   end
 
   private

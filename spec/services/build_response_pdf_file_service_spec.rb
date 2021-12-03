@@ -23,7 +23,7 @@ RSpec.describe BuildResponsePdfFileService do
         response.save!
 
         # Assert
-        uploaded_file = response.uploaded_files.where(filename: 'et3_atos_export.pdf').first
+        uploaded_file = response.uploaded_files.system_file_scope.where(filename: 'et3_atos_export.pdf').first
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, 'et3_atos_export.pdf')
           uploaded_file.download_blob_to(full_path)
@@ -82,7 +82,7 @@ RSpec.describe BuildResponsePdfFileService do
         response.save!
 
         # Assert
-        uploaded_file = response.uploaded_files.where(filename: 'et3_atos_export.pdf').first
+        uploaded_file = response.uploaded_files.system_file_scope.where(filename: 'et3_atos_export.pdf').first
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, 'et3_atos_export.pdf')
           uploaded_file.download_blob_to(full_path)
@@ -99,7 +99,7 @@ RSpec.describe BuildResponsePdfFileService do
         response.save!
 
         # Assert
-        uploaded_file = response.uploaded_files.where(filename: 'et3_atos_export.pdf').first
+        uploaded_file = response.uploaded_files.system_file_scope.where(filename: 'et3_atos_export.pdf').first
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, 'et3_atos_export.pdf')
           uploaded_file.download_blob_to(full_path)

@@ -79,11 +79,11 @@
               <tr>
                 <td valign="top" width="185">
                   <p style="font-family:arial; font-size:16px; color:#6F777B;">Additional documents:</p></td>
-                <% if @claim.uploaded_files.not_hidden.not_pdf.empty? %>
+                <% if @claim.uploaded_files.user_file_scope.not_pdf.empty? %>
                   <td valign="top"><p style="font-family:arial; font-size:16px;">None</p></td>
                 <% else %>
                   <td valign="top">
-                    <% @claim.uploaded_files.not_hidden.not_pdf.each do |file| %>
+                    <% @claim.uploaded_files.user_file_scope.not_pdf.each do |file| %>
                     <p style="font-family:arial; font-size:16px;"><%= file.filename %></p>
                     <% end %>
                   </td>
