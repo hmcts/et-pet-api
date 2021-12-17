@@ -4,7 +4,6 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/ruby
 
 name: '$(SourceBranchName)-$(Build.SourceVersion) Build-$(Build.BuildId)'
-
 trigger:
   batch: true
   branches:
@@ -24,154 +23,211 @@ variables:
   manual.branch.prefix: 'develop'
 
 jobs:
-- job: TestApplication
+  - job: BuildAndTestApplication
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: Docker@1
+        displayName: login
+        inputs:
+          azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
+          azureContainerRegistry: $(azure.container.registry)
+          command: login
+      - bash: |
+          branch_name=$(echo $(Build.SourceBranchName) | tr '[:upper:]' '[:lower:]')
+          repo_sha=$(git rev-parse --verify HEAD)
+          docker_image_tag_sha=${repo_sha:0:7}
+          echo "##vso[task.setvariable variable=DOCKER_TAG;isOutput=true]${branch_name}-${docker_image_tag_sha}"
+        displayName: 'Get Docker Tag (non manual push)'
+        name: 'getDockerTag2'
+        condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), ne(variables['Build.Reason'], 'Manual'))
+      - bash: |
+          branch_name=$(echo $(Build.SourceBranchName) | tr '[:upper:]' '[:lower:]')
+          repo_sha=$(git rev-parse --verify HEAD)
+          docker_image_tag_sha=${repo_sha:0:7}
+          echo "##vso[task.setvariable variable=DOCKER_TAG;isOutput=true]$(manual.branch.prefix)-${branch_name}-${docker_image_tag_sha}"
+        displayName: 'Get Docker Tag (manual push)'
+        name: 'getDockerTag1'
+        condition: and(ne(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.Reason'], 'Manual'))
+      - bash: |
+          env
+          echo "SourceBranchName is $(Build.SourceBranchName)"
+          echo "1 is $GETDOCKERTAG1_DOCKER_TAG"
+          echo "2 is $GETDOCKERTAG2_DOCKER_TAG"
+          echo "combined is $GETDOCKERTAG1_DOCKER_TAG$GETDOCKERTAG2_DOCKER_TAG"
+          echo "##vso[task.setvariable variable=DOCKER_TAG;isOutput=true]$GETDOCKERTAG1_DOCKER_TAG$GETDOCKERTAG2_DOCKER_TAG"
+        name: 'getDockerTag'
+      - task: Docker@1
+        displayName: 'Build main image'
+        inputs:
+          imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
+          arguments: '--build-arg APPVERSION=$(getDockerTag.DOCKER_TAG) --build-arg APP_BUILD_TAG=$(Build.SourceBranchName)-$(Build.SourceVersion) --build-arg APP_GIT_COMMIT=$(Build.SourceVersion)'
+      - task: Docker@1
+        displayName: 'Tag main image'
+        inputs:
+          azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
+          azureContainerRegistry: $(azure.container.registry)
+          command: 'Tag image'
+          imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
+      - script: |
+          mv .dockerignore .dockerignore.backup && \
+          cp Dockerfile.test.dockerignore .dockerignore && \
+          SOURCE_DOCKER_IMAGE="$(application.name):$(getDockerTag.DOCKER_TAG)" docker-compose -p $(Build.BuildId) -f docker-compose-test.yml run --rm test && \
+          rm .dockerignore && \
+          mv .dockerignore.backup .dockerignore
+        displayName: 'Run tests in docker'
+      - script: |
+          docker-compose -p $(Build.BuildId) -f docker-compose-test.yml down --rmi local -v
+        condition: always()
+        displayName: Cleanup
+      - task: Docker@1
+        displayName: 'Push main image'
+        inputs:
+          azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
+          azureContainerRegistry: $(azure.container.registry)
+          command: 'Push an image'
+          imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
+        condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.Reason'], 'Manual')))
+      - task: Docker@1
+        displayName: logout
+        inputs:
+          command: logout
 
-  pool:
-    vmImage: 'ubuntu-latest'
+  #  - job: BuildAndPushImage
+  #    dependsOn: TestApplication
+  #    #condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  #    condition: succeeded()
+  #    pool:
+  #      vmImage: 'ubuntu-latest'
+  #    steps:
+  #    - task: Docker@1
+  #      displayName: login
+  #      inputs:
+  #        azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
+  #        azureContainerRegistry: $(azure.container.registry)
+  #        command: login
+  #
 
-  steps:
-  - task: UseRubyVersion@0
-    inputs:
-      versionSpec: '2.7'
+  # - job: ExtractAssets
+  #   dependsOn: BuildAndPushImage
+  #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
+  #   pool:
+  #     name: hmcts-pet
+  #   variables:
+  #     docker.tag: $[ dependencies.BuildAndPushImage.outputs['getDockerTag.DOCKER_TAG'] ]
+  #   steps:
 
-  - script: |
-      export ENABLE_COVERAGE=true
-      export DB_USERNAME=postgres
-      export DB_PORT=5433
-      CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
-      sudo apt-get update
-      sudo apt-get install libpq-dev mcrypt libmcrypt-dev
-      chmod +x ./bin/wait-for-it.sh
-      sudo rm /usr/local/bin/docker-compose
-      curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-Linux-x86_64 > docker-compose
-      chmod +x docker-compose
-      sudo mv docker-compose /usr/local/bin
-      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter
-      sudo apt-get install pdftk
-      gem install bundler -v 1.16.4
-    displayName: 'before install'
+  #     - task: Docker@1
+  #       displayName: 'Run an image'
+  #       inputs:
+  #         command: 'Run an image'
+  #         imageName: '$(application.name):$(docker.tag)'
+  #         containerName: 'ASSET_CONTAINER'
 
-  - script: |
-      export ENABLE_COVERAGE=true
-      export DB_USERNAME=postgres
-      export DB_PORT=5433
-      export CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
-      ./bin/dev/docker-support-services up -d && \
-      ./bin/wait-for-it.sh localhost:5433 && \
-      sleep 5 && \
-      ./bin/wait-for-it.sh localhost:5433 && \
-      ./bin/wait-for-it.sh localhost:10000 && \
-      RAILS_ENV=test bundle install && bundle exec rails db:create db:migrate && \
-      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && \
-      chmod +x ./cc-test-reporter && \
-      ./cc-test-reporter before-build
-    displayName: 'before script'
+  #     - bash: |
+  #         mkdir -p temp_assets
+  #         docker cp ASSET_CONTAINER:/usr/src/app/public/assets ./temp_assets
+  #         docker stop ASSET_CONTAINER
+  #         cd temp_assets/assets
+  #         docker rm ASSET_CONTAINER
+  #       displayName: 'Get Assets'
+  #       name: 'getAssets'
 
-  - script: |
-      export ENABLE_COVERAGE=true
-      export DB_USERNAME=postgres
-      export DB_PORT=5433
-      CC_TEST_REPORTER=935a4195bd35a993666acc398a01a53daf4e7f11635e90a51c8f30b44cbe1ec9
-      RAILS_ENV=test bundle exec rspec && \
-      RAILS_ENV=test cd vendor/gems/et_acas_api && BUNDLE_GEMFILE=$PWD/Gemfile bundle install && BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rake db:create db:migrate && BUNDLE_GEMFILE=$PWD/Gemfile bundle exec rspec && \
-      export
-    displayName: 'script'
+  #     - bash: |
+  #         az login --service-principal -u $(ARM_CLIENT_ID) -p $(ARM_CLIENT_SECRET) --tenant $(ARM_TENANT_ID)
+  #         az storage blob delete-batch -s assets --account-name $(azure.storage.account)
+  #       displayName: 'Clean Up Blob'
+  #       name: 'cleanUpBlob'
 
-
-- job: BuildAndPushImage
-  dependsOn: TestApplication
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/develop'))
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-
-  - bash: |
-      repo_sha=$(git rev-parse --verify HEAD)
-      docker_image_tag_sha=${repo_sha:0:7}
-      echo "##vso[task.setvariable variable=DOCKER_TAG;isOutput=true]$(Build.SourceBranchName)-${docker_image_tag_sha}"
-    displayName: 'Get Docker Tag'
-    name: 'getDockerTag'
-
-  - task: Docker@1
-    displayName: login
-    inputs:
-      azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
-      azureContainerRegistry: $(azure.container.registry)
-      command: login
-
-  - task: Docker@1
-    displayName: 'Build an image'
-    inputs:
-      imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
-      arguments: '--build-arg APPVERSION=$(getDockerTag.DOCKER_TAG) --build-arg APP_BUILD_TAG=$(Build.SourceBranchName)-$(Build.SourceVersion) --build-arg APP_GIT_COMMIT=$(Build.SourceVersion)'
-
-
-  - task: Docker@1
-    displayName: 'Tag image'
-    inputs:
-      azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
-      azureContainerRegistry: $(azure.container.registry)
-      command: 'Tag image'
-      imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
-
-  - task: Docker@1
-    displayName: 'Push an image'
-    inputs:
-      azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
-      azureContainerRegistry: $(azure.container.registry)
-      command: 'Push an image'
-      imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
-
-  - task: Docker@1
-    displayName: logout
-    inputs:
-      command: logout
-
-- job: ManualBuildAndPushImage
-  dependsOn: TestApplication
-  condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.Reason'], 'Manual'))
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-
-  - bash: |
-      repo_sha=$(git rev-parse --verify HEAD)
-      docker_image_tag_sha=${repo_sha:0:7}
-      echo "##vso[task.setvariable variable=DOCKER_TAG;isOutput=true]$(manual.branch.prefix)-$(Build.SourceBranchName)-${docker_image_tag_sha}"
-    displayName: 'Get Docker Tag'
-    name: 'getDockerTag'
-
-  - task: Docker@1
-    displayName: login
-    inputs:
-      azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
-      azureContainerRegistry: $(azure.container.registry)
-      command: login
-
-  - task: Docker@1
-    displayName: 'Build an image'
-    inputs:
-      imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
-      arguments: '--build-arg APPVERSION=$(getDockerTag.DOCKER_TAG) --build-arg APP_BUILD_TAG=$(Build.SourceBranchName)-$(Build.SourceVersion) --build-arg APP_GIT_COMMIT=$(Build.SourceVersion)'
+  #     - bash: |
+  #         az login --service-principal -u $(ARM_CLIENT_ID) -p $(ARM_CLIENT_SECRET) --tenant $(ARM_TENANT_ID)
+  #         cd temp_assets/assets
+  #         az storage blob upload-batch -d assets --account-name $(azure.storage.account) -s .
+  #       displayName: 'Copy Assets To Blob'
+  #       name: 'copyToBlob'
 
 
-  - task: Docker@1
-    displayName: 'Tag image'
-    inputs:
-      azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
-      azureContainerRegistry: $(azure.container.registry)
-      command: 'Tag image'
-      imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
+  #  - job: ManualBuildAndPushImage
+  #    dependsOn: TestApplication
+  #    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.Reason'], 'Manual'))
+  #    pool:
+  #      vmImage: 'ubuntu-latest'
+  #    steps:
+  #    - bash: |
+  #        repo_sha=$(git rev-parse --verify HEAD)
+  #        docker_image_tag_sha=${repo_sha:0:7}
+  #        echo "##vso[task.setvariable variable=DOCKER_TAG;isOutput=true]$(manual.branch.prefix)-$(Build.SourceBranchName)-${docker_image_tag_sha}"
+  #      displayName: 'Get Docker Tag'
+  #      name: 'getDockerTag'
+  #
+  #    - task: Docker@1
+  #      displayName: login
+  #      inputs:
+  #        azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
+  #        azureContainerRegistry: $(azure.container.registry)
+  #        command: login
+  #
+  #    - task: Docker@1
+  #      displayName: 'Build an image'
+  #      inputs:
+  #        imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
+  #        arguments: '--build-arg APPVERSION=$(getDockerTag.DOCKER_TAG) --build-arg APP_BUILD_TAG=$(Build.SourceBranchName)-$(Build.SourceVersion) --build-arg APP_GIT_COMMIT=$(Build.SourceVersion)'
+  #
+  #    - task: Docker@1
+  #      displayName: 'Tag image'
+  #      inputs:
+  #        azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
+  #        azureContainerRegistry: $(azure.container.registry)
+  #        command: 'Tag image'
+  #        imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
+  #
+  #    - task: Docker@1
+  #      displayName: 'Push an image'
+  #      inputs:
+  #        azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
+  #        azureContainerRegistry: $(azure.container.registry)
+  #        command: 'Push an image'
+  #        imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
+  #
+  #    - task: Docker@1
+  #      displayName: logout
+  #      inputs:
+  #        command: logout
 
-  - task: Docker@1
-    displayName: 'Push an image'
-    inputs:
-      azureSubscriptionEndpoint: '$(azure.subscription.endpoint)'
-      azureContainerRegistry: $(azure.container.registry)
-      command: 'Push an image'
-      imageName: '$(application.name):$(getDockerTag.DOCKER_TAG)'
 
-  - task: Docker@1
-    displayName: logout
-    inputs:
-      command: logout
+  # - job: ManualExtractAssets
+  #   dependsOn: ManualBuildAndPushImage
+  #   pool:
+  #     name: hmcts-pet
+  #   variables:
+  #     docker.tag: $[ dependencies.ManualBuildAndPushImage.outputs['getDockerTag.DOCKER_TAG'] ]
+  #   steps:
+
+  #     - task: Docker@1
+  #       displayName: 'Run an image'
+  #       inputs:
+  #         command: 'Run an image'
+  #         imageName: '$(application.name):$(docker.tag)'
+  #         containerName: 'ASSET_CONTAINER'
+
+  #     - bash: |
+  #         mkdir -p temp_assets
+  #         docker cp ASSET_CONTAINER:/usr/src/app/public/assets ./temp_assets
+  #         docker stop ASSET_CONTAINER
+  #         cd temp_assets/assets
+  #         docker rm ASSET_CONTAINER
+  #       displayName: 'Get Assets'
+  #       name: 'getAssets'
+
+  #     - bash: |
+  #         az login --service-principal -u $(ARM_CLIENT_ID) -p $(ARM_CLIENT_SECRET) --tenant $(ARM_TENANT_ID)
+  #         az storage blob delete-batch -s assets --account-name $(azure.storage.account)
+  #       displayName: 'Clean Up Blob'
+  #       name: 'cleanUpBlob'
+
+  #     - bash: |
+  #         az login --service-principal -u $(ARM_CLIENT_ID) -p $(ARM_CLIENT_SECRET) --tenant $(ARM_TENANT_ID)
+  #         cd temp_assets/assets
+  #         az storage blob upload-batch -d assets --account-name $(azure.storage.account) -s .
+  #       displayName: 'Copy Assets To Blob'
+  #       name: 'copyToBlob'

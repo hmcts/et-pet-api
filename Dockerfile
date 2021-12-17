@@ -1,51 +1,9 @@
-FROM phusion/passenger-customizable:1.0.12
-# Or, instead of the 'full' variant, use one of these:
-#FROM phusion/passenger-ruby23:<VERSION>
-#FROM phusion/passenger-ruby24:<VERSION>
-#FROM phusion/passenger-ruby25:<VERSION>
-#FROM phusion/passenger-ruby26:<VERSION>
-#FROM phusion/passenger-ruby27:<VERSION>
-#FROM phusion/passenger-jruby92:<VERSION>
-#FROM phusion/passenger-nodejs:<VERSION>
-#FROM phusion/passenger-customizable:<VERSION>
+FROM ruby:2.7.5-alpine
 
-# Set correct environment variables.
-ENV HOME /root
+RUN addgroup app --gid 1000
+RUN adduser -SD -u 1000 --shell /bin/bash --home /home/app app app
 
-# Use baseimage-docker's init process.
-CMD ["/sbin/my_init"]
-RUN mv /etc/apt/sources.list.d /etc/apt/sources.list.d.bak
-RUN apt update && apt install -y ca-certificates
-RUN mv /etc/apt/sources.list.d.bak /etc/apt/sources.list.d
 
-# If you're using the 'customizable' variant, you need to explicitly opt-in
-# for features.
-#
-# N.B. these images are based on https://github.com/phusion/baseimage-docker,
-# so anything it provides is also automatically on board in the images below
-# (e.g. older versions of Ruby, Node, Python).
-#
-# Uncomment the features you want:
-#
-#   Ruby support
-#RUN /pd_build/ruby-2.4.*.sh
-#RUN /pd_build/ruby-2.5.*.sh
-#RUN /pd_build/ruby-2.6.*.sh
-RUN /pd_build/ruby-2.7.*.sh
-#RUN /pd_build/jruby-9.2.*.sh
-#   Python support.
-#RUN /pd_build/python.sh
-#   Node.js and Meteor standalone support.
-#   (not needed if you already have the above Ruby support)
-# RUN /pd_build/nodejs.sh
-
-# ...put your own build instructions here...
-RUN apt-get install -y runit pdftk unzip zip mcrypt libmcrypt-dev shared-mime-info
-
-# Clean up APT when done.
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Adding argument support for ping.json
 ARG APPVERSION=unknown
 ARG APP_BUILD_DATE=unknown
 ARG APP_GIT_COMMIT=unknown
@@ -59,10 +17,24 @@ ENV APP_BUILD_TAG ${APP_BUILD_TAG}
 
 EXPOSE 8080
 
-COPY --chown=app:app . /home/app/et-api
+COPY --chown=app:app . /home/app/api
+COPY --from=clevyr/pdftk-java /app/ /usr/local/bin/
+RUN ln -s /opt/java/openjdk-trimmed/bin/java /usr/local/bin/java
+RUN chown -R app:app /usr/local/bundle
+RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext shared-mime-info bash && \
+    apk add --no-cache --virtual .build-tools git build-base openjdk11 && \
+    jlink --add-modules java.base,java.desktop,java.naming,java.sql --strip-debug --no-man-pages --no-header-files --compress=2 --output=/opt/java/openjdk-trimmed && \
+    cd /home/app/api && \
+    gem install bundler -v 1.17.3 && \
+    bundle install --no-cache --jobs=5 --retry=3 --without=test development --with=production --deployment && \
+    apk del .build-tools && \
+    chown -R app:app /usr/local/bundle && \
+    mkdir -p /home/app/api/tmp && \
+    chown -R app:app /home/app/api/tmp
+
+
 USER app
 ENV HOME /home/app
-WORKDIR /home/app/et-api
+WORKDIR /home/app/api
 ENV RAILS_ENV=production
-RUN bash -lc "gem install bundler -v 1.17.3 && bundle install --jobs=5 --retry=3 --without=test development --with=production"
-CMD ["./run.sh"]
+CMD ["bundle", "exec", "iodine", "-port", "8080"]

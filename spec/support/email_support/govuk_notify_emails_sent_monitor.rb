@@ -31,7 +31,7 @@ module EtApi
                 else
                   raise "Unknown template reference #{template_reference}"
                 end
-        raise "No govuk notify claim (ET1) email has been sent for reference #{reference} using template reference #{template_reference}" unless email.present?
+        raise "No govuk notify claim (ET1) email has been sent for reference #{reference} using template reference #{template_reference}\n\n#{GovUkNotifyEmailsSentMonitor.instance.deliveries}" unless email.present?
         email
       end
 
