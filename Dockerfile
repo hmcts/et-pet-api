@@ -22,6 +22,7 @@ COPY --from=clevyr/pdftk-java /app/ /usr/local/bin/
 RUN ln -s /opt/java/openjdk-trimmed/bin/java /usr/local/bin/java
 RUN chown -R app:app /usr/local/bundle
 RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext shared-mime-info bash && \
+    apk add --no-cache postgresql-client~=11.12 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main && \
     apk add --no-cache --virtual .build-tools git build-base openjdk11 && \
     jlink --add-modules java.base,java.desktop,java.naming,java.sql --strip-debug --no-man-pages --no-header-files --compress=2 --output=/opt/java/openjdk-trimmed && \
     cd /home/app/api && \
