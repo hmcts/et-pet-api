@@ -30,6 +30,8 @@ module Api
       end
 
       def indexed_attribute_to_json_path(attribute)
+        return "/" if attribute == :base
+
         "/#{attribute.to_s.gsub(/\[(\d*)\]/, '/\1').tr('.', '/')}"
       end
     end

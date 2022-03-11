@@ -405,6 +405,7 @@ GEM
     tilt (2.0.10)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    uk_postcode (2.1.7)
     unicode-display_width (2.0.0)
     uniform_notifier (1.13.2)
     wasabi (3.6.1)
@@ -467,6 +468,7 @@ DEPENDENCIES
   spring (~> 2.1)
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
+  uk_postcode (~> 2.1)
   webmock (~> 3.11)
   wisper (~> 2.0)
 

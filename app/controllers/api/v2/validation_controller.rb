@@ -4,11 +4,13 @@ module Api
     class ValidationController < ::Api::V2::BaseController
       VALID_COMMANDS = ["ValidateClaimantsFile"].freeze
       def validate
+        root_object = {}
         command = CommandService.command_for(**validate_params.to_h.symbolize_keys)
         if command.valid?
-          render locals: { command: command }, status: :ok
+          CommandService.dispatch command: command, root_object: root_object
+          render locals: { command: command, root_object: root_object }, status: :ok
         else
-          render locals: { command: command }, status: :bad_request, template: 'api/v2/shared/command_errors'
+          render locals: { command: command }, status: :unprocessable_entity, template: 'api/v2/shared/command_errors'
         end
       end
 

@@ -70,9 +70,14 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
 
   def validate_file(file, record, attribute)
     rows = CSV.new(file, headers: true).lazy
+    @validation_line_count = 0
     claimants_file = ClaimantsFile.new
     rows.each_with_index do |row, index|
+      @validation_line_count += 1
       validate_row row, record, attribute, claimants_file, index
+    end
+    if options[:save_line_count]
+      record.send(options[:save_line_count], @validation_line_count)
     end
   end
 
@@ -119,6 +124,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
 
     TITLES      = ['mr', 'mrs', 'miss', 'ms'].freeze
     NAME_LENGTH = 100
+    POSTCODE_LENGTH = 8
 
     attribute :title, :string
     attribute :first_name, :string
@@ -133,6 +139,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     validates :title, inclusion: { in: TITLES }
     validates :title, :first_name, :last_name, presence: true
     validates :first_name, :last_name, length: { maximum: NAME_LENGTH }
+    validates :post_code, post_code: true, length: { maximum: POSTCODE_LENGTH }
     validate :older_than_16
     validate :illegal_birth_year
 
