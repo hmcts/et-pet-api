@@ -19,10 +19,6 @@ FactoryBot.define do
       data { build(:json_file_data, :simple_user_with_csv_group_claims_missing_column, upload_method: :direct_upload) }
     end
 
-    trait :invalid_encoding do
-      data { build(:json_file_data, :simple_user_with_csv_group_claims_bad_encoding, upload_method: :direct_upload) }
-    end
-
     trait :invalid do
       data { build(:json_file_data, :simple_user_with_csv_group_claims_multiple_errors, upload_method: :direct_upload) }
     end

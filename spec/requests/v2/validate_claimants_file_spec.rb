@@ -27,6 +27,17 @@ RSpec.describe 'Validate Claimants File Request', type: :request do
         # Assert - Make sure we get a 200 response
         expect(response).to(have_http_status(:ok))
       end
+
+      it 'returns the line count' do
+        # Arrange - Get the json data
+        json_data = input_factory.to_json
+
+        # Act - Call the endpoint
+        post '/api/v2/validate', params: json_data, headers: default_headers
+
+        # Assert - Make sure we get a 200 response
+        expect(json_response.deep_symbolize_keys).to include meta: hash_including(line_count: 10)
+      end
     end
 
     context 'with invalid input data' do
@@ -42,9 +53,9 @@ RSpec.describe 'Validate Claimants File Request', type: :request do
         post '/api/v2/validate', params: json_data, headers: default_headers
       end
 
-      it 'returns 400 bad request' do
+      it 'returns 422 bad request' do
         # Assert - Make sure we get a 200 response
-        expect(response).to(have_http_status(:bad_request))
+        expect(response).to(have_http_status(:unprocessable_entity))
       end
 
       it 'returns the status  as not accepted' do

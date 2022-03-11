@@ -51,15 +51,6 @@ RSpec.describe ValidateClaimantsFileCommand do
       end
     end
 
-    context 'with a file containing lots of encoding issues' do
-      let(:data) { FactoryBot.build(:json_validate_claimants_file_command, :invalid_encoding) }
-
-      it 'is valid' do
-        # Act
-        expect(command.valid?).to be true
-      end
-    end
-
     context 'with a file containing a missing column' do
       let(:data) { FactoryBot.build(:json_validate_claimants_file_command, :missing_column) }
 
