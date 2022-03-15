@@ -53,7 +53,7 @@ class ClaimClaimantsFileImporterService
     end
     raise ActiveRecord::Rollback if errors.present?
 
-    insert_records(to_import)
+    insert_records(to_import) unless to_import.claimants.empty?
   end
 
   def insert_records(to_import)
