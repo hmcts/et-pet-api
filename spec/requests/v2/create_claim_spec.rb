@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# @TODO RST-1729 - Remove all url based tests for the input files (rtf and csv) - they have their tests duplicated
-#  using the direct upload method - but we couldnt remove until the old url method has stopped being used.
 require 'rails_helper'
 RSpec.describe 'Create Claim Request', type: :request do
   include_context 'with gov uk notify emails sent monitor'
@@ -449,21 +447,6 @@ RSpec.describe 'Create Claim Request', type: :request do
 
     context 'with json involving external files' do
       include_context 'with cloud provider switching', cloud_provider: :azure_test do
-        context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using url' do
-          include_context 'with fake sidekiq'
-          include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 0) }
-          include_context 'with background jobs running'
-          include_examples 'any claim variation'
-          include_examples 'a claim exported to primary ATOS'
-              include_examples 'a claim exported to primary ATOS with multiple claimants'
-          include_examples 'a claim exported to primary ATOS with multiple claimants from csv'
-          include_examples 'a claim exported to primary ATOS with single respondent'
-          include_examples 'a claim exported to primary ATOS with no representatives'
-          include_examples 'a claim exported to primary ATOS with a csv file'
-          include_examples 'email validation using standard template'
-        end
-
         context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
@@ -472,21 +455,6 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'any claim variation'
           include_examples 'a claim exported to primary ATOS'
           include_examples 'a claim exported to primary ATOS with multiple claimants'
-          include_examples 'a claim exported to primary ATOS with multiple claimants from csv'
-          include_examples 'a claim exported to primary ATOS with single respondent'
-          include_examples 'a claim exported to primary ATOS with no representatives'
-          include_examples 'a claim exported to primary ATOS with a csv file'
-          include_examples 'email validation using standard template'
-        end
-
-        context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using url but uppercased filename' do
-          include_context 'with fake sidekiq'
-          include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0) }
-          include_context 'with background jobs running'
-          include_examples 'any claim variation'
-          include_examples 'a claim exported to primary ATOS'
-              include_examples 'a claim exported to primary ATOS with multiple claimants'
           include_examples 'a claim exported to primary ATOS with multiple claimants from csv'
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with no representatives'
@@ -509,21 +477,6 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'email validation using standard template'
         end
 
-        context 'with json for multiple claimants, single respondent and representative - with csv file uploaded using url' do
-          include_context 'with fake sidekiq'
-          include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 0, number_of_representatives: 1) }
-          include_context 'with background jobs running'
-          include_examples 'any claim variation'
-          include_examples 'a claim exported to primary ATOS'
-              include_examples 'a claim exported to primary ATOS with multiple claimants'
-          include_examples 'a claim exported to primary ATOS with multiple claimants from csv'
-          include_examples 'a claim exported to primary ATOS with single respondent'
-          include_examples 'a claim exported to primary ATOS with a representative'
-          include_examples 'a claim exported to primary ATOS with a csv file'
-          include_examples 'email validation using standard template'
-        end
-
         context 'with json for multiple claimants, single respondent and representative - with csv file uploaded using direct upload' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
@@ -535,21 +488,6 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'a claim exported to primary ATOS with multiple claimants from csv'
           include_examples 'a claim exported to primary ATOS with single respondent'
           include_examples 'a claim exported to primary ATOS with a representative'
-          include_examples 'a claim exported to primary ATOS with a csv file'
-          include_examples 'email validation using standard template'
-        end
-
-        context 'with json for multiple claimants, multiple respondents but no representatives - with csv file uploaded using url' do
-          include_context 'with fake sidekiq'
-          include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 0) }
-          include_context 'with background jobs running'
-          include_examples 'any claim variation'
-          include_examples 'a claim exported to primary ATOS'
-              include_examples 'a claim exported to primary ATOS with multiple claimants'
-          include_examples 'a claim exported to primary ATOS with multiple claimants from csv'
-          include_examples 'a claim exported to primary ATOS with multiple respondents'
-          include_examples 'a claim exported to primary ATOS with no representatives'
           include_examples 'a claim exported to primary ATOS with a csv file'
           include_examples 'email validation using standard template'
         end
@@ -569,21 +507,6 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'email validation using standard template'
         end
 
-        context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using url' do
-          include_context 'with fake sidekiq'
-          include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv, number_of_secondary_respondents: 2, number_of_representatives: 1) }
-          include_context 'with background jobs running'
-          include_examples 'any claim variation'
-          include_examples 'a claim exported to primary ATOS'
-          include_examples 'a claim exported to primary ATOS with multiple claimants'
-          include_examples 'a claim exported to primary ATOS with multiple claimants from csv'
-          include_examples 'a claim exported to primary ATOS with multiple respondents'
-          include_examples 'a claim exported to primary ATOS with a representative'
-          include_examples 'a claim exported to primary ATOS with a csv file'
-          include_examples 'email validation using standard template'
-        end
-
         context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using direct upload' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
@@ -599,38 +522,10 @@ RSpec.describe 'Create Claim Request', type: :request do
           include_examples 'email validation using standard template'
         end
 
-        context 'with json for single claimant, single respondent and representative - with rtf file uploaded using url' do
-          include_context 'with fake sidekiq'
-          include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
-          include_context 'with background jobs running'
-          include_examples 'any claim variation'
-          include_examples 'a claim exported to primary ATOS'
-          include_examples 'a claim exported to primary ATOS with single claimant'
-          include_examples 'a claim exported to primary ATOS with single respondent'
-          include_examples 'a claim exported to primary ATOS with a representative'
-          include_examples 'a claim exported to primary ATOS with an rtf file'
-          include_examples 'email validation using standard template'
-        end
-
         context 'with json for single claimant, single respondent and representative - with rtf file uploaded using direct upload' do
           include_context 'with fake sidekiq'
           include_context 'with setup for claims',
                           json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
-          include_context 'with background jobs running'
-          include_examples 'any claim variation'
-          include_examples 'a claim exported to primary ATOS'
-          include_examples 'a claim exported to primary ATOS with single claimant'
-          include_examples 'a claim exported to primary ATOS with single respondent'
-          include_examples 'a claim exported to primary ATOS with a representative'
-          include_examples 'a claim exported to primary ATOS with an rtf file'
-          include_examples 'email validation using standard template'
-        end
-
-        context 'with json for single claimant, single respondent and representative - with rtf file uploaded using url with uppercased extension' do
-          include_context 'with fake sidekiq'
-          include_context 'with setup for claims',
-                          json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
           include_context 'with background jobs running'
           include_examples 'any claim variation'
           include_examples 'a claim exported to primary ATOS'

@@ -289,7 +289,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_examples 'any response variation'
 
       let(:uploaded_file) do
-        create(:uploaded_file, :direct_upload, :example_response_input_rtf, :user_file_scope).tap do |uploaded_file|
+        create(:uploaded_file, :example_response_input_rtf, :user_file_scope).tap do |uploaded_file|
           uploaded_file.file.blob.delete
         end
       end
@@ -317,7 +317,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_examples 'any response variation'
 
       let(:uploaded_file) do
-        create(:uploaded_file, :direct_upload, :example_response_input_rtf, :user_file_scope).tap do |uploaded_file|
+        create(:uploaded_file,:example_response_input_rtf, :user_file_scope).tap do |uploaded_file|
           uploaded_file.file.attachment.delete
         end
       end
