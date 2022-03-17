@@ -1,8 +1,7 @@
 FactoryBot.define do
   factory :uploaded_file do
-    # @TODO RST-1729 - Remove switching code for upload_method - we will only support direct uploads
     transient do
-      upload_method { :url }
+      upload_method { :direct_upload }
       file_to_attach { nil }
     end
     trait :example_pdf do
@@ -108,10 +107,6 @@ FactoryBot.define do
 
     trait :example_data do
       example_pdf
-    end
-
-    trait :direct_upload do
-      upload_method { :direct_upload }
     end
 
     trait :upload_to_blob do

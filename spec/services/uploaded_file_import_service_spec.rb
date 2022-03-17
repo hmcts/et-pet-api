@@ -41,7 +41,7 @@ RSpec.describe UploadedFileImportService do
     include_context 'with cloud provider switching', cloud_provider: :azure_test
     it 'imports from a key from the direct upload container' do
       # Arrange - Store a file in the direct upload container
-      remote_file = create(:uploaded_file, :example_pdf, :direct_upload)
+      remote_file = create(:uploaded_file, :example_pdf)
 
       # Act
       service.import_from_key(remote_file.file.blob.key, into: uploaded_file)
@@ -59,7 +59,7 @@ RSpec.describe UploadedFileImportService do
 
     it 'removes the original when done' do
       # Arrange - Store a file in the direct upload container
-      remote_file = create(:uploaded_file, :example_pdf, :direct_upload)
+      remote_file = create(:uploaded_file, :example_pdf)
 
       # Act
       service.import_from_key(remote_file.file.blob.key, into: uploaded_file)
