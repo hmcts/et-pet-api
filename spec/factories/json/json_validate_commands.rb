@@ -4,7 +4,7 @@ FactoryBot.define do
     command { 'ValidateClaimantsFile' }
 
     trait :valid do
-      data { build(:json_file_data, :simple_user_with_csv_group_claims, upload_method: :direct_upload) }
+      data { build(:json_file_data, :simple_user_with_csv_group_claims) }
     end
 
     trait :missing do
@@ -12,15 +12,15 @@ FactoryBot.define do
     end
 
     trait :empty do
-      data { build(:json_file_data, :empty_csv, upload_method: :direct_upload) }
+      data { build(:json_file_data, :empty_csv) }
     end
 
     trait :missing_column do
-      data { build(:json_file_data, :simple_user_with_csv_group_claims_missing_column, upload_method: :direct_upload) }
+      data { build(:json_file_data, :simple_user_with_csv_group_claims_missing_column) }
     end
 
     trait :invalid do
-      data { build(:json_file_data, :simple_user_with_csv_group_claims_multiple_errors, upload_method: :direct_upload) }
+      data { build(:json_file_data, :simple_user_with_csv_group_claims_multiple_errors) }
     end
   end
 end

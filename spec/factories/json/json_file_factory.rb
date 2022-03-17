@@ -4,7 +4,7 @@ FactoryBot.define do
 
   factory :json_file_data, class: ::EtApi::Test::Json::Node do
     transient do
-      upload_method { :url }
+      upload_method { :direct_upload }
       uploaded_file_traits { [] }
     end
 
@@ -65,22 +65,10 @@ FactoryBot.define do
       uploaded_file_traits { [:example_claim_rtf] }
     end
 
-    trait :direct_upload do
-      upload_method { :direct_upload }
-    end
-
-    # @TODO RST-1729 Remove the upload method switching as it will always be azure from now on
-    after(:build) do |obj, evaluator|
-      next unless evaluator.upload_method == :url
-
-      uploaded_file = create(:uploaded_file, *evaluator.uploaded_file_traits)
-      obj.data_url = uploaded_file.file.blob.url
-    end
-
     after(:build) do |obj, evaluator|
       next unless evaluator.upload_method == :direct_upload
 
-      uploaded_file = create(:uploaded_file, :direct_upload, *evaluator.uploaded_file_traits)
+      uploaded_file = create(:uploaded_file, *evaluator.uploaded_file_traits)
       obj.data_from_key = uploaded_file.file.blob.key
     end
   end

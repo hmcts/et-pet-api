@@ -1,7 +1,6 @@
 require 'faker'
 require 'securerandom'
 
-# @TODO RST-1729 - The direct_upload variants will become the norm and we will remove the old url variants and re use the name of the old variant so we no longer have 'direct_upload' in the name
 FactoryBot.define do
   factory :json_build_claim_commands, class: ::EtApi::Test::Json::Document do
     transient do
@@ -32,7 +31,7 @@ FactoryBot.define do
 
     trait :with_csv_direct_upload do
       case_type { 'Multiple' }
-      csv_file_traits { [:simple_user_with_csv_group_claims, :direct_upload] }
+      csv_file_traits { [:simple_user_with_csv_group_claims] }
     end
 
     trait :with_csv_uppercased do
@@ -42,7 +41,7 @@ FactoryBot.define do
 
     trait :with_csv_direct_upload_uppercased do
       case_type { 'Multiple' }
-      csv_file_traits { [:simple_user_with_csv_group_claims_uppercased, :direct_upload] }
+      csv_file_traits { [:simple_user_with_csv_group_claims_uppercased] }
     end
 
     trait :with_rtf do
@@ -50,7 +49,7 @@ FactoryBot.define do
     end
 
     trait :with_rtf_direct_upload do
-      rtf_file_traits { [:simple_user_with_rtf, :direct_upload] }
+      rtf_file_traits { [:simple_user_with_rtf] }
     end
 
     trait :with_rtf_uppercased do
@@ -58,7 +57,7 @@ FactoryBot.define do
     end
 
     trait :with_rtf_direct_upload_uppercased do
-      rtf_file_traits { [:simple_user_with_rtf_uppercased, :direct_upload] }
+      rtf_file_traits { [:simple_user_with_rtf_uppercased] }
     end
 
     trait :with_welsh_pdf do
