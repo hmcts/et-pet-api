@@ -36,6 +36,11 @@ RSpec.describe ClaimClaimantsFileImporterService do
           end
           expect(claim.secondary_claimants.includes(:address)).to match_array normalize_claimants_from_file.map(&map)
         end
+
+        it 'does not duplicate claimants if called twice on the same claim' do
+          service.call
+          expect { service.call }.not_to change(claim.secondary_claimants, :count)
+        end
       end
     end
 

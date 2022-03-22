@@ -13,6 +13,8 @@ class ClaimClaimantsFileImporterService
   def call
     raise "The claim must be saved with no changes before this importer can be used" unless claim.persisted? && claim.changes.empty?
 
+    return if claim.secondary_claimants.any?
+
     import_claimants uploaded_file: csv_file
   end
 
