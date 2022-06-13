@@ -2,7 +2,7 @@ module EtAcasApi
   class CertificateQuery < ::EtAcasApi::BaseQuery
     attr_reader :errors, :status
 
-    def initialize(ids:, user_id:, acas_api_service: V1::AcasApiService.new)
+    def initialize(ids:, user_id:, api_version: 1, acas_api_service: "::EtAcasApi::V#{api_version}::AcasApiService".constantize.new)
       self.acas_api_service = acas_api_service
       self.user_id = user_id
       self.ids = ids

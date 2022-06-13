@@ -22,7 +22,7 @@ RSpec.describe EtAcasApi::QueryService do
                          my_param2: 'test2'
 
         # Assert - Make sure the query class received new with the correct params
-        expect(query_class).to have_received(:new).with(my_param1: 'test', 'my_param2': 'test2')
+        expect(query_class).to have_received(:new).with(my_param1: 'test', 'my_param2': 'test2', api_version: instance_of(Integer))
       end
 
       it 'calls apply on the query with the root object passed in' do
