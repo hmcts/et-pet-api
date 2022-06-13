@@ -71,11 +71,11 @@ class FetchAcasCertificatesService
 
   def certificate_for(respondent)
     certificate_id = respondent.acas_certificate_number
-    certificate = ::EtAcasApi::Certificate.new
-    result = EtAcasApi::QueryService.dispatch(query: 'Certificate', root_object: certificate, id: certificate_id, user_id: 'AutoImporter')
+    certificates = []
+    result = EtAcasApi::QueryService.dispatch(query: 'Certificate', root_object: certificates, ids: [certificate_id], user_id: 'AutoImporter')
     case result.status
     when :found then
-      certificate
+      certificates.first
     else
       result.status
     end

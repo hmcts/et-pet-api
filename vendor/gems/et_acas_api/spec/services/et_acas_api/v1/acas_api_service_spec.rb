@@ -1,7 +1,7 @@
 require 'rails_helper'
-RSpec.describe EtAcasApi::AcasApiService do
+RSpec.describe EtAcasApi::V1::AcasApiService do
   subject(:api) { described_class.new(logger: logger) }
-  let(:certificate) { EtAcasApi::Certificate.new }
+  let(:collection) { [] }
   let(:logger) { instance_spy('ActiveSupport::Logger') }
   let(:rsa_certificate_contents) { Rails.configuration.et_acas_api.rsa_certificate }
   # Common Setup - The url to the service
@@ -10,13 +10,13 @@ RSpec.describe EtAcasApi::AcasApiService do
   describe '#get_certificate' do
     it 'requests the data from the correct entry in the wsdl' do
       get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' }
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
       expect(get_certificate_stub).to have_been_requested
     end
 
     it 'requests the data with the correct certificate number and user id' do
       get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' }
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
       body_matcher = hash_including('env:Envelope' =>
                                       hash_including('env:Body' =>
                                                        hash_including('tns:GetECCertificate' =>
@@ -40,7 +40,7 @@ RSpec.describe EtAcasApi::AcasApiService do
 
       # Act - Make the call
 
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
       # Assert - Check the correct date was used
       expect(recorded_request.body).to have_valid_current_date_time_for_acas
     end
@@ -48,7 +48,7 @@ RSpec.describe EtAcasApi::AcasApiService do
 
     it 'requests the data with the correct security token in the signature in the header' do
       get_certificate_stub = stub_request(:post, example_get_certificate_url).to_return body: build(:soap_valid_acas_response, :valid).to_xml, status: 200, headers: { 'Content-Type' => 'application/xml' }
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
       our_base64_public_key = Base64.encode64(OpenSSL::X509::Certificate.new(rsa_certificate_contents).to_der).tr("\n", '')
       body_matcher = hash_including('env:Envelope' =>
                                       hash_including(
@@ -71,7 +71,7 @@ RSpec.describe EtAcasApi::AcasApiService do
       end
 
       # Act - Call the service
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
 
       # Assert - Validate the digest
       expect(recorded_request.body).to have_valid_digest_for_acas
@@ -86,7 +86,7 @@ RSpec.describe EtAcasApi::AcasApiService do
       end
 
       # Act - Call the service
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
 
       # Assert - Validate the signature
       expect(recorded_request.body).to have_valid_signature_for_acas
@@ -100,9 +100,10 @@ RSpec.describe EtAcasApi::AcasApiService do
                                                                  body: response_factory.to_xml
 
       # Act - Call the service
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
 
-      # Assert - Validate the signature
+      # Assert - Validate the certificate
+      certificate = collection.first
       aggregate_failures 'Validate all non file attributes are correct' do
         expect(certificate.claimant_name).to eql response_factory.claimant_name
         expect(certificate.date_of_issue).to eql response_factory.date_of_issue
@@ -124,9 +125,8 @@ RSpec.describe EtAcasApi::AcasApiService do
                                                                  body: response_factory.to_xml
 
       # Act - Call the service
-      subject.call('anyid', user_id: "my user id", into: certificate)
-      certificate
-      # Assert - Validate the signature
+      subject.call(['anyid'], user_id: "my user id", into: collection)
+      # Assert - Validate the certificate
       expect(subject.status).to be :found
     end
 
@@ -138,7 +138,7 @@ RSpec.describe EtAcasApi::AcasApiService do
                                                                  body: response_factory.to_xml
 
       # Act - Call the service
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
 
       # Assert - Validate that the status is correct and the certificate is nil
       aggregate_failures 'Validate status and certificate' do
@@ -154,7 +154,7 @@ RSpec.describe EtAcasApi::AcasApiService do
                                                                  body: response_factory.to_xml
 
       # Act - Call the service
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
 
       # Assert - Validate that the status is correct and the certificate is nil
       aggregate_failures 'Validate status and certificate' do
@@ -171,7 +171,7 @@ RSpec.describe EtAcasApi::AcasApiService do
                                                                  body: response_factory.to_xml
 
       # Act - Call the service
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
 
       # Assert - Validate that the status is correct and the certificate is nil
       aggregate_failures 'Validate status and certificate' do
@@ -188,7 +188,7 @@ RSpec.describe EtAcasApi::AcasApiService do
                                                                  body: response_factory.to_xml
 
       # Act - Call the service
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
 
       # Assert - Validate that the status is correct and the certificate is nil
       expect(logger).to have_received(:warn).with("An error occured in the ACAS server when trying to find certificate 'anyid' - the error reported was '#{response_factory.message}'")
@@ -199,7 +199,7 @@ RSpec.describe EtAcasApi::AcasApiService do
       stub_request(:post, example_get_certificate_url).to_timeout
 
       # Act - Call the service
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
 
       # Assert - Validate that the status is correct and the certificate is nil
       aggregate_failures 'Validate status and certificate' do
@@ -213,7 +213,7 @@ RSpec.describe EtAcasApi::AcasApiService do
       stub_request(:post, example_get_certificate_url).to_timeout
 
       # Act - Call the service
-      subject.call('anyid', user_id: "my user id", into: certificate)
+      subject.call(['anyid'], user_id: "my user id", into: collection)
 
       # Assert - Validate that the status is correct and the certificate is nil
       expect(logger).to have_received(:warn).with("An error occured connecting to the ACAS server when trying to find certificate 'anyid' - the error reported was 'execution expired'")

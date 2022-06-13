@@ -183,8 +183,8 @@ GEM
     erubi (1.10.0)
     et-orbi (1.2.4)
       tzinfo
-    et_fake_acas_server (0.1.10)
-      activesupport (>= 5.2)
+    et_fake_acas_server (0.2.0)
+      activesupport (~> 6.1)
       iodine (~> 0.7)
       nokogiri (~> 1.8, >= 1.8.2)
       ruby-mcrypt (~> 0.2)
@@ -240,7 +240,7 @@ GEM
       nokogiri (~> 1)
       rake
     mini_mime (1.0.2)
-    mini_portile2 (2.5.0)
+    mini_portile2 (2.5.3)
     minitest (5.14.3)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -250,7 +250,7 @@ GEM
     net-http-persistent (4.0.1)
       connection_pool (~> 2.2)
     nio4r (2.5.5)
-    nokogiri (1.11.1)
+    nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     nori (2.6.0)
@@ -267,9 +267,9 @@ GEM
     pg (1.2.3)
     public_suffix (4.0.6)
     raabro (1.4.0)
-    racc (1.5.2)
+    racc (1.6.0)
     rack (2.2.3)
-    rack-protection (2.1.0)
+    rack-protection (2.2.0)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -373,16 +373,16 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.2)
-    sinatra (2.1.0)
+    sinatra (2.2.0)
       mustermann (~> 1.0)
       rack (~> 2.2)
-      rack-protection (= 2.1.0)
+      rack-protection (= 2.2.0)
       tilt (~> 2.0)
-    sinatra-contrib (2.1.0)
+    sinatra-contrib (2.2.0)
       multi_json
       mustermann (~> 1.0)
-      rack-protection (= 2.1.0)
-      sinatra (= 2.1.0)
+      rack-protection (= 2.2.0)
+      sinatra (= 2.2.0)
       tilt (~> 2.0)
     site_prism (3.7)
       addressable (~> 2.5)
@@ -440,7 +440,7 @@ DEPENDENCIES
   et_atos_file_transfer!
   et_azure_insights (= 0.2.12)!
   et_exporter!
-  et_fake_acas_server (~> 0.1)
+  et_fake_acas_server (~> 0.2)
   factory_bot (~> 6.1)
   faker (~> 2.15)
   gov_fake_notify!

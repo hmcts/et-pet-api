@@ -1,5 +1,7 @@
 module EtAcasApi
   class QueryService
+    # @param [String] query
+    # @param [Array] root_object
     def self.dispatch(query:, root_object:, **attrs)
       query_class = "::EtAcasApi::#{query}Query".safe_constantize
       if query_class.nil?

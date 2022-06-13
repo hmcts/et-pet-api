@@ -57,11 +57,11 @@ class PrepareClaimHandler
     Concurrent::Promises.future(claim) do |claim|
       Timeout.timeout(timeout) do
         certificate_id = claim.primary_respondent.acas_certificate_number
-        certificate = ::EtAcasApi::Certificate.new
-        result = EtAcasApi::QueryService.dispatch(query: 'Certificate', root_object: certificate, id: certificate_id, user_id: 'AutoImporter')
+        certificates = []
+        result = EtAcasApi::QueryService.dispatch(query: 'Certificate', root_object: certificates, ids: [certificate_id], user_id: 'AutoImporter')
         case result.status
         when :found then
-          certificate
+          certificates.first
         else
           result.status
         end
