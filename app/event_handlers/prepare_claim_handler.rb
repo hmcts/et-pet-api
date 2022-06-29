@@ -40,32 +40,49 @@ class PrepareClaimHandler
 
     downloader = acas_future(claim)
     yield
-    cert = downloader.value
-    if cert.is_a?(::EtAcasApi::Certificate)
-      uploaded_file = claim.uploaded_files.system_file_scope.build(filename: "acas_#{claim.primary_respondent.name}.pdf")
-      uploaded_file.import_base64(cert.certificate_base64, content_type: 'application/pdf')
-      claim.updated_at = Time.now.utc
-      claim.events.claim_acas_requested.create data: { status: 'found' }
-    elsif cert.nil?
-      claim.events.claim_acas_requested.create data: { status: 'timeout' }
-    else
-      claim.events.claim_acas_requested.create data: { status: cert }
+    certs = downloader.value
+    certs.each do |cert|
+      if cert.is_a?(::EtAcasApi::Certificate)
+        uploaded_file = claim.uploaded_files.system_file_scope.build(filename: "acas_#{cert.respondent_name}.pdf")
+        uploaded_file.import_base64(cert.certificate_base64, content_type: 'application/pdf')
+        claim.updated_at = Time.now.utc
+        claim.events.claim_acas_requested.create data: { status: 'found' }
+      elsif cert.is_a?(::EtAcasApi::CertificateNotFound)
+        claim.events.claim_acas_requested.create data: { status: 'not_found' }
+      elsif cert.nil?
+        claim.events.claim_acas_requested.create data: { status: 'timeout' }
+      else
+        claim.events.claim_acas_requested.create data: { status: cert }
+      end
     end
   end
 
   def acas_future(claim, timeout: 60)
     Concurrent::Promises.future(claim) do |claim|
       Timeout.timeout(timeout) do
-        certificate_id = claim.primary_respondent.acas_certificate_number
+        respondents = respondents_needing_acas(claim)
         certificates = []
-        result = EtAcasApi::QueryService.dispatch(query: 'Certificate', root_object: certificates, ids: [certificate_id], user_id: 'AutoImporter')
+        result = EtAcasApi::QueryService.dispatch(query: 'Certificate', root_object: certificates, ids: respondents.map(&:acas_certificate_number), user_id: 'AutoImporter')
         case result.status
         when :found then
-          certificates.first
+          certificates.each_with_index do |c, idx|
+            next if c.respondent_name.present?
+
+            c.respondent_name = respondents[idx].name
+          end
+          certificates
         else
           result.status
         end
       end
+    end
+  end
+
+  def respondents_needing_acas(claim)
+    if EtAcasApi::QueryService.supports_multi?
+      ([claim.primary_respondent] + claim.secondary_respondents)
+    else
+      [claim.primary_respondent]
     end
   end
 end

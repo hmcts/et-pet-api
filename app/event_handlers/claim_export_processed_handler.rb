@@ -3,6 +3,7 @@
 class ClaimExportProcessedHandler
   def handle(json)
     data = JSON.parse(json)
+    return if EtAcasApi::QueryService.supports_multi? # Will already be done
     return unless data['state'] == 'complete'
 
     export = Export.find(data['export_id'])

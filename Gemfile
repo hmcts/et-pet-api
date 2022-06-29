@@ -53,7 +53,7 @@ gem 'pdf-forms', '~> 1.3'
 gem 'azure-storage-blob', '~> 2.0', '>= 2.0.1'
 
 # For general easy http access - mainly for test but used in app too
-gem 'httparty', '~> 0.17'
+gem 'httparty', '~> 0.20'
 gem 'dotenv-rails', '~> 2.7'
 
 group :development, :test do

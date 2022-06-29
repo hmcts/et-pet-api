@@ -51,6 +51,11 @@ module EtAcasApi
         log_to_db(id: ids.first, certificate: certificate, user_id: user_id)
       end
 
+      # Indicates if this version support multi certificate requests
+      def self.supports_multi?
+        false
+      end
+
       private
 
       def log_to_db(id:, certificate:, user_id:)

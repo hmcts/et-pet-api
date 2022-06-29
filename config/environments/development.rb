@@ -88,6 +88,8 @@ Rails.application.configure do
   config.et_acas_api.server_time_zone = 'Europe/London'
   config.et_acas_api.service_url = ENV.fetch('ACAS_SERVICE_URL', 'https://testec.acas.org.uk/Lookup/ECService.svc')
   config.et_acas_api.api_version = 2
+  config.et_acas_api.json_subscription_key = 'testsubscriptionkey'
+  config.et_acas_api.json_service_url = ENV.fetch('ACAS_JSON_SERVICE_URL', 'http://localhost:3001/ECCLJson')
 
   config.hosts.clear
 

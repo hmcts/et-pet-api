@@ -96,37 +96,4 @@ RSpec.describe EtAcasApi::CertificateQuery do
       expect(result).to eql(id: ['Some error message'])
     end
   end
-
-  describe '#initialize' do
-    context 'using api_version 1' do
-      let!(:fake_acas_api_service_class) { class_spy('EtAcasApi::V1::AcasApiService', new: 'anything').as_stubbed_const }
-      subject(:query) { described_class.new(ids: [certificate_number], user_id: user_id, api_version: 1) }
-
-      it 'uses version 1 of the service' do
-        subject
-        expect(fake_acas_api_service_class).to have_received(:new)
-      end
-    end
-
-    context 'using api_version 2' do
-      let!(:fake_acas_api_service_class) { class_spy('EtAcasApi::V2::AcasApiService', new: 'anything').as_stubbed_const }
-      subject(:query) { described_class.new(ids: [certificate_number], user_id: user_id, api_version: 2) }
-
-      it 'uses version 2 of the service' do
-        subject
-        expect(fake_acas_api_service_class).to have_received(:new)
-      end
-    end
-
-    context 'using the default api_version' do
-      let!(:fake_acas_api_service_class) { class_spy('EtAcasApi::V1::AcasApiService', new: 'anything').as_stubbed_const }
-      subject(:query) { described_class.new(ids: [certificate_number], user_id: user_id) }
-
-      it 'uses version 1 of the service' do
-        subject
-        expect(fake_acas_api_service_class).to have_received(:new)
-      end
-
-    end
-  end
 end

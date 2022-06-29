@@ -74,6 +74,8 @@ Rails.application.configure do
   config.et_acas_api.server_time_zone = 'Europe/London'
   config.et_acas_api.service_url = 'http://fakeservice.com/Lookup/ECService.svc'
   config.et_acas_api.api_version = 2
+  config.et_acas_api.json_subscription_key = 'testsubscriptionkey'
+  config.et_acas_api.json_service_url = 'http://fakeservice.com/ECCLJson'
 
   config.azure_insights.enable = false
 
