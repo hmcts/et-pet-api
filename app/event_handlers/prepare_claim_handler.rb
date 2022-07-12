@@ -66,8 +66,6 @@ class PrepareClaimHandler
         case result.status
         when :found then
           certificates.each_with_index do |c, idx|
-            next if c.respondent_name.present?
-
             c.respondent_name = respondents[idx].name
           end
           certificates
