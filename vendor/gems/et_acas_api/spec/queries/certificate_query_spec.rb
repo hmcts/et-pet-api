@@ -1,13 +1,13 @@
 require 'rails_helper'
 RSpec.describe EtAcasApi::CertificateQuery do
   let(:user_id) { 'my_user' }
-  subject(:query) { described_class.new(id: certificate_number, user_id: user_id, acas_api_service: fake_acas_api_service) }
+  subject(:query) { described_class.new(ids: [certificate_number], user_id: user_id, acas_api_service: fake_acas_api_service) }
   let(:certificate_number) { 'R123456/14/01' }
-  let(:fake_acas_api_service) { instance_spy('EtAcasApi::AcasApiService', errors: {}) }
+  let(:fake_acas_api_service) { instance_spy('EtAcasApi::V1::AcasApiService', errors: {}) }
   describe '#valid?' do
-    context 'with invalid certificate number' do
+    context 'with invalid collection number' do
       let(:certificate_number) { 'S123456/14/01' }
-      it 'should be false when the format of the id (certificate number) is invalid' do
+      it 'should be false when the format of the id (collection number) is invalid' do
         # Act
         result = query.valid?
 
@@ -20,12 +20,12 @@ RSpec.describe EtAcasApi::CertificateQuery do
 
   describe '#status' do
     it 'should mirror what the underlying api service says' do
-      # Arrange - Setup the fake acas api service to respond accordingly and create a certificate
+      # Arrange - Setup the fake acas api service to respond accordingly and create a collection
       expect(fake_acas_api_service).to receive(:status).at_least(:once).and_return(:my_value)
-      certificate = instance_double('EtAcasApi::Certificate')
+      root_object = []
 
       # Act
-      query.apply(certificate)
+      query.apply(root_object)
       result = query.status
 
       # Assert
@@ -34,25 +34,25 @@ RSpec.describe EtAcasApi::CertificateQuery do
   end
 
   describe '#apply' do
-    it 'request that the underlying service populates the root object (certificate) when found' do
-      # Arrange - Setup a certificate
-      certificate = instance_double('EtAcasApi::Certificate')
+    it 'request that the underlying service populates the root object (collection) when found' do
+      # Arrange - Setup a collection
+      root_object = []
 
       # Act
-      query.apply(certificate)
+      query.apply(root_object)
 
       # Assert - Ensure the service was called
-      expect(fake_acas_api_service).to have_received(:call).with(certificate_number, user_id: 'my_user', into: certificate)
+      expect(fake_acas_api_service).to have_received(:call).with([certificate_number], user_id: 'my_user', into: root_object)
     end
 
-    context 'with invalid certificate number' do
+    context 'with invalid collection number' do
       let(:certificate_number) { 'S123456/14/00' }
       it 'sets status without calling the service' do
-        # Arrange - Setup a certificate
-        certificate = instance_double('EtAcasApi::Certificate')
+        # Arrange - Setup a collection
+        collection = []
 
         # Act
-        query.apply(certificate)
+        query.apply(collection)
 
         # Assert - Ensure the service was not called, the status is set and the errors contain the correct error
         aggregate_failures 'service not called and status set' do
@@ -66,11 +66,11 @@ RSpec.describe EtAcasApi::CertificateQuery do
     context 'with nil user_id' do
       let(:user_id) { nil }
       it 'sets status without calling the service' do
-        # Arrange - Setup a certificate
-        certificate = instance_double('EtAcasApi::Certificate')
+        # Arrange - Setup a collection
+        collection = []
 
         # Act
-        query.apply(certificate)
+        query.apply(collection)
 
         # Assert - Ensure the service was not called, the status is set and the errors contain the correct error
         aggregate_failures 'service not called and status set' do
@@ -84,12 +84,12 @@ RSpec.describe EtAcasApi::CertificateQuery do
 
   describe '#errors' do
     it  'should mirror what the underlying api service says' do
-      # Arrange - Setup the fake acas api service to respond accordingly and create a certificate
+      # Arrange - Setup the fake acas api service to respond accordingly and create a collection
       expect(fake_acas_api_service).to receive(:errors).at_least(:once).and_return(id: ['Some error message'])
-      certificate = instance_double('EtAcasApi::Certificate')
+      collection = []
 
       # Act
-      query.apply(certificate)
+      query.apply(collection)
       result = query.errors
 
       # Assert

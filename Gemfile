@@ -53,7 +53,7 @@ gem 'pdf-forms', '~> 1.3'
 gem 'azure-storage-blob', '~> 2.0', '>= 2.0.1'
 
 # For general easy http access - mainly for test but used in app too
-gem 'httparty', '~> 0.17'
+gem 'httparty', '~> 0.20'
 gem 'dotenv-rails', '~> 2.7'
 
 group :development, :test do
@@ -81,7 +81,7 @@ group :test do
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 2.15'
   gem 'webmock', '~> 3.11'
-  gem 'et_fake_acas_server', '~> 0.1'
+  gem 'et_fake_acas_server', '~> 0.2'
   gem 'gov_fake_notify', git: 'https://github.com/hmcts/gov_fake_notify.git', tag: 'v1.1.2'
 end
 
