@@ -45,6 +45,7 @@ class PrepareClaimHandler
       claim.events.claim_acas_requested.create data: { status: 'unknown' }
       return
     end
+    return unless certs.is_a?(Array)
 
     certs.each do |cert|
       if cert.is_a?(::EtAcasApi::Certificate)
