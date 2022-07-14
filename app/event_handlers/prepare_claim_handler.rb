@@ -41,6 +41,11 @@ class PrepareClaimHandler
     downloader = acas_future(claim)
     yield
     certs = downloader.value
+    if certs.nil?
+      claim.events.claim_acas_requested.create data: { status: 'unknown' }
+      return
+    end
+
     certs.each do |cert|
       if cert.is_a?(::EtAcasApi::Certificate)
         uploaded_file = claim.uploaded_files.system_file_scope.build(filename: "acas_#{cert.respondent_name}.pdf")
