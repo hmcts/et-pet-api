@@ -89,7 +89,7 @@ RSpec.describe 'Create Claim Request', type: :request do
         CSV.foreach(full_path, headers: true).each_with_object([]) do |row, acc|
           data = row.to_hash
           acc << build(:json_claimant_data,
-                       title: data['Title'],
+                       title: data['Title']&.strip&.downcase&.capitalize,
                        first_name: data['First name']&.downcase,
                        last_name: data['Last name']&.downcase,
                        address_attributes:
