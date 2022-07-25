@@ -89,7 +89,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
   end
 
   def normalize_row(row) # rubocop:disable Metrics/AbcSize
-    { title: row['Title']&.titleize&.strip,
+    { title: row['Title']&.strip&.downcase&.capitalize,
       first_name: row['First name']&.strip,
       last_name: row['Last name']&.strip,
       date_of_birth: row['Date of birth']&.strip,
@@ -121,6 +121,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
   class ClaimantsFile
     include ActiveModel::Model
     include ActiveModel::Attributes
+    include ActiveModel::Validations::Callbacks
 
     TITLES      = ['Mr', 'Mrs', 'Miss', 'Ms'].freeze
     NAME_LENGTH = 100

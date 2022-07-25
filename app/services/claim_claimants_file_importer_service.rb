@@ -69,7 +69,7 @@ class ClaimClaimantsFileImporterService
   end
 
   def build_claimant_from(row)
-    Claimant.new title: row["Title"]&.strip&.titleize, first_name: row['First name']&.downcase&.strip,
+    Claimant.new title: row["Title"]&.strip&.downcase&.capitalize, first_name: row['First name']&.downcase&.strip,
                  last_name: row['Last name']&.downcase&.strip, date_of_birth: row['Date of birth']&.strip,
                  address_attributes: address_from_row(row)
   end

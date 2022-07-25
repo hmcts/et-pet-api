@@ -17,7 +17,7 @@ module EtApi
         claimants_array = []
         CSV.foreach tempfile, headers: true do |row|
           claimants_array << {
-            title: row['Title']&.strip,
+            title: row['Title']&.downcase&.capitalize&.strip,
             first_name: row['First name'].try(:downcase)&.strip,
             last_name: row['Last name'].try(:downcase)&.strip,
             date_of_birth: Date.parse(row['Date of birth']&.strip),
