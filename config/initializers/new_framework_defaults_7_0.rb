@@ -28,7 +28,7 @@ Rails.application.config.action_view.apply_stylesheet_media_default = false
 # Change the digest class for ActiveSupport::Digest.
 # Changing this default means that for example Etags change and
 # various cache keys leading to cache invalidation.
-# Rails.application.config.active_support.hash_digest_class = OpenSSL::Digest::SHA256
+Rails.application.config.active_support.hash_digest_class = OpenSSL::Digest::SHA256
 
 # Don't override ActiveSupport::TimeWithZone.name and use the default Ruby
 # implementation.
@@ -50,7 +50,7 @@ Rails.application.config.active_support.remove_deprecated_time_with_zone_name = 
 # Define the isolation level of most of Rails internal state.
 # If you use a fiber based server or job processor, you should set it to `:fiber`.
 # Otherwise the default of `:thread` if preferable.
-# Rails.application.config.active_support.isolation_level = :thread
+Rails.application.config.active_support.isolation_level = :thread
 
 # Set both the `:open_timeout` and `:read_timeout` values for `:smtp` delivery method.
 # Rails.application.config.action_mailer.smtp_timeout = 5
