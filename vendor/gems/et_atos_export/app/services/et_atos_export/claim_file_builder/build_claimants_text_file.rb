@@ -21,7 +21,7 @@ module EtAtosExport
                                        claim:               claim, primary_claimant: claim.primary_claimant,
                                        secondary_claimants: claim.secondary_claimants.includes(:address),
                                        primary_respondent:  claim.primary_respondent
-                                     }, formats: [:txt]
+                                     }, formats: [:text]
       end
 
       private_class_method :raw_claimants_text_file, :render

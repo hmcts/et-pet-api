@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '6.1.2.1'
+gem 'rails', '7.0.3.1'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/ministryofjustice/azure_env_secrets.git', tag: 'v0.1.3'
@@ -62,7 +62,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 4.0'
   gem 'simplecov', '~> 0.21'
   gem 'site_prism', '~> 3.7'
-  gem 'bullet', '~> 6.1'
+  gem 'bullet', '~> 7.0'
   gem 'parallel_tests', '~> 3.7', '>= 3.7.3'
 end
 
@@ -81,7 +81,7 @@ group :test do
   gem 'rspec-eventually', '~> 0.2.2'
   gem 'faker', '~> 2.15'
   gem 'webmock', '~> 3.11'
-  gem 'et_fake_acas_server', '~> 0.2'
+  gem 'et_fake_acas_server', '~> 0.3'
   gem 'gov_fake_notify', git: 'https://github.com/hmcts/gov_fake_notify.git', tag: 'v1.1.2'
 end
 

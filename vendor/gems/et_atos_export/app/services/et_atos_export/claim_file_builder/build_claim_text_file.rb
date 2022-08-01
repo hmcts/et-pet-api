@@ -23,7 +23,7 @@ module EtAtosExport
                                        primary_representative: claim.primary_representative,
                                        additional_respondents: claim.secondary_respondents.includes(:address)
                                      },
-                                     formats: [:txt]
+                                     formats: [:text]
       end
 
       private_class_method :raw_text_file, :render

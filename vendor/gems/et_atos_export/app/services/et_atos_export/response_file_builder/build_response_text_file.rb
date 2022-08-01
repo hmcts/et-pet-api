@@ -23,7 +23,7 @@ module EtAtosExport
                                        representative: response.representative,
                                        office:         office_for(response)
                                      },
-                                     formats: [:txt]
+                                     formats: [:text]
       end
 
       def self.office_for(response, office_service: OfficeService)

@@ -8,10 +8,11 @@ require "active_record/railtie"
 require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
+# require "action_mailbox/engine"
+# require "action_text/engine"
 require "action_view/railtie"
 require_relative '../app/services/event_service'
 # require "action_cable/engine"
-# require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
@@ -21,7 +22,7 @@ Bundler.require(*Rails.groups)
 module EtApi
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.1
+    config.load_defaults 7.0
 
     # Configuration for the application, engines, and railties goes here.
     #

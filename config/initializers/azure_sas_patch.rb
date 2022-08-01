@@ -10,8 +10,8 @@ require 'azure/storage/common/core/auth/shared_access_signature_generator'
 # and read this comment - then deciding if the patch is still needed.  If it is, simply update the version checker in the code below
 #
 
-if Azure::Storage::Common::Version.to_s != '2.0.2'
-  raise "The patch in #{__FILE__} is only compatible with azure-storage-common version 2.0.2 - please check if this is still required by running tests without it"
+if Azure::Storage::Common::Version.to_s != '2.0.4'
+  raise "The patch in #{__FILE__} is only compatible with azure-storage-common version 2.0.4 - please check if this is still required by running tests without it"
 end
 module Azure
   module Storage
