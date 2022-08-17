@@ -65,7 +65,6 @@ PATH
       jbuilder (~> 2.5)
       pg (>= 0.18, < 2.0)
       rails (>= 5.2.0)
-      ruby-mcrypt (~> 0.2)
       savon (~> 2.12)
 
 PATH

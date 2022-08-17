@@ -83,10 +83,6 @@ class PrepareClaimHandler
   end
 
   def respondents_needing_acas(claim)
-    if EtAcasApi::QueryService.supports_multi?
-      ([claim.primary_respondent] + claim.secondary_respondents)
-    else
-      [claim.primary_respondent]
-    end
+    [claim.primary_respondent] + claim.secondary_respondents
   end
 end
