@@ -85,5 +85,37 @@ RSpec.describe OfficeService do
       # Assert
       expect(result).to be_nil
     end
+
+    it 'finds office 60 which translates to leeds due to new rules for new reform ET1 cases' do
+      # Act
+      result = service.lookup_by_case_number('6012345/2016')
+
+      # Assert
+      expect(result).to be_a(Office).and(have_attributes(code: 60, name: 'Leeds'))
+    end
+
+    it 'finds office 61 which translates to leeds due to new rules for new reform ET1 cases' do
+      # Act
+      result = service.lookup_by_case_number('6112345/2016')
+
+      # Assert
+      expect(result).to be_a(Office).and(have_attributes(code: 61, name: 'Leeds'))
+    end
+
+    it 'finds office 80 which translates to glasgow due to new rules for new reform ET1 cases' do
+      # Act
+      result = service.lookup_by_case_number('8012345/2016')
+
+      # Assert
+      expect(result).to be_a(Office).and(have_attributes(code: 80, name: 'Glasgow'))
+    end
+
+    it 'finds office 81 which translates to glasgow due to new rules for new reform ET1 cases' do
+      # Act
+      result = service.lookup_by_case_number('8112345/2016')
+
+      # Assert
+      expect(result).to be_a(Office).and(have_attributes(code: 81, name: 'Glasgow'))
+    end
   end
 end
