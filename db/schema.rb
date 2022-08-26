@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_08_26_103604) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -23,8 +22,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.bigint "resource_id"
     t.string "author_type"
     t.bigint "author_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource"
@@ -35,7 +34,7 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -47,7 +46,7 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.text "metadata"
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -65,15 +64,15 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "county"
     t.string "string"
     t.string "post_code"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "country"
   end
 
   create_table "admin_permissions", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "admin_role_permissions", force: :cascade do |t|
@@ -100,23 +99,23 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
     t.string "permission_names", array: true
     t.boolean "is_admin", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "username"
     t.string "name"
     t.string "department"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at"
+    t.datetime "locked_at", precision: nil
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_admin_users_on_unlock_token", unique: true
@@ -133,8 +132,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
   create_table "claim_representatives", force: :cascade do |t|
     t.bigint "claim_id"
     t.bigint "representative_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["claim_id"], name: "index_claim_representatives_on_claim_id"
     t.index ["representative_id"], name: "index_claim_representatives_on_representative_id"
   end
@@ -142,8 +141,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
   create_table "claim_respondents", force: :cascade do |t|
     t.bigint "claim_id"
     t.bigint "respondent_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["claim_id"], name: "index_claim_respondents_on_claim_id"
     t.index ["respondent_id"], name: "index_claim_respondents_on_respondent_id"
   end
@@ -151,8 +150,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
   create_table "claim_uploaded_files", force: :cascade do |t|
     t.bigint "claim_id"
     t.bigint "uploaded_file_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["claim_id"], name: "index_claim_uploaded_files_on_claim_id"
     t.index ["uploaded_file_id"], name: "index_claim_uploaded_files_on_uploaded_file_id"
   end
@@ -168,8 +167,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "contact_preference"
     t.string "gender"
     t.date "date_of_birth"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "fax_number"
     t.text "special_needs"
     t.boolean "allow_video_attendance"
@@ -184,10 +183,10 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "case_type"
     t.integer "jurisdiction"
     t.integer "office_code"
-    t.datetime "date_of_receipt"
+    t.datetime "date_of_receipt", precision: nil
     t.boolean "administrator"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "primary_claimant_id", null: false
     t.string "other_known_claimant_names"
     t.string "discrimination_claims", default: [], null: false, array: true
@@ -220,8 +219,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.integer "response_status"
     t.string "root_object_type"
     t.bigint "root_object_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["id"], name: "index_commands_on_id", unique: true
     t.index ["root_object_type", "root_object_id"], name: "index_commands_on_root_object"
   end
@@ -240,8 +239,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "pregnancy"
     t.string "relationship"
     t.string "religion"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "et_acas_api_download_logs", force: :cascade do |t|
@@ -250,8 +249,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "method_of_issue"
     t.string "message"
     t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "events", force: :cascade do |t|
@@ -259,8 +258,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.bigint "attached_to_id", null: false
     t.string "name", null: false
     t.jsonb "data", default: {}
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["attached_to_type", "attached_to_id"], name: "index_events_on_attached_to_type_and_attached_to_id"
   end
 
@@ -269,8 +268,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "state"
     t.uuid "uuid"
     t.jsonb "data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "percent_complete"
     t.string "message"
     t.index ["export_id"], name: "index_export_events_on_export_id"
@@ -279,8 +278,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
   create_table "exported_files", force: :cascade do |t|
     t.string "filename"
     t.string "content_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "external_system_id", null: false
     t.index ["external_system_id"], name: "index_exported_files_on_external_system_id"
   end
@@ -290,8 +289,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.bigint "pdf_file_id"
     t.boolean "in_progress"
     t.string "messages", default: [], array: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "resource_type"
     t.bigint "external_system_id", null: false
     t.string "state", default: "created"
@@ -308,8 +307,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "value", null: false
     t.boolean "can_read", default: true, null: false
     t.boolean "can_write", default: true, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["external_system_id"], name: "index_external_system_configurations_on_external_system_id"
   end
 
@@ -318,8 +317,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "reference", null: false
     t.integer "office_codes", default: [], array: true
     t.boolean "enabled", default: true
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "export_queue"
     t.boolean "export_claims", default: false
     t.boolean "export_responses", default: false, null: false
@@ -331,8 +330,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
   create_table "office_post_codes", force: :cascade do |t|
     t.string "postcode"
     t.bigint "office_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["office_id"], name: "index_office_post_codes_on_office_id"
     t.index ["postcode"], name: "index_office_post_codes_on_postcode", unique: true
   end
@@ -344,8 +343,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "address"
     t.string "telephone"
     t.string "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "pre_allocated_file_keys", force: :cascade do |t|
@@ -353,8 +352,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "allocated_to_type"
     t.bigint "allocated_to_id"
     t.string "filename"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["allocated_to_type", "allocated_to_id"], name: "index_pre_allocated_file_keys_to_allocated_id_and_type"
   end
 
@@ -367,8 +366,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "email_address"
     t.string "representative_type"
     t.string "dx_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "reference"
     t.string "contact_preference"
     t.string "fax_number"
@@ -383,8 +382,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.string "acas_number"
     t.bigint "work_address_id"
     t.string "alt_phone_number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "contact"
     t.string "dx_number"
     t.string "contact_preference"
@@ -405,8 +404,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
   create_table "response_uploaded_files", force: :cascade do |t|
     t.bigint "response_id"
     t.bigint "uploaded_file_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["response_id"], name: "index_response_uploaded_files_on_response_id"
     t.index ["uploaded_file_id"], name: "index_response_uploaded_files_on_uploaded_file_id"
   end
@@ -414,7 +413,7 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
   create_table "responses", force: :cascade do |t|
     t.bigint "respondent_id"
     t.bigint "representative_id"
-    t.datetime "date_of_receipt"
+    t.datetime "date_of_receipt", precision: nil
     t.string "reference"
     t.string "case_number"
     t.string "claimants_name"
@@ -443,8 +442,8 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
     t.boolean "make_employer_contract_claim"
     t.string "claim_information"
     t.string "email_receipt"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "pdf_template_reference", null: false
     t.string "email_template_reference", null: false
     t.integer "office_id"
@@ -455,15 +454,15 @@ ActiveRecord::Schema[6.1].define(version: 2021_11_29_142635) do
 
   create_table "unique_references", force: :cascade do |t|
     t.integer "number"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "uploaded_files", force: :cascade do |t|
     t.string "filename"
     t.string "checksum"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "import_file_url"
     t.string "import_from_key"
     t.string "file_scope", default: "system"

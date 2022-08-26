@@ -20,13 +20,23 @@ office_code,office_name,office_address,office_telephone,office_email,is_default
 50,London,"Employment Appeal Tribunal, Second Floor, Fleetbank House, 2-6 Salisbury Square, London, EC4Y 8JX",020 7273 1041,londoneat@hmcts.gsi.gov.uk,0
 51,Edinburgh,"EAT Edinburgh, 52 Melville Street, Edinburgh, EH3 7HF",0131 225 3963,edinburgheat@hmcts.gsi.gov.uk,0
 99,Default,"Alexandra House, 14-22 The Parsonage, Manchester M3 2JA",0161 833 5113,employmentJurisdictionalSupportTeamInbox@justice.gov.uk,1
-60,Test1,"Test 1 address",01234 566789,test1@example.com,0
-61,Test2,"Test 2 address",01234 566789,test2@example.com,0
-62,Test3,"Test 3 address",01234 566789,test3@example.com,0
-64,Test4,"Test 4 address",01234 566789,test4@example.com,0
-65,Test5,"Test 5 address",01234 566789,test5@example.com,0
-66,Test6,"Test 6 address",01234 566789,test6@example.com,0
-67,Test7,"Test 7 address",01234 566789,test7@example.com,0
-68,Test8,"Test 8 address",01234 566789,test8@example.com,0
-69,Test9,"Test 9 address",01234 566789,test9@example.com,0
+60,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@justice.gov.uk,0
+61,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@justice.gov.uk,0
+62,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@justice.gov.uk,0
+64,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@justice.gov.uk,0
+65,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@justice.gov.uk,0
+66,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@justice.gov.uk,0
+67,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@justice.gov.uk,0
+68,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@justice.gov.uk,0
+69,Leeds,"4th Floor, City Exchange, 11 Albion Street, Leeds LS1 5ES",0113 245 9741,leedset@justice.gov.uk,0
 70,Test10,"Test 10 address",01234 566789,test10@example.com,0
+80,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
+81,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
+82,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
+83,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
+84,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
+85,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
+86,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
+87,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
+88,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
+89,Glasgow,"Eagle Building, 215 Bothwell Street, Glasgow, G2 7TS",0141 204 0730,glasgowet@justice.gov.uk,0
