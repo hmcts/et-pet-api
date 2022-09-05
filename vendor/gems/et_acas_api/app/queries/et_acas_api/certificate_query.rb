@@ -7,10 +7,15 @@ module EtAcasApi
       self.user_id = user_id
       self.ids = ids
       self.errors = {}
+      self.status = :invalid
     end
 
     def apply(root_object)
       return unless valid?
+
+      self.status = :not_required
+      return if ids.empty?
+
       acas_api_service.call(ids, user_id: user_id, into: root_object)
       add_errors
       set_status

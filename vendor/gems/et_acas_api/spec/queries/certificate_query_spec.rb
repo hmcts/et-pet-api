@@ -3,7 +3,7 @@ RSpec.describe EtAcasApi::CertificateQuery do
   let(:user_id) { 'my_user' }
   subject(:query) { described_class.new(ids: [certificate_number], user_id: user_id, acas_api_service: fake_acas_api_service) }
   let(:certificate_number) { 'R123456/14/01' }
-  let(:fake_acas_api_service) { instance_spy('EtAcasApi::V1::AcasApiService', errors: {}) }
+  let(:fake_acas_api_service) { instance_spy('EtAcasApi::V2::AcasApiService', errors: {}) }
   describe '#valid?' do
     context 'with invalid collection number' do
       let(:certificate_number) { 'S123456/14/01' }
