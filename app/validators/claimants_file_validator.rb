@@ -143,6 +143,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     validates :post_code, post_code: true, length: { maximum: POSTCODE_LENGTH }
     validate :older_than_16
     validate :illegal_birth_year
+    validates :street, :locality, length: { maximum: 50 }
 
     private
 
