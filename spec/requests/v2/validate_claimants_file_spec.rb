@@ -67,7 +67,9 @@ RSpec.describe 'Validate Claimants File Request', type: :request do
         # Assert - Make sure we get the json pointer in the response
         expect(json_response.deep_symbolize_keys).to include errors: a_collection_including(
           hash_including(source: '/data_from_key/0/date_of_birth', code: 'invalid', title: 'is invalid', command: input_factory.command, uuid: input_factory.uuid),
-          hash_including(source: '/data_from_key/1/title', code: 'inclusion', title: 'is not included in the list', command: input_factory.command, uuid: input_factory.uuid)
+          hash_including(source: '/data_from_key/1/title', code: 'inclusion', title: 'is not included in the list', command: input_factory.command, uuid: input_factory.uuid),
+          hash_including(source: '/data_from_key/2/street', code: 'too_long', title: 'is too long (maximum is 50 characters)', command: input_factory.command, uuid: input_factory.uuid),
+          hash_including(source: '/data_from_key/3/locality', code: 'too_long', title: 'is too long (maximum is 50 characters)', command: input_factory.command, uuid: input_factory.uuid)
         )
       end
     end
