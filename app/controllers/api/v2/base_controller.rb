@@ -23,6 +23,7 @@ module Api
           code: detail[:error],
           title: message,
           detail: message,
+          options: detail.except(:error, :uuid, :command),
           source: indexed_attribute_to_json_path(attribute),
           command: detail[:command],
           uuid: detail[:uuid]
