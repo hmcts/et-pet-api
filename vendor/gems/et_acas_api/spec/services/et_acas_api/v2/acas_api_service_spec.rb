@@ -48,7 +48,7 @@ RSpec.describe EtAcasApi::V2::AcasApiService do
 
     it 'requests the data and sets status to :found with a positive response' do
       # Arrange - Build a stub which responds with the correct body
-      response_factory = build(:json_valid_acas_response, :valid)
+      response_factory = build(:soap_valid_acas_response, :valid)
       stub_request(:post, example_get_certificate_url).to_return status: 200,
                                                                  headers: { 'Content-Type' => 'application/json' },
                                                                  body: [response_factory].to_json

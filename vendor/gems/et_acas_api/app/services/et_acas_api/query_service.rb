@@ -2,7 +2,6 @@ module EtAcasApi
   class QueryService
     # @param [String] query
     # @param [Array] root_object
-    # @return [EtAcasApi::CertificateQuery] The query result
     def self.dispatch(query:, root_object:, api_version: Rails.configuration.et_acas_api.api_version, acas_api_service: "::EtAcasApi::V#{api_version}::AcasApiService".constantize, **attrs)
       query_class = "::EtAcasApi::#{query}Query".safe_constantize
       if query_class.nil?

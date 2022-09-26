@@ -68,7 +68,11 @@ Rails.application.configure do
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
 
+  config.et_acas_api.acas_rsa_certificate = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__))
+  config.et_acas_api.rsa_certificate = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__))
+  config.et_acas_api.rsa_private_key = File.read(File.absolute_path(Rails.root.join('vendor', 'gems', 'et_acas_api', 'spec', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__))
   config.et_acas_api.server_time_zone = 'Europe/London'
+  config.et_acas_api.service_url = 'http://fakeservice.com/Lookup/ECService.svc'
   config.et_acas_api.api_version = 2
   config.et_acas_api.json_subscription_key = 'testsubscriptionkey'
   config.et_acas_api.json_service_url = 'http://fakeservice.com/ECCLJson'
