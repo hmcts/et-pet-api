@@ -141,20 +141,21 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     validates :title, :first_name, :last_name, presence: true
     validates :first_name, :last_name, length: { maximum: NAME_LENGTH }
     validates :post_code, post_code: true, length: { maximum: POSTCODE_LENGTH }
-    validate :older_than_16
-    validate :illegal_birth_year
     validates :street, :locality, length: { maximum: 50 }
+    validate :illegal_birth_year
+    validate :age_between_range
+
 
     private
 
-    def older_than_16
-      if date_of_birth.present? && date_of_birth >= 16.years.ago.midnight
-        errors.add :date_of_birth, :too_young
-      end
-    end
-
     def illegal_birth_year
       errors.add :date_of_birth, :invalid if date_of_birth.nil? || date_of_birth.year < 1000
+    end
+
+    def age_between_range
+      return if date_of_birth.nil?
+
+      errors.add :date_of_birth, :date_range if !(date_of_birth > 100.years.ago and date_of_birth < 10.years.ago)
     end
   end
 end

@@ -65,7 +65,7 @@ en:
         claimants_file_validator/claimants_file:
           attributes:
             date_of_birth:
-              too_young: Claimant must be 16 years of age or over
+              date_range: Age must be between 10 and 100
         validate_claimants_file_command:
           invalid_columns: file does not contain the correct columns
           empty_file: file is empty
