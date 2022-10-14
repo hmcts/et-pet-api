@@ -3,7 +3,6 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
   include PdfBuilder::MultiTemplate
   include PdfBuilder::Rendering
   include PdfBuilder::PreAllocation
-  include PdfBuilder::ActiveStorage
 
   def self.call(source, template_reference: 'et1-v3-en', time_zone: 'London', **)
     new(source, template_reference: template_reference, time_zone: time_zone).call
@@ -44,11 +43,10 @@ class BuildClaimPdfFileService # rubocop:disable Metrics/ClassLength
 
   def blobs_for_pdf_files(citizen_filename, office_filename)
     files = render_to_files
-    [::ActiveStorage::Blob.new.tap do |blob|
+    [::ActiveStorage::Blob.find_or_initialize_by(key: pre_allocated_key(citizen_filename)).tap do |blob|
       blob.filename = citizen_filename
       blob.content_type = 'application/pdf'
-      blob.metadata = nil
-      blob.key = pre_allocated_key(citizen_filename)
+      blob.metadata[:uploaded] = true
       blob.service_name = Rails.configuration.active_storage.service
       blob.upload files.first
     end,

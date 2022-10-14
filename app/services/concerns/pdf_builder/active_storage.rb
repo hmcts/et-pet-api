@@ -9,11 +9,10 @@ module PdfBuilder
     private
 
     def blob_for_pdf_file(filename)
-      ::ActiveStorage::Blob.new.tap do |blob|
+      ::ActiveStorage::Blob.find_or_initialize_by(key: pre_allocated_key(filename)).tap do |blob|
         blob.filename = filename
         blob.content_type = 'application/pdf'
         blob.metadata = nil
-        blob.key = pre_allocated_key(filename)
         blob.service_name = Rails.configuration.active_storage.service
         blob.upload render_to_file
       end

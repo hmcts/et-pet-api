@@ -26,6 +26,11 @@ Rails.application.routes.draw do
         post "export_claims" => 'export_claims#create'
       end
       post "build_blob" => "build_blobs#create"
+      post "create_blob" => "create_blobs#create"
+
+      get "/blobs/:signed_id/*filename" => "blobs#show", as: :blob
+      patch "/blobs/:signed_id/*filename" => "blobs#update", as: nil
+      put "/blobs/:signed_id/*filename" => "blobs#update", as: nil
       post "validate" => "validation#validate"
     end
   end

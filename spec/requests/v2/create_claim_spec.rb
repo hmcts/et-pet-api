@@ -200,15 +200,16 @@ RSpec.describe 'Create Claim Request', type: :request do
       it 'returns the expected pdf url which will return 404 when fetched before background jobs run', background_jobs: :disable do
         # Assert - Make sure we get the pdf url in the metadata and it returns a 404 when accessed
         url = json_response.dig(:meta, 'BuildClaim', 'pdf_url')
-        res = HTTParty.get(url)
-        expect(res.code).to be 404
+        get(url)
+        #res = HTTParty.get(url)
+        expect(response.code).to eql '404'
       end
 
       it 'returns the actual pdf url which should be accessible after the background jobs have run' do
         # Assert - Make sure we get the pdf url in the metadata and it returns a 404 when accessed
         url = json_response.dig(:meta, 'BuildClaim', 'pdf_url')
-        res = HTTParty.get(url)
-        expect(res.code).to be 200
+        get(url)
+        expect(response.code).to eql '200'
       end
 
       it 'creates a valid pdf file the data filled in correctly' do
