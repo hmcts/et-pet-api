@@ -137,9 +137,8 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     attribute :county, :string
     attribute :post_code, :string
 
-    validates :title, inclusion: { in: TITLES }
-    validates :title, :first_name, :last_name, presence: true
-    validates :first_name, :last_name, length: { maximum: NAME_LENGTH }
+    validates :title, inclusion: { in: TITLES }, allow_blank: true
+    validates :first_name, :last_name, length: { maximum: NAME_LENGTH }, presence: true
     validates :post_code, post_code: true, length: { maximum: POSTCODE_LENGTH }
     validates :street, :locality, length: { maximum: 50 }
     validate :illegal_birth_year
