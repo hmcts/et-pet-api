@@ -34,7 +34,10 @@ RSpec.describe ValidateClaimantsFileCommand do
         expect(command.errors.details.to_hash).to include \
           'data_from_key[0].date_of_birth': a_collection_containing_exactly(
             a_hash_including(error: :invalid, uuid: data.uuid, command: data.command)
-          ),
+        ),
+          'data_from_key[9].date_of_birth': a_collection_containing_exactly(
+            a_hash_including(error: :date_range, uuid: data.uuid, command: data.command)
+        ),
           'data_from_key[1].title': a_collection_containing_exactly(
             a_hash_including(error: :inclusion, uuid: data.uuid, command: data.command)
           )
@@ -47,6 +50,7 @@ RSpec.describe ValidateClaimantsFileCommand do
         # Assert
         expect(command.errors.messages.to_hash).to include \
           'data_from_key[0].date_of_birth': a_collection_containing_exactly('is invalid'),
+          'data_from_key[9].date_of_birth': a_collection_containing_exactly('Age must be between 10 and 100'),
           'data_from_key[1].title': a_collection_containing_exactly('is not included in the list')
       end
     end
