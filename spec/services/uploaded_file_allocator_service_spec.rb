@@ -1,24 +1,34 @@
 require 'rails_helper'
 RSpec.describe UploadedFileAllocatorService do
   subject(:service) { described_class.new }
-  let(:response) { build(:response) }
+  let(:response_object) { build(:response) }
+
+  around do |example|
+    ActiveStorage::Current.set(host: 'www.example.com') do
+      example.run
+    end
+  end
 
   describe '#allocate' do
     it 'allocates a file to the collection with an empty blob' do
       # Act
-      service.allocate('test.pdf', into: response)
+      service.allocate('test.pdf', into: response_object)
 
       # Assert
-      expect(response.pre_allocated_file_keys.detect { |k| k.filename == 'test.pdf' }).to be_present
+      expect(response_object.pre_allocated_file_keys.detect { |k| k.filename == 'test.pdf' }).to be_present
     end
   end
 
   describe '#allocated_url' do
+    include ActionDispatch::Integration::Runner
+    def app
+      ::Rails.application
+    end
     context 'using azure storage' do
       include_context 'with cloud provider switching', cloud_provider: :azure_test
       it 'returns the url of the allocated file on azure' do
         # Arrange - Allocate a file
-        service.allocate('test.pdf', into: response)
+        service.allocate('test.pdf', into: response_object)
 
         # Act - get the url
         result = service.allocated_url
@@ -29,36 +39,23 @@ RSpec.describe UploadedFileAllocatorService do
 
       it 'returns a url that will 404 if requested' do
         # Arrange - Allocate a file
-        service.allocate('test.pdf', into: response)
+        service.allocate('test.pdf', into: response_object)
 
         # Act - get from the url
-        result = HTTParty.get service.allocated_url
+        get service.allocated_url
 
         # Assert - make sure the response is a 404 when requested
-        expect(result.code).to be 404
+        expect(response).to have_http_status(:not_found)
       end
 
-      it 'returns a url which will expire in 1 hour' do
+      it 'returns a rails url to access the blob' do
         # Arrange - Allocate a file
-        service.allocate('test.pdf', into: response)
+        service.allocate('test.pdf', into: response_object)
 
         # Act - get the url
         result = service.allocated_url
 
-        # Assert - make sure it is a url
-        query = Rack::Utils.parse_nested_query(URI.parse(result).query)
-        expiry = Time.zone.parse(query['se']).utc
-        expect(expiry - Time.zone.now.utc).to be_between(3590, 3600)
-      end
-
-      it 'returns an azurite test server url as we are in test mode' do
-        # Arrange - Allocate a file
-        service.allocate('test.pdf', into: response)
-
-        # Act - get the url
-        result = service.allocated_url
-
-        expect(result).to start_with("#{ActiveStorage::Blob.service.client.generate_uri}/#{ActiveStorage::Blob.service.container}")
+        expect(result).to start_with("/api/v2/blobs/")
       end
     end
   end

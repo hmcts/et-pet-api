@@ -6,6 +6,11 @@ RSpec.describe BuildResponseCommand do
   let(:uuid) { SecureRandom.uuid }
   let(:data) { build(:json_response_data, :full, case_number: '2234567/2016').as_json }
   let(:root_object) { Response.new }
+  around do |example|
+    ActiveStorage::Current.set(host: 'www.example.com') do
+      example.run
+    end
+  end
 
   include_context 'with disabled event handlers'
 

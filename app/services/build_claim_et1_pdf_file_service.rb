@@ -3,7 +3,6 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
   include PdfBuilder::MultiTemplate
   include PdfBuilder::Rendering
   include PdfBuilder::PreAllocation
-  include PdfBuilder::ActiveStorage
 
   attr_reader :output_file
 
