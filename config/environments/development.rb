@@ -55,6 +55,14 @@ Rails.application.configure do
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 
+  config.redis_database = ENV.fetch('REDIS_DATABASE', '1')
+  default_redis_url = "redis://#{config.redis_host}:#{config.redis_port}/#{config.redis_database}"
+  config.redis_url = ENV.fetch('REDIS_URL', default_redis_url)
+
+  if ENV.fetch('ACTIVE_JOB_ADAPTER', 'none') != 'none'
+    config.active_job.queue_adapter = ENV['ACTIVE_JOB_ADAPTER'].to_sym
+
+  end
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true

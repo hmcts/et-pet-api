@@ -3,7 +3,10 @@ require 'azure/storage/blob'
 desc "Configure azure storage containers - can be run at any point - but with caution"
 task "configure_azure_storage_containers" => :environment do
   ActiveStorage::Blob.service # Ensures that the active storage system is configured
-  client = ActiveStorage::Blob.services.fetch(Rails.configuration.active_storage.service).client
+  service = ActiveStorage::Blob.services.fetch(Rails.configuration.active_storage.service)
+  next if service.class.name.demodulize == 'DiskService'
+
+  client = service.client
   direct_upload_client = ActiveStorage::Blob.services.fetch(:"#{Rails.configuration.active_storage.service}_direct_upload").client
   container_name = ENV.fetch('AZURE_STORAGE_CONTAINER', 'et-api-container')
   direct_container_name = ENV.fetch('AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER', 'et-api-direct-container')
@@ -27,8 +30,10 @@ end
 
 desc "Configures cors on the direct upload azure account.  Generally only used in development / test"
 task "configure_azure_storage_cors" => :environment do
+  service = ActiveStorage::Blob.services.fetch(:"#{Rails.configuration.active_storage.service}_direct_upload")
+  next if service.class.name.demodulize == 'DiskService'
 
-  direct_upload_client = ActiveStorage::Blob.services.fetch(:"#{Rails.configuration.active_storage.service}_direct_upload").client
+  direct_upload_client = service.client
   service_properties = direct_upload_client.get_service_properties
   if service_properties.cors.cors_rules.empty?
     cors_rule = Azure::Storage::Common::Service::CorsRule.new
