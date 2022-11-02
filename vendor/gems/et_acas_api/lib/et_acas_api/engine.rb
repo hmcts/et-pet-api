@@ -10,7 +10,7 @@ module EtAcasApi
     end
     config.et_acas_api = ::Rails::Application::Configuration::Custom.new
     config.after_initialize do
-      raise 'Missing configuration for et_acas_api gem' unless config.et_acas_api.acas_rsa_certificate.is_a?(String)
+      raise 'Missing configuration for et_acas_api gem' unless config.et_acas_api.json_subscription_key.is_a?(String)
     end
   end
 end

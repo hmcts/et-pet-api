@@ -30,14 +30,10 @@ module Dummy
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-    config.et_acas_api.acas_rsa_certificate = File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'theirs', 'publickey.cer'), __dir__))
-    config.et_acas_api.rsa_certificate = File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'ours', 'publickey.cer'), __dir__))
-    config.et_acas_api.rsa_private_key = File.read(File.absolute_path(File.join('..', '..', 'acas_interface_support', 'x509', 'ours', 'privatekey.pem'), __dir__))
     config.et_acas_api.server_time_zone = 'Europe/London'
-    config.et_acas_api.service_url = 'https://localhost/Lookup/ECService.svc'
     config.et_acas_api.json_service_url = 'https://localhost/ECCLJson'
     config.et_acas_api.json_subscription_key = 'testsubscriptionkey'
-    config.et_acas_api.api_version = 1
+    config.et_acas_api.api_version = 2
   end
 end
 
