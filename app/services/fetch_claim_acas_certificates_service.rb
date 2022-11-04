@@ -46,7 +46,7 @@ class FetchClaimAcasCertificatesService
   end
 
   def invalid?
-    status == :invalid
+    errors.present?
   end
 
   private

@@ -5,9 +5,9 @@ module EtAcasApi
     def initialize(ids:, user_id:, acas_api_service:)
       self.acas_api_service = acas_api_service
       self.user_id = user_id
-      self.ids = ids
+      self.ids = ids.map(&:upcase)
       self.errors = {}
-      self.status = :invalid
+      self.status = :not_validated
     end
 
     def apply(root_object)
