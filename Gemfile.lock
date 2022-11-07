@@ -65,7 +65,6 @@ PATH
       jbuilder (~> 2.5)
       pg (>= 0.18, < 2.0)
       rails (>= 5.2.0)
-      ruby-mcrypt (~> 0.2)
       savon (~> 2.12)
 
 PATH
@@ -191,11 +190,10 @@ GEM
     erubi (1.10.0)
     et-orbi (1.2.4)
       tzinfo
-    et_fake_acas_server (0.3.0)
+    et_fake_acas_server (1.0.0)
       activesupport (>= 6.1)
       iodine (~> 0.7)
       nokogiri (~> 1.8, >= 1.8.2)
-      ruby-mcrypt (~> 0.2)
       sinatra (~> 2.0, >= 2.0.3)
       sinatra-contrib (~> 2.0)
     factory_bot (6.1.0)
@@ -378,7 +376,6 @@ GEM
     rubocop-rspec (2.2.0)
       rubocop (~> 1.0)
       rubocop-ast (>= 1.1.0)
-    ruby-mcrypt (0.2.0)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.0)
@@ -472,7 +469,7 @@ DEPENDENCIES
   et_atos_file_transfer!
   et_azure_insights (= 0.2.12)!
   et_exporter!
-  et_fake_acas_server (~> 0.3)
+  et_fake_acas_server (~> 1.0)
   factory_bot (~> 6.1)
   faker (~> 2.15)
   gov_fake_notify!

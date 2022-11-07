@@ -5,12 +5,17 @@ module EtAcasApi
     def initialize(ids:, user_id:, acas_api_service:)
       self.acas_api_service = acas_api_service
       self.user_id = user_id
-      self.ids = ids
+      self.ids = ids.map(&:upcase)
       self.errors = {}
+      self.status = :not_validated
     end
 
     def apply(root_object)
       return unless valid?
+
+      self.status = :not_required
+      return if ids.empty?
+
       acas_api_service.call(ids, user_id: user_id, into: root_object)
       add_errors
       set_status

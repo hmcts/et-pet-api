@@ -4,6 +4,7 @@ class Event < ApplicationRecord
     confirmation_email_sent: 'ConfirmationEmailSent',
     confirmation_email_failed: 'ConfirmationEmailFailed',
     claim_prepared: 'ClaimPrepared',
+    claim_files_prepared: 'ClaimFilesPrepared',
     claim_queued_for_export: 'ClaimQueuedForExport',
     claim_exported_to_atos_queue: 'ClaimExportedToAtosQueue',
     claim_acas_requested: 'ClaimAcasRequested',
