@@ -1,11 +1,16 @@
 module Api
   module V2
-    class CreateBlobsController < ::ApplicationController
+    class CreateBlobsController < BaseController
       def create
         root_object = {}
-        result = CommandService.dispatch root_object: root_object, data: create_params.to_h.symbolize_keys, command: 'CreateBlob', uuid: SecureRandom.uuid
-        render locals: { result: result, data: root_object },
-               status: (result.valid? ? :accepted : :unprocessable_entity)
+        command = CommandService.command_for(command: 'CreateBlob', uuid: SecureRandom.uuid, data: create_params.to_h.symbolize_keys)
+        if command.valid?
+          result = CommandService.dispatch root_object: root_object, command: command
+          render locals: { result: result, data: root_object },
+                 status: :accepted
+        else
+          render locals: { command: command }, status: :bad_request, template: 'api/v2/shared/command_errors'
+        end
       end
 
       private
