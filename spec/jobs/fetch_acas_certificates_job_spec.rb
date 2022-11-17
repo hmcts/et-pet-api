@@ -6,8 +6,8 @@ describe FetchAcasCertificatesJob do
     let(:claim) { create(:claim) }
     let!(:fake_service) { class_double(FetchClaimAcasCertificatesService, call: fake_service_response).as_stubbed_const }
     before do
-      allow(Raven).to receive(:extra_context).and_call_original
-      allow(Raven).to receive(:capture_exception)
+      allow(Sentry).to receive(:set_extras).and_call_original
+      allow(Sentry).to receive(:capture_exception)
     end
     context 'with successful found service response' do
       let(:fake_service_response) { instance_double(FetchClaimAcasCertificatesService, found?: true, not_found?: false, not_required?: false, acas_server_error?: false, invalid?: false, errors: {}) }
@@ -24,7 +24,7 @@ describe FetchAcasCertificatesJob do
 
       it 'has not called sentry' do
         described_class.perform_now(claim)
-        expect(Raven).not_to have_received(:capture_exception)
+        expect(Sentry).not_to have_received(:capture_exception)
       end
     end
 
@@ -43,7 +43,7 @@ describe FetchAcasCertificatesJob do
 
       it 'has not called sentry' do
         described_class.perform_now(claim)
-        expect(Raven).not_to have_received(:capture_exception)
+        expect(Sentry).not_to have_received(:capture_exception)
       end
     end
 
@@ -62,7 +62,7 @@ describe FetchAcasCertificatesJob do
 
       it 'has not called sentry' do
         described_class.perform_now(claim)
-        expect(Raven).not_to have_received(:capture_exception)
+        expect(Sentry).not_to have_received(:capture_exception)
       end
 
       it 'has not called sentry after 4 retries' do
@@ -70,7 +70,7 @@ describe FetchAcasCertificatesJob do
         perform_enqueued_jobs only: described_class
         perform_enqueued_jobs only: described_class
         perform_enqueued_jobs only: described_class
-        expect(Raven).not_to have_received(:capture_exception)
+        expect(Sentry).not_to have_received(:capture_exception)
       end
 
       it 'calls sentry after 5 retries' do
@@ -79,8 +79,7 @@ describe FetchAcasCertificatesJob do
         perform_enqueued_jobs only: described_class
         perform_enqueued_jobs only: described_class
         perform_enqueued_jobs only: described_class
-        expect(Raven).to have_received(:extra_context).with(claim_id: claim.id)
-        expect(Raven).to have_received(:capture_exception).with(an_object_having_attributes(message: 'Something went wrong'))
+        expect(Sentry).to have_received(:capture_exception).with(an_object_having_attributes(message: 'Something went wrong'))
       end
 
       it 'emits claim prepared event after 5 retries' do
@@ -125,7 +124,7 @@ describe FetchAcasCertificatesJob do
 
       it 'has not called sentry' do
         described_class.perform_now(claim)
-        expect(Raven).not_to have_received(:capture_exception)
+        expect(Sentry).not_to have_received(:capture_exception)
       end
     end
   end
