@@ -74,8 +74,9 @@ module EtAtosExport
 
       def report_exceptions
         exceptions.each do |(id, claim_id, exception)|
-          Raven.extra_context(export_id: id, claim_id: claim_id) do
-            Raven.capture_exception(exception)
+          Sentry.with_scope do |scope|
+            scope.set_extras(export_id: id, claim_id: claim_id)
+            Sentry.capture_exception(exception)
           end
         end
       end

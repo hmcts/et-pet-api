@@ -70,8 +70,9 @@ module EtAtosExport
 
       def report_exceptions
         exceptions.each do |(id, response_id, exception)|
-          Raven.extra_context(export_id: id, response_id: response_id) do
-            Raven.capture_exception(exception)
+          Sentry.with_scope do |scope|
+            scope.set_extras(export_id: id, response_id: response_id)
+            Sentry.capture_exception(exception)
           end
         end
       end

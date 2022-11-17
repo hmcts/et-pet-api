@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class FetchAcasCertificatesJob < ApplicationJob
+  sidekiq_options(retry: false)
   class RetriableError < RuntimeError
     attr_reader :claim
     def initialize(msg, claim)
@@ -12,13 +13,16 @@ class FetchAcasCertificatesJob < ApplicationJob
   retry_on RuntimeError, wait: 1.minute do |job, error|
     Rails.logger.error(error)
     claim = job.arguments.first
-    Raven.extra_context(claim_id: claim.id) do
-      Raven.capture_exception(error)
+    Sentry.with_scope do |scope|
+      scope.set_extras(claim_id: claim.id)
+      Sentry.capture_exception(error)
     end
     emit_claim_prepared_event(claim)
   end
 
   def perform(claim, service: FetchClaimAcasCertificatesService)
+    return if claim.events.claim_prepared.present?
+
     result = service.call(claim)
     if result.not_required? || result.found? || result.not_found? || result.invalid?
       emit_claim_prepared_event(claim)
