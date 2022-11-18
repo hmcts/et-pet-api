@@ -5,5 +5,6 @@ module EtAcasApi
     attribute :claimant_name, :string
     attribute :certificate_number, :string
     attribute :respondent_name, :string
+    attribute :certificate_base64, :string
   end
 end

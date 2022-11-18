@@ -10,7 +10,7 @@ class FetchAcasCertificatesJob < ApplicationJob
     end
   end
 
-  retry_on RuntimeError, wait: 1.minute do |job, error|
+  retry_on Exception, wait: 1.minute do |job, error|
     Rails.logger.error(error)
     claim = job.arguments.first
     Sentry.with_scope do |scope|
