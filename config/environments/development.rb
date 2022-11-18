@@ -82,6 +82,4 @@ Rails.application.configure do
   config.et_acas_api.json_service_url = ENV.fetch('ACAS_JSON_SERVICE_URL', 'http://localhost:3001/ECCLJson')
 
   config.hosts.clear
-
-  config.azure_insights.enable = false
 end
