@@ -43,6 +43,19 @@ module EtApi
       EventService.instance
     end
 
+    role_suffix = Sidekiq.server? ? '-SIDEKIQ' : ''
+    insights_key = ENV.fetch('AZURE_APP_INSIGHTS_KEY', false)
+    if insights_key
+      config.azure_insights.enable = true
+      config.azure_insights.key = insights_key
+      config.azure_insights.role_name = ENV.fetch('AZURE_APP_INSIGHTS_ROLE_NAME', 'et-api') + role_suffix
+      config.azure_insights.role_instance = ENV.fetch('HOSTNAME', 'all')
+      config.azure_insights.buffer_size = 500
+      config.azure_insights.send_interval = 60
+    else
+      config.azure_insights.enable = false
+    end
+
     config.govuk_notify = ActiveSupport::OrderedOptions.new
     config.govuk_notify.custom_url = ENV.fetch('GOVUK_NOTIFY_CUSTOM_URL', false)
     if ENV.key?('GOVUK_NOTIFY_API_KEY_LIVE')
