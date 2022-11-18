@@ -73,8 +73,6 @@ Rails.application.configure do
   config.et_acas_api.json_subscription_key = 'testsubscriptionkey'
   config.et_acas_api.json_service_url = 'http://fakeservice.com/ECCLJson'
 
-  config.azure_insights.enable = false
-
   config.govuk_notify.enabled = true
   config.govuk_notify.test_api_key = 'fake-key-7fc24bc8-1938-1827-bed3-fb237f9cd5e7-c34b3015-02a1-4e01-b922-1ea21f331d4d'
   config.govuk_notify.mode = :test
