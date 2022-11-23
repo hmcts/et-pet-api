@@ -64,6 +64,7 @@ Cookie: </pre>
         "office_code": "22",
         "date_of_receipt": "2019-09-26T11:37:48+0000",
         "other_known_claimant_names": "",
+        "other_known_claimants": true,
         "discrimination_claims": [
 
         ],
