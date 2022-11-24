@@ -79,6 +79,13 @@ en:
         assign_claim_command:
           office_not_found: The office with an id of %{office_id} was not found
           claim_not_found: A claim with an id of %{claim_id} was not found
+  activerecord:
+    errors:
+      models:
+        direct_uploaded_file:
+          attributes:
+            file:
+              mismatching_file_content_type: The contents of the file does not appear to be valid for the file extension '%{expected}'
   et1_confirmation_email:
     rtf_not_submitted: no additional file
     csv_not_submitted: no additional file
