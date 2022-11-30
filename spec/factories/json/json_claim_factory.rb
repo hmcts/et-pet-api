@@ -107,6 +107,7 @@ FactoryBot.define do
       time_zone { 'London' }
 
       other_known_claimant_names { "" }
+      other_known_claimants { false }
       discrimination_claims do
         [
           "sex_including_equal_pay",

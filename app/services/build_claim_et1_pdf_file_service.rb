@@ -112,7 +112,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_multiple_cases_section(result)
-    apply_field result, source.other_known_claimant_names&.present?, :multiple_cases, :have_similar_claims
+    apply_field result, source.other_known_claimants, :multiple_cases, :have_similar_claims
     apply_field result, source.other_known_claimant_names, :multiple_cases, :other_claimants
   end
 

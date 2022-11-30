@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_26_103604) do
+ActiveRecord::Schema[7.0].define(version: 2022_11_23_155408) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -206,6 +206,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_103604) do
     t.string "confirmation_email_recipients", default: [], array: true
     t.string "time_zone", default: "London", null: false
     t.boolean "manually_actioned", default: false, null: false
+    t.boolean "other_known_claimants"
     t.index ["primary_claimant_id"], name: "index_claims_on_primary_claimant_id"
     t.index ["primary_representative_id"], name: "index_claims_on_primary_representative_id"
     t.index ["primary_respondent_id"], name: "index_claims_on_primary_respondent_id"
@@ -222,7 +223,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_26_103604) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["id"], name: "index_commands_on_id", unique: true
-    t.index ["root_object_type", "root_object_id"], name: "index_commands_on_root_object"
+    t.index ["root_object_type", "root_object_id"], name: "index_commands_on_root_object_type_and_root_object_id"
   end
 
   create_table "diversity_responses", force: :cascade do |t|

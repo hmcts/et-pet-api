@@ -7,6 +7,7 @@ class BuildClaimCommand < BaseCommand
   attribute :office_code, :string
   attribute :date_of_receipt, :string
   attribute :other_known_claimant_names, :string
+  attribute :other_known_claimants, :boolean
   attribute :discrimination_claims
   attribute :pay_claims
   attribute :desired_outcomes
