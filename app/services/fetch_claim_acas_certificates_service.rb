@@ -70,6 +70,8 @@ class FetchClaimAcasCertificatesService
       certificates.each_with_index do |c, idx|
         c.respondent_name = respondents[idx].name
       end
+    else
+      claim.events.claim_acas_attempt_failed.create data: { errors: result.errors }
     end
   end
 
