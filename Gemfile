@@ -65,7 +65,7 @@ group :development, :test do
   gem 'simplecov', '~> 0.21'
   gem 'site_prism', '~> 3.7'
   gem 'bullet', '~> 7.0'
-  gem 'parallel_tests', '~> 3.7', '>= 3.7.3'
+  gem 'parallel_tests', '~> 4.1'
 end
 
 group :development do
