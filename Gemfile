@@ -85,7 +85,7 @@ group :test do
   gem 'faker', '~> 2.15'
   gem 'webmock', '~> 3.11'
   gem 'et_fake_acas_server', '~> 2.0'
-  gem 'gov_fake_notify', git: 'https://github.com/hmcts/gov_fake_notify.git', tag: 'v1.1.2'
+  gem 'gov_fake_notify', '~> 1.2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

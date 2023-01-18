@@ -18,20 +18,6 @@ GIT
       sidekiq (>= 5.2.7)
 
 GIT
-  remote: https://github.com/hmcts/gov_fake_notify.git
-  revision: 76264d2359b5b21ffb1e8e1cdc3c89909092fef2
-  tag: v1.1.2
-  specs:
-    gov_fake_notify (1.1.2)
-      activemodel (>= 5.2.3)
-      iodine (~> 0.7)
-      jwt (~> 2.2, >= 2.2.3)
-      mail (~> 2.7, >= 2.7.1)
-      roda (~> 3.48)
-      thor (~> 1.1)
-      tilt (~> 2.0, >= 2.0.10)
-
-GIT
   remote: https://github.com/microsoft/ApplicationInsights-Ruby.git
   revision: 5db6b4ad65262d23f26b678143a4a1fd7939e5c2
   ref: 5db6b4
@@ -230,6 +216,14 @@ GEM
       raabro (~> 1.4)
     globalid (1.0.1)
       activesupport (>= 5.0)
+    gov_fake_notify (1.2.0)
+      activemodel (>= 6.1)
+      iodine (~> 0.7)
+      jwt (~> 2.2, >= 2.2.3)
+      mail (~> 2.7, >= 2.7.1)
+      roda (~> 3.48)
+      thor (~> 1.1)
+      tilt (~> 2.0, >= 2.0.10)
     hashdiff (1.0.1)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
@@ -465,7 +459,7 @@ DEPENDENCIES
   et_fake_acas_server (~> 2.0)
   factory_bot (~> 6.1)
   faker (~> 2.15)
-  gov_fake_notify!
+  gov_fake_notify (~> 1.2)
   httparty (~> 0.20)
   iodine (~> 0.7.43)
   jbuilder (~> 2.10)
