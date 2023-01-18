@@ -140,7 +140,7 @@ GEM
       net-http-persistent (~> 4.0)
       nokogiri (~> 1, >= 1.10.8)
     builder (3.2.4)
-    bullet (7.0.2)
+    bullet (7.0.7)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     byebug (11.1.3)
