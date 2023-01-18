@@ -33,9 +33,9 @@ gem 'sidekiq', '< 7'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sidekiq_alive', '~> 2.0'
-gem "sentry-ruby", "~> 5.6"
-gem "sentry-rails", "~> 5.6"
-gem "sentry-sidekiq", "~> 5.6"
+gem "sentry-ruby", "~> 5.7"
+gem "sentry-rails", "~> 5.7"
+gem "sentry-sidekiq", "~> 5.7"
 gem 'et_azure_insights', '0.3.2', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.3.2'
 gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsights-Ruby.git', ref: '5db6b4'
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
