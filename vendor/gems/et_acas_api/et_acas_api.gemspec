@@ -20,5 +20,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'pg', '>= 0.18', '< 2.0'
   # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
   s.add_dependency 'jbuilder', '~> 2.5'
-  s.add_dependency 'httparty', '~> 0.20.0'
+  s.add_dependency 'httparty', '~> 0.21'
 end
