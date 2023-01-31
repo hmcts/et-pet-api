@@ -29,8 +29,7 @@ gem 'uk_postcode', '~> 2.1'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
-gem 'redis', '~> 5.0'
-gem 'sidekiq', '~> 7.0'
+gem 'sidekiq', '< 7'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sidekiq_alive', '~> 2.0'
