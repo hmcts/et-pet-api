@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '7.0.3.1'
+gem 'rails', '7.0.4.2'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/ministryofjustice/azure_env_secrets.git', tag: 'v0.1.3'
@@ -33,9 +33,9 @@ gem 'sidekiq', '< 7'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'sidekiq_alive', '~> 2.0'
-gem "sentry-ruby", "~> 5.6"
-gem "sentry-rails", "~> 5.6"
-gem "sentry-sidekiq", "~> 5.6"
+gem "sentry-ruby", "~> 5.7"
+gem "sentry-rails", "~> 5.7"
+gem "sentry-sidekiq", "~> 5.7"
 gem 'et_azure_insights', '0.3.2', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.3.2'
 gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsights-Ruby.git', ref: '5db6b4'
 # ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
@@ -61,19 +61,20 @@ gem 'dotenv-rails', '~> 2.7'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails', '~> 4.0'
+  gem 'rspec-rails', '~> 6.0'
   gem 'simplecov', '~> 0.21'
   gem 'site_prism', '~> 3.7'
   gem 'bullet', '~> 7.0'
-  gem 'parallel_tests', '~> 3.7', '>= 3.7.3'
+  gem 'parallel_tests', '~> 4.1'
 end
 
 group :development do
   gem 'listen', '~> 3.4'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring', '~> 2.1'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'spring', '~> 4.1'
+  gem 'spring-watcher-listen', '~> 2.1.0'
   gem 'rubocop', '~> 1.8'
+  gem "rubocop-rails", "~> 2.17"
   gem 'rubocop-rspec', '~> 2.1'
 end
 
@@ -81,10 +82,10 @@ group :test do
   gem 'database_cleaner', '~> 2.0'
   gem 'factory_bot', '~> 6.1'
   gem 'rspec-eventually', '~> 0.2.2'
-  gem 'faker', '~> 2.15'
+  gem 'faker', '~> 3.1'
   gem 'webmock', '~> 3.11'
-  gem 'et_fake_acas_server', '~> 1.0'
-  gem 'gov_fake_notify', git: 'https://github.com/hmcts/gov_fake_notify.git', tag: 'v1.1.2'
+  gem 'et_fake_acas_server', '~> 2.0'
+  gem 'gov_fake_notify', '~> 1.2'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
