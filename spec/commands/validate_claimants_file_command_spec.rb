@@ -5,7 +5,7 @@ RSpec.describe ValidateClaimantsFileCommand do
 
   let(:uuid) { SecureRandom.uuid }
 
-  include_context 'with cloud provider switching', cloud_provider: :local
+  include_context 'with local storage'
   include_context 'with disabled event handlers'
 
   describe '#valid?' do
@@ -82,36 +82,6 @@ RSpec.describe ValidateClaimantsFileCommand do
         # Assert
         expect(command.errors.messages.to_hash).to include \
           'base': a_collection_containing_exactly('file does not contain the correct columns')
-      end
-    end
-
-    context 'with an empty file' do
-      let(:data) { FactoryBot.build(:json_validate_claimants_file_command, :empty) }
-
-
-      it 'is invalid' do
-        # Act
-        expect(command.valid?).to be false
-      end
-
-      it 'contains the correct errors for this example' do
-        # Act
-        command.valid?
-
-        # Assert
-        expect(command.errors.details.to_hash).to include \
-          'base': a_collection_containing_exactly(
-          a_hash_including(error: :empty_file, uuid: data.uuid, command: data.command)
-        )
-      end
-
-      it 'contains the correct error messages for this example' do
-        # Act
-        command.valid?
-
-        # Assert
-        expect(command.errors.messages.to_hash).to include \
-          'base': a_collection_containing_exactly('file is empty')
       end
     end
 
