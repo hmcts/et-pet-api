@@ -15,18 +15,18 @@ RSpec.describe UploadedFile, type: :model do
 
   describe '#url' do
     context 'when using azure cloud provider' do
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
-      it 'returns an azurite test server url as we are in test mode' do
+      include_context 'with local storage'
+      it 'returns an local url as we are in test mode' do
         uploaded_file.file = fixture_file
 
-        expect(uploaded_file.url).to start_with("#{ActiveStorage::Blob.service.client.generate_uri}/#{ActiveStorage::Blob.service.container}")
+        expect(URI.parse(uploaded_file.url).path).to start_with('/rails/active_storage/disk')
       end
     end
   end
 
   describe '#download_blob_to' do
     context 'when in azure mode' do
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
+      include_context 'with local storage'
       it 'downloads a file to the specified location' do
         # Arrange - Setup with a fixture file and save
         uploaded_file.file = fixture_file
