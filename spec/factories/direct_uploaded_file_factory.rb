@@ -1,7 +1,6 @@
 FactoryBot.define do
-  factory :uploaded_file do
+  factory :direct_uploaded_file do
     transient do
-      upload_method { :other }
       file_to_attach { nil }
     end
     trait :example_pdf do
@@ -123,11 +122,6 @@ FactoryBot.define do
 
     after(:build) do |uploaded_file, evaluator|
       next if evaluator.file_to_attach.nil?
-      config = Rails.configuration.active_storage
-      service_type = :"#{config.service}#{evaluator.upload_method == :direct_upload ? :"_direct_upload" : ''}"
-      if evaluator.upload_method == :direct_upload
-        raise "This test is using direct upload"
-      end
 
       begin
         file = evaluator.file_to_attach[:file]&.open || File.open(evaluator.file_to_attach[:filename], 'rb')
