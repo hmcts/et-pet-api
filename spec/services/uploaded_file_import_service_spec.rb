@@ -5,20 +5,15 @@ RSpec.describe UploadedFileImportService do
 
   let(:uploaded_file) { build(:uploaded_file, filename: 'anything') }
   let(:fixture_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf') }
-  before do
-    Capybara.current_driver = :selenium
-    Capybara.current_session
-    capybara_url = URI.parse(Capybara.current_session.server_url)
-    ActiveStorage::Current.url_options = { host: capybara_url.host, port: capybara_url.port }
-  end
+  
 
   after do
     Capybara.use_default_driver
   end
 
   describe '#import_file_url' do
-    context 'when in azure mode' do
-      include_context 'with cloud provider switching', cloud_provider: :test
+    context 'when in local mode' do
+      include_context 'with local storage'
       it 'allows nil as meaning no import from url required' do
         # Arrange and Act - set to nil
         service.import_file_url(nil, into: uploaded_file)
@@ -48,7 +43,7 @@ RSpec.describe UploadedFileImportService do
   end
 
   describe '#import_from_key' do
-    include_context 'with cloud provider switching', cloud_provider: :test
+    include_context 'with local storage'
     it 'imports from a key from the direct upload container' do
       # Arrange - Store a file in the direct upload container
       remote_file = create(:direct_uploaded_file, :example_pdf)
