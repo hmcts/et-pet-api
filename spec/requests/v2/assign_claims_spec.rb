@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 RSpec.describe 'Assign Claim Request', type: :request do
+  include_context 'with local storage'
   include_context 'with gov uk notify emails sent monitor'
 
   shared_context 'with fake sidekiq' do
@@ -18,6 +19,7 @@ RSpec.describe 'Assign Claim Request', type: :request do
     end
 
     def run_background_jobs
+      prepare_local_active_storage
       previous_value = ActiveJob::Base.queue_adapter.perform_enqueued_jobs
       ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
       ActiveJob::Base.queue_adapter.enqueued_jobs.delete_if do |job|
