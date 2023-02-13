@@ -88,7 +88,7 @@ FactoryBot.define do
 
   factory :json_response_data, class: ::EtApi::Test::Json::Node do
     transient do
-      rtf_file_path { nil }
+      with_rtf_file { false }
     end
     trait :minimal do
       case_number { '1454321/2017' }
@@ -141,31 +141,14 @@ FactoryBot.define do
     end
 
     additional_information_key do
-      next if rtf_file_path.nil?
+      next unless with_rtf_file
 
-      key = ActiveStorage::Blob.generate_unique_secure_token
-      config = Rails.configuration.active_storage
-      service = ActiveStorage::Service.configure :"#{config.service}_direct_upload", config.service_configurations
-      signed_uri = service.url_for_direct_upload key, expires_in: 1.hour, content_type: nil, content_length: nil, checksum: nil
-      headers = {
-        "User-Agent": "Azure-Storage/0.15.0-preview (Ruby 2.5.1-p57; MacOS darwin17.6.0)",
-        "x-ms-date": "Wed, 06 Mar 2019 14:00:46 GMT",
-        "x-ms-version": "2016-05-31",
-        "x-ms-blob-type": "BlockBlob",
-        "Accept": 'application/json'
-      }
-      file = File.open(rtf_file_path, 'r')
-      begin
-        response = HTTParty.put(signed_uri, headers: headers, body_stream: file)
-        raise "RTF File not uploaded to blob server" unless response.code == 201
-      ensure
-        file.close
-      end
-      key
+      uploaded_file = create(:direct_uploaded_file, :example_response_input_rtf)
+      uploaded_file.file.key
     end
 
     trait :with_rtf do
-      rtf_file_path { Rails.root.join('spec', 'fixtures', 'example.rtf') }
+      with_rtf_file { true }
     end
   end
 end
