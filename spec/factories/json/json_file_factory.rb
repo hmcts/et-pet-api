@@ -68,7 +68,8 @@ FactoryBot.define do
     after(:build) do |obj, evaluator|
       next unless evaluator.upload_method == :direct_upload
 
-      uploaded_file = create(:uploaded_file, *evaluator.uploaded_file_traits)
+      uploaded_file = build(:direct_uploaded_file, *evaluator.uploaded_file_traits)
+      uploaded_file.save(validate: false)
       obj.data_from_key = uploaded_file.file.blob.key
     end
   end

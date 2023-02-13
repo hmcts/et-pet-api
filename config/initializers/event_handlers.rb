@@ -14,7 +14,6 @@ Rails.application.config.after_initialize do |app|
   app.event_service.subscribe('ClaimExportedToAtosQueue', ClaimExportedToAtosQueueHandler, async: false, in_process: true)
   app.event_service.subscribe('ClaimFilesPrepared', PrepareClaimHandler, async: false, in_process: true)
   app.event_service.subscribe('ClaimPrepared', ClaimEmailHandler, async: true, in_process: false)
-  app.event_service.subscribe('BlobBuilt', BlobBuiltHandler, async: false, in_process: true)
   app.event_service.subscribe('BlobCreated', BlobCreatedHandler, async: false, in_process: true)
   app.event_service.subscribe('ReferenceCreated', ReferenceCreatedHandler, async: false, in_process: true)
 end
