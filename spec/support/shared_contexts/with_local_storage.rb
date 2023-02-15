@@ -2,6 +2,9 @@ shared_context 'with local storage' do
   before do
     Capybara.current_driver = :selenium
     Capybara.current_session
+    # FileUtils.remove_dir "#{ActiveStorage::Blob.services.fetch(:test).root}", true
+    # FileUtils.remove_dir "#{ActiveStorage::Blob.services.fetch(:test_direct_upload).root}", true
+
     prepare_local_active_storage
   end
 
