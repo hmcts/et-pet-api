@@ -5,10 +5,15 @@ RSpec.describe UploadedFileImportService do
 
   let(:uploaded_file) { build(:uploaded_file, filename: 'anything') }
   let(:fixture_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf') }
+  
+
+  after do
+    Capybara.use_default_driver
+  end
 
   describe '#import_file_url' do
-    context 'when in azure mode' do
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
+    context 'when in local mode' do
+      include_context 'with local storage'
       it 'allows nil as meaning no import from url required' do
         # Arrange and Act - set to nil
         service.import_file_url(nil, into: uploaded_file)
@@ -38,10 +43,10 @@ RSpec.describe UploadedFileImportService do
   end
 
   describe '#import_from_key' do
-    include_context 'with cloud provider switching', cloud_provider: :azure_test
+    include_context 'with local storage'
     it 'imports from a key from the direct upload container' do
       # Arrange - Store a file in the direct upload container
-      remote_file = create(:uploaded_file, :example_pdf)
+      remote_file = create(:direct_uploaded_file, :example_pdf)
 
       # Act
       service.import_from_key(remote_file.file.blob.key, into: uploaded_file)
@@ -59,13 +64,13 @@ RSpec.describe UploadedFileImportService do
 
     it 'removes the original when done' do
       # Arrange - Store a file in the direct upload container
-      remote_file = create(:uploaded_file, :example_pdf)
+      remote_file = create(:direct_uploaded_file, :example_pdf)
 
       # Act
       service.import_from_key(remote_file.file.blob.key, into: uploaded_file)
 
       # Assert - Make sure original has gone
-      expect(remote_file.file.blob.service.exist?(remote_file.file.blob.key)).to be false
+      expect(DirectUploadedFile.find_by_key(remote_file.file.blob.key)).to be nil
     end
   end
 end

@@ -15,11 +15,11 @@ RSpec.describe ExportedFile, type: :model do
 
   describe '#url' do
     context 'using azure cloud provider' do
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
+      include_context 'with local storage'
       it 'returns an azurite test server url as we are in test mode' do
         exported_file.file = fixture_file
 
-        expect(exported_file.url).to start_with("#{ActiveStorage::Blob.service.client.generate_uri}/#{ActiveStorage::Blob.service.container}")
+        expect(URI.parse(exported_file.url).path).to start_with('/rails/active_storage/disk')
       end
     end
   end

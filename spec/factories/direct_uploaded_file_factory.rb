@@ -1,7 +1,6 @@
 FactoryBot.define do
-  factory :uploaded_file do
+  factory :direct_uploaded_file do
     transient do
-      upload_method { :other }
       file_to_attach { nil }
     end
     trait :example_pdf do

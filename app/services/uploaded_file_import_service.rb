@@ -57,7 +57,7 @@ module UploadedFileImportService
 
     def delete_source_blob(key)
       timings[:delete_source] = measure do
-        direct_upload_service.client.delete_blob(direct_upload_service.container, key)
+        DirectUploadedFile.find_by_key!(key).destroy!
       end
     end
 
@@ -90,12 +90,12 @@ module UploadedFileImportService
     attr_accessor :model, :timings, :logger
 
     def blob_attributes_for(value)
-      props = direct_upload_service.client.get_blob_properties(direct_upload_service.container, value)
-      { filename: model.filename,
-        byte_size: props.properties[:content_length],
-        checksum: props.properties[:content_md5],
-        content_type: props.properties[:content_type],
-        metadata: {} }
+      DirectUploadedFile.find_by_key!(value).file.blob
+        .attributes
+        .to_h
+        .symbolize_keys
+        .slice(:filename, :byte_size, :checksum, :content_type)
+        .merge(metadata: {})
     end
 
     def direct_upload_service

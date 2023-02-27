@@ -6,6 +6,8 @@ RSpec.describe BuildClaimPdfFileService do
   let(:errors) { [] }
 
   describe '#call' do
+    include_context 'with local storage'
+
     let(:correct_filename) do
       scrubber = ->(text) { text.gsub(/\s/, '_').gsub(/\W/, '').downcase }
       "et1_#{scrubber.call claim.primary_claimant.first_name}_#{scrubber.call claim.primary_claimant.last_name}.pdf"
@@ -103,7 +105,7 @@ RSpec.describe BuildClaimPdfFileService do
         it 'is available at the location provided' do
           # Arrange - Create a pre allocation
           claim.save
-          blob = ActiveStorage::Blob.new(filename: correct_filename, byte_size: 0, checksum: 0)
+          blob = ActiveStorage::Blob.create(filename: correct_filename, byte_size: 0, checksum: 0, content_type: 'application/pdf')
           original_url = blob.url(expires_in: 1.hour)
           PreAllocatedFileKey.create(allocated_to: claim, key: blob.key, filename: correct_filename)
 

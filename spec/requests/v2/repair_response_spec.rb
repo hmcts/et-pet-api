@@ -3,6 +3,7 @@
 require 'rails_helper'
 RSpec.describe 'Repair Response Request', type: :request do
   describe 'POST /api/v2/respondents/repair_response' do
+    include_context 'with local storage'
     let(:default_headers) do
       {
         'Accept': 'application/json',
@@ -99,6 +100,7 @@ RSpec.describe 'Repair Response Request', type: :request do
         previous_value = ActiveJob::Base.queue_adapter.perform_enqueued_jobs
         ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
         ActiveJob::Base.queue_adapter.enqueued_jobs.select { |j| j[:job] == EventJob }.each do |job|
+          prepare_local_active_storage
           job[:job].perform_now(*ActiveJob::Arguments.deserialize(job[:args]))
         end
       ensure
@@ -258,7 +260,6 @@ RSpec.describe 'Repair Response Request', type: :request do
     context 'with json for a response with an rtf upload that has not yet been processed' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
       rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -281,7 +282,6 @@ RSpec.describe 'Repair Response Request', type: :request do
     context 'with json for a response with an rtf upload that has been processed but file has been lost' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
       rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -309,7 +309,6 @@ RSpec.describe 'Repair Response Request', type: :request do
     context 'with json for a response with an rtf upload that has been processed but attachment is not present' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
       rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -337,7 +336,6 @@ RSpec.describe 'Repair Response Request', type: :request do
     context 'with json for a response with an rtf upload that has been processed successfully' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
       rtf_file_path = Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf').to_s
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -371,7 +369,6 @@ RSpec.describe 'Repair Response Request', type: :request do
       end
     end
     context 'with json for a response with a pdf file that had been processed but lost' do
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -398,7 +395,6 @@ RSpec.describe 'Repair Response Request', type: :request do
     end
 
     context 'with json for a response that had been processed but its output txt file lost' do
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -426,7 +422,9 @@ RSpec.describe 'Repair Response Request', type: :request do
     context 'with json for a response that had been processed but its output rtf file lost' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
       rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
+      before do
+        response_to_repair.uploaded_files.find_by(filename: 'et3_atos_export.rtf').file.blob.delete
+      end
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -436,9 +434,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       let(:uploaded_files) do
         [
           build(:uploaded_file, :upload_to_blob, :example_response_input_rtf, :user_file_scope),
-          build(:uploaded_file, :upload_to_blob, :example_response_rtf, :system_file_scope).tap do |uploaded_file|
-            uploaded_file.file.blob.delete
-          end,
+          build(:uploaded_file, :upload_to_blob, :example_response_rtf, :system_file_scope),
           build(:uploaded_file, :upload_to_blob, :example_response_text, :system_file_scope),
           build(:uploaded_file, :upload_to_blob, :example_response_pdf, :system_file_scope)
         ]
@@ -451,6 +447,7 @@ RSpec.describe 'Repair Response Request', type: :request do
                uploaded_files: uploaded_files,
                respondent: build(:respondent, :example_data, name: respondent_name)
       end
+
       it 'includes the rtf file in the staging folder' do
         reference = response_to_repair.reference
         output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name.gsub(/ /, '_')}.rtf"

@@ -25,7 +25,7 @@ RSpec.describe UploadedFileAllocatorService do
       ::Rails.application
     end
     context 'using azure storage' do
-      include_context 'with cloud provider switching', cloud_provider: :azure_test
+      include_context 'with local storage'
       it 'returns the url of the allocated file on azure' do
         # Arrange - Allocate a file
         service.allocate('test.pdf', into: response_object)

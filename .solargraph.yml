@@ -1,0 +1,22 @@
+---
+include:
+- "**/*.rb"
+- "/usr/local/lib/ruby/gems/2.7.0/gems/**/*.rb"
+exclude:
+- test/**/*
+- ".bundle/**/*"
+require:
+- "capybara"
+domains: []
+reporters:
+- rubocop
+- require_not_found
+formatter:
+  rubocop:
+    cops: safe
+    except: []
+    only: []
+    extra_args: []
+require_paths: []
+plugins: []
+max_files: 10000

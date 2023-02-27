@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 RSpec.describe 'Validate Claimants File Request', type: :request do
-  include_context 'with cloud provider switching', cloud_provider: :azure_test
+  include_context 'with local storage'
   describe 'POST /api/v2/validate' do
     let(:default_headers) do
       {

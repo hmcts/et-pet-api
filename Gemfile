@@ -86,6 +86,8 @@ group :test do
   gem 'webmock', '~> 3.11'
   gem 'et_fake_acas_server', '~> 2.0'
   gem 'gov_fake_notify', '~> 1.2'
+  gem "selenium-webdriver", "~> 4.8"
+  gem "puma", "~> 6.0"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

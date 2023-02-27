@@ -6,6 +6,7 @@ RSpec.describe BuildResponsePdfFileService do
   let(:errors) { [] }
 
   describe '#call' do
+    include_context 'with local storage'
     shared_examples 'for any response variation' do
       it 'stores an ET3 pdf file with the correct filename' do
         # Act
@@ -60,7 +61,7 @@ RSpec.describe BuildResponsePdfFileService do
         it 'is available at the location provided' do
           # Arrange - Create a pre allocation
           response.save
-          blob = ActiveStorage::Blob.new(filename: 'et3_atos_export.pdf', byte_size: 0, checksum: 0)
+          blob = ActiveStorage::Blob.create(filename: 'et3_atos_export.pdf', byte_size: 0, checksum: 0, content_type: 'application/pdf')
           original_url = blob.url(expires_in: 1.hour)
           PreAllocatedFileKey.create(allocated_to: response, key: blob.key, filename: 'et3_atos_export.pdf')
 
