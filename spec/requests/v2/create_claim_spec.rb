@@ -107,7 +107,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       let(:output_reference) { json_response.dig('meta', 'BuildClaim', 'reference') }
       let(:output_filename_pdf) { "#{output_reference}_ET1_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.pdf" }
       let(:output_filename_txt) { "#{output_reference}_ET1_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.txt" }
-      let(:output_filename_rtf) { "#{output_reference}_ET1_Attachment_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.rtf" }
+      let(:output_filename_claim_details) { "#{output_reference}_ET1_Attachment_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.pdf" }
       let(:output_filename_additional_claimants_txt) { "#{output_reference}_ET1a_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.txt" }
       let(:output_filename_additional_claimants_csv) { "#{output_reference}_ET1a_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.csv" }
       before do
@@ -343,12 +343,11 @@ RSpec.describe 'Create Claim Request', type: :request do
     shared_examples 'a claim exported to primary ATOS with an rtf file' do
       let(:input_rtf_file) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimDetailsFile' }.data.filename }
 
-      it 'stores the rtf file with the correct filename and is a copy of the original' do
+      it 'stores the rtf file with the correct filename and appears to contain the text from the rtf file' do
         # Assert - look for the correct file in the landing folder - will be async
         Dir.mktmpdir do |dir|
-          staging_folder.extract(output_filename_rtf, to: File.join(dir, output_filename_rtf))
-          input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file.downcase), __FILE__)
-          expect(File.join(dir, output_filename_rtf)).to be_a_file_copy_of(input_rtf_file_full_path)
+          staging_folder.extract(output_filename_claim_details, to: File.join(dir, output_filename_claim_details))
+          expect(File.join(dir, output_filename_claim_details)).to be_a_pdf_file_containing_title('It is an example test rtf-file')
         end
       end
     end

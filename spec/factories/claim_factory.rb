@@ -69,6 +69,18 @@ FactoryBot.define do
       end
     end
 
+    trait :with_unprocessed_rtf_file do
+      after(:build) do |claim, _evaluator|
+        claim.uploaded_files << build(:uploaded_file, :example_claim_rtf, :user_file_scope)
+      end
+    end
+
+    trait :with_processed_rtf_file do
+      after(:build) do |claim, _evaluator|
+        claim.uploaded_files << build(:uploaded_file, :example_claim_details_pdf, :system_file_scope)
+      end
+    end
+
     trait :without_representative do
       primary_representative { nil }
     end

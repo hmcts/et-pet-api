@@ -42,7 +42,7 @@ module EtAtosExport
         export_file(claim: claim, to: to, prefix: 'ET1', ext: :txt, type: :txt)
         export_file(claim: claim, to: to, prefix: 'ET1a', ext: :txt, type: :claimants_txt) if claim.multiple_claimants?
         export_file(claim: claim, to: to, prefix: 'ET1a', ext: :csv, type: :claimants_csv) if claim_has_csv?(claim: claim)
-        export_file(claim: claim, to: to, prefix: 'ET1_Attachment', ext: :rtf, type: :rtf) if claim_has_rtf?(claim: claim)
+        export_file(claim: claim, to: to, prefix: 'ET1_Attachment', ext: :pdf, type: :claim_details) if claim_has_details_file?(claim: claim)
       end
 
       def export_file(claim:, to:, prefix:, ext:, type:)
@@ -58,8 +58,8 @@ module EtAtosExport
         claim.claimants_csv_file.present?
       end
 
-      def claim_has_rtf?(claim:)
-        claim.uploaded_files.system_file_scope.any? { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.rtf') }
+      def claim_has_details_file?(claim:)
+        claim.uploaded_files.system_file_scope.any? { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.pdf') }
       end
 
       def replacing_special(text)

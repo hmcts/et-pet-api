@@ -74,5 +74,9 @@ module EtApi
     default_redis_url = "redis://#{config.redis_host}:#{config.redis_port}/#{config.redis_database}"
     config.redis_url = ENV.fetch('REDIS_URL', default_redis_url)
     config.flatten_pdf = ENV.fetch('FLATTEN_PDF', "false") == 'true'
+
+    config.file_conversions = ActiveSupport::OrderedOptions.new
+    config.file_conversions.enabled = ENV.fetch('FILE_CONVERSIONS_ENABLED', 'true') == 'true'
+    config.file_conversions.allowed_types = ['application/rtf']
   end
 end

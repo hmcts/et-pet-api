@@ -29,8 +29,8 @@ module EtAtosExport
     # Exports the rtf file for use by ExportService
     #
     # @return [UploadedFile] The rtf file
-    def export_rtf
-      claim.uploaded_files.system_file_scope.detect { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.rtf') }
+    def export_claim_details
+      claim.uploaded_files.system_file_scope.detect { |f| f.filename.starts_with?('et1_attachment') && f.filename.ends_with?('.pdf') }
     end
 
     # Exports the claimants text file for use by ExportService (produces ET1a txt file)

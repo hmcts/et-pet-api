@@ -2,7 +2,7 @@ require 'rails_helper'
 RSpec.describe EtAtosExport::ClaimExportService do
   subject(:service) { described_class.new(claim) }
 
-  let(:claim) { create(:claim, :with_pdf_file, :with_text_file, :with_claimants_text_file, :with_claimants_csv_file, :with_rtf_file) }
+  let(:claim) { create(:claim, :with_pdf_file, :with_text_file, :with_claimants_text_file, :with_claimants_csv_file, :with_processed_rtf_file) }
 
   describe 'export_pdf' do
     it 'returns a pdf file which happens to be the original' do
@@ -18,10 +18,10 @@ RSpec.describe EtAtosExport::ClaimExportService do
     end
   end
 
-  describe 'export_rtf' do
-    it 'returns an rtf file which happens to be the original' do
-      result = service.export_rtf
-      expect(result).to have_attributes filename: 'et1_attachment_first_last.rtf'
+  describe 'export_claim_details' do
+    it 'returns a pdf file' do
+      result = service.export_claim_details
+      expect(result).to have_attributes filename: 'et1_attachment_first_last.pdf'
     end
   end
 

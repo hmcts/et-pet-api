@@ -20,4 +20,6 @@ class UploadedFile < ApplicationRecord
   def to_be_imported?
     import_from_key.present? || import_file_url.present?
   end
+
+  delegate :content_type, to: :file
 end

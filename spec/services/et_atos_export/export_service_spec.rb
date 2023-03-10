@@ -140,7 +140,7 @@ module EtAtosExport
 
       context 'with a single claimant, respondent and representative with an uploaded rtf file' do
         let!(:claims) do
-          create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_rtf_file, ready_for_export_to: [system.id])
+          create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_processed_rtf_file, ready_for_export_to: [system.id])
         end
 
         it 'produces a zip file that contains an rtf file for each claim' do
@@ -148,7 +148,7 @@ module EtAtosExport
           service.export
 
           # Assert
-          expected_filenames = claims.map { |c| "#{c.reference}_ET1_Attachment_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.rtf" }
+          expected_filenames = claims.map { |c| "#{c.reference}_ET1_Attachment_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.pdf" }
           expect(EtApi::Test::StoredZipFile.file_names(zip: EtAtosFileTransfer::ExportedFile.last)).to include(*expected_filenames)
         end
       end
