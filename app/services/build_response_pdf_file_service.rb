@@ -41,7 +41,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
   def apply_header_pdf_fields(result)
     apply_field result, source.case_number, :header, :case_number
     apply_field result, source.date_of_receipt.try(:strftime, '%d/%m/%Y'), :header, :date_received
-    apply_field result, source.additional_information_rtf_file?, :header, :rtf
+    apply_field result, source.additional_information_file?, :header, :rtf
   end
 
   def apply_claimant_pdf_fields(result)

@@ -9,13 +9,13 @@ RSpec::Matchers.define(:be_a_pdf_file_containing_title) do |expected|
 
     reader = PDF::Reader.new(actual)
     unless reader.info[:Title] =~ /#{expected}/
-      @error_message = "expected that #{actual} is a pdf file containing title '#{expected}' but the title is '#{reader.info(:Title)}'"
+      @error_message = "expected that #{actual} is a pdf file containing title '#{expected}' but the title is '#{reader.info[:Title]}'"
       next false
     end
     true
   end
 
   failure_message do |actual|
-    "expected that #{actual} is a file copy of #{expected} but the file sizes were different"
+    @error_message
   end
 end

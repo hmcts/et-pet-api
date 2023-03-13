@@ -86,10 +86,16 @@ FactoryBot.define do
       end
     end
 
-    trait :example_response_rtf do
-      filename { 'et3_atos_export.rtf' }
+    trait :example_response_additional_information do
+      filename { 'et3_atos_export_additional_information.pdf' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'application/rtf', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf') } }
+      file_to_attach { { content_type: 'application/pdf', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.pdf') } }
+    end
+
+    trait :example_response_input_additional_information do
+      filename { 'additional_information.pdf' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'application/pdf', filename: Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.pdf') } }
     end
 
     trait :example_response_input_rtf do

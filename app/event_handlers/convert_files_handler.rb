@@ -11,8 +11,8 @@ class ConvertFilesHandler
   attr_reader :resource, :config, :convertor
 
   def handle_rtf_files
-    handle_claim_rtf_files
-    handle_response_rtf_files
+    handle_claim_rtf_files if resource.is_a?(Claim)
+    handle_response_rtf_files if resource.is_a?(Response)
   end
 
   def handle_claim_rtf_files
@@ -26,7 +26,10 @@ class ConvertFilesHandler
   end
 
   def handle_response_rtf_files
+    file = resource.additional_information_file
+    return unless file.present? && file_to_be_converted?(file)
 
+    convert_file(file, new_filename: 'additional_information.pdf')
   end
 
   def file_to_be_converted?(file)
@@ -42,6 +45,8 @@ class ConvertFilesHandler
     file.download_blob_to(input_file.path)
     filename = new_filename || File.basename(file.filename)
     output_file = Tempfile.new(filename)
+    return if output_file_present?(filename: filename)
+
     convertor.convert(input_file.path, output_file.path)
     resource.uploaded_files.system_file_scope.create(filename: filename, file: { filename: filename, io: output_file, content_type: 'application/pdf' })
   end

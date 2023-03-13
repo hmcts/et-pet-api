@@ -387,11 +387,11 @@ RSpec.describe 'Create Response Request', type: :request do
       it 'includes the rtf file in the staging folder' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         respondent_name = input_respondent_factory.name
-        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name}.rtf"
+        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name}.pdf"
         Dir.mktmpdir do |dir|
           full_path = File.join(dir, output_filename_rtf)
           staging_folder.extract(output_filename_rtf, to: full_path)
-          expect(full_path).to be_a_file_copy_of(rtf_file_path)
+          expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
         end
       end
     end

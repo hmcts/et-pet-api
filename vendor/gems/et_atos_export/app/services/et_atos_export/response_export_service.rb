@@ -29,8 +29,8 @@ module EtAtosExport
     # Exports the rtf file for use by ExportService
     #
     # @return [UploadedFile] The rtf file
-    def export_rtf
-      response.uploaded_files.system_file_scope.detect { |f| f.filename == 'et3_atos_export.rtf' }
+    def export_additional_information_file
+      response.uploaded_files.system_file_scope.detect { |f| f.filename == 'et3_atos_export_additional_information.pdf' }
     end
 
     attr_accessor :response, :exports

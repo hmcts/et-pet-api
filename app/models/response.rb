@@ -12,17 +12,15 @@ class Response < ApplicationRecord
     reference[0..1]
   end
 
-  def additional_information_rtf_file?
-    ai_file.present?
+  def additional_information_file?
+    additional_information_file.present?
   end
 
   def pdf_file
     uploaded_files.system_file_scope.detect { |file| file.filename == 'et3_atos_export.pdf' }
   end
 
-  private
-
-  def ai_file
+  def additional_information_file
     uploaded_files.detect { |file| file.filename == 'additional_information.rtf' }
   end
 end

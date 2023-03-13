@@ -18,10 +18,10 @@ RSpec.describe EtAtosExport::ResponseExportService do
     end
   end
 
-  describe 'export_rtf' do
-    it 'returns an rtf file which happens to be the original' do
-      result = service.export_rtf
-      expect(result).to have_attributes filename: 'et3_atos_export.rtf'
+  describe 'export_additional_information' do
+    it 'returns an additional information file which is based on the original rtf' do
+      result = service.export_additional_information_file
+      expect(result).to have_attributes filename: 'et3_atos_export_additional_information.pdf'
     end
   end
 end

@@ -5,12 +5,12 @@ require 'rails_helper'
 RSpec.describe Response, type: :model do
   subject(:response) { described_class.new }
 
-  describe '#additional_information_rtf_file?' do
+  describe '#additional_information_file?' do
     context 'with an attached file' do
       subject(:response) { build(:response, :example_data, :with_input_rtf_file) }
 
       it 'returns true' do
-        expect(response.additional_information_rtf_file?).to be true
+        expect(response.additional_information_file?).to be true
       end
     end
 
@@ -18,7 +18,7 @@ RSpec.describe Response, type: :model do
       subject(:response) { build(:response, :example_data) }
 
       it 'returns false' do
-        expect(response.additional_information_rtf_file?).to be false
+        expect(response.additional_information_file?).to be false
       end
     end
   end

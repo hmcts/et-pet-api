@@ -29,10 +29,10 @@ module EtAtosExport
           end
         end
 
-        it 'exports an rtf file with the correct name' do
+        it 'exports an additional information file with the correct name' do
           Dir.mktmpdir do |dir|
             exporter.export(to: dir)
-            expect(File.exist?(File.join(dir, "#{response.reference}_ET3_Attachment_na_OMalley.rtf"))).to be true
+            expect(File.exist?(File.join(dir, "#{response.reference}_ET3_Attachment_na_OMalley.pdf"))).to be true
           end
         end
       end
@@ -62,10 +62,10 @@ module EtAtosExport
           end
         end
 
-        it 'exports an rtf file with the correct name' do
+        it 'exports an additional information file with the correct name' do
           Dir.mktmpdir do |dir|
             exporter.export(to: dir)
-            expect(File.exist?(File.join(dir, "#{response.reference}_ET3_Attachment_na_OMalley.rtf"))).to be true
+            expect(File.exist?(File.join(dir, "#{response.reference}_ET3_Attachment_na_OMalley.pdf"))).to be true
           end
         end
       end
