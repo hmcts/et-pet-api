@@ -3,29 +3,29 @@ class ConvertFilesHandler
     @resource = resource
     @config = config
     @convertor = convertor
-    handle_rtf_files
+    handle_files
   end
 
   private
 
   attr_reader :resource, :config, :convertor
 
-  def handle_rtf_files
-    handle_claim_rtf_files if resource.is_a?(Claim)
-    handle_response_rtf_files if resource.is_a?(Response)
+  def handle_files
+    handle_claim_files if resource.is_a?(Claim)
+    handle_response_files if resource.is_a?(Response)
   end
 
-  def handle_claim_rtf_files
-    file = resource.rtf_file
+  def handle_claim_files
+    file = resource.claim_details_input_file
     if file_to_be_converted?(file)
       convert_file(file, new_filename: claim_details_file_name)
     else
-      copy_claim_rtf_file
+      copy_claim_details_file
     end
 
   end
 
-  def handle_response_rtf_files
+  def handle_response_files
     file = resource.additional_information_file
     return unless file.present? && file_to_be_converted?(file)
 
@@ -56,8 +56,8 @@ class ConvertFilesHandler
     "et1_attachment_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}.#{extension}"
   end
 
-  def copy_claim_rtf_file
-    file = resource.rtf_file
+  def copy_claim_details_file
+    file = resource.claim_details_input_file
     filename = claim_details_file_name(:rtf)
     return if file.nil? || output_file_present?(filename: filename)
 

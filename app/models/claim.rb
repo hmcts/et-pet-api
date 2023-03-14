@@ -47,7 +47,7 @@ class Claim < ApplicationRecord
     secondary_claimants.length.positive?
   end
 
-  def rtf_file
+  def claim_details_input_file
     uploaded_files.detect { |f| f.filename.downcase.ends_with?('.rtf') }
   end
 
