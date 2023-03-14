@@ -91,15 +91,15 @@ RSpec.describe 'Create Claim Request', type: :request do
           data = row.to_hash
           acc << build(:json_claimant_data,
                        title: data['Title']&.strip&.downcase&.capitalize,
-                       first_name: data['First name']&.downcase,
-                       last_name: data['Last name']&.downcase,
+                       first_name: data['First name'],
+                       last_name: data['Last name'],
                        address_attributes:
                          build(:json_address_data,
-                               building: data['Building number or name']&.downcase,
-                               street: data['Street']&.downcase,
-                               locality: data['Town/city']&.downcase,
-                               county: data['County']&.downcase,
-                               post_code: data['Postcode']&.downcase),
+                               building: data['Building number or name'],
+                               street: data['Street'],
+                               locality: data['Town/city'],
+                               county: data['County'],
+                               post_code: data['Postcode']),
                        date_of_birth: data['Date of birth']
           )
         end
