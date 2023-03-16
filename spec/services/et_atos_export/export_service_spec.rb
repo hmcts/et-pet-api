@@ -13,7 +13,7 @@ module EtAtosExport
       end
 
       let!(:responses) do
-        create_list(:response, 2, :with_pdf_file, :with_text_file, :with_rtf_file, ready_for_export_to: [system.id])
+        create_list(:response, 2, :with_pdf_file, :with_text_file, :with_output_additional_information_file, ready_for_export_to: [system.id])
       end
 
       it 'produces an EtAtosFileTransfer::ExportedFile' do
@@ -140,7 +140,7 @@ module EtAtosExport
 
       context 'with a single claimant, respondent and representative with an uploaded rtf file' do
         let!(:claims) do
-          create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_processed_rtf_file, ready_for_export_to: [system.id])
+          create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_output_claim_details_file, ready_for_export_to: [system.id])
         end
 
         it 'produces a zip file that contains an rtf file for each claim' do

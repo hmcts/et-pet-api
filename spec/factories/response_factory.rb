@@ -56,7 +56,7 @@ FactoryBot.define do
       end
     end
 
-    trait :with_rtf_file do
+    trait :with_output_additional_information_file do
       after(:build) do |response, _evaluator|
         response.uploaded_files << build(:uploaded_file, :example_response_additional_information, :system_file_scope)
       end

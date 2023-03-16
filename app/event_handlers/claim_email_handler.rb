@@ -25,18 +25,18 @@ class ClaimEmailHandler
     locale = template_reference.split('-').last
 
     pdf_file = download_to_tempfile claim.uploaded_files.et1_pdf.first
-    additional_info_file = claim.uploaded_files.et1_claim_details.first
+    additional_info_file = claim.uploaded_files.et1_input_claim_details.first
     csv_uploaded_file = claim.uploaded_files.et1_csv.first
     link_to_pdf = Notifications.prepare_upload(pdf_file)
     additional_info_text = if additional_info_file.present?
                  file_size = number_helper.number_to_human_size additional_info_file.file.byte_size,
                                                                               locale: locale
-                 I18n.t 'et1_confirmation_email.rtf_submitted',
+                 I18n.t 'et1_confirmation_email.claim_details_file_submitted',
                         name:   additional_info_file.filename,
                         size:   file_size,
                         locale: locale
                else
-                 I18n.t('et1_confirmation_email.rtf_not_submitted', locale: locale)
+                 I18n.t('et1_confirmation_email.claim_details_file_not_submitted', locale: locale)
                end
     csv_text = if csv_uploaded_file.present?
                     file_size = number_helper.number_to_human_size csv_uploaded_file.file.byte_size,

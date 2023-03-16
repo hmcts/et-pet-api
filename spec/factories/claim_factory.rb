@@ -75,7 +75,7 @@ FactoryBot.define do
       end
     end
 
-    trait :with_processed_rtf_file do
+    trait :with_output_claim_details_file do
       after(:build) do |claim, _evaluator|
         claim.uploaded_files << build(:uploaded_file, :example_claim_details_pdf, :system_file_scope)
       end
