@@ -340,10 +340,8 @@ RSpec.describe 'Create Claim Request', type: :request do
       end
     end
 
-    shared_examples 'a claim exported to primary ATOS with an rtf file' do
-      let(:input_rtf_file) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimDetailsFile' }.data.filename }
-
-      it 'stores the rtf file with the correct filename and appears to contain the text from the rtf file' do
+    shared_examples 'a claim exported to primary ATOS with a claim details file' do
+      it 'stores the claim details file with the correct filename and appears to contain the text from the file' do
         # Assert - look for the correct file in the landing folder - will be async
         Dir.mktmpdir do |dir|
           staging_folder.extract(output_filename_claim_details, to: File.join(dir, output_filename_claim_details))
@@ -522,7 +520,7 @@ RSpec.describe 'Create Claim Request', type: :request do
         include_examples 'email validation using standard template'
       end
 
-      context 'with json for single claimant, single respondent and representative - with rtf file uploaded using direct upload' do
+      context 'with json for single claimant, single respondent and representative - with claim details file uploaded using direct upload' do
         include_context 'with fake sidekiq'
         include_context 'with setup for claims',
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
@@ -532,11 +530,11 @@ RSpec.describe 'Create Claim Request', type: :request do
         include_examples 'a claim exported to primary ATOS with single claimant'
         include_examples 'a claim exported to primary ATOS with single respondent'
         include_examples 'a claim exported to primary ATOS with a representative'
-        include_examples 'a claim exported to primary ATOS with an rtf file'
+        include_examples 'a claim exported to primary ATOS with a claim details file'
         include_examples 'email validation using standard template'
       end
 
-      context 'with json for single claimant, single respondent and representative - with rtf file uploaded using direct upload with uppercased extension' do
+      context 'with json for single claimant, single respondent and representative - with claim details file uploaded using direct upload with uppercased extension' do
         include_context 'with fake sidekiq'
         include_context 'with setup for claims',
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) }
@@ -546,7 +544,7 @@ RSpec.describe 'Create Claim Request', type: :request do
         include_examples 'a claim exported to primary ATOS with single claimant'
         include_examples 'a claim exported to primary ATOS with single respondent'
         include_examples 'a claim exported to primary ATOS with a representative'
-        include_examples 'a claim exported to primary ATOS with an rtf file'
+        include_examples 'a claim exported to primary ATOS with a claim details file'
         include_examples 'email validation using standard template'
       end
   end

@@ -25,7 +25,7 @@ RSpec.describe EtAtosExport::ResponseFileBuilder::BuildResponseRtfFile do
       # Assert
       uploaded_file = response.uploaded_files.system_file_scope.where(filename: 'et3_atos_export_additional_information.pdf').first
       Dir.mktmpdir do |dir|
-        original_path = File.join(dir, 'original.rtf')
+        original_path = File.join(dir, 'original.pdf')
         original_file = response.uploaded_files.system_file_scope.detect { |f| f.filename == 'additional_information.pdf' }
 
         full_path = File.join(dir, 'et3_atos_export_additional_information.pdf')
@@ -37,10 +37,10 @@ RSpec.describe EtAtosExport::ResponseFileBuilder::BuildResponseRtfFile do
       end
     end
 
-    context 'with no input rtf file' do
+    context 'with no input additional_information file' do
       let(:response) { build(:response) }
 
-      it 'succeeds but does nothing if no input rtf file' do
+      it 'succeeds but does nothing if no input additional_information file' do
         # Act
         builder.call(response)
 
