@@ -138,12 +138,12 @@ module EtAtosExport
         end
       end
 
-      context 'with a single claimant, respondent and representative with an uploaded rtf file' do
+      context 'with a single claimant, respondent and representative with an uploaded claim details file' do
         let!(:claims) do
           create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_output_claim_details_file, ready_for_export_to: [system.id])
         end
 
-        it 'produces a zip file that contains an rtf file for each claim' do
+        it 'produces a zip file that contains an additional information file in pdf format for each claim' do
           # Act
           service.export
 

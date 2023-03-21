@@ -26,9 +26,9 @@ module EtAtosExport
       response.uploaded_files.system_file_scope.detect { |f| f.filename == 'et3_atos_export.txt' }
     end
 
-    # Exports the rtf file for use by ExportService
+    # Exports the additional_information file (previously converted to pdf) for use by ExportService
     #
-    # @return [UploadedFile] The rtf file
+    # @return [UploadedFile] The pdf file
     def export_additional_information_file
       response.uploaded_files.system_file_scope.detect { |f| f.filename == 'et3_atos_export_additional_information.pdf' }
     end
