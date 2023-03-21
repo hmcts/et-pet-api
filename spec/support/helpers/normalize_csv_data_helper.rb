@@ -18,15 +18,15 @@ module EtApi
         CSV.foreach tempfile, headers: true do |row|
           claimants_array << {
             title: row['Title']&.downcase&.capitalize&.strip,
-            first_name: row['First name'].try(:downcase)&.strip,
-            last_name: row['Last name'].try(:downcase)&.strip,
+            first_name: row['First name']&.strip,
+            last_name: row['Last name']&.strip,
             date_of_birth: Date.parse(row['Date of birth']&.strip),
             address: {
-              building: row['Building number or name'].try(:downcase)&.strip,
-              street: row['Street'].try(:downcase)&.strip,
-              locality: row['Town/city'].try(:downcase)&.strip,
-              county: row['County'].try(:downcase)&.strip,
-              post_code: row['Postcode'].try(:downcase)&.strip
+              building: row['Building number or name']&.strip,
+              street: row['Street']&.strip,
+              locality: row['Town/city']&.strip,
+              county: row['County']&.strip,
+              post_code: row['Postcode']&.strip
             }
           }
         end

@@ -61,14 +61,14 @@ FactoryBot.define do
 
     trait :tamara_swift do
       title { "Mrs" }
-      first_name { "tamara" }
-      last_name { "swift" }
+      first_name { "Tamara" }
+      last_name { "Swift" }
       association :address_attributes, factory: :json_address_data,
                                        building: '71088',
-                                       street: 'nova loaf',
-                                       locality: 'keelingborough',
-                                       county: 'hawaii',
-                                       post_code: 'yy9a 2la'
+                                       street: 'Nova Loaf',
+                                       locality: 'Keelingborough',
+                                       county: 'Hawaii',
+                                       post_code: 'YY9A 2LA'
       address_telephone_number { '' }
       mobile_number { '' }
       email_address { '' }
