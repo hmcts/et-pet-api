@@ -72,13 +72,21 @@ Both server, client and nescessary headers for development
 
 Used for background jobs - not entirely nescessary depending on what you are working on
 
-### azurite
+### Libre Office
 
-We use microsoft azure wired up to active storage, which you would normally use a test adapter for, however we also have
-some code that copies from one container to another which cannot use active storage - so instead, we just use an azure
-server (I chose azurite as it has been the most reliable and most feature rich).  See its github page for more
-details (https://github.com/Azure/Azurite) - you can install it on OSX and linux - or you can use docker (note that it
-is integrated into ./bin/dev/docker-support-services
+Technically, we only need the command line utility from libre office, but, it is rare for this to be distributed by itself.
+
+To install libre office, do the following
+
+Mac: 
+
+```bash
+brew install --cask libreoffice
+```
+
+Any other operating system:
+
+See https://www.libreoffice.org/get-help/install-howto/
 
 ### Developing And Testing Using The et_full_system gem
 

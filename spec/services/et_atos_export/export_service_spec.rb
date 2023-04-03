@@ -13,7 +13,7 @@ module EtAtosExport
       end
 
       let!(:responses) do
-        create_list(:response, 2, :with_pdf_file, :with_text_file, :with_rtf_file, ready_for_export_to: [system.id])
+        create_list(:response, 2, :with_pdf_file, :with_text_file, :with_output_additional_information_file, ready_for_export_to: [system.id])
       end
 
       it 'produces an EtAtosFileTransfer::ExportedFile' do
@@ -55,7 +55,7 @@ module EtAtosExport
         # Assert - unzip files to temp dir - and validate just the first and last - no reason any others would be different
         ::Dir.mktmpdir do |dir|
           EtApi::Test::StoredZipFile.extract zip: EtAtosFileTransfer::ExportedFile.last, to: dir
-          files_found = ::Dir.glob(File.join(dir, '*.pdf'))
+          files_found = ::Dir.glob(File.join(dir, '*ET1_*.pdf'))
           aggregate_failures 'verifying first and last files' do
             expect(files_found.first).to be_a_file_copy_of(File.join(dir, expected_filenames.first))
             expect(files_found.last).to be_a_file_copy_of(File.join(dir, expected_filenames.last))
@@ -93,14 +93,14 @@ module EtAtosExport
         expect(EtApi::Test::StoredZipFile.file_names(zip: EtAtosFileTransfer::ExportedFile.last)).to include(*expected_filenames)
       end
 
-      it 'produces a zip file that contains an rtf file for each response' do
+      it 'produces a zip file that contains an additional information file for each response' do
         # Act
         service.export
 
         # Assert
         expected_filenames = responses.map do |r|
           company_name_underscored = r.respondent.name.parameterize(separator: '_', preserve_case: true)
-          "#{r.reference}_ET3_Attachment_#{company_name_underscored}.rtf"
+          "#{r.reference}_ET3_Attachment_#{company_name_underscored}.pdf"
         end
         expect(EtApi::Test::StoredZipFile.file_names(zip: EtAtosFileTransfer::ExportedFile.last)).to include(*expected_filenames)
       end
@@ -138,17 +138,17 @@ module EtAtosExport
         end
       end
 
-      context 'with a single claimant, respondent and representative with an uploaded rtf file' do
+      context 'with a single claimant, respondent and representative with an uploaded claim details file' do
         let!(:claims) do
-          create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_rtf_file, ready_for_export_to: [system.id])
+          create_list(:claim, 2, :with_pdf_file, :with_text_file, :with_output_claim_details_file, ready_for_export_to: [system.id])
         end
 
-        it 'produces a zip file that contains an rtf file for each claim' do
+        it 'produces a zip file that contains an additional information file in pdf format for each claim' do
           # Act
           service.export
 
           # Assert
-          expected_filenames = claims.map { |c| "#{c.reference}_ET1_Attachment_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.rtf" }
+          expected_filenames = claims.map { |c| "#{c.reference}_ET1_Attachment_#{c.primary_claimant.first_name.tr(' ', '_')}_#{c.primary_claimant.last_name}.pdf" }
           expect(EtApi::Test::StoredZipFile.file_names(zip: EtAtosFileTransfer::ExportedFile.last)).to include(*expected_filenames)
         end
       end

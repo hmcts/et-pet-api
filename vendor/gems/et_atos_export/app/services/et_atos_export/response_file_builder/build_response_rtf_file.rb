@@ -2,7 +2,7 @@ module EtAtosExport
   module ResponseFileBuilder
     module BuildResponseRtfFile
       def self.call(response)
-        filename = 'et3_atos_export.rtf'
+        filename = 'et3_atos_export_additional_information.pdf'
         original = input_file(response: response)
         return if original.nil? || output_file_present?(response: response, filename: filename)
         response.uploaded_files.system_file_scope.build filename: filename,
@@ -11,7 +11,7 @@ module EtAtosExport
       end
 
       def self.input_file(response:)
-        response.uploaded_files.user_file_scope.detect { |u| u.filename == 'additional_information.rtf' }
+        response.uploaded_files.system_file_scope.detect { |u| u.filename == 'additional_information.pdf' }
       end
 
       def self.output_file_present?(response:, filename:)

@@ -4,6 +4,7 @@ class ReprepareResponseHandler
       delete_faulty_uploaded_files(response)
       RepairUploadedFilesHandler.new.handle(response)
       unless pdf_file_exists?(response)
+        ConvertFilesHandler.new.handle(response)
         ResponsePdfFileHandler.new.handle(response)
         response.events.response_recreated_pdf.create
       end

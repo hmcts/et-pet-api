@@ -257,9 +257,8 @@ RSpec.describe 'Repair Response Request', type: :request do
       let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command, :with_representative) }
     end
 
-    context 'with json for a response with an rtf upload that has not yet been processed' do
+    context 'with json for a response with an additional_information file upload that has not yet been processed' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
-      rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -267,21 +266,20 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_examples 'any response variation'
 
       let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key) }
-      it 'includes the rtf file in the staging folder' do
+      it 'includes the additional information file in the staging folder' do
         reference = response_to_repair.reference
         respondent_name = response_to_repair.respondent.name.gsub(/ /, '_')
-        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name}.rtf"
+        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name}.pdf"
         Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_rtf)
-          staging_folder.extract(output_filename_rtf, to: full_path)
-          expect(full_path).to be_a_file_copy_of(rtf_file_path)
+          full_path = File.join(dir, output_filename_pdf)
+          staging_folder.extract(output_filename_pdf, to: full_path)
+          expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
         end
       end
     end
 
-    context 'with json for a response with an rtf upload that has been processed but file has been lost' do
+    context 'with json for a response with an additional_information upload that has been processed but file has been lost' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
-      rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -294,21 +292,20 @@ RSpec.describe 'Repair Response Request', type: :request do
         end
       end
       let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key, uploaded_files: [uploaded_file]) }
-      it 'includes the rtf file in the staging folder' do
+      it 'includes the additional information file in the staging folder' do
         reference = response_to_repair.reference
         respondent_name = response_to_repair.respondent.name.gsub(/ /, '_')
-        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name}.rtf"
+        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name}.pdf"
         Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_rtf)
-          staging_folder.extract(output_filename_rtf, to: full_path)
-          expect(full_path).to be_a_file_copy_of(rtf_file_path)
+          full_path = File.join(dir, output_filename_pdf)
+          staging_folder.extract(output_filename_pdf, to: full_path)
+          expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
         end
       end
     end
 
-    context 'with json for a response with an rtf upload that has been processed but attachment is not present' do
+    context 'with json for a response with an additional_information file upload that has been processed but attachment is not present' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
-      rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -321,21 +318,20 @@ RSpec.describe 'Repair Response Request', type: :request do
         end
       end
       let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key, uploaded_files: [uploaded_file]) }
-      it 'includes the rtf file in the staging folder' do
+      it 'includes the additional information file in the staging folder' do
         reference = response_to_repair.reference
         respondent_name = response_to_repair.respondent.name.gsub(/ /, '_')
-        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name}.rtf"
+        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name}.pdf"
         Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_rtf)
-          staging_folder.extract(output_filename_rtf, to: full_path)
-          expect(full_path).to be_a_file_copy_of(rtf_file_path)
+          full_path = File.join(dir, output_filename_pdf)
+          staging_folder.extract(output_filename_pdf, to: full_path)
+          expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
         end
       end
     end
 
-    context 'with json for a response with an rtf upload that has been processed successfully' do
+    context 'with json for a response with an additional_informatio file upload that has been processed successfully' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
-      rtf_file_path = Rails.root.join('spec', 'fixtures', 'simple_user_with_rtf.rtf').to_s
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
@@ -345,7 +341,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       let(:uploaded_files) do
         [
           build(:uploaded_file, :upload_to_blob, :example_response_input_rtf, :user_file_scope),
-          build(:uploaded_file, :upload_to_blob, :example_response_rtf, :system_file_scope),
+          build(:uploaded_file, :upload_to_blob, :example_response_additional_information, :system_file_scope),
           build(:uploaded_file, :upload_to_blob, :example_response_text, :system_file_scope),
           build(:uploaded_file, :upload_to_blob, :example_response_pdf, :system_file_scope)
         ]
@@ -358,13 +354,13 @@ RSpec.describe 'Repair Response Request', type: :request do
                uploaded_files: uploaded_files,
                respondent: build(:respondent, :example_data, name: respondent_name)
       end
-      it 'includes the rtf file in the staging folder' do
+      it 'includes the additional information file in the staging folder' do
         reference = response_to_repair.reference
-        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name.gsub(/ /, '_')}.rtf"
+        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name.gsub(/ /, '_')}.pdf"
         Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_rtf)
-          staging_folder.extract(output_filename_rtf, to: full_path)
-          expect(full_path).to be_a_file_copy_of(rtf_file_path)
+          full_path = File.join(dir, output_filename_pdf)
+          staging_folder.extract(output_filename_pdf, to: full_path)
+          expect(full_path).to be_a_pdf_file_containing_title('It is an example test rtf-file')
         end
       end
     end
@@ -419,11 +415,10 @@ RSpec.describe 'Repair Response Request', type: :request do
                respondent: build(:respondent, :example_data, name: respondent_name)
       end
     end
-    context 'with json for a response that had been processed but its output rtf file lost' do
+    context 'with json for a response that had been processed but its output pdf file lost' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
-      rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
       before do
-        response_to_repair.uploaded_files.find_by(filename: 'et3_atos_export.rtf').file.blob.delete
+        response_to_repair.uploaded_files.find_by(filename: 'et3_atos_export.pdf').file.blob.delete
       end
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
@@ -434,7 +429,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       let(:uploaded_files) do
         [
           build(:uploaded_file, :upload_to_blob, :example_response_input_rtf, :user_file_scope),
-          build(:uploaded_file, :upload_to_blob, :example_response_rtf, :system_file_scope),
+          build(:uploaded_file, :upload_to_blob, :example_response_additional_information, :system_file_scope),
           build(:uploaded_file, :upload_to_blob, :example_response_text, :system_file_scope),
           build(:uploaded_file, :upload_to_blob, :example_response_pdf, :system_file_scope)
         ]
@@ -448,13 +443,13 @@ RSpec.describe 'Repair Response Request', type: :request do
                respondent: build(:respondent, :example_data, name: respondent_name)
       end
 
-      it 'includes the rtf file in the staging folder' do
+      it 'includes the additional_information file in the staging folder' do
         reference = response_to_repair.reference
-        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name.gsub(/ /, '_')}.rtf"
+        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name.gsub(/ /, '_')}.pdf"
         Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_rtf)
-          staging_folder.extract(output_filename_rtf, to: full_path)
-          expect(full_path).to be_a_file_copy_of(rtf_file_path)
+          full_path = File.join(dir, output_filename_pdf)
+          staging_folder.extract(output_filename_pdf, to: full_path)
+          expect(full_path).to be_a_pdf_file_containing_title('It is an example test rtf-file')
         end
       end
 

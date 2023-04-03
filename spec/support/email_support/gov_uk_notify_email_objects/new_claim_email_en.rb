@@ -64,7 +64,7 @@ module EtApi
 
         def has_correct_contents_from_db_for?(claim)
           normalized_claim = claim
-          has_correct_content_for?(normalized_claim, claim.primary_claimant, claim.uploaded_files.et1_csv.first, claim.uploaded_files.et1_rtf.first, reference: claim.reference)
+          has_correct_content_for?(normalized_claim, claim.primary_claimant, claim.uploaded_files.et1_csv.first, claim.uploaded_files.et1_input_claim_details.first, reference: claim.reference)
         end
 
         def has_correct_subject? # rubocop:disable Naming/PredicateName

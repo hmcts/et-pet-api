@@ -33,7 +33,7 @@ class Claim < ApplicationRecord
   #
   # @return [UploadedFile, nil] The pdf file if it exists
   def pdf_file
-    uploaded_files.system_file_scope.detect { |f| f.filename.end_with?('.pdf') && !f.filename.start_with?('acas') }
+    uploaded_files.system_file_scope.detect { |f| f.filename.end_with?('.pdf') && !f.filename.start_with?('acas') && !f.filename.start_with?('et1_attachment_') }
   end
 
   # A claim can only have one csv file - this is it
@@ -47,7 +47,7 @@ class Claim < ApplicationRecord
     secondary_claimants.length.positive?
   end
 
-  def rtf_file
+  def claim_details_input_file
     uploaded_files.detect { |f| f.filename.downcase.ends_with?('.rtf') }
   end
 

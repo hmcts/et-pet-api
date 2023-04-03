@@ -371,7 +371,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'email validation using standard template'
     end
 
-    context 'with json for a response with an rtf upload in local mode' do
+    context 'with json for a response with an additional_information file upload in local mode' do
       rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
       include_context 'with local storage'
       include_context 'with transactions off for use with other processes'
@@ -384,14 +384,14 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'a response exported to primary ATOS'
       include_examples 'email validation using standard template'
 
-      it 'includes the rtf file in the staging folder' do
+      it 'includes the additional_information file in the staging folder' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         respondent_name = input_respondent_factory.name
-        output_filename_rtf = "#{reference}_ET3_Attachment_#{respondent_name}.rtf"
+        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name}.pdf"
         Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_rtf)
-          staging_folder.extract(output_filename_rtf, to: full_path)
-          expect(full_path).to be_a_file_copy_of(rtf_file_path)
+          full_path = File.join(dir, output_filename_pdf)
+          staging_folder.extract(output_filename_pdf, to: full_path)
+          expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
         end
       end
     end

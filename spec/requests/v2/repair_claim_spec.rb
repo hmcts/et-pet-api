@@ -71,7 +71,6 @@ RSpec.describe 'Import Claim Request', type: :request do
 
       let(:output_filename_pdf) { "#{claim_to_repair.reference}_ET1_#{scrubber.call claim_to_repair.primary_claimant.first_name}_#{scrubber.call claim_to_repair.primary_claimant.last_name}.pdf" }
       let(:output_filename_txt) { "#{claim_to_repair.reference}_ET1_#{scrubber.call claim_to_repair.primary_claimant.first_name}_#{scrubber.call claim_to_repair.primary_claimant.last_name}.txt" }
-      let(:output_filename_rtf) { "#{claim_to_repair.reference}_ET1_Attachment_#{scrubber.call claim_to_repair.primary_claimant.first_name}_#{scrubber.call claim_to_repair.primary_claimant.last_name}.rtf" }
       let(:output_filename_additional_claimants_txt) { "#{claim_to_repair.reference}_ET1a_#{scrubber.call claim_to_repair.primary_claimant.first_name}_#{scrubber.call claim_to_repair.primary_claimant.last_name}.txt" }
       let(:output_filename_additional_claimants_csv) { "#{claim_to_repair.reference}_ET1a_#{scrubber.call claim_to_repair.primary_claimant.first_name}_#{scrubber.call claim_to_repair.primary_claimant.last_name}.csv" }
 

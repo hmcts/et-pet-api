@@ -51,6 +51,9 @@ gem 'rubyzip', '~> 2.0'
 # Pdf forms to test pdf content and also to produce them
 gem 'pdf-forms', '~> 1.3'
 
+# Libreconv to convert various file formats.  Used to convert rtf / docx etc.. to pdf
+gem 'libreconv', '~> 0.7'
+
 # Azure
 gem 'azure-storage-blob', '~> 2.0', '>= 2.0.1'
 
@@ -88,6 +91,7 @@ group :test do
   gem 'gov_fake_notify', '~> 1.2'
   gem "selenium-webdriver", "~> 4.8"
   gem "puma", "~> 6.0"
+  gem "pdf-reader", "~> 2.4"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

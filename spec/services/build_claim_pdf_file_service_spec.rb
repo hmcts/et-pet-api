@@ -56,8 +56,8 @@ RSpec.describe BuildClaimPdfFileService do
       include_examples 'for any claim variation'
     end
 
-    context 'with an attached rtf file' do
-      let(:claim) { build(:claim, :example_data, :with_rtf_file) }
+    context 'with an attached claim_details file' do
+      let(:claim) { build(:claim, :example_data, :with_output_claim_details_file) }
 
       include_examples 'for any claim variation'
     end

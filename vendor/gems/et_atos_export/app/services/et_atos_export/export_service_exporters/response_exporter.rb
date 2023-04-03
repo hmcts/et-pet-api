@@ -40,7 +40,7 @@ module EtAtosExport
       def export_files(response, to:)
         export_file(response: response, to: to, ext: :txt, type: :txt)
         export_file(response: response, to: to, ext: :pdf, type: :pdf)
-        export_file_as_attachment(response: response, to: to, ext: :rtf, type: :rtf, optional: true)
+        export_file_as_attachment(response: response, to: to, ext: :pdf, type: :additional_information_file, optional: true)
       end
 
       def export_file(response:, to:, ext:, type:)

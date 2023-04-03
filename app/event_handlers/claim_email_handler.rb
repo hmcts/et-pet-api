@@ -25,18 +25,18 @@ class ClaimEmailHandler
     locale = template_reference.split('-').last
 
     pdf_file = download_to_tempfile claim.uploaded_files.et1_pdf.first
-    rtf_uploaded_file = claim.uploaded_files.et1_rtf.first
+    additional_info_file = claim.uploaded_files.et1_input_claim_details.first
     csv_uploaded_file = claim.uploaded_files.et1_csv.first
     link_to_pdf = Notifications.prepare_upload(pdf_file)
-    rtf_text = if rtf_uploaded_file.present?
-                 file_size = number_helper.number_to_human_size rtf_uploaded_file.file.byte_size,
+    additional_info_text = if additional_info_file.present?
+                 file_size = number_helper.number_to_human_size additional_info_file.file.byte_size,
                                                                               locale: locale
-                 I18n.t 'et1_confirmation_email.rtf_submitted',
-                        name:   rtf_uploaded_file.filename,
+                 I18n.t 'et1_confirmation_email.claim_details_file_submitted',
+                        name:   additional_info_file.filename,
                         size:   file_size,
                         locale: locale
                else
-                 I18n.t('et1_confirmation_email.rtf_not_submitted', locale: locale)
+                 I18n.t('et1_confirmation_email.claim_details_file_not_submitted', locale: locale)
                end
     csv_text = if csv_uploaded_file.present?
                     file_size = number_helper.number_to_human_size csv_uploaded_file.file.byte_size,
@@ -52,7 +52,7 @@ class ClaimEmailHandler
     office = OfficeService.lookup_by_case_number(claim.reference)
     claim.confirmation_email_recipients.each do |email_recipient|
       response = send_email_to_recipient claim, client, find_template_id(client, template_reference),
-                                         locale, email_recipient, link_to_pdf, rtf_uploaded_file, rtf_text, csv_uploaded_file, csv_text, office
+                                         locale, email_recipient, link_to_pdf, additional_info_file, additional_info_text, csv_uploaded_file, csv_text, office
       record_event(claim, email_recipient, response)
     end
   end
@@ -75,7 +75,7 @@ class ClaimEmailHandler
     end
   end
 
-  def send_email_to_recipient(claim, client, template_id, locale, email_recipient, link_to_pdf, rtf_file, rtf_text, csv_file, csv_text, office)
+  def send_email_to_recipient(claim, client, template_id, locale, email_recipient, link_to_pdf, additional_info_file, additional_info_text, csv_file, csv_text, office)
     client.send_email email_address: email_recipient,
                                        template_id: template_id,
                                        personalisation: {
@@ -87,8 +87,8 @@ class ClaimEmailHandler
                                          'office.email': office.email,
                                          'office.telephone': office.telephone,
                                          'link_to_pdf': link_to_pdf,
-                                         'has_additional_info': rtf_file.present? ? 'yes' : 'no',
-                                         'link_to_additional_info': rtf_text,
+                                         'has_additional_info': additional_info_file.present? ? 'yes' : 'no',
+                                         'link_to_additional_info': additional_info_text,
                                          'has_claimants_file': csv_file.present? ? 'yes' : 'no',
                                          'link_to_claimants_file': csv_text
                                        }

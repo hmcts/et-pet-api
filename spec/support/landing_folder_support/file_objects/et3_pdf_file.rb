@@ -25,7 +25,7 @@ module EtApi
           representative = response.representative.try(:as_json, include: :address).try(:symbolize_keys)
           respondent[:address_attributes] = respondent.delete(:address).symbolize_keys
           representative[:address_attributes] = representative.delete(:address).symbolize_keys unless representative.nil?
-          response = response.as_json.symbolize_keys.merge(additional_information_key: response.additional_information_rtf_file? ? 'canbeanything' : nil)
+          response = response.as_json.symbolize_keys.merge(additional_information_key: response.additional_information_file? ? 'canbeanything' : nil)
           has_correct_contents_for?(response: response, respondent: respondent, representative: representative, errors: errors, indent: indent)
         end
       end

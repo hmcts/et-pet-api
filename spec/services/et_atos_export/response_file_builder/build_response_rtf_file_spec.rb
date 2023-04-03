@@ -13,7 +13,7 @@ RSpec.describe EtAtosExport::ResponseFileBuilder::BuildResponseRtfFile do
       builder.call(response)
 
       # Assert
-      expect(response.uploaded_files.filter(&:system_file_scope?)).to include an_object_having_attributes filename: 'et3_atos_export.rtf',
+      expect(response.uploaded_files.filter(&:system_file_scope?)).to include an_object_having_attributes filename: 'et3_atos_export_additional_information.pdf',
                                                                              file: be_a_stored_file
     end
 
@@ -23,12 +23,12 @@ RSpec.describe EtAtosExport::ResponseFileBuilder::BuildResponseRtfFile do
       response.save!
 
       # Assert
-      uploaded_file = response.uploaded_files.system_file_scope.where(filename: 'et3_atos_export.rtf').first
+      uploaded_file = response.uploaded_files.system_file_scope.where(filename: 'et3_atos_export_additional_information.pdf').first
       Dir.mktmpdir do |dir|
-        original_path = File.join(dir, 'original.rtf')
-        original_file = response.uploaded_files.user_file_scope.detect { |f| f.filename == 'additional_information.rtf' }
+        original_path = File.join(dir, 'original.pdf')
+        original_file = response.uploaded_files.system_file_scope.detect { |f| f.filename == 'additional_information.pdf' }
 
-        full_path = File.join(dir, 'et3_atos_export.rtf')
+        full_path = File.join(dir, 'et3_atos_export_additional_information.pdf')
         uploaded_file.download_blob_to(full_path)
         original_file.download_blob_to(original_path)
         File.open full_path do |file|
@@ -37,10 +37,10 @@ RSpec.describe EtAtosExport::ResponseFileBuilder::BuildResponseRtfFile do
       end
     end
 
-    context 'with no input rtf file' do
+    context 'with no input additional_information file' do
       let(:response) { build(:response) }
 
-      it 'succeeds but does nothing if no input rtf file' do
+      it 'succeeds but does nothing if no input additional_information file' do
         # Act
         builder.call(response)
 

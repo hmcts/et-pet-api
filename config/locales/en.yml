@@ -87,9 +87,9 @@ en:
             file:
               mismatching_file_content_type: The contents of the file does not appear to be valid for the file extension '%{expected}'
   et1_confirmation_email:
-    rtf_not_submitted: no additional file
+    claim_details_file_not_submitted: no additional file
     csv_not_submitted: no additional file
-    rtf_submitted: You successfully uploaded an additional document named %{name} with your claim. The file size is %{size}.
+    claim_details_file_submitted: You successfully uploaded an additional document named %{name} with your claim. The file size is %{size}.
     csv_submitted: You successfully uploaded a group claim csv file named %{name} with your claim. The file size is %{size}.
 
 

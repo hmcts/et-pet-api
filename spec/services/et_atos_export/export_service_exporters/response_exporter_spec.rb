@@ -8,7 +8,7 @@ module EtAtosExport
         subject(:exporter) { described_class.new(system: system)}
 
         let(:respondent) { build(:respondent, :mr_na_o_malley) }
-        let(:response) { build(:response, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent) }
+        let(:response) { build(:response, :with_pdf_file, :with_text_file, :with_output_additional_information_file, respondent: respondent) }
 
         # Create an export record to allow the response to be found
         before do
@@ -29,10 +29,10 @@ module EtAtosExport
           end
         end
 
-        it 'exports an rtf file with the correct name' do
+        it 'exports an additional information file with the correct name' do
           Dir.mktmpdir do |dir|
             exporter.export(to: dir)
-            expect(File.exist?(File.join(dir, "#{response.reference}_ET3_Attachment_na_OMalley.rtf"))).to be true
+            expect(File.exist?(File.join(dir, "#{response.reference}_ET3_Attachment_na_OMalley.pdf"))).to be true
           end
         end
       end
@@ -41,7 +41,7 @@ module EtAtosExport
         subject(:exporter) { described_class.new(system: system)}
 
         let(:respondent) { build(:respondent, :mr_na_o_malley, name: "n/a _O'Malley") }
-        let(:response) { build(:response, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent) }
+        let(:response) { build(:response, :with_pdf_file, :with_text_file, :with_output_additional_information_file, respondent: respondent) }
 
         # Create an export record to allow the claim to be found
         before do
@@ -62,10 +62,10 @@ module EtAtosExport
           end
         end
 
-        it 'exports an rtf file with the correct name' do
+        it 'exports an additional information file with the correct name' do
           Dir.mktmpdir do |dir|
             exporter.export(to: dir)
-            expect(File.exist?(File.join(dir, "#{response.reference}_ET3_Attachment_na_OMalley.rtf"))).to be true
+            expect(File.exist?(File.join(dir, "#{response.reference}_ET3_Attachment_na_OMalley.pdf"))).to be true
           end
         end
       end
@@ -78,7 +78,7 @@ module EtAtosExport
         let(:response_export_service1) { ::EtAtosExport::ResponseExportService.new(responses[0]) }
         let(:response_export_service2) { ::EtAtosExport::ResponseExportService.new(responses[1]) }
         let(:response_export_service3) { ::EtAtosExport::ResponseExportService.new(responses[2]) }
-        let(:responses) { create_list(:response, 3, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent, ready_for_export_to: [system.id]) }
+        let(:responses) { create_list(:response, 3, :with_pdf_file, :with_text_file, :with_output_additional_information_file, respondent: respondent, ready_for_export_to: [system.id]) }
 
         # This is just one way of forcing an error.  Each iteration uses the response export service's :export_txt method
         # so we force that to raise an error
@@ -111,7 +111,7 @@ module EtAtosExport
         let(:response_export_service3) { ::EtAtosExport::ResponseExportService.new(responses[2]) }
         let(:response_export_service4) { ::EtAtosExport::ResponseExportService.new(responses[3]) }
         let(:response_export_service5) { ::EtAtosExport::ResponseExportService.new(responses[4]) }
-        let(:responses) { create_list(:response, 5, :with_pdf_file, :with_text_file, :with_rtf_file, respondent: respondent, ready_for_export_to: [system.id]) }
+        let(:responses) { create_list(:response, 5, :with_pdf_file, :with_text_file, :with_output_additional_information_file, respondent: respondent, ready_for_export_to: [system.id]) }
 
         # This is just one way of forcing an error.  Each iteration uses the response export service's :export_pdf and :export_txt methods
         # so we force one of each of those to raise an error.  This will prove that no stray files are left behind if the
