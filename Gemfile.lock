@@ -141,6 +141,8 @@ GEM
       faraday_middleware (~> 1.0, >= 1.0.0.rc1)
       net-http-persistent (~> 4.0)
       nokogiri (~> 1, >= 1.10.8)
+    backport (1.2.0)
+    benchmark (0.2.1)
     builder (3.2.4)
     bullet (7.0.7)
       activesupport (>= 3.0.0)
@@ -168,12 +170,16 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     date (3.3.3)
+    debase (0.2.4.1)
+      debase-ruby_core_source (>= 0.10.2)
+    debase-ruby_core_source (3.2.0)
     diff-lcs (1.5.0)
     docile (1.4.0)
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
       railties (>= 3.2)
+    e2mmap (0.1.0)
     erubi (1.12.0)
     et-orbi (1.2.7)
       tzinfo
@@ -234,11 +240,16 @@ GEM
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     iodine (0.7.53)
+    jaro_winkler (1.5.4)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.6.3)
     jwt (2.6.0)
+    kramdown (2.4.0)
+      rexml
+    kramdown-parser-gfm (1.1.0)
+      kramdown (~> 2.0)
     libreconv (0.9.5)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -337,6 +348,8 @@ GEM
       ffi (~> 1.0)
     redis (4.8.0)
     regexp_parser (2.6.2)
+    reverse_markdown (2.1.1)
+      nokogiri
     rexml (3.2.5)
     roda (3.65.0)
       rack
@@ -379,6 +392,8 @@ GEM
     rubocop-rspec (2.18.1)
       rubocop (~> 1.33)
       rubocop-capybara (~> 2.17)
+    ruby-debug-ide (0.7.3)
+      rake (>= 0.8.1)
     ruby-progressbar (1.11.0)
     ruby-rc4 (0.1.5)
     ruby2_keywords (0.0.5)
@@ -431,6 +446,21 @@ GEM
       capybara (~> 3.15)
       site_prism-all_there (>= 0.3.1, < 1.0)
     site_prism-all_there (0.3.2)
+    solargraph (0.48.0)
+      backport (~> 1.2)
+      benchmark
+      bundler (>= 1.17.2)
+      diff-lcs (~> 1.4)
+      e2mmap
+      jaro_winkler (~> 1.5)
+      kramdown (~> 2.3)
+      kramdown-parser-gfm (~> 1.1)
+      parser (~> 3.0)
+      reverse_markdown (>= 1.0.5, < 3)
+      rubocop (>= 0.52)
+      thor (~> 1.0)
+      tilt (~> 2.0)
+      yard (~> 0.9, >= 0.9.24)
     spring (4.1.1)
     spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
@@ -456,6 +486,8 @@ GEM
     wisper (2.0.1)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yard (0.9.28)
+      webrick (~> 1.7.0)
     zeitwerk (2.6.6)
 
 PLATFORMS
@@ -469,6 +501,7 @@ DEPENDENCIES
   bullet (~> 7.0)
   byebug
   database_cleaner (~> 2.0)
+  debase
   dotenv-rails (~> 2.7)
   et_acas_api!
   et_atos_export!
@@ -496,6 +529,7 @@ DEPENDENCIES
   rubocop (~> 1.8)
   rubocop-rails (~> 2.17)
   rubocop-rspec (~> 2.1)
+  ruby-debug-ide
   rubyzip (~> 2.0)
   selenium-webdriver (~> 4.8)
   sentry-rails (~> 5.7)
@@ -507,6 +541,7 @@ DEPENDENCIES
   sidekiq_alive (~> 2.0)
   simplecov (~> 0.21)
   site_prism (~> 3.7)
+  solargraph
   spring (~> 4.1)
   spring-watcher-listen (~> 2.1.0)
   tzinfo-data

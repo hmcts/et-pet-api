@@ -17,6 +17,7 @@
 /vendor/gems/et_acas_api/spec/dummy/tmp/*
 !/vendor/gems/et_acas_api/spec/dummy/log/.keep
 !/vendor/gems/et_acas_api/spec/dummy/tmp/.keep
+.yardoc
 
 .byebug_history
 .idea

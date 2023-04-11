@@ -1,6 +1,5 @@
 inherit_from:
   - .rubocop_todo.yml
-
 AllCops:
   TargetRubyVersion: 2.7
   # Exclude anything that isn't really part of our code.
@@ -223,4 +222,6 @@ Naming/PredicateName:
   Exclude:
     - 'test_common/**/*'
 
-require: rubocop-rspec
+require:
+  - rubocop-rspec
+  - rubocop-rails
