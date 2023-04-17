@@ -12,4 +12,9 @@ shared_context 'with local storage' do
     capybara_url = URI.parse(Capybara.current_session.server_url)
     ActiveStorage::Current.url_options = { host: capybara_url.host, port: capybara_url.port }
   end
+
+  ActiveStorage::Current.after_reset do |a|
+    capybara_url = URI.parse(Capybara.current_session.server_url)
+    a.url_options = { host: capybara_url.host, port: capybara_url.port }
+  end
 end

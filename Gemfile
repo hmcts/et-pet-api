@@ -69,6 +69,8 @@ group :development, :test do
   gem 'site_prism', '~> 3.7'
   gem 'bullet', '~> 7.0'
   gem 'parallel_tests', '~> 4.1'
+  gem 'ruby-debug-ide', require: false
+  gem 'debase', require: false
 end
 
 group :development do
@@ -82,6 +84,7 @@ group :development do
   gem 'rubocop', '~> 1.8', require: false
   gem "rubocop-rails", "~> 2.17", require: false
   gem 'rubocop-rspec', '~> 2.1', require: false
+  gem 'solargraph', require: false
 end
 
 group :test do

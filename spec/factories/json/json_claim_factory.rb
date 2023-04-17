@@ -2,7 +2,7 @@ require 'faker'
 require 'securerandom'
 
 FactoryBot.define do
-  factory :json_build_claim_commands, class: ::EtApi::Test::Json::Document do
+  factory :json_build_claim_commands, class: '::EtApi::Test::Json::Document' do
     transient do
       number_of_secondary_claimants { 0 }
       number_of_secondary_respondents { 1 }
@@ -83,10 +83,10 @@ FactoryBot.define do
     end
 
   end
-  factory :json_import_claim_commands, class: ::EtApi::Test::Json::Document, parent: :json_build_claim_commands do
+  factory :json_import_claim_commands, class: '::EtApi::Test::Json::Document', parent: :json_build_claim_commands do
     command { 'ImportClaim' }
   end
-  factory :json_repair_claim_command, class: ::EtApi::Test::Json::Document do
+  factory :json_repair_claim_command, class: '::EtApi::Test::Json::Document' do
     transient do
       claim_id { nil }
     end
@@ -94,11 +94,13 @@ FactoryBot.define do
     command { 'RepairClaim' }
     data { { claim_id: claim_id } }
   end
-  factory :json_claim_data, class: ::EtApi::Test::Json::Node do
+  factory :json_claim_data, class: '::EtApi::Test::Json::Node' do
     trait :minimal do
       example_employment_details
       reference { nil }
-      submission_reference { 'J704-ZK5E' }
+      sequence :submission_reference do |n|
+        "J704-ZK5E#{n}"
+      end
       submission_channel { 'Web' }
       case_type { 'Single' }
       jurisdiction { '2' }
@@ -194,7 +196,7 @@ FactoryBot.define do
   end
 end
 FactoryBot.define do
-  factory :json_assign_claim_command, class: ::EtApi::Test::Json::Document do
+  factory :json_assign_claim_command, class: '::EtApi::Test::Json::Document' do
     transient do
       claim_id { nil }
       office_id { nil }

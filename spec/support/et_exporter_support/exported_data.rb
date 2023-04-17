@@ -3,8 +3,17 @@ module EtApi
   module Test
     class EtExporter
       def self.find_claim_by_reference(reference)
-        job = Sidekiq::Worker.jobs.find do |job|
-          job['class'] =~ /EtExporter::ExportClaimWorker/ && JSON.parse(job['args'].first).dig('resource', 'reference') == reference
+        job = Sidekiq::Worker.jobs.find do |j|
+          j['class'] =~ /EtExporter::ExportClaimWorker/ && JSON.parse(j['args'].first).dig('resource', 'reference') == reference
+        end
+        raise "A claim with reference #{reference} was not exported" if job.nil?
+
+        Claim.new(job)
+      end
+
+      def self.find_claim_by_submission_reference(reference)
+        job = Sidekiq::Worker.jobs.find do |j|
+          j['class'] =~ /EtExporter::ExportClaimWorker/ && JSON.parse(j['args'].first).dig('resource', 'submission_reference') == reference
         end
         raise "A claim with reference #{reference} was not exported" if job.nil?
 
@@ -16,7 +25,7 @@ module EtApi
 
         def initialize(job)
           self.job = job
-          self.data = JSON.parse(job['args'].first)
+          self.data = JSON.parse(job['args'].first, symbolize_names: true)
         end
 
         def assert_has_file(filename)
@@ -36,6 +45,67 @@ module EtApi
           expect(file.path).to be_a_file_copy_of(gem_file_path)
         end
 
+        def assert_primary_claimant(claimant)
+          expect(data.dig(:resource, :primary_claimant)).to include claimant.slice(:first_name, :last_name, :address_telephone_number, :date_of_birth, :email_address, :fax_number, :gender, :mobile_number, :special_needs, :title)
+          expect(data.dig(:resource, :primary_claimant, :address)).to include claimant[:address_attributes].to_h.slice(:building, :street, :locality, :county, :postcode, :country)
+          expect(data.dig(:resource, :primary_claimant, :contact_preference)).to eq claimant[:contact_preference]&.underscore
+        end
+
+        def assert_primary_respondent(respondent)
+          expect(data.dig(:resource, :primary_respondent)).to include respondent.slice(:name, :organisation_more_than_one_site, :contact, :dx_number, :address_telephone_number, :work_address_telephone_number, :alt_phone_number, :contact_preference, :fax_number, :organisation_employ_gb, :employment_at_site_number, :disability, :disability_information, :acas_certificate_number, :acas_exemption_code)
+          expect(data.dig(:resource, :primary_respondent, :address)).to include respondent[:address_attributes].to_h.slice(:building, :street, :locality, :county, :postcode, :country)
+        end
+
+        def et1_pdf_file(template: 'et1-v3-en')
+          claimant = data.dig(:resource, :primary_claimant)
+          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1_#{scrubber(claimant[:first_name]).downcase}_#{scrubber(claimant[:last_name]).downcase}.pdf" }
+          EtApi::Test::FileObjects::Et1PdfFile.new download(file_data), template: template, lookup_root: 'claim_pdf_fields'
+        end
+
+        def assert_no_secondary_claimants
+          expect(data.dig(:resource, :secondary_claimants)).to be_empty
+        end
+
+        def assert_secondary_claimants(claimants)
+          expected_claimants = claimants.map do |claimant|
+            include(claimant.except(:address_attributes, :allow_video_attendance, :contact_preference).
+              merge(address: a_hash_including(claimant[:address_attributes].to_h), contact_preference: claimant[:contact_preference]&.underscore))
+          end
+          expect(data.dig(:resource, :secondary_claimants)).to match_array(expected_claimants)
+        end
+
+        def assert_no_secondary_respondents
+          expect(data.dig(:resource, :secondary_respondents)).to be_empty
+        end
+
+        def assert_secondary_respondents(respondents)
+          expected_respondents = respondents.map do |respondent|
+            include(respondent.except(:address_attributes, :work_address_attributes).
+              merge(address: a_hash_including(respondent[:address_attributes].to_h), work_address: a_hash_including(respondent[:work_address_attributes].to_h)))
+          end
+          expect(data.dig(:resource, :secondary_respondents)).to match_array(expected_respondents)
+        end
+
+        def assert_no_representatives
+          expect(data.dig(:resource, :primary_representative)).to be_nil
+        end
+
+        def assert_representative(representative)
+          expect(data.dig(:resource, :primary_representative)).to include representative.except(:address_attributes).merge(address: a_hash_including(representative[:address_attributes].to_h))
+        end
+
+        def csv_file
+          claimant = data.dig(:resource, :primary_claimant)
+          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1a_#{claimant[:first_name]}_#{claimant[:last_name]}.csv" }
+          download(file_data)
+        end
+
+        def claim_details_file
+          claimant = data.dig(:resource, :primary_claimant)
+          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1_attachment_#{claimant[:first_name]}_#{claimant[:last_name]}.pdf" }
+          download(file_data)
+        end
+
         private
 
         attr_accessor :job, :data
@@ -43,11 +113,15 @@ module EtApi
         def download(uploaded_file)
           file = Tempfile.new
           file.binmode
-          HTTParty.get(uploaded_file['url']) do |chunk|
+          HTTParty.get(uploaded_file[:url]) do |chunk|
             file.write(chunk)
           end
           file.rewind
           file
+        end
+
+        def scrubber(text)
+          text.gsub(/\s/, '_').gsub(/\W/, '')
         end
 
       end

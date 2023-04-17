@@ -35,6 +35,10 @@ module EtApi
           has_correct_contents_for?(claim: claim, claimants: claimants, respondents: respondents, representative: representative, assert_missing_et1a: assert_missing_et1a)
         end
 
+        def assert_correct_contents_for(claim:, claimants:, respondents:, representative:, assert_missing_et1a: true)
+          expect(has_correct_contents_for?(claim: claim, claimants: claimants, respondents: respondents, representative: representative, assert_missing_et1a: assert_missing_et1a)).to be_truthy
+        end
+
         private
 
         def claim_json(claim)
