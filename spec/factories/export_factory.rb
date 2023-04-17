@@ -11,6 +11,10 @@ FactoryBot.define do
       resource { build(:claim) }
     end
 
+    trait :response do
+      resource { build(:response) }
+    end
+
     after(:build) do |export, evaluator|
       if evaluator.external_system_reference
         export.external_system = ExternalSystem.find_by_reference! evaluator.external_system_reference
