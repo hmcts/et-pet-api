@@ -11,6 +11,12 @@ module EtApi
         Claim.new(job)
       end
 
+      def self.assert_claim_not_exported_by_submission_reference(submission_reference)
+        Sidekiq::Worker.jobs.none? do |j|
+          j['class'] =~ /EtExporter::ExportClaimWorker/ && JSON.parse(j['args'].first).dig('resource', 'reference') == submission_reference
+        end
+      end
+
       def self.find_claim_by_submission_reference(reference)
         job = Sidekiq::Worker.jobs.find do |j|
           j['class'] =~ /EtExporter::ExportClaimWorker/ && JSON.parse(j['args'].first).dig('resource', 'submission_reference') == reference
