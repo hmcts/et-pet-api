@@ -67,6 +67,14 @@ ccd_london_central = ExternalSystem.create name: 'CCD London Central',
   export_queue: 'external_system_ccd',
   office_codes: [22]
 
+ccd_bristol = ExternalSystem.create name: 'CCD Bristol',
+  reference: 'ccd_bristol',
+  enabled: true,
+  export_claims: true,
+  export_responses: true,
+  export_queue: 'external_system_ccd',
+  office_codes: [14]
+
 ExternalSystemConfiguration.create external_system_id: atos.id,
   key: 'username', value: ENV.fetch('ATOS_API_USERNAME', 'atos')
 ExternalSystemConfiguration.create external_system_id: atos.id,

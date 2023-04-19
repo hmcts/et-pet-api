@@ -26,6 +26,21 @@ module EtApi
         Claim.new(job)
       end
 
+      def self.find_response_by_reference(reference)
+        job = Sidekiq::Worker.jobs.find do |j|
+          j['class'] =~ /EtExporter::ExportResponseWorker/ && JSON.parse(j['args'].first).dig('resource', 'reference') == reference
+        end
+        raise "A response with reference #{reference} was not exported" if job.nil?
+
+        Response.new(job)
+      end
+
+      def self.assert_response_not_exported_by_reference(reference)
+        Sidekiq::Worker.jobs.none? do |j|
+          j['class'] =~ /EtExporter::ExportResponseWorker/ && JSON.parse(j['args'].first).dig('resource', 'reference') == reference
+        end
+      end
+
       class Claim
         include RSpec::Matchers
 
@@ -130,6 +145,53 @@ module EtApi
           text.gsub(/\s/, '_').gsub(/\W/, '')
         end
 
+      end
+
+      class Response
+        include RSpec::Matchers
+
+        def initialize(job)
+          self.job = job
+          self.data = JSON.parse(job['args'].first, symbolize_names: true)
+        end
+
+        def assert_response_details(response)
+          expect(data[:resource]).to include(response.to_h.except(:additional_information_key, :pdf_template_reference, :email_template_reference))
+        end
+
+        def assert_respondent(respondent)
+          expect(data.dig(:resource, :respondent)).to include(respondent.to_h.except(:work_address_attributes, :address_attributes).merge(address: respondent[:address_attributes]&.to_h, work_address: respondent[:work_address_attributes]&.to_h))
+        end
+
+        def assert_representative(representative)
+          if representative.nil?
+            expect(data.dig(:resource, :representative)).to be_nil
+          else
+            expect(data.dig(:resource, :representative)).to include(representative.to_h.except(:address_attributes).merge(address: representative[:address_attributes]&.to_h))
+          end
+        end
+
+
+        def et3_pdf_file(template: 'et3-v2-en')
+          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et3_atos_export.pdf" }
+
+          EtApi::Test::FileObjects::Et3PdfFile.new download(file_data), template: template, lookup_root: 'response_pdf_fields'
+        end
+
+
+        private
+
+        attr_accessor :job, :data
+
+        def download(uploaded_file)
+          file = Tempfile.new
+          file.binmode
+          HTTParty.get(uploaded_file[:url]) do |chunk|
+            file.write(chunk)
+          end
+          file.rewind
+          file
+        end
       end
     end
   end

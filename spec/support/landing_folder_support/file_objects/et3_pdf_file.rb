@@ -28,6 +28,11 @@ module EtApi
           response = response.as_json.symbolize_keys.merge(additional_information_key: response.additional_information_file? ? 'canbeanything' : nil)
           has_correct_contents_for?(response: response, respondent: respondent, representative: representative, errors: errors, indent: indent)
         end
+
+        def assert_correct_contents_for(response:, respondent:, representative:)
+          expect(has_correct_contents_for?(response: response, respondent: respondent, representative: representative)).to be_truthy
+        end
+
       end
     end
   end
