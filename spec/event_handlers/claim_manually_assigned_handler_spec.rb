@@ -2,7 +2,7 @@ require 'rails_helper'
 RSpec.describe ClaimManuallyAssignedHandler do
   subject(:handler) { described_class.new }
   let!(:example_external_system) { ExternalSystem.find_by_reference('ccd_manchester') }
-  let!(:second_example_external_system) { create(:external_system, :atos, reference: 'atos_temp', office_codes: [24], export_claims: true) }
+  let!(:second_example_external_system) { create(:external_system, :ccd, reference: 'ccd_temp', office_codes: [24], export_claims: true) }
   let(:example_claim) { create(:claim, office_code: 24) }
   let(:mock_event_service) { class_spy EventService }
 
