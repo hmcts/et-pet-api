@@ -164,7 +164,7 @@ module EtApi
         end
 
         def assert_representative(representative)
-          if representative.nil?
+          if representative.nil? || representative.empty?
             expect(data.dig(:resource, :representative)).to be_nil
           else
             expect(data.dig(:resource, :representative)).to include(representative.to_h.except(:address_attributes).merge(address: representative[:address_attributes]&.to_h))
@@ -176,6 +176,11 @@ module EtApi
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et3_atos_export.pdf" }
 
           EtApi::Test::FileObjects::Et3PdfFile.new download(file_data), template: template, lookup_root: 'response_pdf_fields'
+        end
+
+        def additional_information_file
+          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == 'et3_atos_export_additional_information.pdf' }
+          EtApi::Test::FileObjects::Et3AdditionalInformationFile.new download(file_data)
         end
 
 

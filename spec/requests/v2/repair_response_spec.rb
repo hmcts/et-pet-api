@@ -12,38 +12,14 @@ RSpec.describe 'Repair Response Request', type: :request do
     end
     let(:errors) { [] }
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
-
-    shared_context 'with staging folder visibility' do
-      def force_export_now
-        EtAtosExport::ClaimsExportJob.perform_now
-      end
-
-      def formatted_name_for_filename(text)
-        text.parameterize(separator: '_', preserve_case: true)
-      end
-
-      before do
-        stub_request(:any, /mocked_atos_server\.com/).to_rack(EtAtosFileTransfer::Engine)
-      end
-
-      let(:staging_folder) do
-        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-                                       username: 'atos',
-                                       password: 'password'
-      end
-
-      let(:secondary_staging_folder) do
-        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-                                       username: 'atos2',
-                                       password: 'password'
-      end
-
-      let(:emails_sent) do
-        EtApi::Test::EmailsSent.new
-      end
+    let(:emails_sent) do
+      EtApi::Test::EmailsSent.new
     end
 
     shared_context 'with setup for any response' do
+      # @return [EtApi::Test::EtExporter] The exporter class to use for testing
+      let(:et_exporter) { EtApi::Test::EtExporter }
+
       let(:input_response_factory) { input_factory.data.detect { |d| d.command == 'BuildResponse' }.data }
       let(:input_respondent_factory) { input_factory.data.detect { |d| d.command == 'BuildRespondent' }.data }
       let(:input_representative_factory) { input_factory.data.detect { |d| d.command == 'BuildRepresentative' }.try(:data) }
@@ -52,13 +28,14 @@ RSpec.describe 'Repair Response Request', type: :request do
       let(:input_response_attributes) { response_to_repair.attributes.to_h.with_indifferent_access }
       let(:input_respondent_attributes) do
         build :json_respondent_data,
-              address_attributes: build(:json_address_data, response_to_repair.respondent.address.attributes),
+              address_attributes: build(:json_address_data, response_to_repair.respondent.address.attributes.symbolize_keys.except(:string, :created_at, :updated_at, :country, :id)),
+              work_address_attributes: build(:json_address_data, response_to_repair.respondent.work_address.attributes.symbolize_keys.except(:string, :created_at, :updated_at, :country, :id)),
               **response_to_repair.respondent.attributes.symbolize_keys
       end
       let(:input_representative_attributes) do
         if response_to_repair.representative.present?
           build :json_respondent_data,
-                address_attributes: build(:json_address_data, response_to_repair.representative.address.attributes),
+                address_attributes: build(:json_address_data, response_to_repair.representative.address.attributes.symbolize_keys.slice(:building, :street, :locality, :county, :post_code)),
                 **response_to_repair.representative.attributes.symbolize_keys
         else
           {}
@@ -113,7 +90,6 @@ RSpec.describe 'Repair Response Request', type: :request do
         next if example.metadata[:background_jobs] == :disable
 
         run_background_jobs
-        force_export_now
       end
     end
 
@@ -147,80 +123,33 @@ RSpec.describe 'Repair Response Request', type: :request do
       end
     end
 
-    shared_examples 'a response exported to primary ATOS' do |exclude_contents: false|
-      it 'creates a valid txt file in the correct place in the landing folder' do
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
+    shared_examples 'a response exported to et_exporter' do |exclude_contents: false|
+      it 'has the claim details in the payload' do
         reference = response_to_repair.reference
-        respondent_name = response_to_repair.respondent.name
-        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
-        expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors)
+        et_exporter.find_response_by_reference(reference).assert_response_details(input_response_attributes.as_json.deep_symbolize_keys.slice(:reference))
       end
 
-      it 'creates a valid txt file with correct header data' do
+      it 'has the respondent in the payload' do
+        reference = response_to_repair.reference
+        et_exporter.find_response_by_reference(reference).assert_respondent(input_respondent_attributes.as_json.deep_symbolize_keys.slice(:name, :address_attributes, :work_address_attributes))
+      end
+
+      it 'has the representative in the payload' do
+        reference = response_to_repair.reference
+        et_exporter.find_response_by_reference(reference).assert_representative(input_representative_attributes.as_json.deep_symbolize_keys.slice(:name, :address_attributes))
+      end
+
+      it 'creates a valid pdf file with the data filled in correctly' do
         next if exclude_contents
 
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
         reference = response_to_repair.reference
-        respondent_name = response_to_repair.respondent.name
-        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
-        expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_contents_for(
+        et_exporter.find_response_by_reference(reference).et3_pdf_file(template: response_to_repair.pdf_template_reference).assert_correct_contents_for(
           response: input_response_attributes,
           respondent: input_respondent_attributes,
-          representative: input_representative_attributes,
-          errors: errors
-        ), -> { errors.join("\n") }
+          representative: input_representative_attributes
+        )
       end
 
-      it 'creates a valid pdf file the data filled in correctly' do
-        next if exclude_contents
-
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
-        reference = response_to_repair.reference
-        respondent_name = response_to_repair.respondent.name
-        output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
-        expect(staging_folder.et3_pdf_file(output_filename_pdf, template: response_to_repair.pdf_template_reference)).to have_correct_contents_for(
-          response: input_response_attributes,
-          respondent: input_respondent_attributes,
-          representative: input_representative_attributes,
-          errors: errors
-        ), -> { errors.join("\n") }
-      end
-    end
-
-    shared_examples 'a response exported to secondary ATOS' do
-      it 'creates a valid txt file in the correct place in the landing folder' do
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
-        reference = response_to_repair.reference
-        respondent_name = response_to_repair.respondent.name
-        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
-        expect(secondary_staging_folder.et3_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors)
-      end
-
-      it 'creates a valid txt file with correct header data' do
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
-        reference = response_to_repair.reference
-        respondent_name = response_to_repair.respondent.name
-        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
-        expect(secondary_staging_folder.et3_txt_file(output_filename_txt)).to have_correct_contents_for(
-          response: input_response_attributes,
-          respondent: input_respondent_attributes,
-          representative: input_representative_attributes,
-          errors: errors
-        ), -> { errors.join("\n") }
-      end
-
-      it 'creates a valid pdf file the data filled in correctly' do
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
-        reference = response_to_repair.reference
-        respondent_name = response_to_repair.respondent.name
-        output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
-        expect(secondary_staging_folder.et3_pdf_file(output_filename_pdf, template: response_to_repair.pdf_template_reference)).to have_correct_contents_for(
-          response: input_response_attributes,
-          respondent: input_respondent_attributes,
-          representative: input_representative_attributes,
-          errors: errors
-        ), -> { errors.join("\n") }
-      end
     end
 
     shared_examples 'any bad request error variation' do
@@ -235,15 +164,13 @@ RSpec.describe 'Repair Response Request', type: :request do
       end
     end
 
-    include_context 'with staging folder visibility'
-
     context 'with json for a response with just a respondent' do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response exported to primary ATOS'
+      include_examples 'a response exported to et_exporter'
       let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command) }
     end
 
@@ -253,7 +180,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response exported to primary ATOS'
+      include_examples 'a response exported to et_exporter'
       let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command, :with_representative) }
     end
 
@@ -266,15 +193,10 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_examples 'any response variation'
 
       let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key) }
-      it 'includes the additional information file in the staging folder' do
+      it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
-        respondent_name = response_to_repair.respondent.name.gsub(/ /, '_')
-        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name}.pdf"
-        Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_pdf)
-          staging_folder.extract(output_filename_pdf, to: full_path)
-          expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
-        end
+        full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
+        expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
       end
     end
 
@@ -292,15 +214,10 @@ RSpec.describe 'Repair Response Request', type: :request do
         end
       end
       let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key, uploaded_files: [uploaded_file]) }
-      it 'includes the additional information file in the staging folder' do
+      it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
-        respondent_name = response_to_repair.respondent.name.gsub(/ /, '_')
-        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name}.pdf"
-        Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_pdf)
-          staging_folder.extract(output_filename_pdf, to: full_path)
-          expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
-        end
+        full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
+        expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
       end
     end
 
@@ -318,15 +235,10 @@ RSpec.describe 'Repair Response Request', type: :request do
         end
       end
       let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key, uploaded_files: [uploaded_file]) }
-      it 'includes the additional information file in the staging folder' do
+      it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
-        respondent_name = response_to_repair.respondent.name.gsub(/ /, '_')
-        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name}.pdf"
-        Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_pdf)
-          staging_folder.extract(output_filename_pdf, to: full_path)
-          expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
-        end
+        full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
+        expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
       end
     end
 
@@ -354,14 +266,10 @@ RSpec.describe 'Repair Response Request', type: :request do
                uploaded_files: uploaded_files,
                respondent: build(:respondent, :example_data, name: respondent_name)
       end
-      it 'includes the additional information file in the staging folder' do
+      it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
-        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name.gsub(/ /, '_')}.pdf"
-        Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_pdf)
-          staging_folder.extract(output_filename_pdf, to: full_path)
-          expect(full_path).to be_a_pdf_file_containing_title('It is an example test rtf-file')
-        end
+        full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
+        expect(full_path).to be_a_pdf_file_containing_title('It is an example test rtf-file')
       end
     end
     context 'with json for a response with a pdf file that had been processed but lost' do
@@ -370,7 +278,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response exported to primary ATOS', exclude_contents: true
+      include_examples 'a response exported to et_exporter'
 
       let(:uploaded_files) do
         [
@@ -396,7 +304,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response exported to primary ATOS', exclude_contents: true
+      include_examples 'a response exported to et_exporter', exclude_contents: true
 
       let(:uploaded_files) do
         [
@@ -443,16 +351,11 @@ RSpec.describe 'Repair Response Request', type: :request do
                respondent: build(:respondent, :example_data, name: respondent_name)
       end
 
-      it 'includes the additional_information file in the staging folder' do
+      it 'includes the additional_information file in the exported data' do
         reference = response_to_repair.reference
-        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name.gsub(/ /, '_')}.pdf"
-        Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_pdf)
-          staging_folder.extract(output_filename_pdf, to: full_path)
-          expect(full_path).to be_a_pdf_file_containing_title('It is an example test rtf-file')
-        end
+        full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
+        expect(full_path).to be_a_pdf_file_containing_title('It is an example test rtf-file')
       end
-
     end
   end
 end

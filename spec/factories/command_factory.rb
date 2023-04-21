@@ -70,7 +70,15 @@ FactoryBot.define do
                                 .to_h
                                 .with_indifferent_access
                                 .slice(:name, :contact, :address_telephone_number, :alt_phone_number, :dx_number, :fax_number, :organisation_more_than_one_site, :disability, :disability_information)
-                                .merge(address_attributes: db_source.respondent.address.attributes.to_h.with_indifferent_access.slice(:building, :street, :locality, :county, :post_code)),
+                                .merge(
+                                  address_attributes: db_source.respondent.address.attributes.to_h.with_indifferent_access.slice(:building, :street, :locality, :county, :post_code)
+                                ).yield_self {|attrs|
+                                  if db_source.respondent.work_address.present?
+                                    attrs.merge(work_address_attributes: db_source.respondent.work_address.attributes.to_h.with_indifferent_access.slice(:building, :street, :locality, :county, :post_code))
+                                  else
+                                    attrs
+                                  end
+                                },
               representative_attrs: db_source
                                     .representative&.attributes
                                       &.to_h

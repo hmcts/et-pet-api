@@ -63,7 +63,7 @@ ccd_london_central = ExternalSystem.create name: 'CCD London Central',
   reference: 'ccd_london_central',
   enabled: true,
   export_claims: true,
-  export_responses: false,
+  export_responses: true,
   export_queue: 'external_system_ccd',
   office_codes: [22]
 
