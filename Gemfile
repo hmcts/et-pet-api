@@ -77,8 +77,6 @@ group :development do
   gem 'listen', '~> 3.4'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'solargraph', require: false
-  gem 'ruby-debug-ide', require: false
-  gem 'debase', require: false
   gem 'spring', '~> 4.1'
   gem 'spring-watcher-listen', '~> 2.1.0'
   gem 'rubocop', '~> 1.8', require: false
