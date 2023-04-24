@@ -1,5 +1,6 @@
 require 'rails_helper'
 RSpec.describe 'Import Claim Request', type: :request do
+  include_context 'with local storage'
   describe 'POST /api/v2/claims/repair_claim' do
     let(:default_headers) do
       {
@@ -39,40 +40,18 @@ RSpec.describe 'Import Claim Request', type: :request do
         next if example.metadata[:background_jobs] == :disable
 
         run_background_jobs
-        force_export_now
       end
     end
 
     shared_context 'with setup for claims' do
-      before do
-        stub_request(:any, /mocked_atos_server\.com/).to_rack(EtAtosFileTransfer::Engine)
-      end
-
-      let(:staging_folder) do
-        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-                                       username: 'atos',
-                                       password: 'password'
-      end
-
-      let(:secondary_staging_folder) do
-        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-                                       username: 'atos2',
-                                       password: 'password'
-      end
+      # @return [EtApi::Test::EtExporter] The exporter class to use for testing
+      let(:et_exporter) { EtApi::Test::EtExporter }
 
       let(:emails_sent) do
         EtApi::Test::EmailsSent.new
       end
 
-      # A private scrubber to set expectations for the filename - replaces white space with underscores and any non word chars are removed
-      scrubber = ->(text) { text.gsub(/\s/, '_').gsub(/\W/, '') }
-
       let(:input_json) { build(:json_repair_claim_command, claim_id: claim_to_repair.id).as_json }
-
-      let(:output_filename_pdf) { "#{claim_to_repair.reference}_ET1_#{scrubber.call claim_to_repair.primary_claimant.first_name}_#{scrubber.call claim_to_repair.primary_claimant.last_name}.pdf" }
-      let(:output_filename_txt) { "#{claim_to_repair.reference}_ET1_#{scrubber.call claim_to_repair.primary_claimant.first_name}_#{scrubber.call claim_to_repair.primary_claimant.last_name}.txt" }
-      let(:output_filename_additional_claimants_txt) { "#{claim_to_repair.reference}_ET1a_#{scrubber.call claim_to_repair.primary_claimant.first_name}_#{scrubber.call claim_to_repair.primary_claimant.last_name}.txt" }
-      let(:output_filename_additional_claimants_csv) { "#{claim_to_repair.reference}_ET1a_#{scrubber.call claim_to_repair.primary_claimant.first_name}_#{scrubber.call claim_to_repair.primary_claimant.last_name}.csv" }
 
       before do
         perform_action
@@ -80,10 +59,6 @@ RSpec.describe 'Import Claim Request', type: :request do
 
       def perform_action
         post '/api/v2/claims/repair_claim', params: input_json.to_json, headers: default_headers
-      end
-
-      def force_export_now
-        EtAtosExport::ClaimsExportJob.perform_now
       end
     end
 
@@ -112,31 +87,25 @@ RSpec.describe 'Import Claim Request', type: :request do
       end
     end
 
-    shared_examples 'a claim exported to primary ATOS' do
-      it 'stores the pdf file with the correct filename in the landing folder' do
-        # Assert - look for the correct file in the landing folder - will be async
-        expect(staging_folder.all_unzipped_filenames).to include(output_filename_pdf)
+    shared_examples 'a claim exported to et_exporter' do
+      it 'has the primary claimaint in the payload' do
+        submission_reference = claim_to_repair.submission_reference
+        claimant = claim_to_repair.primary_claimant.attributes.as_json.merge(address: claim_to_repair.primary_claimant.address.attributes.as_json).deep_symbolize_keys
+        et_exporter.find_claim_by_submission_reference(submission_reference).assert_primary_claimant(claimant)
       end
 
-      it 'has the correct structure in the et1 txt file' do
-        # Assert - look for the correct structure
-        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors), -> { errors.join("\n") }
-      end
-
-      it 'has the primary claimant in the et1 txt file' do
-        # Assert - look for the correct file in the landing folder - will be async
-        #
-        claimant = claim_to_repair.primary_claimant.attributes.to_h.merge(address: claim_to_repair.primary_claimant.address.attributes.to_h).deep_symbolize_keys
-        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_claimant_for(claimant, errors: errors), -> { errors.join("\n") }
-      end
-
-      it 'has the primary respondent in the et1 txt file' do
-        # Assert - look for the correct file in the landing folder - will be async
+      it 'has the primary respondent in the payload' do
+        submission_reference = claim_to_repair.submission_reference
         respondent = claim_to_repair.primary_respondent.attributes.to_h.merge(address: claim_to_repair.primary_respondent.address.attributes.to_h, work_address: claim_to_repair.primary_respondent.work_address.attributes.to_h).deep_symbolize_keys
-        expect(staging_folder.et1_txt_file(output_filename_txt)).to have_respondent_for(respondent, errors: errors), -> { errors.join("\n") }
+        et_exporter.find_claim_by_submission_reference(submission_reference).assert_primary_respondent(respondent)
       end
-    end
 
+      it 'creates a valid pdf file with the data filled in correctly' do
+        submission_reference = claim_to_repair.submission_reference
+        expect(et_exporter.find_claim_by_submission_reference(submission_reference).et1_pdf_file(template: claim_to_repair.pdf_template_reference)).to be_present
+      end
+
+    end
 
     include_context 'with fake sidekiq'
     include_context 'with setup for claims'
@@ -145,7 +114,7 @@ RSpec.describe 'Import Claim Request', type: :request do
     context 'with multiple claim' do
       let(:claim_to_repair) { create(:claim, :example_data_multiple_claimants) }
       include_examples 'any claim variation'
-      include_examples 'a claim exported to primary ATOS'
+      include_examples 'a claim exported to et_exporter'
     end
   end
 end

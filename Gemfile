@@ -69,19 +69,20 @@ group :development, :test do
   gem 'site_prism', '~> 3.7'
   gem 'bullet', '~> 7.0'
   gem 'parallel_tests', '~> 4.1'
+  gem 'ruby-debug-ide', require: false
+  gem 'debase', require: false
 end
 
 group :development do
   gem 'listen', '~> 3.4'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'solargraph', require: false
-  gem 'ruby-debug-ide', require: false
-  gem 'debase', require: false
   gem 'spring', '~> 4.1'
   gem 'spring-watcher-listen', '~> 2.1.0'
   gem 'rubocop', '~> 1.8', require: false
   gem "rubocop-rails", "~> 2.17", require: false
   gem 'rubocop-rspec', '~> 2.1', require: false
+  gem 'solargraph', require: false
 end
 
 group :test do

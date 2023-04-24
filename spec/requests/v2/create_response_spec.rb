@@ -3,6 +3,8 @@
 require 'rails_helper'
 RSpec.describe 'Create Response Request', type: :request do
   describe 'POST /api/v2/respondents/build_response' do
+    include_context 'with local storage'
+
     let(:default_headers) do
       {
         'Accept': 'application/json',
@@ -11,35 +13,8 @@ RSpec.describe 'Create Response Request', type: :request do
     end
     let(:errors) { [] }
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
-
-    shared_context 'with staging folder visibility' do
-      def force_export_now
-        EtAtosExport::ClaimsExportJob.perform_now
-      end
-
-      def formatted_name_for_filename(text)
-        text.parameterize(separator: '_', preserve_case: true)
-      end
-
-      before do
-        stub_request(:any, /mocked_atos_server\.com/).to_rack(EtAtosFileTransfer::Engine)
-      end
-
-      let(:staging_folder) do
-        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-                                       username: 'atos',
-                                       password: 'password'
-      end
-
-      let(:secondary_staging_folder) do
-        EtApi::Test::StagingFolder.new url: 'http://mocked_atos_server.com',
-                                       username: 'atos2',
-                                       password: 'password'
-      end
-
-      let(:emails_sent) do
-        EtApi::Test::EmailsSent.new
-      end
+    let(:emails_sent) do
+      EtApi::Test::EmailsSent.new
     end
 
     shared_context 'with setup for any response' do |json_factory:|
@@ -48,6 +23,8 @@ RSpec.describe 'Create Response Request', type: :request do
       let(:input_respondent_factory) { input_factory.data.detect { |d| d.command == 'BuildRespondent' }.data }
       let(:input_representative_factory) { input_factory.data.detect { |d| d.command == 'BuildRepresentative' }.try(:data) }
       let(:output_files_generated) { [] }
+      # @return [EtApi::Test::EtExporter] The exporter class to use for testing
+      let(:et_exporter) { EtApi::Test::EtExporter }
 
       def perform_action
         json_data = input_factory.to_json
@@ -97,7 +74,6 @@ RSpec.describe 'Create Response Request', type: :request do
         next if example.metadata[:background_jobs] == :disable
 
         run_background_jobs
-        force_export_now
       end
     end
 
@@ -195,75 +171,28 @@ RSpec.describe 'Create Response Request', type: :request do
       end
     end
 
-    shared_examples 'a response exported to primary ATOS' do
-      it 'creates a valid txt file in the correct place in the landing folder' do
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
+    shared_examples 'a response exported to et_exporter' do
+      it 'has the claim details in the payload' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        respondent_name = input_respondent_factory.name
-        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
-        expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors)
+        et_exporter.find_response_by_reference(reference).assert_response_details(input_response_factory)
       end
 
-      it 'creates a valid txt file with correct header data' do
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
+      it 'has the respondent in the payload' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        respondent_name = input_respondent_factory.name
-        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
-        expect(staging_folder.et3_txt_file(output_filename_txt)).to have_correct_contents_for(
+        et_exporter.find_response_by_reference(reference).assert_respondent(input_respondent_factory)
+      end
+      it 'has the representative in the payload' do
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        et_exporter.find_response_by_reference(reference).assert_representative(input_representative_factory)
+      end
+
+      it 'creates a valid pdf file with the data filled in correctly' do
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        et_exporter.find_response_by_reference(reference).et3_pdf_file(template: input_response_factory.pdf_template_reference).assert_correct_contents_for(
           response: input_response_factory,
           respondent: input_respondent_factory,
-          representative: input_representative_factory,
-          errors: errors
-        ), -> { errors.join("\n") }
-      end
-
-      it 'creates a valid pdf file the data filled in correctly' do
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
-        reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        respondent_name = input_respondent_factory.name
-        output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
-        expect(staging_folder.et3_pdf_file(output_filename_pdf, template: input_response_factory.pdf_template_reference)).to have_correct_contents_for(
-          response: input_response_factory,
-          respondent: input_respondent_factory,
-          representative: input_representative_factory,
-          errors: errors
-        ), -> { errors.join("\n") }
-      end
-    end
-
-    shared_examples 'a response exported to secondary ATOS' do
-      it 'creates a valid txt file in the correct place in the landing folder' do
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
-        reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        respondent_name = input_respondent_factory.name
-        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
-        expect(secondary_staging_folder.et3_txt_file(output_filename_txt)).to have_correct_file_structure(errors: errors)
-      end
-
-      it 'creates a valid txt file with correct header data' do
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
-        reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        respondent_name = input_respondent_factory.name
-        output_filename_txt = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.txt"
-        expect(secondary_staging_folder.et3_txt_file(output_filename_txt)).to have_correct_contents_for(
-          response: input_response_factory,
-          respondent: input_respondent_factory,
-          representative: input_representative_factory,
-          errors: errors
-        ), -> { errors.join("\n") }
-      end
-
-      it 'creates a valid pdf file the data filled in correctly' do
-        # Assert - Make sure we have a file with the correct contents and correct filename pattern somewhere in the zip files produced
-        reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        respondent_name = input_respondent_factory.name
-        output_filename_pdf = "#{reference}_ET3_#{formatted_name_for_filename(respondent_name)}.pdf"
-        expect(secondary_staging_folder.et3_pdf_file(output_filename_pdf, template: input_response_factory.pdf_template_reference)).to have_correct_contents_for(
-          response: input_response_factory,
-          respondent: input_respondent_factory,
-          representative: input_representative_factory,
-          errors: errors
-        ), -> { errors.join("\n") }
+          representative: input_representative_factory
+        )
       end
     end
 
@@ -307,8 +236,6 @@ RSpec.describe 'Create Response Request', type: :request do
       end
     end
 
-    include_context 'with staging folder visibility'
-
     # Important note.  There is no validation right now so if we do a response to a non existent claim all is good
     # this MIGHT change - currently unsure what the validation requirement is for this.  There is talk of there being
     # no knowledge of ET1 data from ET3 side of things - but will be questioned.
@@ -320,7 +247,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
-      include_examples 'a response exported to primary ATOS'
+      include_examples 'a response exported to et_exporter'
       include_examples 'email validation using standard template'
     end
 
@@ -332,7 +259,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
-      include_examples 'a response exported to primary ATOS'
+      include_examples 'a response exported to et_exporter'
       include_examples 'email validation using welsh template'
     end
 
@@ -344,7 +271,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
-      include_examples 'a response exported to primary ATOS'
+      include_examples 'a response exported to et_exporter'
     end
 
     context 'with json for a response without representative to a non existent claim' do
@@ -355,11 +282,11 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
-      include_examples 'a response exported to primary ATOS'
+      include_examples 'a response exported to et_exporter'
       include_examples 'email validation using standard template'
     end
 
-    context 'with json for a response with representative to a non existent claim to be exported to secondary ATOS' do
+    context 'with json for a response with representative to a non existent claim to be not exported as it is for the default office' do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
@@ -367,8 +294,11 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for the default office'
-      include_examples 'a response exported to secondary ATOS'
       include_examples 'email validation using standard template'
+      it 'is not exported' do
+        reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        et_exporter.assert_response_not_exported_by_reference(reference)
+      end
     end
 
     context 'with json for a response with an additional_information file upload in local mode' do
@@ -381,19 +311,8 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
-      include_examples 'a response exported to primary ATOS'
+      include_examples 'a response exported to et_exporter'
       include_examples 'email validation using standard template'
-
-      it 'includes the additional_information file in the staging folder' do
-        reference = json_response.dig(:meta, 'BuildResponse', :reference)
-        respondent_name = input_respondent_factory.name
-        output_filename_pdf = "#{reference}_ET3_Attachment_#{respondent_name}.pdf"
-        Dir.mktmpdir do |dir|
-          full_path = File.join(dir, output_filename_pdf)
-          staging_folder.extract(output_filename_pdf, to: full_path)
-          expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
-        end
-      end
     end
 
     context 'with json for a response with an invalid office code in the case number' do
