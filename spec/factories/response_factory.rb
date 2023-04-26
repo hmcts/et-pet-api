@@ -50,11 +50,6 @@ FactoryBot.define do
       end
     end
 
-    trait :with_text_file do
-      after(:build) do |response, _evaluator|
-        response.uploaded_files << build(:uploaded_file, :example_response_text, :system_file_scope)
-      end
-    end
 
     trait :with_output_additional_information_file do
       after(:build) do |response, _evaluator|
@@ -66,18 +61,6 @@ FactoryBot.define do
       after(:build) do |response, _evaluator|
         response.uploaded_files << build(:uploaded_file, :example_response_input_rtf, :user_file_scope)
         response.uploaded_files << build(:uploaded_file, :example_response_input_additional_information, :system_file_scope)
-      end
-    end
-
-    trait :with_wrong_input_rtf_file do
-      after(:build) do |response, _evaluator|
-        response.uploaded_files << build(:uploaded_file, :example_response_wrong_input_rtf, :user_file_scope)
-      end
-    end
-
-    after(:create) do |response, evaluator|
-      evaluator.ready_for_export_to.each do |external_system_id|
-        Export.create resource: response, external_system_id: external_system_id
       end
     end
 

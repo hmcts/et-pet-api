@@ -38,11 +38,6 @@ gem "sentry-rails", "~> 5.7"
 gem "sentry-sidekiq", "~> 5.7"
 gem 'et_azure_insights', '0.3.2', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.3.2'
 gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsights-Ruby.git', ref: '5db6b4'
-# ET to ATOS File transfer packaged as a rack endpoint (rails engine) for easy deployment as a separate service.
-# Note that we are now using it as a separate service, but we need this gem just for the model for now
-# (and we need it for test environment)
-gem 'et_atos_file_transfer', git: 'https://github.com/ministryofjustice/et_atos_file_transfer.git', tag: 'v2.0.0'
-gem 'et_atos_export', path: 'vendor/gems/et_atos_export'
 gem 'notifications-ruby-client', '~> 5.3'
 
 # Rubyzip used to produce and test zip files
@@ -65,7 +60,8 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 6.0'
-  gem 'simplecov', '~> 0.21'
+  gem 'simplecov', '~> 0.21', require: false
+  gem 'simplecov-lcov', '~> 0.3', require: false
   gem 'site_prism', '~> 3.7'
   gem 'bullet', '~> 7.0'
   gem 'parallel_tests', '~> 4.1'
