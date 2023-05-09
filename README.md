@@ -78,7 +78,7 @@ Technically, we only need the command line utility from libre office, but, it is
 
 To install libre office, do the following
 
-Mac: 
+Mac:
 
 ```bash
 brew install --cask libreoffice
@@ -125,7 +125,7 @@ http://api.et.127.0.0.1.nip.io:3100
 
 ### Running support services only
 
-Often, you may want to run the rails server yourself and just have docker bring up 
+Often, you may want to run the rails server yourself and just have docker bring up
 any supporting services such as the database.
 
 Simply do :-
@@ -147,7 +147,7 @@ to kill them (assuming CTRL-C didn't do it)
 ```
 
 
-As stated above in the 'Running a server section' - you can use 
+As stated above in the 'Running a server section' - you can use
 
 ```
 
@@ -208,7 +208,7 @@ setup your own database etc.. Just go about things in the normal way, but rememb
 
 1. The database.yml uses environment variables so it can be checked into the repository.
    But, these also have defaults so if you have a database running on the standard port on localhost and
-   has a user of 'postgres' then you will be good to go.  Otherwise set the environment variables below as you 
+   has a user of 'postgres' then you will be good to go.  Otherwise set the environment variables below as you
    see fit
    DB_HOST
    DB_USERNAME
@@ -221,14 +221,14 @@ setup your own database etc.. Just go about things in the normal way, but rememb
    REDIS_HOST (defaults to localhost)
    REDIS_PORT (defaults to 6379)
    REDIS_DATABASE (defaults to 1)
-   
+
    You can change any of these individually or you can ignore these by setting the full
    REDIS_URL in the traditional way - such as :-
-   
+
    ```
-   
+
    REDIS_URL=redis://localhost:6379/12
-   
+
    ```
 
    If your redis server needs a password, it must be specified using
@@ -237,7 +237,7 @@ setup your own database etc.. Just go about things in the normal way, but rememb
    REDIS_PASSWORD=<your password>
 
    ```
-   
+
 ## With Foreman
 
 Whilst foreman could not be bundled in due to its version of 'thor' being too old at the time
@@ -249,9 +249,9 @@ a production like system using a single command :-
 foreman start
 
 ```
-   
+
 If you are doing things manually, remember you may need sidekiq running depending
-on what area of the system you are using.   
+on what area of the system you are using.
 
 # Other Environment Variables
 
@@ -280,21 +280,6 @@ must be set to 'Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K
 This is the storage container name for azure and must conform to microsoft's naming convention which pretty much means
 that is must be a valid dns name, must only contain alphanumeric's with '-' separating words - NO underscores or other symbols
 
-
-## EXPORT_CLAIMS_EVERY
-
-The claims are batched up and zipped ready for consumption by the ATOS API every 15 minutes
-
-If you want to change this during development, set this environment variable - e.g.
-
-```
-
-EXPORT_CLAIMS_EVERY=5
-
-```
-
-
-will set it to every 5 minutes
 
 # Development Guidelines
 

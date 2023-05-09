@@ -208,6 +208,17 @@ RSpec.describe 'Create Claim Request', type: :request do
         secondary_claimants = input_factory.data.find { |n| n.command == 'BuildSecondaryClaimants' }.data.map(&:to_h)
         et_exporter.find_claim_by_submission_reference(submission_reference).assert_secondary_claimants(secondary_claimants)
       end
+
+      it 'has the et1a text file attached' do
+        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
+        et_exporter.find_claim_by_submission_reference(submission_reference).assert_et1a_text_file
+      end
+
+      it 'stores an ET1a txt file with all of the claimants in the correct format' do
+        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
+        claimants = normalize_json_claimants(input_secondary_claimants_factory.map(&:to_h))
+        expect(et_exporter.find_claim_by_submission_reference(submission_reference).et1a_text_file).to have_claimants_for(claimants, errors: errors), -> { errors.join("\n") }
+      end
     end
 
     shared_examples 'a claim exported to et_exporter with multiple claimants from csv' do
@@ -299,6 +310,7 @@ RSpec.describe 'Create Claim Request', type: :request do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, reference: nil, primary_respondent_traits: [:full, :no_work_address]) }
       include_context 'with background jobs running'
       include_examples 'any claim variation'
+      include_examples 'a claim exported with an attached acas certificate'
       include_examples 'a claim exported to et_exporter'
       include_examples 'a claim exported to et_exporter with single claimant'
       include_examples 'a claim exported to et_exporter with single respondent'
@@ -382,6 +394,7 @@ RSpec.describe 'Create Claim Request', type: :request do
         include_context 'with background jobs running'
         include_examples 'any claim variation'
         include_examples 'a claim exported to et_exporter'
+        include_examples 'a claim exported with an attached acas certificate'
         include_examples 'a claim exported to et_exporter with multiple claimants from csv'
         include_examples 'a claim exported to et_exporter with multiple respondents'
         include_examples 'a claim exported to et_exporter with no representatives'

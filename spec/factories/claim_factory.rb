@@ -45,21 +45,9 @@ FactoryBot.define do
       end
     end
 
-    trait :with_text_file do
-      after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :example_claim_text, :system_file_scope)
-      end
-    end
-
     trait :with_input_claim_details_file do
       after(:build) do |claim, _evaluator|
         claim.uploaded_files << build(:uploaded_file, :example_claim_rtf, :system_file_scope)
-      end
-    end
-
-    trait :with_claimants_text_file do
-      after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :example_claim_claimants_text, :system_file_scope)
       end
     end
 
@@ -106,12 +94,6 @@ FactoryBot.define do
           "new_job_start_date": nil,
           "new_job_gross_pay": nil
         }.stringify_keys
-      end
-    end
-
-    after(:create) do |claim, evaluator|
-      evaluator.ready_for_export_to.each do |external_system_id|
-        Export.create resource: claim, external_system_id: external_system_id
       end
     end
 

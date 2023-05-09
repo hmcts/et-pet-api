@@ -1,5 +1,6 @@
 {
   "files.watcherExclude": {
     "log/*.log": true
-  }
+  },
+  "simplecov-vscode.enabled": true
 }

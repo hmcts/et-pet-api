@@ -3,6 +3,7 @@ class ReprepareResponseHandler
     ActiveRecord::Base.transaction do
       delete_faulty_uploaded_files(response)
       RepairUploadedFilesHandler.new.handle(response)
+      ConvertFilesHandler.new.handle(response)
       unless pdf_file_exists?(response)
         ConvertFilesHandler.new.handle(response)
         ResponsePdfFileHandler.new.handle(response)

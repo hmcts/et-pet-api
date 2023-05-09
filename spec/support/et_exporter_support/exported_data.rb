@@ -50,7 +50,7 @@ module EtApi
         end
 
         def assert_has_file(filename)
-          expect(data.dig('resource', 'uploaded_files')).to include(a_hash_including('filename' => match(filename)))
+          expect(data.dig(:resource, :uploaded_files)).to include(a_hash_including(filename: match(filename)))
         end
 
         def assert_has_acas_file
@@ -58,7 +58,7 @@ module EtApi
         end
 
         def assert_acas_file_contents
-          uploaded_file = data.dig('resource', 'uploaded_files').detect { |u| u['filename'] =~ /\Aacas.*\.pdf\z/ }
+          uploaded_file = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] =~ /\Aacas.*\.pdf\z/ }
           raise "No uploaded file starting with 'acas' and ending in '.pdf' has been exported" if uploaded_file.nil?
 
           file = download(uploaded_file)
@@ -75,6 +75,17 @@ module EtApi
         def assert_primary_respondent(respondent)
           expect(data.dig(:resource, :primary_respondent)).to include respondent.slice(:name, :organisation_more_than_one_site, :contact, :dx_number, :address_telephone_number, :work_address_telephone_number, :alt_phone_number, :contact_preference, :fax_number, :organisation_employ_gb, :employment_at_site_number, :disability, :disability_information, :acas_certificate_number, :acas_exemption_code)
           expect(data.dig(:resource, :primary_respondent, :address)).to include respondent[:address_attributes].to_h.slice(:building, :street, :locality, :county, :postcode, :country)
+        end
+
+        def assert_et1a_text_file
+          expect(et1a_text_file).to have_correct_file_structure.and(have_correct_encoding)
+        end
+
+        def et1a_text_file
+          uploaded_file = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] =~ /\Aet1a.*\.txt\z/ }
+          raise "No uploaded file starting with 'et1a' and ending in '.txt' has been exported" if uploaded_file.nil?
+
+          EtApi::Test::FileObjects::Et1aTxtFile.new download(uploaded_file)
         end
 
         def et1_pdf_file(template: 'et1-v3-en')
@@ -179,7 +190,7 @@ module EtApi
         end
 
         def additional_information_file
-          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == 'et3_atos_export_additional_information.pdf' }
+          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == 'additional_information.pdf' }
           EtApi::Test::FileObjects::Et3AdditionalInformationFile.new download(file_data)
         end
 
