@@ -62,7 +62,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 6.0'
   gem 'simplecov', '~> 0.21', require: false
   gem 'simplecov-lcov', '~> 0.3', require: false
-  gem 'site_prism', '~> 3.7'
+  gem 'site_prism', '~> 4.0'
   gem 'bullet', '~> 7.0'
   gem 'parallel_tests', '~> 4.1'
   gem 'ruby-debug-ide', require: false
