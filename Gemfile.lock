@@ -287,7 +287,7 @@ GEM
       hashery (~> 2.0)
       ruby-rc4
       ttfunk
-    pg (1.4.5)
+    pg (1.5.3)
     public_suffix (5.0.1)
     puma (6.0.2)
       nio4r (~> 2.0)
