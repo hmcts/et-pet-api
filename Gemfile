@@ -101,4 +101,4 @@ gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
 gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v1.0.0'
 
-gem "activerecord-nulldb-adapter", "~> 0.8.0", :group => :test
+gem "activerecord-nulldb-adapter", "~> 0.9.0", :group => :test

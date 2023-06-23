@@ -97,7 +97,7 @@ GEM
     activerecord (7.0.5)
       activemodel (= 7.0.5)
       activesupport (= 7.0.5)
-    activerecord-nulldb-adapter (0.8.0)
+    activerecord-nulldb-adapter (0.9.0)
       activerecord (>= 5.2.0, < 7.1)
     activestorage (7.0.5)
       actionpack (= 7.0.5)
@@ -479,7 +479,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-nulldb-adapter (~> 0.8.0)
+  activerecord-nulldb-adapter (~> 0.9.0)
   application_insights!
   azure-storage-blob (~> 2.0, >= 2.0.1)
   azure_env_secrets!
