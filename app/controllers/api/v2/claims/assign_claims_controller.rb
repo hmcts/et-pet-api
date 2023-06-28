@@ -5,11 +5,13 @@ module Api
     module Claims
       class AssignClaimsController < ::Api::V2::BaseController
         include CacheCommandResults
+        include ClaimsSentryContext
 
         cache_command_results only: :create
 
         def create
           root_object = ::Claim.find_by(id: assign_claims_params.dig(:data, :claim_id))
+          set_sentry_claim(root_object)
           command = CommandService.command_for(**assign_claims_params.merge(command: 'AssignClaim').symbolize_keys)
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object
