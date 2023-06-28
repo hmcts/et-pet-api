@@ -4,7 +4,7 @@ module ClaimsSentryContext
   private
 
   def set_sentry_claim(claim)
-    return unless claim.id.present?
+    return unless claim&.id.present?
 
     Sentry.with_scope do |scope|
       scope.set_extras(claim_id: claim.id)
