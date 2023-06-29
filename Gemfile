@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '7.0.4.2'
+gem 'rails', '7.0.5'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/ministryofjustice/azure_env_secrets.git', tag: 'v0.1.3'
@@ -62,7 +62,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 6.0'
   gem 'simplecov', '~> 0.21', require: false
   gem 'simplecov-lcov', '~> 0.3', require: false
-  gem 'site_prism', '~> 3.7'
+  gem 'site_prism', '~> 4.0'
   gem 'bullet', '~> 7.0'
   gem 'parallel_tests', '~> 4.1'
   gem 'ruby-debug-ide', require: false
@@ -101,4 +101,4 @@ gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
 gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v1.0.0'
 
-gem "activerecord-nulldb-adapter", "~> 0.8.0", :group => :test
+gem "activerecord-nulldb-adapter", "~> 0.9.0", :group => :test
