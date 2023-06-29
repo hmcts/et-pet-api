@@ -223,7 +223,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_23_155408) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["id"], name: "index_commands_on_id", unique: true
-    t.index ["root_object_type", "root_object_id"], name: "index_commands_on_root_object"
+    t.index ["root_object_type", "root_object_id"], name: "index_commands_on_root_object_type_and_root_object_id"
   end
 
   create_table "direct_uploaded_files", force: :cascade do |t|

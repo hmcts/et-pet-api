@@ -33,7 +33,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     end
     return true if exists
 
-    record.errors.add(:base, :missing_file, extra_error_details(record))
+    record.errors.add(:base, :missing_file, **extra_error_details(record))
     false
   end
 
@@ -42,10 +42,10 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     file.rewind
     return true if (CORRECT_COLUMNS - first_row).empty?
 
-    record.errors.add(:base, :invalid_columns, extra_error_details(record))
+    record.errors.add(:base, :invalid_columns, **extra_error_details(record))
     false
   rescue EOFError
-    record.errors.add(:base, :empty_file, extra_error_details(record))
+    record.errors.add(:base, :empty_file, **extra_error_details(record))
     false
   end
 
@@ -104,7 +104,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     claimants_file.errors.details.each_pair do |attr, row_errors|
       messages = claimants_file.errors.messages[attr]
       row_errors.each_with_index do |error, idx|
-        record.errors.add(:"#{attribute}[#{row_index}].#{attr}", messages[idx], error.merge(extra_error_details(record)))
+        record.errors.add(:"#{attribute}[#{row_index}].#{attr}", messages[idx], **error.merge(extra_error_details(record)))
       end
     end
   end

@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '7.0.5'
+gem 'rails', '7.0.5.1'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/ministryofjustice/azure_env_secrets.git', tag: 'v0.1.3'
@@ -20,7 +20,7 @@ gem 'jbuilder', '~> 2.10'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # Wisper is used as an in process pub/sub to decouple events / commands
-gem 'wisper', '~> 2.0'
+gem 'wisper', git: 'https://github.com/krisleech/wisper.git', ref: '5587c1ad341a39f8d35d0a00ac78ba911e919b16'
 gem 'uk_postcode', '~> 2.1'
 
 # Use Capistrano for deployment
@@ -65,8 +65,6 @@ group :development, :test do
   gem 'site_prism', '~> 4.0'
   gem 'bullet', '~> 7.0'
   gem 'parallel_tests', '~> 4.1'
-  gem 'ruby-debug-ide', require: false
-  gem 'debase', require: false
 end
 
 group :development do
@@ -89,7 +87,7 @@ group :test do
   gem 'webmock', '~> 3.11'
   gem 'et_fake_acas_server', '~> 2.0'
   gem 'gov_fake_notify', '~> 1.2'
-  gem "selenium-webdriver", "~> 4.8"
+  gem "selenium-webdriver", "~> 4.10"
   gem "puma", "~> 6.0"
   gem "pdf-reader", "~> 2.4"
 end

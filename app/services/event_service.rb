@@ -60,14 +60,14 @@ class EventService
   end
 
   def handler_proc_for_sync(handler)
-    lambda do |*args|
-      handler_instance_for(handler).handle(*args) unless ignore_events
+    lambda do |*args, **kw_args|
+      handler_instance_for(handler).handle(*args, **kw_args) unless ignore_events
     end
   end
 
   def handler_proc_for_async(handler)
-    lambda do |*args|
-      EventJob.perform_later(handler.name, *args) unless ignore_events
+    lambda do |*args, **kw_args|
+      EventJob.perform_later(handler.name, *args, **kw_args) unless ignore_events
     end
   end
 
@@ -93,7 +93,7 @@ class EventService
     include Singleton
     include Wisper::Publisher
 
-    def publish(*)
+    def publish(*, **)
       super
     end
 

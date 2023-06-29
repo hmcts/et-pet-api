@@ -42,8 +42,8 @@ RSpec.describe SerialSequenceCommand do
   end
 
   shared_context 'with fake commands from data' do
-    let(:command1) { my_command_class.new(data[0].symbolize_keys) }
-    let(:command2) { my_command_class.new(data[1].symbolize_keys) }
+    let(:command1) { my_command_class.new(**data[0].symbolize_keys) }
+    let(:command2) { my_command_class.new(**data[1].symbolize_keys) }
     before do
       allow(command_service).to receive(:command_for).with(**data[0].symbolize_keys).and_return(command1)
       allow(command_service).to receive(:command_for).with(**data[1].symbolize_keys).and_return(command2)
