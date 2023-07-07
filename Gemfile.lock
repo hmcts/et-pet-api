@@ -514,6 +514,7 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   puma (~> 6.0)
   rails (= 7.0.5.1)
+  rexml (~> 3.2.5)
   rspec-eventually (~> 0.2.2)
   rspec-rails (~> 6.0)
   rubocop (~> 1.8)
