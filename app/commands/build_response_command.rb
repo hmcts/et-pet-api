@@ -34,7 +34,7 @@ class BuildResponseCommand < BaseCommand
   validates :email_template_reference, inclusion: { in: ['et3-v1-en', 'et3-v1-cy'] }
   validates :queried_hours, numericality: { less_than_or_equal_to: 168.0, greater_than: 0.0 }, allow_nil: true
 
-  def initialize(*)
+  def initialize(*, **)
     super
     self.reference_service = ReferenceService
     self.allocator_service = UploadedFileAllocatorService.new

@@ -18,7 +18,7 @@ class SerialSequenceCommand < BaseCommand
 
   def initialize_commands(commands)
     self.data = commands.map do |command|
-      command_service.command_for(command.symbolize_keys)
+      command_service.command_for(**command.symbolize_keys)
     end
   end
 
@@ -44,7 +44,7 @@ class SerialSequenceCommand < BaseCommand
         uuid: command.uuid,
         command: command.command_name
       }
-      errors.add(:"data[#{pos}].#{attr}", messages[idx], error.merge(extra_error_details))
+      errors.add(:"data[#{pos}].#{attr}", messages[idx], **error.merge(extra_error_details))
     end
   end
 end

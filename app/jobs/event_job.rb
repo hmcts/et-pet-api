@@ -4,7 +4,7 @@
 class EventJob < ApplicationJob
   queue_as :events
 
-  def perform(handler_class, *args)
-    handler_class.safe_constantize.new.handle(*args)
+  def perform(handler_class, *args, **kw_args)
+    handler_class.safe_constantize.new.handle(*args, **kw_args)
   end
 end

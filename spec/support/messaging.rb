@@ -60,25 +60,25 @@ module EtApi
 
       private
 
-      def t(*args)
-        ::EtApi::Test::Messaging.instance.t(*args)
+      def t(*args, **kw_args)
+        ::EtApi::Test::Messaging.instance.t(*args, **kw_args)
       end
 
-      def l(*args)
-        ::EtApi::Test::Messaging.instance.l(*args)
+      def l(*args, **kw_args)
+        ::EtApi::Test::Messaging.instance.l(*args, **kw_args)
       end
 
       class_methods do
-        def t(*args)
-          ::EtApi::Test::Messaging.instance.t(*args)
+        def t(*args, **kw_args)
+          ::EtApi::Test::Messaging.instance.t(*args, **kw_args)
         end
 
-        def l(*args)
-          ::EtApi::Test::Messaging.instance.l(*args)
+        def l(*args, **kw_args)
+          ::EtApi::Test::Messaging.instance.l(*args, **kw_args)
         end
 
-        def factory_translate(*args)
-          ::EtApi::Test::Messaging.instance.factory_translate(*args)
+        def factory_translate(*args, **kw_args)
+          ::EtApi::Test::Messaging.instance.factory_translate(*args, **kw_args)
         end
       end
     end
