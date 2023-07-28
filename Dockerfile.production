@@ -29,7 +29,10 @@ RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext sh
     jlink --add-modules java.base,java.desktop,java.naming,java.sql --strip-debug --no-man-pages --no-header-files --compress=2 --output=/opt/java/openjdk-trimmed && \
     cd /home/app/api && \
     gem install bundler foreman && \
-    bundle install --no-cache --jobs=5 --retry=3 --without=test development --with=production --deployment && \
+    bundle config set without 'test development' && \
+    bundle config set deployment 'true' && \
+    bundle config set with 'production' && \
+    bundle install --no-cache --jobs=5 --retry=3 && \
     apk del .build-tools && \
     chown -R app:app /usr/local/bundle && \
     mkdir -p /home/app/api/tmp && \

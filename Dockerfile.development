@@ -26,8 +26,11 @@ RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext sh
     apk add --no-cache git build-base openjdk11 && \
     jlink --add-modules java.base,java.desktop,java.naming,java.sql --strip-debug --no-man-pages --no-header-files --compress=2 --output=/opt/java/openjdk-trimmed && \
     cd /home/app/api && \
-    gem install bundler -v 1.17.3 && \
-    bundle install --no-cache --jobs=5 --retry=3 --without=test development --with=production --deployment && \
+    gem install bundler foreman && \
+    bundle config set with "test development" && \
+    bundle config set without "production" && \
+    bundle config set deployment 'true' && \
+    bundle install --no-cache --jobs=5 --retry=3 && \
     chown -R app:app /usr/local/bundle && \
     mkdir -p /home/app/api/tmp && \
     chown -R app:app /home/app/api/tmp
