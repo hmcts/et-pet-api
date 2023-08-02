@@ -120,7 +120,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     return if source.employment_details.empty?
 
     ed = source.employment_details.symbolize_keys
-    apply_field result, ed[:end_date].nil? || Time.zone.parse(ed[:end_date]).future?, :employment_details, :employment_continuing
+    apply_field result, ed[:current_situation] == 'still_employed' || ed[:current_situation] == 'notice_period', :employment_details, :employment_continuing
     apply_field result, ed[:job_title], :employment_details, :job_title
     apply_field result, format_date(ed[:start_date], optional: true), :employment_details, :start_date
     apply_field result, format_date(ed[:end_date], optional: true), :employment_details, :ended_date

@@ -80,6 +80,7 @@ FactoryBot.define do
           "end_date": nil,
           "notice_period_end_date": nil,
           "job_title": "agriculturist",
+          "current_situation": "still_employed",
           "average_hours_worked_per_week": 38.0,
           "gross_pay": 3000,
           "gross_pay_period_type": "monthly",
