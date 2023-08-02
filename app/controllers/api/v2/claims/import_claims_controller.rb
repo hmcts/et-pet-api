@@ -5,11 +5,13 @@ module Api
     module Claims
       class ImportClaimsController < ::Api::V2::BaseController
         include CacheCommandResults
+        include ClaimsSentryContext
 
         cache_command_results only: :create
 
         def create
           root_object = ::Claim.new
+          set_sentry_claim(root_object)
           command = CommandService.command_for(**import_claims_params.symbolize_keys)
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object
