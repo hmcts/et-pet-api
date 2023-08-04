@@ -21,13 +21,19 @@ COPY --chown=app:app . /home/app/api
 COPY --from=clevyr/pdftk-java /app/ /usr/local/bin/
 RUN ln -s /opt/java/openjdk-trimmed/bin/java /usr/local/bin/java
 RUN chown -R app:app /usr/local/bundle
-RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext shared-mime-info libc6-compat bash file libreoffice && \
+RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext shared-mime-info libc6-compat bash file libreoffice msttcorefonts-installer \
+    ttf-freefont ttf-opensans ttf-inconsolata \
+    ttf-liberation ttf-dejavu && \
     apk add --no-cache postgresql-client~=11.12 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main && \
-    apk add --no-cache git build-base openjdk11 && \
+    apk add --no-cache --virtual .build-tools git build-base openjdk11 && \
     jlink --add-modules java.base,java.desktop,java.naming,java.sql --strip-debug --no-man-pages --no-header-files --compress=2 --output=/opt/java/openjdk-trimmed && \
     cd /home/app/api && \
-    gem install bundler -v 1.17.3 && \
-    bundle install --no-cache --jobs=5 --retry=3 --without=test development --with=production --deployment && \
+    gem install bundler foreman && \
+    bundle config set without 'test development' && \
+    bundle config set deployment 'true' && \
+    bundle config set with 'production' && \
+    bundle install --no-cache --jobs=5 --retry=3 && \
+    apk del .build-tools && \
     chown -R app:app /usr/local/bundle && \
     mkdir -p /home/app/api/tmp && \
     chown -R app:app /home/app/api/tmp
@@ -36,5 +42,5 @@ RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext sh
 USER app
 ENV HOME /home/app
 WORKDIR /home/app/api
-ENV RAILS_ENV=development
+ENV RAILS_ENV=production
 CMD ["bundle", "exec", "iodine", "-port", "8080"]

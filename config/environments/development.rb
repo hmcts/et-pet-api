@@ -31,7 +31,7 @@ Rails.application.configure do
   end
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  config.active_storage.service = ENV.fetch('ACTIVE_STORAGE_SERVICE', :local).to_sym
   config.active_storage.service_urls_expire_in = 10.days
 
   # Don't care if the mailer can't send.
@@ -75,6 +75,13 @@ Rails.application.configure do
 
   # These settings for acas api will be modified once we know exactly what we are doing with them.
   # for now, we are using the test environment settings otherwise the app wont boot.
+
+  config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'debug').to_sym
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new($stdout)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
 
   config.et_acas_api.server_time_zone = 'Europe/London'
   config.et_acas_api.api_version = 2
