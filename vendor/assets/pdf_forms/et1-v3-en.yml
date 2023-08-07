@@ -233,6 +233,38 @@ respondents_details:
           - 'Off'
       acas_number:
         field_name: 2.6 please give the Acas early conciliation certificate number
+      no_acas_number_reason:
+        field_name:
+          - 2.6 why don't you have an Acas early conciliation certificate number? Another person I'm making the claim with has an Acas early conciliation certificate number
+          - 2.6 why don't you have an Acas early conciliation certificate number? Acas doesn’t have the power to conciliate on some or all of my claim
+          - 2.6 why don't you have an Acas early conciliation certificate number? My employer has already been in touch with Acas
+          - 2.6 why don't you have an Acas early conciliation certificate number? My claim consists only of a complaint of unfair dismissal which contains an application for interim relief. (See guidance)
+        select_values:
+          joint_claimant_has_acas_number:
+            - 'Yes'
+            - 'Off'
+            - 'Off'
+            - 'Off'
+          acas_has_no_jurisdiction:
+            - 'Off'
+            - 'Yes'
+            - 'Off'
+            - 'Off'
+          employer_contacted_acas:
+            - 'Off'
+            - 'Off'
+            - 'Yes'
+            - 'Off'
+          interim_relief:
+            - 'Off'
+            - 'Off'
+            - 'Off'
+            - 'Yes'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+          - 'Off'
   respondent3:
     name:
       field_name: 2.7 R3 name
@@ -266,6 +298,38 @@ respondents_details:
           - 'Off'
       acas_number:
         field_name: 2.8 please give the Acas early conciliation certificate number
+      no_acas_number_reason:
+        field_name:
+          - 2.8 why don't you have an Acas early conciliation certificate number? Another person I'm making the claim with has an Acas early conciliation certificate number
+          - 2.8 why don't you have an Acas early conciliation certificate number? Acas doesn’t have the power to conciliate on some or all of my claim
+          - 2.8 why don't you have an Acas early conciliation certificate number? My employer has already been in touch with Acas
+          - 2.8 why don't you have an Acas early conciliation certificate number? My claim consists only of a complaint of unfair dismissal which contains an application for interim relief. (See guidance)
+        select_values:
+          joint_claimant_has_acas_number:
+            - 'Yes'
+            - 'Off'
+            - 'Off'
+            - 'Off'
+          acas_has_no_jurisdiction:
+            - 'Off'
+            - 'Yes'
+            - 'Off'
+            - 'Off'
+          employer_contacted_acas:
+            - 'Off'
+            - 'Off'
+            - 'Yes'
+            - 'Off'
+          interim_relief:
+            - 'Off'
+            - 'Off'
+            - 'Off'
+            - 'Yes'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+          - 'Off'
 multiple_cases:
   have_similar_claims:
     field_name:
