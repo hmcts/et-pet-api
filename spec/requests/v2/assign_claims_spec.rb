@@ -51,8 +51,8 @@ RSpec.describe 'Assign Claim Request', type: :request do
       end
 
     end
-    let(:example_claim) { Claim.find_by_reference example_claim_reference }
-    let(:new_office) { Office.find_by_code(24) }
+    let(:example_claim) { Claim.find_by reference: example_claim_reference }
+    let(:new_office) { Office.find_by(code: 24) }
     let(:example_user_id) { 123 }
 
     include_context 'with fake sidekiq'
@@ -77,7 +77,7 @@ RSpec.describe 'Assign Claim Request', type: :request do
       run_background_jobs
 
       # Assert - Check the example claim now has an export record and will be marked as queued
-      claim = Claim.find_by_reference(example_claim_reference)
+      claim = Claim.find_by(reference: example_claim_reference)
       expect(Export.where(external_system_id: ExternalSystem.containing_office_code(new_office.code).exporting_claims.first.id, resource: claim, state: 'queued').count).to be 1
     end
 

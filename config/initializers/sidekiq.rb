@@ -5,7 +5,7 @@ Sidekiq.configure_server do |config|
   redis_config[:password] = ENV['REDIS_PASSWORD'] if ENV['REDIS_PASSWORD'].present?
   config.redis = redis_config
   schedule_file = "config/schedule.yml"
-  puts("Sidekiq server configured with url #{redis_url}")
+  Rails.logger.debug("Sidekiq server configured with url #{redis_url}")
 
   Redis.new
 
@@ -19,7 +19,7 @@ Sidekiq.configure_client do |config|
   redis_config = { url: redis_url }
   redis_config[:password] = ENV['REDIS_PASSWORD'] if ENV['REDIS_PASSWORD'].present?
   config.redis = redis_config
-  puts("Sidekiq client configured with url #{redis_url}")
+  Rails.logger.debug("Sidekiq client configured with url #{redis_url}")
 end
 
 Sidekiq.logger.level = ::Logger.const_get(ENV.fetch('RAILS_LOG_LEVEL', 'debug').upcase)

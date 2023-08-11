@@ -11,7 +11,7 @@ RSpec.describe ConvertFilesHandler do
 
       it 'converts the rtf file to a pdf file' do
         # Act
-        ConvertFilesHandler.new.handle(claim)
+        described_class.new.handle(claim)
         # Assert
         expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.pdf")).to be_present
         expect(UploadedFile.system_file_scope.where("filename LIKE '%.rtf'")).not_to be_present
@@ -21,7 +21,7 @@ RSpec.describe ConvertFilesHandler do
         # Arrange
         allow(Rails.configuration.file_conversions).to receive(:enabled).and_return(false)
         # Act
-        ConvertFilesHandler.new.handle(claim)
+        described_class.new.handle(claim)
         # Assert
         expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.rtf")).to be_present
       end
@@ -30,7 +30,7 @@ RSpec.describe ConvertFilesHandler do
         # Arrange
         allow(Rails.configuration.file_conversions).to receive(:allowed_types).and_return(['text/csv'])
         # Act
-        ConvertFilesHandler.new.handle(claim)
+        described_class.new.handle(claim)
         # Assert
         expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.rtf")).to be_present
       end
@@ -39,7 +39,7 @@ RSpec.describe ConvertFilesHandler do
         # Arrange
         claim.uploaded_files.destroy_all
         # Act
-        ConvertFilesHandler.new.handle(claim)
+        described_class.new.handle(claim)
         # Assert
         expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.pdf")).not_to be_present
         expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.rtf")).not_to be_present
@@ -47,9 +47,9 @@ RSpec.describe ConvertFilesHandler do
 
       it 'does nothing if the rtf file is already converted' do
         # Arrange
-        ConvertFilesHandler.new.handle(claim)
+        described_class.new.handle(claim)
         # Act
-        ConvertFilesHandler.new.handle(claim)
+        described_class.new.handle(claim)
         # Assert
         expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.pdf")).to be_present
         expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.rtf")).not_to be_present

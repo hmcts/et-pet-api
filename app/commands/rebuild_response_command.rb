@@ -15,6 +15,6 @@ class RebuildResponseCommand < BuildResponseCommand
   end
 
   def allocate_pdf_file(root_object)
-    super unless root_object.pdf_file.present?
+    super if root_object.pdf_file.blank?
   end
 end

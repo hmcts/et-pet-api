@@ -43,8 +43,8 @@ RSpec.describe 'Export Response Request', type: :request do
       JSON.parse(response.body).dig('meta', 'BuildResponse', 'reference').tap { reset! }
     end
     let(:example_external_system_reference) { 'ccd_manchester' }
-    let(:example_external_system) { ExternalSystem.find_by_reference example_external_system_reference }
-    let(:example_response) { Response.find_by_reference example_response_reference }
+    let(:example_external_system) { ExternalSystem.find_by reference: example_external_system_reference }
+    let(:example_response) { Response.find_by reference: example_response_reference }
 
     include_context 'with fake sidekiq'
 
@@ -68,7 +68,7 @@ RSpec.describe 'Export Response Request', type: :request do
       run_background_jobs
 
       # Assert - Check the example response now has an export record
-      response = Response.find_by_reference(example_response_reference)
+      response = Response.find_by(reference: example_response_reference)
       expect(Export.where(external_system_id: example_external_system.id, resource: response, state: 'created').count).to be 1
     end
 

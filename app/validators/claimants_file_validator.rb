@@ -153,7 +153,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     def age_between_range
       return if date_of_birth.nil?
 
-      errors.add :date_of_birth, :date_range unless date_of_birth > 100.years.ago and date_of_birth < 10.years.ago
+      errors.add :date_of_birth, :date_range unless (date_of_birth > 100.years.ago) && (date_of_birth < 10.years.ago)
     end
   end
 end

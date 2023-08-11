@@ -135,7 +135,7 @@ module EtApi
           start_idx = match_start.is_a?(String) ? contents.index(match_start) : contents.index { |l| l =~ match_start }
           return nil if start_idx.nil?
 
-          my_contents = contents[start_idx..-1]
+          my_contents = contents[start_idx..]
           end_idx = match_end.is_a?(String) ? my_contents.index(match_end) : my_contents.index { |l| l =~ match_end }
           return nil if end_idx.nil?
           return nil if my_contents[end_idx + 1] != ''

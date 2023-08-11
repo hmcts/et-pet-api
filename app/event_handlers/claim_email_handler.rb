@@ -62,7 +62,7 @@ class ClaimEmailHandler
     template = templates_collection.collection.detect do |t|
       t.name == template_reference.gsub(/\Aet1-/, 'et1-confirmation-email-')
     end
-    raise "No template for reference: #{template_reference}" unless template.present?
+    raise "No template for reference: #{template_reference}" if template.blank?
 
     template.id
   end

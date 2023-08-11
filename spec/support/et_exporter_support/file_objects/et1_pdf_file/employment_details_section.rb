@@ -36,14 +36,14 @@ module EtApi
             return nil if date.nil? && optional
 
             d = formatted_date(date)
-            d < Date.today ? d : nil
+            d < Time.zone.today ? d : nil
           end
 
           def date_in_future(date, optional: false)
             return nil if date.nil? && optional
 
             d = formatted_date(date)
-            d > Date.today ? d : nil
+            d > Time.zone.today ? d : nil
           end
         end
       end

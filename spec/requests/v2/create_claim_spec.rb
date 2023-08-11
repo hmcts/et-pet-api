@@ -618,13 +618,13 @@ RSpec.describe 'Create Claim Request', type: :request do
 
       it 'has the correct error in the address_attributes field', background_jobs: :disable do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildPrimaryClaimant' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "invalid_address",
-                                                                                           title: "Invalid address",
-                                                                                           detail: "Invalid address",
-                                                                                           source: "/data/2/address_attributes",
-                                                                                           command: "BuildPrimaryClaimant",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "invalid_address",
+                                                                                       title: "Invalid address",
+                                                                                       detail: "Invalid address",
+                                                                                       source: "/data/2/address_attributes",
+                                                                                       command: "BuildPrimaryClaimant",
+                                                                                       uuid: expected_uuid
       end
     end
 
@@ -637,13 +637,13 @@ RSpec.describe 'Create Claim Request', type: :request do
 
       it 'has the correct error in the address_attributes field', background_jobs: :disable do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildPrimaryRespondent' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "invalid_address",
-                                                                                           title: "Invalid address",
-                                                                                           detail: "Invalid address",
-                                                                                           source: "/data/1/address_attributes",
-                                                                                           command: "BuildPrimaryRespondent",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "invalid_address",
+                                                                                       title: "Invalid address",
+                                                                                       detail: "Invalid address",
+                                                                                       source: "/data/1/address_attributes",
+                                                                                       command: "BuildPrimaryRespondent",
+                                                                                       uuid: expected_uuid
       end
     end
 
@@ -656,13 +656,13 @@ RSpec.describe 'Create Claim Request', type: :request do
 
       it 'has the correct error in the address_attributes field', background_jobs: :disable do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildPrimaryRepresentative' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "invalid_address",
-                                                                                           title: "Invalid address",
-                                                                                           detail: "Invalid address",
-                                                                                           source: "/data/5/address_attributes",
-                                                                                           command: "BuildPrimaryRepresentative",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "invalid_address",
+                                                                                       title: "Invalid address",
+                                                                                       detail: "Invalid address",
+                                                                                       source: "/data/5/address_attributes",
+                                                                                       command: "BuildPrimaryRepresentative",
+                                                                                       uuid: expected_uuid
       end
     end
   end

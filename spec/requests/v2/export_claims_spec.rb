@@ -45,8 +45,8 @@ RSpec.describe 'Export Claims Request', type: :request do
       JSON.parse(response.body).dig('meta', 'BuildClaim', 'reference').tap { reset! }
     end
     let(:example_external_system_reference) { 'ccd_manchester' }
-    let(:example_external_system) { ExternalSystem.find_by_reference example_external_system_reference }
-    let(:example_claim) { Claim.find_by_reference example_claim_reference }
+    let(:example_external_system) { ExternalSystem.find_by reference: example_external_system_reference }
+    let(:example_claim) { Claim.find_by reference: example_claim_reference }
 
     include_context 'with fake sidekiq'
 
@@ -70,7 +70,7 @@ RSpec.describe 'Export Claims Request', type: :request do
       run_background_jobs
 
       # Assert - Check the example claim now has an export record and will be marked as queued
-      claim = Claim.find_by_reference(example_claim_reference)
+      claim = Claim.find_by(reference: example_claim_reference)
       expect(Export.where(external_system_id: example_external_system.id, resource: claim, state: 'queued').count).to be 1
     end
 

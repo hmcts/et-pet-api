@@ -120,9 +120,6 @@ task update_pdf_yml_buttons: :environment do
       file.write YAML.dump(yaml)
     end
 
-    if reports[pdf_file][:missing].present?
-    end
-
   end
 
   if reports.values.any? { |r| r[:missing].present? }

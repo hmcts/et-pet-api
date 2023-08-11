@@ -9,14 +9,14 @@ module EtApi
 
       def new_response_html_email_for(reference:, template_reference:)
         email = EtApi::Test::EmailObjects::NewResponseEmailHtml.find(reference: reference, template_reference: template_reference)
-        raise "No HTML response (ET3) email has been sent for reference #{reference} using template reference #{template_reference}" unless email.present?
+        raise "No HTML response (ET3) email has been sent for reference #{reference} using template reference #{template_reference}" if email.blank?
 
         email
       end
 
       def new_response_text_email_for(reference:, template_reference:)
         email = EtApi::Test::EmailObjects::NewResponseEmailText.find(reference: reference, template_reference: template_reference)
-        raise "No text response (ET3) email has been sent for reference #{reference} using template reference #{template_reference}" unless email.present?
+        raise "No text response (ET3) email has been sent for reference #{reference} using template reference #{template_reference}" if email.blank?
 
         email
       end
@@ -27,7 +27,7 @@ module EtApi
                 when /-cy\z/ then EtApi::Test::EmailObjects::NewClaimEmailCyHtml.find(reference: reference)
                 else raise "Unknown template reference #{template_reference}"
                 end
-        raise "No HTML claim (ET1) email has been sent for reference #{reference} using template reference #{template_reference}" unless email.present?
+        raise "No HTML claim (ET1) email has been sent for reference #{reference} using template reference #{template_reference}" if email.blank?
 
         email
       end
@@ -38,7 +38,7 @@ module EtApi
                 when /-cy\z/ then EtApi::Test::EmailObjects::NewClaimEmailCyText.find(reference: reference)
                 else raise "Unknown template reference #{template_reference}"
                 end
-        raise "No text claim (ET1) email has been sent for reference #{reference} using template reference #{template_reference}" unless email.present?
+        raise "No text claim (ET1) email has been sent for reference #{reference} using template reference #{template_reference}" if email.blank?
 
         email
       end

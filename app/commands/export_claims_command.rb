@@ -16,7 +16,7 @@ class ExportClaimsCommand < BaseCommand
   private
 
   def validate_external_system_presence
-    return if ExternalSystem.where(id: external_system_id).count > 0
+    return if ExternalSystem.where(id: external_system_id).count.positive?
 
     errors.add :external_system_id, :external_system_not_found,
                external_system_id: external_system_id,

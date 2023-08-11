@@ -2,7 +2,7 @@ require 'rails_helper'
 RSpec.describe ClaimExportedHandler do
   subject(:handler) { described_class.new }
 
-  let(:example_external_system) { ExternalSystem.find_by_reference('ccd_manchester') }
+  let(:example_external_system) { ExternalSystem.find_by(reference: 'ccd_manchester') }
   let(:example_claim) { create(:claim) }
   let(:mock_event_service) { class_spy EventService }
 

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe FileContentTypeValidator do
   describe '#valid?' do
-    class ExampleClass < ActiveRecord::Base
+    class ExampleClass < ApplicationRecord
       include ScannedContentType
       establish_connection adapter: :nulldb,
                            schema: 'config/nulldb_schema.rb'

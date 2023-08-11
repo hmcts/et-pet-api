@@ -325,13 +325,13 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any bad request error variation'
       it 'has the correct error in the case_number field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildResponse' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "invalid_office_code",
-                                                                                           title: "Invalid case number",
-                                                                                           detail: "Invalid case number",
-                                                                                           source: "/data/0/case_number",
-                                                                                           command: "BuildResponse",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "invalid_office_code",
+                                                                                       title: "Invalid case number",
+                                                                                       detail: "Invalid case number",
+                                                                                       source: "/data/0/case_number",
+                                                                                       command: "BuildResponse",
+                                                                                       uuid: expected_uuid
       end
     end
 
@@ -344,13 +344,13 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any bad request error variation'
       it 'has the correct error in the address_attributes field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildRepresentative' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "invalid_address",
-                                                                                           title: "Invalid address",
-                                                                                           detail: "Invalid address",
-                                                                                           source: "/data/2/address_attributes",
-                                                                                           command: "BuildRepresentative",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "invalid_address",
+                                                                                       title: "Invalid address",
+                                                                                       detail: "Invalid address",
+                                                                                       source: "/data/2/address_attributes",
+                                                                                       command: "BuildRepresentative",
+                                                                                       uuid: expected_uuid
       end
     end
 
@@ -363,13 +363,13 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any bad request error variation'
       it 'has the correct error in the address_attributes field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildRespondent' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "invalid_address",
-                                                                                           title: "Invalid address",
-                                                                                           detail: "Invalid address",
-                                                                                           source: "/data/1/address_attributes",
-                                                                                           command: "BuildRespondent",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "invalid_address",
+                                                                                       title: "Invalid address",
+                                                                                       detail: "Invalid address",
+                                                                                       source: "/data/1/address_attributes",
+                                                                                       command: "BuildRespondent",
+                                                                                       uuid: expected_uuid
       end
     end
 
@@ -382,13 +382,13 @@ RSpec.describe 'Create Response Request', type: :request do
       include_examples 'any bad request error variation'
       it 'has the correct error in the queried_hours field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildResponse' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "less_than_or_equal_to",
-                                                                                           title: "must be less than or equal to 168.0",
-                                                                                           detail: "must be less than or equal to 168.0",
-                                                                                           source: "/data/0/queried_hours",
-                                                                                           command: "BuildResponse",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "less_than_or_equal_to",
+                                                                                       title: "must be less than or equal to 168.0",
+                                                                                       detail: "must be less than or equal to 168.0",
+                                                                                       source: "/data/0/queried_hours",
+                                                                                       command: "BuildResponse",
+                                                                                       uuid: expected_uuid
       end
 
     end

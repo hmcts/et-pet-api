@@ -33,7 +33,7 @@ module EtApi
         end
 
         def has_reference_element?(reference)
-          claim_number.has_value?(text: reference)
+          claim_number.value?(text: reference)
         end
 
         def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:) # rubocop:disable Naming/PredicateName
@@ -101,7 +101,7 @@ module EtApi
                 expect(root_element).to have_content(t('claim_email.claim_completed', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.see_attached_pdf', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.claim_submitted', locale: template_reference))
-                now = Time.now
+                now = Time.zone.now
                 expect(root_element).to have_content(t('claim_email.submitted_at', date: l(now, format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference)).or have_content(t('claim_email.submitted_at', date: l((now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference))
                 if claimants_file.present?
                   expect(root_element).to have_content "et1a_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.csv"

@@ -175,7 +175,7 @@ module EtApi
         end
 
         def assert_representative(representative)
-          if representative.nil? || representative.empty?
+          if representative.blank?
             expect(data.dig(:resource, :representative)).to be_nil
           else
             expect(data.dig(:resource, :representative)).to include(representative.to_h.except(:address_attributes).merge(address: representative[:address_attributes]&.to_h))

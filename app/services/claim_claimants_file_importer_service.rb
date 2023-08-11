@@ -99,7 +99,7 @@ class ClaimClaimantsFileImporterService
   def insert_addresses(to_import)
     insert = insert_arel_for to_import.addresses, table: Address.arel_table,
                                                   columns: ADDRESS_COLUMNS + ['created_at', 'updated_at']
-    result = Address.connection.execute insert.to_sql + " RETURNING \"id\"", "Addresses Bulk Insert"
+    result = Address.connection.execute "#{insert.to_sql} RETURNING \"id\"", "Addresses Bulk Insert"
     ids = result.field_values('id')
     to_import.claimants.map!.with_index do |claimant, idx|
       claimant << ids[idx]
@@ -117,7 +117,7 @@ class ClaimClaimantsFileImporterService
   def insert_claimants(to_import)
     insert = insert_arel_for to_import.claimants, table: Claimant.arel_table,
                                                   columns: CLAIMANT_COLUMNS + ['created_at', 'updated_at', 'address_id']
-    result = Address.connection.execute insert.to_sql + " RETURNING \"id\"", "Claimants Bulk Insert"
+    result = Address.connection.execute "#{insert.to_sql} RETURNING \"id\"", "Claimants Bulk Insert"
     insert_claim_claimants(result.field_values('id'))
   end
 
