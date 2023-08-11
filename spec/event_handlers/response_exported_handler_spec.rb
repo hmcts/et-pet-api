@@ -1,6 +1,7 @@
 require 'rails_helper'
 RSpec.describe ResponseExportedHandler do
   subject(:handler) { described_class.new }
+
   let(:example_external_system) { ExternalSystem.find_by_reference('ccd_manchester') }
   let(:example_response) { create(:response) }
   let(:mock_event_service) { class_spy EventService }

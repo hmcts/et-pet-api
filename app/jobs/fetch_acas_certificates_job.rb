@@ -4,6 +4,7 @@ class FetchAcasCertificatesJob < ApplicationJob
   sidekiq_options(retry: false)
   class RetriableError < RuntimeError
     attr_reader :claim
+
     def initialize(msg, claim)
       @claim = claim
       super(msg)

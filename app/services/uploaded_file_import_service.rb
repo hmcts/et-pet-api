@@ -90,12 +90,12 @@ module UploadedFileImportService
     attr_accessor :model, :timings, :logger
 
     def blob_attributes_for(value)
-      DirectUploadedFile.find_by_key!(value).file.blob
-        .attributes
-        .to_h
-        .symbolize_keys
-        .slice(:filename, :byte_size, :checksum, :content_type)
-        .merge(metadata: {})
+      DirectUploadedFile.find_by_key!(value).file.blob.
+        attributes.
+        to_h.
+        symbolize_keys.
+        slice(:filename, :byte_size, :checksum, :content_type).
+        merge(metadata: {})
     end
 
     def direct_upload_service

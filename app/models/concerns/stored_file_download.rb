@@ -7,9 +7,7 @@ module StoredFileDownload
   # Calculates the URL whether local or remote
   #
   # @return [String] The url to download from
-  def url
-    file.url
-  end
+  delegate :url, to: :file
 
   # Downloads the stored file to the local file system
   #

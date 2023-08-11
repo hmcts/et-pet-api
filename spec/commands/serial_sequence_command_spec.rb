@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe SerialSequenceCommand do
+  subject(:command) { described_class.new(uuid: uuid, data: data, command_service: command_service) }
+
   shared_context 'with fake command service' do
     # A command like it is declared in the app
 
@@ -51,8 +53,6 @@ RSpec.describe SerialSequenceCommand do
       allow(command_service).to receive(:dispatch).with(command: command2, root_object: anything).and_return(my_command_response_class.new(command: command2, meta: { reference: '789123' }))
     end
   end
-
-  subject(:command) { described_class.new(uuid: uuid, data: data, command_service: command_service) }
 
   let(:uuid) { SecureRandom.uuid }
   let(:data) do

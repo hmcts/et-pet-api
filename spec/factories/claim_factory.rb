@@ -3,8 +3,8 @@ FactoryBot.define do
     transient do
       number_of_claimants { 1 }
       number_of_respondents { 1 }
-      secondary_respondent_traits { %i[example_data unique_name] }
-      primary_respondent_traits { %i[example_data unique_name] }
+      secondary_respondent_traits { [:example_data, :unique_name] }
+      primary_respondent_traits { [:example_data, :unique_name] }
       ready_for_export_to { [] }
     end
 
@@ -29,10 +29,10 @@ FactoryBot.define do
 
     after(:build) do |claim, evaluator|
       claim.primary_claimant = build(:claimant) if claim.primary_claimant.blank? && evaluator.number_of_claimants > 0
-      claim.secondary_claimants.concat build_list(:claimant, [evaluator.number_of_claimants - 1,0].max)
+      claim.secondary_claimants.concat build_list(:claimant, [evaluator.number_of_claimants - 1, 0].max)
       claim.claimant_count += evaluator.number_of_claimants
       claim.primary_respondent = build(:respondent, *evaluator.primary_respondent_traits) if evaluator.number_of_respondents > 0
-      claim.secondary_respondents.concat build_list(:respondent, [evaluator.number_of_respondents - 1,0].max, *evaluator.secondary_respondent_traits)
+      claim.secondary_respondents.concat build_list(:respondent, [evaluator.number_of_respondents - 1, 0].max, *evaluator.secondary_respondent_traits)
     end
 
     trait :with_welsh_email do

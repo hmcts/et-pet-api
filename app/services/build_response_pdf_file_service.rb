@@ -12,7 +12,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
   def call
     filename = 'et3_atos_export.pdf'
     source.uploaded_files.system_file_scope.build filename: filename,
-                                file: blob_for_pdf_file(filename)
+                                                  file: blob_for_pdf_file(filename)
   end
 
   private
@@ -32,7 +32,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     result
   end
 
-  # Note: A few rubocop disables here as the complexity of the pdf is dictated to us in terms of the file
+  # NOTE: A few rubocop disables here as the complexity of the pdf is dictated to us in terms of the file
   # itself.  It is intentional that this complexity is mirrored in a 1-1 mapping so each section is clear
   # in the code as it is in the pdf document.
   #

@@ -5,9 +5,9 @@ class ExportClaimsCommand < BaseCommand
   validate :validate_external_system_presence
   validate :validate_claims_presence
 
-# @param [Export] root_object The export instance to populate
-# @param [Hash] meta - Not used in this command
-  def apply(root_object, meta: {})
+  # @param [Export] root_object The export instance to populate
+  # @param [Hash] meta - Not used in this command
+  def apply(_root_object, meta: {})
     claim_ids.each do |claim_id|
       event_service.publish('ClaimExported', external_system_id: external_system_id, claim_id: claim_id)
     end

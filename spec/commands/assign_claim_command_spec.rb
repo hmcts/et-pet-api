@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AssignClaimCommand do
   subject(:command) { described_class.new(event_service: mock_event_service, **data) }
+
   let(:mock_event_service) { class_spy(EventService) }
   let(:example_claim) { create(:claim) }
   let(:new_office) { Office.find_by_code(24) }

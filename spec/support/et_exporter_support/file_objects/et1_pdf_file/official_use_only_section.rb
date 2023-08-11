@@ -1,4 +1,4 @@
-require_relative './base.rb'
+require_relative './base'
 require_relative '../../../helpers/office_helper'
 module EtApi
   module Test

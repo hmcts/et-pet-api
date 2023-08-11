@@ -7,15 +7,15 @@ RSpec.describe 'Assign Claim Request', type: :request do
 
   shared_context 'with fake sidekiq' do
     around do |example|
-      begin
-        original_adapter = ActiveJob::Base.queue_adapter
-        ActiveJob::Base.queue_adapter = :test
-        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-        ActiveJob::Base.queue_adapter.performed_jobs.clear
-        example.run
-      ensure
-        ActiveJob::Base.queue_adapter = original_adapter
-      end
+
+      original_adapter = ActiveJob::Base.queue_adapter
+      ActiveJob::Base.queue_adapter = :test
+      ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+      ActiveJob::Base.queue_adapter.performed_jobs.clear
+      example.run
+    ensure
+      ActiveJob::Base.queue_adapter = original_adapter
+
     end
 
     def run_background_jobs
@@ -54,7 +54,6 @@ RSpec.describe 'Assign Claim Request', type: :request do
     let(:example_claim) { Claim.find_by_reference example_claim_reference }
     let(:new_office) { Office.find_by_code(24) }
     let(:example_user_id) { 123 }
-
 
     include_context 'with fake sidekiq'
 
@@ -100,7 +99,7 @@ RSpec.describe 'Assign Claim Request', type: :request do
     it 'creates no more records if called a second time with same uuid', background_jobs: :disable do
       # Arrange - setup the action to perform twice, but call it once in setup
       command = FactoryBot.build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id, user_id: example_user_id)
-      perform_action = -> {
+      perform_action = lambda {
         post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
         run_background_jobs
       }
@@ -137,10 +136,10 @@ RSpec.describe 'Assign Claim Request', type: :request do
           "status" => "not_accepted",
           "uuid" => command.uuid,
           "errors" => a_collection_including(
-                        a_hash_including "status" => 422,
-                                         "code" => "office_not_found",
-                                         "command" => "AssignClaim",
-                                         "detail" => "The office with an id of -1 was not found"
+            a_hash_including("status" => 422,
+                             "code" => "office_not_found",
+                             "command" => "AssignClaim",
+                             "detail" => "The office with an id of -1 was not found")
           )
       end
     end
@@ -159,11 +158,10 @@ RSpec.describe 'Assign Claim Request', type: :request do
           "status" => "not_accepted",
           "uuid" => command.uuid,
           "errors" => a_collection_including(
-                        a_hash_including("status" => 422,
-                                         "code" => "claim_not_found",
-                                         "command" => "AssignClaim",
-                                         "detail" => "A claim with an id of -1 was not found")
-
+            a_hash_including("status" => 422,
+                             "code" => "claim_not_found",
+                             "command" => "AssignClaim",
+                             "detail" => "A claim with an id of -1 was not found")
           )
       end
     end

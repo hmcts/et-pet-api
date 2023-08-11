@@ -73,7 +73,7 @@ module EtApi
           if value.key?(:select_values)
             raw = raw_value_from_pdf(value)
             ret = value[:select_values].detect { |(_, v)| v == raw }.try(:first)
-            return ret if ret == true || ret == false
+            return ret if [true, false].include?(ret)
             return ret.to_s if ret
             return nil if raw == value[:unselected_value]
 
@@ -90,6 +90,7 @@ module EtApi
         def formatted_date(date, optional: false)
           return nil if date.nil? && optional
           return date.strftime('%d/%m/%Y') if date.is_a?(Date) || date.is_a?(Time) || date.is_a?(DateTime)
+
           Time.zone.parse(date).strftime('%d/%m/%Y')
         end
 

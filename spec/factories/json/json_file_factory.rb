@@ -2,7 +2,7 @@ require 'faker'
 
 FactoryBot.define do
 
-  factory :json_file_data, class: ::EtApi::Test::Json::Node do
+  factory :json_file_data, class: '::EtApi::Test::Json::Node' do
     transient do
       upload_method { :direct_upload }
       uploaded_file_traits { [] }

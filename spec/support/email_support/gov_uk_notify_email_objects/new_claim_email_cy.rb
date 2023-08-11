@@ -23,12 +23,12 @@ module EtApi
             assert_claimant(primary_claimant_data)
             expect(attached_pdf_file.value).to be_present
             if claimants_file.present?
-              expect(attached_claimants_file.value).to match /Rydych wedi llwyddo i lwytho hawliad grŵp ar ffurf ffeil csv o'r enw .* gyda'ch hawliad\. Maint y ffeil yw .*./
+              expect(attached_claimants_file.value).to match(/Rydych wedi llwyddo i lwytho hawliad grŵp ar ffurf ffeil csv o'r enw .* gyda'ch hawliad\. Maint y ffeil yw .*./)
             else
               expect(attached_claimants_file.value).to eq 'Dim ffeil ychwanegol wedi’i llwytho i fyny'
             end
             if claim_details_file.present?
-              expect(attached_info_file.value).to match /Rydych wedi llwyddo i lwytho dogfen ychwanegol o’ enw .* gyda’ch hawliad\. Maint y ffeil yw .*\./
+              expect(attached_info_file.value).to match(/Rydych wedi llwyddo i lwytho dogfen ychwanegol o’ enw .* gyda’ch hawliad\. Maint y ffeil yw .*\./)
             else
               expect(attached_info_file.value).to eq 'Dim ffeil ychwanegol wedi’i llwytho i fyny'
             end

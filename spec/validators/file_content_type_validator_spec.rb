@@ -17,18 +17,20 @@ RSpec.describe FileContentTypeValidator do
 
     context 'where the file contents matches the extension' do
       let(:example_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/simple_user_with_rtf.rtf'), 'application/rtf', false) }
+
       before { subject.valid? }
 
-      it 'it should allow the file' do
+      it 'allows the file' do
         expect(subject.errors).to be_empty
       end
     end
 
     context 'where the file contents done match the extension' do
       let(:example_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/invalid_content_type.rtf'), 'application/rtf', false) }
+
       before { subject.valid? }
 
-      it 'it should allow the file' do
+      it 'allows the file' do
         expect(subject.errors.where(:file, :mismatching_file_content_type)).to be_present
       end
     end

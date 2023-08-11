@@ -10,6 +10,7 @@ module EtApi
           loop do
             break unless find_claimant_start
             break unless find_claimant_end
+
             yield captured
           end
         end
@@ -24,8 +25,8 @@ module EtApi
         def has_correct_encoding?(errors: [], indent: 1)
           expect(tempfile.path).to have_file_encoding('unknown-8bit').or have_file_encoding('us-ascii')
           true
-        rescue RSpec::Expectations::ExpectationNotMetError => err
-          errors.concat(err.message.lines.map { |l| "#{'  ' * indent}#{l.gsub(/\n\z/, '')}" })
+        rescue RSpec::Expectations::ExpectationNotMetError => e
+          errors.concat(e.message.lines.map { |l| "#{'  ' * indent}#{l.gsub(/\n\z/, '')}" })
           false
         end
 
@@ -46,9 +47,9 @@ module EtApi
             yield(lines)
           end
           true
-        rescue RSpec::Expectations::ExpectationNotMetError => err
+        rescue RSpec::Expectations::ExpectationNotMetError => e
           errors << "Missing or invalid '#{section.to_s.humanize}' section"
-          errors.concat(err.message.lines.map { |l| "#{'  ' * indent}#{l.gsub(/\n\z/, '')}" })
+          errors.concat(e.message.lines.map { |l| "#{'  ' * indent}#{l.gsub(/\n\z/, '')}" })
           false
         end
 
@@ -96,9 +97,9 @@ module EtApi
             idx += 1
           end
           idx
-        rescue RSpec::Expectations::ExpectationNotMetError => err
+        rescue RSpec::Expectations::ExpectationNotMetError => e
           errors << "Missing or invalid claimants section - checking index #{idx}"
-          errors.concat(err.message.lines.map { |l| "#{'  ' * indent}#{l.gsub(/\n\z/, '')}" })
+          errors.concat(e.message.lines.map { |l| "#{'  ' * indent}#{l.gsub(/\n\z/, '')}" })
           idx
         end
 
@@ -133,10 +134,12 @@ module EtApi
         def section_range(match_start:, match_end:, additional_lines_after_end: 1)
           start_idx = match_start.is_a?(String) ? contents.index(match_start) : contents.index { |l| l =~ match_start }
           return nil if start_idx.nil?
+
           my_contents = contents[start_idx..-1]
           end_idx = match_end.is_a?(String) ? my_contents.index(match_end) : my_contents.index { |l| l =~ match_end }
           return nil if end_idx.nil?
           return nil if my_contents[end_idx + 1] != ''
+
           (start_idx..start_idx + end_idx + additional_lines_after_end)
         end
 
@@ -191,6 +194,7 @@ module EtApi
             line = tempfile.readline("\r\n")
             captured << line.gsub(/\r\n\z/, '')
             next unless line.start_with?('Postcode: ')
+
             captured << tempfile.readline.gsub(/\r\n\z/, '')
             captured << tempfile.readline.gsub(/\r\n\z/, '')
             captured << tempfile.readline.gsub(/\r\n\z/, '')

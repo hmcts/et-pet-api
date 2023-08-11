@@ -2,7 +2,7 @@ require 'faker'
 require 'securerandom'
 
 FactoryBot.define do
-  factory :json_export_responses_command, class: ::EtApi::Test::Json::Document do
+  factory :json_export_responses_command, class: '::EtApi::Test::Json::Document' do
     transient do
       response_ids { [] }
       external_system_id { nil }
@@ -16,7 +16,7 @@ FactoryBot.define do
       }
     end
   end
-  factory :json_export_claims_command, class: ::EtApi::Test::Json::Document do
+  factory :json_export_claims_command, class: '::EtApi::Test::Json::Document' do
     transient do
       claim_ids { [] }
       external_system_id { nil }

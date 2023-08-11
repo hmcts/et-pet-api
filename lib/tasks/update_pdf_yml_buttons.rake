@@ -1,6 +1,6 @@
 desc "Update application yml mappings for pdf files with button options"
 task update_pdf_yml_buttons: :environment do
-  pdf_files = Dir.glob Rails.root.join('vendor', 'assets', 'pdf_forms', '**', '*.pdf')
+  pdf_files = Dir.glob Rails.root.join("vendor/assets/pdf_forms/**/*.pdf")
   builder = PdfForms.new('pdftk', utf8_fields: true)
   reports = {}
   find_yaml_node = lambda do |name, from:, path: []|

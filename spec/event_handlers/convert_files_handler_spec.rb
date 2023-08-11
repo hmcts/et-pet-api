@@ -8,6 +8,7 @@ RSpec.describe ConvertFilesHandler do
         claimant = claim.primary_claimant
         "et1_attachment_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}"
       end
+
       it 'converts the rtf file to a pdf file' do
         # Act
         ConvertFilesHandler.new.handle(claim)

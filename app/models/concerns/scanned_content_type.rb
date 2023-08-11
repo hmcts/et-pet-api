@@ -9,15 +9,15 @@ module ScannedContentType
 
   def scan_content_type(attachable)
     path = case attachable
-    when Hash then attachable[:io].path
-    else attachable.tempfile.path
-    end
+           when Hash then attachable[:io].path
+           else attachable.tempfile.path
+           end
     `file --b --mime-type '#{path}'`.strip
   end
 
   class_methods do
     def scan_content_type_for(attribute)
-      class_eval <<-EOS
+      class_eval <<-EOS, __FILE__, __LINE__ + 1
         def #{attribute}=(attachable)
           scanned_content_type = scan_content_type(attachable)
           super(attachable).tap do

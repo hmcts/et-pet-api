@@ -3,9 +3,9 @@ class RepairClaimCommand < BaseCommand
 
   validate :validate_claim_presence
 
-# @param [Hash] root_object Not used - nothing to update from using this command
-# @param [Hash] meta - Not used in this command
-  def apply(root_object, meta: {})
+  # @param [Hash] root_object Not used - nothing to update from using this command
+  # @param [Hash] meta - Not used in this command
+  def apply(_root_object, meta: {})
     event_service.publish('ClaimCreated', claim)
   end
 

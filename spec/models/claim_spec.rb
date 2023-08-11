@@ -120,7 +120,7 @@ RSpec.describe Claim, type: :model do
         {
           filename: 'et1_first_last.pdf',
           checksum: 'ee2714b8b731a8c1e95dffaa33f89728',
-          file: Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf')
+          file: Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/et1_first_last.pdf"), 'application/pdf')
         }
       ]
 

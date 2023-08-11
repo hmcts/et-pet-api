@@ -2,7 +2,7 @@ require 'faker'
 
 FactoryBot.define do
 
-  factory :json_address_data, class: ::EtApi::Test::Json::Node do
+  factory :json_address_data, class: '::EtApi::Test::Json::Node' do
     trait :empty do
       # Intentionally blank
     end

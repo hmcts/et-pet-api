@@ -7,11 +7,11 @@ FactoryBot.define do
       name { 'Solicitor Name' }
       organisation_name { 'Solicitors Are Us Fake Company' }
       association :address,
-        building: '106',
-        street: 'Mayfair',
-        locality: 'London',
-        county: 'Greater London',
-        post_code: 'SW1H 9PP'
+                  building: '106',
+                  street: 'Mayfair',
+                  locality: 'London',
+                  county: 'Greater London',
+                  post_code: 'SW1H 9PP'
 
       address_telephone_number { '01111 123456' }
       mobile_number { '02222 654321' }

@@ -4,15 +4,15 @@ require 'rails_helper'
 RSpec.describe 'Export Response Request', type: :request do
   shared_context 'with fake sidekiq' do
     around do |example|
-      begin
-        original_adapter = ActiveJob::Base.queue_adapter
-        ActiveJob::Base.queue_adapter = :test
-        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-        ActiveJob::Base.queue_adapter.performed_jobs.clear
-        example.run
-      ensure
-        ActiveJob::Base.queue_adapter = original_adapter
-      end
+
+      original_adapter = ActiveJob::Base.queue_adapter
+      ActiveJob::Base.queue_adapter = :test
+      ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+      ActiveJob::Base.queue_adapter.performed_jobs.clear
+      example.run
+    ensure
+      ActiveJob::Base.queue_adapter = original_adapter
+
     end
 
     def run_background_jobs
@@ -45,7 +45,6 @@ RSpec.describe 'Export Response Request', type: :request do
     let(:example_external_system_reference) { 'ccd_manchester' }
     let(:example_external_system) { ExternalSystem.find_by_reference example_external_system_reference }
     let(:example_response) { Response.find_by_reference example_response_reference }
-
 
     include_context 'with fake sidekiq'
 
@@ -91,7 +90,7 @@ RSpec.describe 'Export Response Request', type: :request do
     it 'creates no more records if called a second time with same uuid', background_jobs: :disable do
       # Arrange - setup the action to perform twice, but call it once in setup
       command = FactoryBot.build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
-      perform_action = -> {
+      perform_action = lambda {
         post '/api/v2/exports/export_responses', params: command.to_json, headers: default_headers
         run_background_jobs
       }
@@ -116,10 +115,10 @@ RSpec.describe 'Export Response Request', type: :request do
           "status" => "not_accepted",
           "uuid" => command.uuid,
           "errors" => a_collection_including(
-                        a_hash_including "status" => 422,
-                                         "code" => "external_system_not_found",
-                                         "command" => "ExportResponses",
-                                         "detail" => "The external system with an id of -1 was not found"
+            a_hash_including("status" => 422,
+                             "code" => "external_system_not_found",
+                             "command" => "ExportResponses",
+                             "detail" => "The external system with an id of -1 was not found")
           )
       end
     end
@@ -138,15 +137,14 @@ RSpec.describe 'Export Response Request', type: :request do
           "status" => "not_accepted",
           "uuid" => command.uuid,
           "errors" => a_collection_including(
-                        a_hash_including("status" => 422,
-                                         "code" => "response_not_found",
-                                         "command" => "ExportResponses",
-                                         "detail" => "A response with an id of -1 was not found"),
-                        a_hash_including("status" => 422,
-                                         "code" => "response_not_found",
-                                         "command" => "ExportResponses",
-                                         "detail" => "A response with an id of -2 was not found")
-
+            a_hash_including("status" => 422,
+                             "code" => "response_not_found",
+                             "command" => "ExportResponses",
+                             "detail" => "A response with an id of -1 was not found"),
+            a_hash_including("status" => 422,
+                             "code" => "response_not_found",
+                             "command" => "ExportResponses",
+                             "detail" => "A response with an id of -2 was not found")
           )
       end
     end

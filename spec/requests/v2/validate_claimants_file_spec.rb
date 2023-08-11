@@ -70,7 +70,7 @@ RSpec.describe 'Validate Claimants File Request', type: :request do
           hash_including(source: '/data_from_key/1/title', code: 'inclusion', title: 'is not included in the list', command: input_factory.command, uuid: input_factory.uuid, options: { value: 'Dr' }),
           hash_including(source: '/data_from_key/2/street', code: 'too_long', title: 'is too long (maximum is 50 characters)', command: input_factory.command, uuid: input_factory.uuid, options: { count: 50 }),
           hash_including(source: '/data_from_key/3/locality', code: 'too_long', title: 'is too long (maximum is 50 characters)', command: input_factory.command, uuid: input_factory.uuid, options: { count: 50 }),
-          hash_including(source: '/data_from_key/5/post_code', code: 'invalid', title: 'is invalid', command: input_factory.command, uuid: input_factory.uuid, options: { })
+          hash_including(source: '/data_from_key/5/post_code', code: 'invalid', title: 'is invalid', command: input_factory.command, uuid: input_factory.uuid, options: {})
         )
       end
     end

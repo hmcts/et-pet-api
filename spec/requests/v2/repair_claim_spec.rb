@@ -13,15 +13,15 @@ RSpec.describe 'Import Claim Request', type: :request do
 
     shared_context 'with fake sidekiq' do
       around do |example|
-        begin
-          original_adapter = ActiveJob::Base.queue_adapter
-          ActiveJob::Base.queue_adapter = :test
-          ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-          ActiveJob::Base.queue_adapter.performed_jobs.clear
-          example.run
-        ensure
-          ActiveJob::Base.queue_adapter = original_adapter
-        end
+
+        original_adapter = ActiveJob::Base.queue_adapter
+        ActiveJob::Base.queue_adapter = :test
+        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+        ActiveJob::Base.queue_adapter.performed_jobs.clear
+        example.run
+      ensure
+        ActiveJob::Base.queue_adapter = original_adapter
+
       end
 
       def run_background_jobs
@@ -113,6 +113,7 @@ RSpec.describe 'Import Claim Request', type: :request do
 
     context 'with multiple claim' do
       let(:claim_to_repair) { create(:claim, :example_data_multiple_claimants) }
+
       include_examples 'any claim variation'
       include_examples 'a claim exported to et_exporter'
     end

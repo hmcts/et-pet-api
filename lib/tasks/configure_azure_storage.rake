@@ -38,7 +38,7 @@ task "configure_azure_storage_cors" => :environment do
   if service_properties.cors.cors_rules.empty?
     cors_rule = Azure::Storage::Common::Service::CorsRule.new
     cors_rule.allowed_origins = ['*']
-    cors_rule.allowed_methods = %w(POST GET PUT HEAD)
+    cors_rule.allowed_methods = ['POST', 'GET', 'PUT', 'HEAD']
     cors_rule.allowed_headers = ['*']
     cors_rule.exposed_headers = ['*']
     cors_rule.max_age_in_seconds = 3600

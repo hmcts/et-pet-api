@@ -4,6 +4,7 @@ class ClaimClaimantsFileImporterService
   CLAIMANT_COLUMNS = ['title', 'first_name', 'last_name', 'date_of_birth'].freeze
 
   attr_reader :errors
+
   def initialize(claim, autosave: true)
     self.claim = claim
     self.autosave = autosave
@@ -51,6 +52,7 @@ class ClaimClaimantsFileImporterService
     CSV.foreach(file, headers: true) do |row|
       claimant = build_claimant_from row
       errors << claimant.errors && next unless claimant.valid?
+
       append_to_import(claimant, to_import)
     end
     raise ActiveRecord::Rollback if errors.present?

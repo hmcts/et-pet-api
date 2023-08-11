@@ -4,8 +4,7 @@ RSpec.describe UploadedFileImportService do
   subject(:service) { described_class }
 
   let(:uploaded_file) { build(:uploaded_file, filename: 'anything') }
-  let(:fixture_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf') }
-  
+  let(:fixture_file) { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/et1_first_last.pdf"), 'application/pdf') }
 
   after do
     Capybara.use_default_driver
@@ -36,7 +35,7 @@ RSpec.describe UploadedFileImportService do
           uploaded_file.download_blob_to filename
 
           # Assert - make sure its a copy of the source
-          expect(filename).to be_a_file_copy_of(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf')
+          expect(filename).to be_a_file_copy_of(Rails.root.join("spec/fixtures/et1_first_last.pdf"), 'application/pdf')
         end
       end
     end
@@ -58,7 +57,7 @@ RSpec.describe UploadedFileImportService do
         uploaded_file.download_blob_to filename
 
         # Assert - make sure its a copy of the source
-        expect(filename).to be_a_file_copy_of(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf')
+        expect(filename).to be_a_file_copy_of(Rails.root.join("spec/fixtures/et1_first_last.pdf"), 'application/pdf')
       end
     end
 

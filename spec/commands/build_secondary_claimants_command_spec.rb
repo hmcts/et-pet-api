@@ -18,7 +18,7 @@ RSpec.describe BuildSecondaryClaimantsCommand do
 
       # Assert
       expect(root_object.secondary_claimants).to contain_exactly(an_object_having_attributes(claimant1.except('address_attributes', 'date_of_birth')),
-        an_object_having_attributes(claimant2.except('address_attributes', 'date_of_birth')))
+                                                                 an_object_having_attributes(claimant2.except('address_attributes', 'date_of_birth')))
     end
   end
 end

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe ExportResponsesCommand do
   subject(:command) { described_class.new(event_service: mock_event_service, **data) }
+
   let(:mock_event_service) { class_spy(EventService) }
   let(:example_external_system_reference) { "ccd_manchester" }
   let(:example_responses) { create_list(:response, 3) }

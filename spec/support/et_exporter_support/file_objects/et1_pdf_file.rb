@@ -55,7 +55,7 @@ module EtApi
 
         def respondents_json(claim)
           respondents = [claim.primary_respondent.as_json(include: [:address, :work_address]).symbolize_keys]
-          respondents.concat claim.secondary_respondents.map { |r| r.as_json(include: [:address, :work_address]).symbolize_keys }
+          respondents.concat(claim.secondary_respondents.map { |r| r.as_json(include: [:address, :work_address]).symbolize_keys })
           respondents.map do |r|
             r[:address_attributes] = OpenStruct.new(r.delete(:address)).freeze
             r[:work_address_attributes] = OpenStruct.new(r.delete(:work_address) || {}).freeze
@@ -65,7 +65,7 @@ module EtApi
 
         def claimants_json(claim)
           claimants = [claim.primary_claimant.as_json(include: :address).symbolize_keys]
-          claimants.concat claim.secondary_claimants.map { |r| r.as_json(include: :address).symbolize_keys }
+          claimants.concat(claim.secondary_claimants.map { |r| r.as_json(include: :address).symbolize_keys })
           claimants.map do |c|
             c[:address_attributes] = OpenStruct.new(c.delete(:address)).freeze
             OpenStruct.new(c).freeze

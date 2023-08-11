@@ -25,7 +25,7 @@ module Api
         private
 
         def build_response_params
-          params.permit(:uuid, :command, data: [:uuid, :command, data: {}]).to_h
+          params.permit(:uuid, :command, data: [:uuid, :command, { data: {} }]).to_h
         end
       end
     end

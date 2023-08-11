@@ -5,12 +5,15 @@ describe FetchAcasCertificatesJob do
   describe 'perform' do
     let(:claim) { create(:claim) }
     let!(:fake_service) { class_double(FetchClaimAcasCertificatesService, call: fake_service_response).as_stubbed_const }
+
     before do
       allow(Sentry).to receive(:set_extras).and_call_original
       allow(Sentry).to receive(:capture_exception)
     end
+
     context 'with successful found service response' do
       let(:fake_service_response) { instance_double(FetchClaimAcasCertificatesService, found?: true, not_found?: false, not_required?: false, acas_server_error?: false, invalid?: false, errors: {}) }
+
       it 'emits claim prepared event' do
         described_class.perform_now(claim)
         expect(claim.events.claim_prepared).to be_present
@@ -30,6 +33,7 @@ describe FetchAcasCertificatesJob do
 
     context 'with successful but not found service response' do
       let(:fake_service_response) { instance_double(FetchClaimAcasCertificatesService, found?: false, not_found?: true, not_required?: false, acas_server_error?: false, invalid?: false, errors: {}) }
+
       it 'emits claim prepared event' do
         described_class.perform_now(claim)
         expect(claim.events.claim_prepared).to be_present
@@ -48,7 +52,8 @@ describe FetchAcasCertificatesJob do
     end
 
     context 'with unsuccessful service response due to server error' do
-      let(:fake_service_response) { instance_double(FetchClaimAcasCertificatesService, found?: false, not_found?: false, not_required?: false, acas_server_error?: true, invalid?: false, errors: {base: ['Something went wrong']}) }
+      let(:fake_service_response) { instance_double(FetchClaimAcasCertificatesService, found?: false, not_found?: false, not_required?: false, acas_server_error?: true, invalid?: false, errors: { base: ['Something went wrong'] }) }
+
       it 'does not emit claim prepared event' do
         described_class.perform_now(claim)
         expect(claim.events.claim_prepared).not_to be_present
@@ -110,7 +115,8 @@ describe FetchAcasCertificatesJob do
     end
 
     context 'with unsuccessful service response due to a validation error' do
-      let(:fake_service_response) { instance_double(FetchClaimAcasCertificatesService, found?: false, not_found?: false, not_required?: false, acas_server_error?: false, invalid?: true, errors: {id: ['Invalid certificate format']}) }
+      let(:fake_service_response) { instance_double(FetchClaimAcasCertificatesService, found?: false, not_found?: false, not_required?: false, acas_server_error?: false, invalid?: true, errors: { id: ['Invalid certificate format'] }) }
+
       it 'emits claim prepared event' do
         described_class.perform_now(claim)
         expect(claim.events.claim_prepared).to be_present

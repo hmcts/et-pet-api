@@ -25,6 +25,7 @@ RSpec.describe AssignReferenceToClaimCommand do
 
     context 'using a claim with existing reference' do
       let(:root_object) { build(:claim, :example_data, office_code: 32, reference: '222000000200') }
+
       it 'adds the existing reference to the meta' do
         # Arrange
         meta = {}

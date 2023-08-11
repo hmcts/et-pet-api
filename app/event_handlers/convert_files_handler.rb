@@ -22,7 +22,6 @@ class ConvertFilesHandler
     else
       copy_claim_details_file
     end
-
   end
 
   def handle_response_files

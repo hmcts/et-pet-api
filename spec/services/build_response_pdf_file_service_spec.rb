@@ -111,7 +111,6 @@ RSpec.describe BuildResponsePdfFileService do
         end
       end
 
-
     end
   end
 end

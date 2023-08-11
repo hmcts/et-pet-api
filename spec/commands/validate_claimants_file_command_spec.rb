@@ -34,10 +34,10 @@ RSpec.describe ValidateClaimantsFileCommand do
         expect(command.errors.details.to_hash).to include \
           'data_from_key[0].date_of_birth': a_collection_containing_exactly(
             a_hash_including(error: :invalid, uuid: data.uuid, command: data.command)
-        ),
+          ),
           'data_from_key[9].date_of_birth': a_collection_containing_exactly(
             a_hash_including(error: :date_range, uuid: data.uuid, command: data.command)
-        ),
+          ),
           'data_from_key[1].title': a_collection_containing_exactly(
             a_hash_including(error: :inclusion, uuid: data.uuid, command: data.command)
           )
@@ -58,7 +58,6 @@ RSpec.describe ValidateClaimantsFileCommand do
     context 'with a file containing a missing column' do
       let(:data) { FactoryBot.build(:json_validate_claimants_file_command, :missing_column) }
 
-
       it 'is invalid' do
         # Act
         expect(command.valid?).to be false
@@ -71,8 +70,8 @@ RSpec.describe ValidateClaimantsFileCommand do
         # Assert
         expect(command.errors.details.to_hash).to include \
           'base': a_collection_containing_exactly(
-          a_hash_including(error: :invalid_columns, uuid: data.uuid, command: data.command)
-        )
+            a_hash_including(error: :invalid_columns, uuid: data.uuid, command: data.command)
+          )
       end
 
       it 'contains the correct error messages for this example' do
@@ -88,7 +87,6 @@ RSpec.describe ValidateClaimantsFileCommand do
     context 'with an missing file' do
       let(:data) { FactoryBot.build(:json_validate_claimants_file_command, :missing) }
 
-
       it 'is invalid' do
         # Act
         expect(command.valid?).to be false
@@ -101,8 +99,8 @@ RSpec.describe ValidateClaimantsFileCommand do
         # Assert
         expect(command.errors.details.to_hash).to include \
           'base': a_collection_containing_exactly(
-          a_hash_including(error: :missing_file, uuid: data.uuid, command: data.command)
-        )
+            a_hash_including(error: :missing_file, uuid: data.uuid, command: data.command)
+          )
       end
 
       it 'contains the correct error messages for this example' do

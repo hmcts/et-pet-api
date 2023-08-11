@@ -31,7 +31,7 @@ RSpec.describe ResponseExportFeedbackReceivedHandler do
       },
       'state' => 'complete'
     }
-    expect { described_class.new.handle(event_data.to_json) }.not_to change { export.reload.resource.office }
+    expect { described_class.new.handle(event_data.to_json) }.not_to(change { export.reload.resource.office })
   end
 
   it 'does not update the office of the response if the office name does not exist' do
@@ -47,6 +47,6 @@ RSpec.describe ResponseExportFeedbackReceivedHandler do
       },
       'state' => 'complete'
     }
-    expect { described_class.new.handle(event_data.to_json) }.not_to change { export.reload.resource.office }
+    expect { described_class.new.handle(event_data.to_json) }.not_to(change { export.reload.resource.office })
   end
 end

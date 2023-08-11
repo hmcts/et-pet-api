@@ -68,7 +68,7 @@ RSpec.describe 'Create Claim Request', type: :request do
         file = input_claimants_file_factory
         next [] if file.nil?
 
-        full_path = File.join(Rails.root, 'spec', 'fixtures', file.filename.downcase)
+        full_path = Rails.root.join('spec', 'fixtures', file.filename.downcase).to_s
         raise "csv claimants not from fixtures - code needs writing to read the file from http. The file is #{full_path}" unless File.exist?(full_path)
 
         CSV.foreach(full_path, headers: true).each_with_object([]) do |row, acc|
@@ -259,9 +259,6 @@ RSpec.describe 'Create Claim Request', type: :request do
         expect(et_exporter.find_claim_by_submission_reference(submission_reference).claim_details_file.path).to be_a_pdf_file_containing_title('It is an example test rtf-file')
       end
     end
-
-
-
 
     shared_examples 'a claim exported with an attached acas certificate' do
       it 'exports the acas certificate ready for external systems to pick up' do

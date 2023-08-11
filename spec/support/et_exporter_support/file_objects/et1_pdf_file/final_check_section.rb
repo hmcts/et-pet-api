@@ -1,4 +1,4 @@
-require_relative './base.rb'
+require_relative './base'
 module EtApi
   module Test
     module FileObjects
@@ -7,7 +7,7 @@ module EtApi
           # Note - I have included this for completeness - but I do not think the field ever gets populated
           def has_contents_for?
             expected_values = {
-                satisfied: nil
+              satisfied: nil
             }
             expect(mapped_field_values).to include expected_values
           end

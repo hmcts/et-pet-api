@@ -2,7 +2,7 @@ require 'faker'
 require 'securerandom'
 
 FactoryBot.define do
-  factory :json_build_response_commands, class: ::EtApi::Test::Json::Document do
+  factory :json_build_response_commands, class: '::EtApi::Test::Json::Document' do
     transient do
       pdf_template { 'et3-v2-en' }
       email_template { 'et3-v1-en' }
@@ -77,7 +77,7 @@ FactoryBot.define do
     end
   end
 
-  factory :json_repair_response_command, class: ::EtApi::Test::Json::Document do
+  factory :json_repair_response_command, class: '::EtApi::Test::Json::Document' do
     transient do
       response_id { nil }
     end
@@ -86,7 +86,7 @@ FactoryBot.define do
     data { { response_id: response_id } }
   end
 
-  factory :json_response_data, class: ::EtApi::Test::Json::Node do
+  factory :json_response_data, class: '::EtApi::Test::Json::Node' do
     transient do
       with_rtf_file { false }
     end

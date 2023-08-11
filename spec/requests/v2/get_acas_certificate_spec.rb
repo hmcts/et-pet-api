@@ -19,7 +19,7 @@ RSpec.describe 'GetAcasCertificate Request', type: :request do
     it 'handles found response' do
       get '/et_acas_api/certificates/R000100/00/14', headers: default_headers
       expect(json_response[:data].symbolize_keys).to include(
-        certificate_number: 'R000100/00/14',
+        certificate_number: 'R000100/00/14'
       )
     end
 

@@ -1,6 +1,7 @@
 require 'rails_helper'
 RSpec.describe UploadedFileAllocatorService do
   subject(:service) { described_class.new }
+
   let(:response_object) { build(:response) }
 
   around do |example|

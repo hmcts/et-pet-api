@@ -23,18 +23,19 @@ class ReprepareResponseHandler
 
   def uploaded_file_faulty?(uploaded_file)
     return true unless uploaded_file.present? && uploaded_file.file.attachment.present?
+
     service = uploaded_file.file.service
-    !service.exist?( uploaded_file.file.key)
+    !service.exist?(uploaded_file.file.key)
   end
 
   def delete_faulty_uploaded_files(response)
     response.uploaded_files.each do |uploaded_file|
       next unless !uploaded_file.to_be_imported? && uploaded_file_faulty?(uploaded_file)
+
       delete_uploaded_file uploaded_file
       response.events.response_deleted_broken_file.create data: { id: uploaded_file.id, filename: uploaded_file.filename }
     end
   end
-
 
   def delete_uploaded_file(uploaded_file)
     if uploaded_file.file.attachment.present?

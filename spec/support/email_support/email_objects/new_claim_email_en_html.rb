@@ -11,7 +11,7 @@ module EtApi
         include EtApi::Test::ClaimHelper
         include EtApi::Test::I18n
 
-        def self.find(repo: ActionMailer::Base.deliveries, reference:)
+        def self.find(reference:, repo: ActionMailer::Base.deliveries)
           instances = repo.map { |mail| new(mail) }
           instances.detect { |instance| instance.has_correct_subject? && instance.has_reference_element?(reference) }
         end
@@ -22,8 +22,8 @@ module EtApi
 
         def initialize(mail)
           self.mail = mail
-          multipart = mail.parts.detect { |p| p.content_type =~ %r{multipart\/alternative} }
-          part = multipart.parts.detect { |p| p.content_type =~ %r{text\/html} }
+          multipart = mail.parts.detect { |p| p.content_type =~ %r{multipart/alternative} }
+          part = multipart.parts.detect { |p| p.content_type =~ %r{text/html} }
           body = part.nil? ? '' : part.body.to_s
           load(body)
         end
@@ -68,22 +68,22 @@ module EtApi
         private
 
         def self.define_site_prism_elements(template_reference)
-          section :claim_number, :xpath, XPath.generate {|x| x.descendant(:td)[x.child(:p)[x.string.n.is(t('claim_email.reference', locale: template_reference))]]} do
-            element :value, :xpath, XPath.generate {|x| x.child(:p)[2]}
+          section(:claim_number, :xpath, XPath.generate { |x| x.descendant(:td)[x.child(:p)[x.string.n.is(t('claim_email.reference', locale: template_reference))]] }) do
+            element(:value, :xpath, XPath.generate { |x| x.child(:p)[2] })
           end
 
-          section :submission_info, :xpath, XPath.generate {|x| x.descendant(:tr)[x.child(:td)[x.child(:p)[x.string.n.is(t('claim_email.submission_info', locale: template_reference))]]]} do
-            element :submission_date, :xpath, XPath.generate {|x| x.child(:td)[2].child(:p)}
+          section(:submission_info, :xpath, XPath.generate { |x| x.descendant(:tr)[x.child(:td)[x.child(:p)[x.string.n.is(t('claim_email.submission_info', locale: template_reference))]]] }) do
+            element(:submission_date, :xpath, XPath.generate { |x| x.child(:td)[2].child(:p) })
           end
 
-          section :office_information, :xpath, XPath.generate {|x| x.descendant(:tr)[x.child(:td)[x.child(:p)[x.string.n.is(t('claim_email.tribunal_office', locale: template_reference))]]] } do
-            element :office_summary, :xpath, XPath.generate {|x| x.child(:td)[2].child(:p)  }
+          section(:office_information, :xpath, XPath.generate { |x| x.descendant(:tr)[x.child(:td)[x.child(:p)[x.string.n.is(t('claim_email.tribunal_office', locale: template_reference))]]] }) do
+            element(:office_summary, :xpath, XPath.generate { |x| x.child(:td)[2].child(:p) })
           end
 
-          element :claimant_full_name, :xpath, XPath.generate {|x| x.descendant(:tr).child(:td)[1].child(:p)}
+          element(:claimant_full_name, :xpath, XPath.generate { |x| x.descendant(:tr).child(:td)[1].child(:p) })
 
-          section :submission, :xpath, XPath.generate {|x| x.descendant(:tr)[x.child(:td)[1][x.child(:p)[x.string.n.is(t('claim_email.thank_you', locale: template_reference))]]]} do
-            section :what_happens_next, :xpath, XPath.generate {|x| x.child(:td)[1]} do
+          section(:submission, :xpath, XPath.generate { |x| x.descendant(:tr)[x.child(:td)[1][x.child(:p)[x.string.n.is(t('claim_email.thank_you', locale: template_reference))]]] }) do
+            section(:what_happens_next, :xpath, XPath.generate { |x| x.child(:td)[1] }) do
               include RSpec::Matchers
               include EtApi::Test::I18n
               def assert_valid(template_reference:)
@@ -92,7 +92,7 @@ module EtApi
               end
             end
 
-            section :submission_details, :xpath, XPath.generate {|x| x.child(:td)[1]} do
+            section(:submission_details, :xpath, XPath.generate { |x| x.child(:td)[1] }) do
               include RSpec::Matchers
               include EtApi::Test::I18n
 
@@ -123,13 +123,12 @@ module EtApi
               end
             end
 
-
           end
         end
 
         define_site_prism_elements(template_reference)
 
-        def assert_correct_to_address_for?(input_data) # rubocop:disable Naming/PredicateName
+        def assert_correct_to_address_for?(input_data)
           expect(mail.to).to match_array(input_data.confirmation_email_recipients)
         end
 
@@ -148,8 +147,9 @@ module EtApi
         def assert_submission_date
           now = Time.zone.now
 
-          return if has_submission_date_element?(l now, format: '%d %B %Y', locale: template_reference.split('-').last)
-          assert_submission_date_element(l (now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last)
+          return if has_submission_date_element?(l(now, format: '%d %B %Y', locale: template_reference.split('-').last))
+
+          assert_submission_date_element(l((now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last))
         end
 
         def assert_office_information(office)

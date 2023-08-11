@@ -2,7 +2,7 @@ require 'faker'
 require 'securerandom'
 
 FactoryBot.define do
-  factory :json_claimant_data, class: ::EtApi::Test::Json::Document do
+  factory :json_claimant_data, class: '::EtApi::Test::Json::Document' do
     allow_video_attendance { true }
 
     trait :mr_na_o_malley do

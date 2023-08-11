@@ -1,7 +1,7 @@
 class CreateBlobCommand < BaseCommand
   attribute :uploaded_file
 
-  def initialize(uuid:, async: true, data:, **_args)
+  def initialize(uuid:, data:, async: true, **_args)
     super(uuid: uuid, data: data, async: async)
     self.uploaded_file = DirectUploadedFile.new(file: data[:file])
   end
@@ -13,13 +13,9 @@ class CreateBlobCommand < BaseCommand
     root_object
   end
 
-  def valid?
-    uploaded_file.valid?
-  end
+  delegate :valid?, to: :uploaded_file
 
-  def errors
-    uploaded_file.errors
-  end
+  delegate :errors, to: :uploaded_file
 
   private
 

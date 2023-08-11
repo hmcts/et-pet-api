@@ -47,15 +47,15 @@ RSpec.describe 'Create Response Request', type: :request do
 
     shared_context 'with fake sidekiq' do
       around do |example|
-        begin
-          original_adapter = ActiveJob::Base.queue_adapter
-          ActiveJob::Base.queue_adapter = :test
-          ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-          ActiveJob::Base.queue_adapter.performed_jobs.clear
-          example.run
-        ensure
-          ActiveJob::Base.queue_adapter = original_adapter
-        end
+
+        original_adapter = ActiveJob::Base.queue_adapter
+        ActiveJob::Base.queue_adapter = :test
+        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+        ActiveJob::Base.queue_adapter.performed_jobs.clear
+        example.run
+      ensure
+        ActiveJob::Base.queue_adapter = original_adapter
+
       end
 
       def run_background_jobs
@@ -181,6 +181,7 @@ RSpec.describe 'Create Response Request', type: :request do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         et_exporter.find_response_by_reference(reference).assert_respondent(input_respondent_factory)
       end
+
       it 'has the representative in the payload' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         et_exporter.find_response_by_reference(reference).assert_representative(input_representative_factory)
@@ -243,7 +244,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
@@ -255,7 +256,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf, :with_welsh_email) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf, :with_welsh_email) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
@@ -267,7 +268,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
@@ -278,7 +279,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
@@ -290,7 +291,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :for_default_office) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :for_default_office) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for the default office'
@@ -302,12 +303,12 @@ RSpec.describe 'Create Response Request', type: :request do
     end
 
     context 'with json for a response with an additional_information file upload in local mode' do
-      rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
+      rtf_file_path = Rails.root.join("spec/fixtures/example.rtf").to_s
       include_context 'with local storage'
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) }
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
@@ -319,7 +320,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :invalid_case_number) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :invalid_case_number) }
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
       it 'has the correct error in the case_number field' do
@@ -338,7 +339,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, representative_traits: [:full, :invalid_address_keys]) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, representative_traits: [:full, :invalid_address_keys]) }
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
       it 'has the correct error in the address_attributes field' do
@@ -357,7 +358,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, respondent_traits: [:full, :invalid_address_keys]) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, respondent_traits: [:full, :invalid_address_keys]) }
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
       it 'has the correct error in the address_attributes field' do

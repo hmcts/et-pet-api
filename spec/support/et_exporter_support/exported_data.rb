@@ -182,7 +182,6 @@ module EtApi
           end
         end
 
-
         def et3_pdf_file(template: 'et3-v2-en')
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et3_atos_export.pdf" }
 
@@ -193,7 +192,6 @@ module EtApi
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == 'additional_information.pdf' }
           EtApi::Test::FileObjects::Et3AdditionalInformationFile.new download(file_data)
         end
-
 
         private
 

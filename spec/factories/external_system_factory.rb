@@ -16,7 +16,7 @@ FactoryBot.define do
       enabled { true }
       export_claims { false }
     end
-    
+
     trait :ccd do
       name { "CCD" }
       reference { "ccd_manchester" }

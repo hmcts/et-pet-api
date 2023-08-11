@@ -12,6 +12,7 @@ class CommandService
 
     delegate_missing_to :command
   end
+
   def self.dispatch(command:, root_object:, **args)
     command = command_for(command: command, **args) unless command.is_a?(BaseCommand)
     response = CommandResponse.new(command: command, meta: {})

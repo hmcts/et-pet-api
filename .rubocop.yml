@@ -223,7 +223,6 @@ Naming/PredicateName:
     - 'test_common/**/*'
 
 require:
-  -
   - rubocop-rspec
   - rubocop-rails
 
