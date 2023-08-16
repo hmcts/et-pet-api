@@ -204,6 +204,38 @@ respondents_details:
             - 'On'
       acas_number:
         field_name: f tystysgrif cymodi cynnar_2
+      no_acas_number_reason:
+        field_name:
+          - Mae gan rywun arall rwy
+          - toggle_4
+          - Mae fy nghyflogwr eisoes wedi bod mewn cysylltiad ag Acas
+          - Mae fy hawl
+        select_values:
+          joint_claimant_has_acas_number:
+            - 'On'
+            - 'Off'
+            - 'Off'
+            - 'Off'
+          acas_has_no_jurisdiction:
+            - 'Off'
+            - 'On'
+            - 'Off'
+            - 'Off'
+          employer_contacted_acas:
+            - 'Off'
+            - 'Off'
+            - 'On'
+            - 'Off'
+          interim_relief:
+            - 'Off'
+            - 'Off'
+            - 'Off'
+            - 'On'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+          - 'Off'
   respondent3:
     name:
       field_name: undefined_11
@@ -237,6 +269,38 @@ respondents_details:
             - 'On'
       acas_number:
         field_name: f tystysgrif cymodi cynnar_3
+      no_acas_number_reason:
+        field_name:
+          - Mae gan rywun arall rwy
+          - toggle_4
+          - Mae fy nghyflogwr eisoes wedi bod mewn cysylltiad ag Acas
+          - Mae fy hawl
+        select_values:
+          joint_claimant_has_acas_number:
+            - 'On'
+            - 'Off'
+            - 'Off'
+            - 'Off'
+          acas_has_no_jurisdiction:
+            - 'Off'
+            - 'On'
+            - 'Off'
+            - 'Off'
+          employer_contacted_acas:
+            - 'Off'
+            - 'Off'
+            - 'On'
+            - 'Off'
+          interim_relief:
+            - 'Off'
+            - 'Off'
+            - 'Off'
+            - 'On'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
+          - 'Off'
 multiple_cases:
   have_similar_claims:
     field_name:
