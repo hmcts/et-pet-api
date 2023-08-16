@@ -1,4 +1,4 @@
-require_relative './base'
+require_relative 'base'
 require_relative '../../helpers/office_helper'
 module EtApi
   module Test
@@ -30,15 +30,15 @@ module EtApi
           raise Capybara::ElementNotFound, "Reference line incorrect for #{reference}" unless has_reference?(reference)
         end
 
-        def has_correct_subject? # rubocop:disable Naming/PredicateName
+        def has_correct_subject?
           mail.subject == t('response_email.subject', locale: template_reference)
         end
 
-        def has_correct_to_address_for?(input_data) # rubocop:disable Naming/PredicateName
+        def has_correct_to_address_for?(input_data)
           mail.to.include?(input_data.email_receipt)
         end
 
-        def has_correct_content_for?(input_data, reference:) # rubocop:disable Naming/PredicateName
+        def has_correct_content_for?(input_data, reference:)
           office = office_for(case_number: input_data.case_number)
           aggregate_failures 'validating content' do
             assert_reference(reference)

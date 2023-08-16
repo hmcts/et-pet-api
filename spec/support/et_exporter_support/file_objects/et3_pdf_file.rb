@@ -1,5 +1,5 @@
 require 'rspec/matchers'
-require_relative './base_pdf_file'
+require_relative 'base_pdf_file'
 
 module EtApi
   module Test
@@ -7,7 +7,7 @@ module EtApi
       class Et3PdfFile < BasePdfFile
         include RSpec::Matchers
 
-        def has_correct_contents_for?(response:, respondent:, representative:, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_correct_contents_for?(response:, respondent:, representative:, errors: [], indent: 1) # rubocop:disable Lint/UnusedMethodArgument
           Et3PdfFileSection::HeaderSection.new(field_values, lookup_root, template: template).has_contents_for?(response: response)
           Et3PdfFileSection::ClaimantSection.new(field_values, lookup_root, template: template).has_contents_for?(response: response)
           Et3PdfFileSection::RespondentSection.new(field_values, lookup_root, template: template).has_contents_for?(respondent: respondent)

@@ -1,4 +1,4 @@
-require_relative './base'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects
@@ -14,12 +14,12 @@ module EtApi
             expected_values = {
               average_weekly_hours: employment['average_hours_worked_per_week']&.to_s,
               pay_before_tax: {
-                'amount': employment['gross_pay']&.to_s,
-                'period': employment['gross_pay_period_type']
+                amount: employment['gross_pay']&.to_s,
+                period: employment['gross_pay_period_type']
               },
               pay_after_tax: {
-                'amount': employment['net_pay']&.to_s,
-                'period': employment['net_pay_period_type']
+                amount: employment['net_pay']&.to_s,
+                period: employment['net_pay_period_type']
               },
               paid_for_notice_period: employment['worked_notice_period_or_paid_in_lieu'],
               # @TODO Issue caused by the apostrophe supposedly change the right data to nil going through pdftk
@@ -37,8 +37,8 @@ module EtApi
             expected_values = {
               average_weekly_hours: nil,
               pay_before_tax: {
-                'amount': nil,
-                'period': nil
+                amount: nil,
+                period: nil
               },
               paid_for_notice_period: nil,
               notice_period: {

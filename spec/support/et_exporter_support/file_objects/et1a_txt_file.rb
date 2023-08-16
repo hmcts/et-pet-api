@@ -2,7 +2,7 @@ require_relative 'base'
 module EtApi
   module Test
     module FileObjects
-      class Et1aTxtFile < Base # rubocop:disable Metrics/ClassLength
+      class Et1aTxtFile < Base
         include RSpec::Matchers
         include Enumerable
 
@@ -30,17 +30,17 @@ module EtApi
           false
         end
 
-        def has_correct_file_structure?(errors: []) # rubocop:disable Naming/PredicateName
+        def has_correct_file_structure?(errors: [])
           has_header_section?(errors: errors)
           has_claimants_sections?(errors: errors)
           errors.empty?
         end
 
-        def has_section?(section:, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_section?(section:, errors: [], indent: 1)
           section_range = send(:"#{section}_section")
           if section_range.nil?
             errors << "Could not find a '#{section.to_s.humanize}' section"
-            return nil
+            return false
           end
           lines = contents.slice(section_range)
           aggregate_failures "Match content against schema for '#{section.to_s.humanize}'" do
@@ -53,7 +53,7 @@ module EtApi
           false
         end
 
-        def has_header_section?(errors: [], indent: 1, **matcher_overrides) # rubocop:disable Naming/PredicateName
+        def has_header_section?(errors: [], indent: 1, **matcher_overrides)
           matchers = header_matchers.merge(matcher_overrides)
           has_section?(section: :header, errors: errors, indent: indent) do |lines|
             expect(lines[0]).to eql 'ET1a - Online Application to an Employment Tribunal'
@@ -75,7 +75,7 @@ module EtApi
           end
         end
 
-        def has_claimants_sections?(errors: [], indent: 1, **matcher_overrides) # rubocop:disable Naming/PredicateName
+        def has_claimants_sections?(errors: [], indent: 1, **matcher_overrides)
           matchers = claimant_matchers.merge(matcher_overrides)
           idx = 0
           each do |lines|
@@ -103,7 +103,7 @@ module EtApi
           idx
         end
 
-        def has_header_for?(claim, primary_claimant:, primary_respondent:, reference:, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_header_for?(claim, primary_claimant:, primary_respondent:, reference:, errors: [], indent: 1)
           claimant = primary_claimant
           has_header_section? errors: errors, indent: indent,
                               reference: end_with(reference),
@@ -111,7 +111,7 @@ module EtApi
                               claim_parties: end_with("#{claimant[:first_name]} #{claimant[:last_name]} v #{primary_respondent[:name]}")
         end
 
-        def has_claimants_for?(claimants, errors: [], indent: 1) # rubocop:disable Naming/PredicateName
+        def has_claimants_for?(claimants, errors: [], indent: 1)
           count = has_claimants_sections? errors: errors, indent: indent,
                                           title: ->(idx) { end_with(claimants[idx][:title]) },
                                           first_name: ->(idx) { end_with(claimants[idx][:first_name]) },

@@ -3,7 +3,7 @@ module ResponsesSentryContext
 
   private
 
-  def set_sentry_response(response)
+  def configure_sentry_for_response(response)
     return if response&.id.blank?
 
     Sentry.with_scope do |scope|

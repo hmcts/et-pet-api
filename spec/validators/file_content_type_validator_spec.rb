@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe FileContentTypeValidator do
   describe '#valid?' do
-    class ExampleClass < ApplicationRecord
+    class self::ExampleClass < ApplicationRecord # rubocop:disable RSpec/LeakyConstantDeclaration, Lint/ConstantDefinitionInBlock, Style/ClassAndModuleChildren
       include ScannedContentType
       establish_connection adapter: :nulldb,
                            schema: 'config/nulldb_schema.rb'
@@ -13,25 +13,25 @@ RSpec.describe FileContentTypeValidator do
       validates :file, file_content_type: true
     end
 
-    subject(:model) { ExampleClass.new(file: example_file) }
+    subject(:model) { self.class::ExampleClass.new(file: example_file) }
 
-    context 'where the file contents matches the extension' do
+    context 'when the file contents matches the extension' do
       let(:example_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/simple_user_with_rtf.rtf'), 'application/rtf', false) }
 
-      before { subject.valid? }
+      before { model.valid? }
 
       it 'allows the file' do
-        expect(subject.errors).to be_empty
+        expect(model.errors).to be_empty
       end
     end
 
-    context 'where the file contents done match the extension' do
+    context 'when the file contents done match the extension' do
       let(:example_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/invalid_content_type.rtf'), 'application/rtf', false) }
 
-      before { subject.valid? }
+      before { model.valid? }
 
       it 'allows the file' do
-        expect(subject.errors.where(:file, :mismatching_file_content_type)).to be_present
+        expect(model.errors.where(:file, :mismatching_file_content_type)).to be_present
       end
     end
 

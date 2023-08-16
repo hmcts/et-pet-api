@@ -13,8 +13,10 @@ RSpec.describe ConvertFilesHandler do
         # Act
         described_class.new.handle(claim)
         # Assert
-        expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.pdf")).to be_present
-        expect(UploadedFile.system_file_scope.where("filename LIKE '%.rtf'")).not_to be_present
+        aggregate_failures 'files' do
+          expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.pdf")).to be_present
+          expect(UploadedFile.system_file_scope.where("filename LIKE '%.rtf'")).not_to be_present
+        end
       end
 
       it 'copies the rtf file if disabled' do
@@ -41,8 +43,10 @@ RSpec.describe ConvertFilesHandler do
         # Act
         described_class.new.handle(claim)
         # Assert
-        expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.pdf")).not_to be_present
-        expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.rtf")).not_to be_present
+        aggregate_failures 'files' do
+          expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.pdf")).not_to be_present
+          expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.rtf")).not_to be_present
+        end
       end
 
       it 'does nothing if the rtf file is already converted' do
@@ -51,8 +55,10 @@ RSpec.describe ConvertFilesHandler do
         # Act
         described_class.new.handle(claim)
         # Assert
-        expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.pdf")).to be_present
-        expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.rtf")).not_to be_present
+        aggregate_failures 'files' do
+          expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.pdf")).to be_present
+          expect(UploadedFile.system_file_scope.where(filename: "#{expected_filename}.rtf")).not_to be_present
+        end
       end
     end
   end

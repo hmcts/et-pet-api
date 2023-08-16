@@ -47,7 +47,7 @@ Rails.application.configure do
   # Use a different cache store in production.
   config.cache_store = :redis_cache_store, { url: config.redis_url }
 
-  config.service_now_inbox_email = ENV['SERVICE_NOW_EMAIL']
+  config.service_now_inbox_email = ENV.fetch('SERVICE_NOW_EMAIL', nil)
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
@@ -58,10 +58,10 @@ Rails.application.configure do
   config.action_mailer.default_options = { from: ENV.fetch('SMTP_FROM', 'no-reply@employmenttribunals.service.gov.uk') }
 
   config.action_mailer.smtp_settings = {
-    address: ENV['SMTP_HOSTNAME'],
-    port: ENV['SMTP_PORT'],
-    user_name: ENV['SMTP_USERNAME'],
-    password: ENV['SMTP_PASSWORD'],
+    address: ENV.fetch('SMTP_HOSTNAME', nil),
+    port: ENV.fetch('SMTP_PORT', nil),
+    user_name: ENV.fetch('SMTP_USERNAME', nil),
+    password: ENV.fetch('SMTP_PASSWORD', nil),
     authentication: :login,
     enable_starttls_auto: true
   }

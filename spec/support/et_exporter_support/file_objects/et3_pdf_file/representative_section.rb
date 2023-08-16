@@ -1,4 +1,4 @@
-require_relative './base'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects

@@ -1,5 +1,5 @@
 class RebuildResponseCommand < BuildResponseCommand
-  def apply(root_object, meta: {})
+  def apply(root_object, meta: {}) # rubocop:disable Lint/UnusedMethodArgument
     apply_root_attributes(attributes, to: root_object)
     allocate_pdf_file(root_object)
   end

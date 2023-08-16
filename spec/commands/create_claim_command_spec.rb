@@ -253,7 +253,7 @@ RSpec.describe CreateClaimCommand do
         end
       end
 
-      it 'contains the correct error key in the pdf_template_reference attributes' do
+      it 'is invalid' do
         # Act
         result = command.valid?
 

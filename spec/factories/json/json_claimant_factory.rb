@@ -28,7 +28,7 @@ FactoryBot.define do
       title { 'Mr' }
       first_name { 'First' }
       last_name { 'Last' }
-      association :address_attributes, :petty_france_102, factory: :json_address_data
+      association :address_attributes, :petty_france102, factory: :json_address_data
       address_telephone_number { '01234 567890' }
       mobile_number { '01234 098765' }
       email_address { 'test@digital.justice.gov.uk' }
@@ -43,7 +43,7 @@ FactoryBot.define do
       title { 'Mr' }
       first_name { 'First' }
       last_name { 'Last' }
-      association :address_attributes, :petty_france_102, :in_uk, factory: :json_address_data
+      association :address_attributes, :petty_france102, :in_uk, factory: :json_address_data
       address_telephone_number { '01234 567890' }
       mobile_number { '01234 098765' }
       email_address { 'test@digital.justice.gov.uk' }

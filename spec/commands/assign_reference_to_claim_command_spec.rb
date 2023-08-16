@@ -5,12 +5,12 @@ RSpec.describe AssignReferenceToClaimCommand do
 
   let(:uuid) { SecureRandom.uuid }
   let(:root_object) { build(:claim, :example_data, office_code: 32, reference: nil) }
-  let(:mock_reference_service) { class_double('ReferenceService', next_number: 20000005) }
+  let(:mock_reference_service) { class_double(ReferenceService, next_number: 20000005) }
 
   include_context 'with disabled event handlers'
 
   describe '#apply' do
-    context 'using a claim with no reference' do
+    context 'with a claim with no reference' do
       it 'adds the reference to the meta' do
         # Arrange
         meta = {}
@@ -23,7 +23,7 @@ RSpec.describe AssignReferenceToClaimCommand do
       end
     end
 
-    context 'using a claim with existing reference' do
+    context 'with a claim with existing reference' do
       let(:root_object) { build(:claim, :example_data, office_code: 32, reference: '222000000200') }
 
       it 'adds the existing reference to the meta' do

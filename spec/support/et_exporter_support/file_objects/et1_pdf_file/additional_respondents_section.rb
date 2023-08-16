@@ -1,4 +1,4 @@
-require_relative './base'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects
@@ -10,7 +10,7 @@ module EtApi
             acas: { have_acas: false, acas_number: '' , no_acas_number_reason: nil }.freeze
           }.freeze
 
-          def has_contents_for?(respondents:) # rubocop:disable Naming/PredicateName
+          def has_contents_for?(respondents:)
             # claimant.title is a selection of options - in this case we are interested in the key thats all - do not translate it
             expected_values = {}
             2.times do |idx|

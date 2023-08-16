@@ -7,7 +7,7 @@ class ExportResponsesCommand < BaseCommand
 
   # @param [Export] root_object The export instance to populate
   # @param [Hash] meta - Not used in this command
-  def apply(_root_object, meta: {})
+  def apply(_root_object, meta: {}) # rubocop:disable Lint/UnusedMethodArgument
     response_ids.each do |response_id|
       event_service.publish('ResponseExported', external_system_id: external_system_id, response_id: response_id)
     end

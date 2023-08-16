@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Respondent, type: :model do
   subject(:respondent) { described_class.new }
 
-  let(:example_address_attrs) { attributes_for :address }
+  let(:example_address_attrs) { attributes_for(:address) }
 
   it 'loads address from nested attributes' do
     # Act
@@ -17,7 +17,7 @@ RSpec.describe Respondent, type: :model do
 
   it 'loads work_address from nested attributes' do
     # Arrange
-    example_address_attrs = attributes_for :address
+    example_address_attrs = attributes_for(:address)
     # Act
     respondent.work_address_attributes = example_address_attrs
 

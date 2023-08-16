@@ -5,7 +5,7 @@ RSpec.describe 'Create Diversity Request', type: :request do
   describe 'POST /api/v2/diversity/build_diversity_response' do
     let(:default_headers) do
       {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     end

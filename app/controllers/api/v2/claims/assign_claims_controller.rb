@@ -11,7 +11,7 @@ module Api
 
         def create
           root_object = ::Claim.find_by(id: assign_claims_params.dig(:data, :claim_id))
-          set_sentry_claim(root_object)
+          configure_sentry_for_claim(root_object)
           command = CommandService.command_for(**assign_claims_params.merge(command: 'AssignClaim').symbolize_keys)
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object

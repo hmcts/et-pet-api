@@ -1,4 +1,4 @@
-require_relative './base'
+require_relative 'base'
 require_relative '../../helpers/office_helper'
 require_relative '../../helpers/claim_helper'
 module EtApi
@@ -39,7 +39,7 @@ module EtApi
           raise Capybara::ElementNotFound, "Reference line incorrect for #{reference}" unless has_reference?(reference)
         end
 
-        def has_correct_subject? # rubocop:disable Naming/PredicateName
+        def has_correct_subject?
           mail.subject == t('claim_email.subject', locale: template_reference)
         end
 
@@ -47,7 +47,7 @@ module EtApi
           expect(mail.to).to match_array(input_data.confirmation_email_recipients)
         end
 
-        def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:) # rubocop:disable Naming/PredicateName
+        def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:)
           office = office_for(case_number: reference)
           aggregate_failures 'validating content' do
             assert_reference(reference)
@@ -96,7 +96,7 @@ module EtApi
           mail.parts.attachments.detect { |a| a.filename == "et1a_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.csv" }
         end
 
-        def attached_info_file_for(primary_claimant_data:)
+        def attached_info_file_for(primary_claimant_data:) # rubocop:disable Lint/UnusedMethodArgument
           mail.parts.attachments.detect { |a| a.filename.end_with? '.rtf' }
         end
 

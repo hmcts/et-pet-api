@@ -5,8 +5,8 @@ RSpec.describe AssignOfficeToClaimCommand do
 
   let(:uuid) { SecureRandom.uuid }
   let(:root_object) { build(:claim, :example_data) }
-  let(:example_office) { instance_double('Office', code: 65, name: 'Example Office', telephone: '01234 567890', address: '1 Liverpool Street', email: 'info@exampleoffice.com') }
-  let(:mock_office_service) { class_double('OfficeService', lookup_postcode: example_office) }
+  let(:example_office) { instance_double(Office, code: 65, name: 'Example Office', telephone: '01234 567890', address: '1 Liverpool Street', email: 'info@exampleoffice.com') }
+  let(:mock_office_service) { class_double(OfficeService, lookup_postcode: example_office) }
 
   include_context 'with disabled event handlers'
 

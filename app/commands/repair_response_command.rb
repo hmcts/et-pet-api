@@ -5,7 +5,7 @@ class RepairResponseCommand < BaseCommand
 
   # @param [Hash] root_object Not used - nothing to update from using this command
   # @param [Hash] meta - Not used in this command
-  def apply(root_object, meta: {})
+  def apply(root_object, meta: {}) # rubocop:disable Lint/UnusedMethodArgument
     event_service.publish('ResponseRepairRequested', root_object)
   end
 

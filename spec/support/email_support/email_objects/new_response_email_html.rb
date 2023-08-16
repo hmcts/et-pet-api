@@ -1,4 +1,4 @@
-require_relative './base'
+require_relative 'base'
 require_relative '../../helpers/office_helper'
 module EtApi
   module Test
@@ -20,6 +20,7 @@ module EtApi
           part = multipart.parts.detect { |p| p.content_type =~ %r{text/html} }
           body = part.nil? ? '' : part.body.to_s
           load(body)
+          super()
         end
 
         def has_reference_element?(reference)
@@ -29,7 +30,7 @@ module EtApi
           false
         end
 
-        def has_correct_content_for?(input_data, reference:) # rubocop:disable Naming/PredicateName
+        def has_correct_content_for?(input_data, reference:)
           office = office_for(case_number: input_data.case_number)
           aggregate_failures 'validating content' do
             assert_reference_element(reference)
@@ -44,13 +45,13 @@ module EtApi
           true
         end
 
-        def has_correct_subject? # rubocop:disable Naming/PredicateName
+        def has_correct_subject?
           mail.subject == t('response_email.subject', locale: template_reference)
         end
 
         private
 
-        def has_correct_to_address_for?(input_data) # rubocop:disable Naming/PredicateName
+        def has_correct_to_address_for?(input_data)
           mail.to.include?(input_data.email_receipt)
         end
 

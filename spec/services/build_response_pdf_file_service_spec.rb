@@ -74,7 +74,7 @@ RSpec.describe BuildResponsePdfFileService do
       end
     end
 
-    context 'using an alternative pdf template' do
+    context 'with an alternative pdf template' do
       let(:response) { build(:response, :example_data, :with_representative) }
 
       it 'stores an ET3 pdf file from the welsh v2 template with the correct contents' do

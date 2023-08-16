@@ -11,7 +11,7 @@ GovFakeNotify.config do |c|
       id: 'a55e0b84-8d65-4bf4-93a7-e974e0d8d48d',
       name: 'et1-confirmation-email-v1-en',
       subject: 'Employment tribunal: claim submitted',
-      message: <<~EOS
+      message: <<~MESSAGE
         Claim number: ((claim.reference))
 
         ((primary_claimant.first_name)) ((primary_claimant.last_name))
@@ -62,14 +62,14 @@ GovFakeNotify.config do |c|
         https://employmenttribunals.service.gov.uk/en/apply/diversity
 
         Contact us: http://www.justice.gov.uk/contacts/hmcts/tribunals/employment
-      EOS
+      MESSAGE
 
     },
     {
       id: '97a117f1-727d-4631-bbc6-b2bc98d30a0f',
       name: 'et1-confirmation-email-v1-cy',
       subject: 'Tribiwnlys Cyflogaeth: hawliad wedi’i gyflwyno',
-      message: <<~EOS
+      message: <<~MESSAGE
         Eich rhif hawliad: ((claim.reference))
 
         ((primary_claimant.first_name)) ((primary_claimant.last_name))
@@ -115,7 +115,7 @@ GovFakeNotify.config do |c|
         https://employmenttribunals.service.gov.uk/en/apply/diversity
 
         Cysylltu â ni: http://www.justice.gov.uk/contacts/hmcts/tribunals/employment
-      EOS
+      MESSAGE
     }
   ]
   c.include_api_keys = [

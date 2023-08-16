@@ -1,4 +1,4 @@
-require_relative './base'
+require_relative 'base'
 require_relative '../../helpers/office_helper'
 require_relative '../../helpers/claim_helper'
 require_relative '../../messaging'
@@ -28,6 +28,7 @@ module EtApi
         def initialize(mail)
           self.mail = mail
           load mail.body
+          super()
         end
 
         def template_reference
@@ -38,7 +39,7 @@ module EtApi
           claim_number.value == reference
         end
 
-        def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:) # rubocop:disable Naming/PredicateName
+        def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:)
           office = office_for(case_number: reference)
           aggregate_failures 'validating content' do
             assert_reference_element(reference)
@@ -67,7 +68,7 @@ module EtApi
           has_correct_content_for?(normalized_claim, claim.primary_claimant, claim.uploaded_files.et1_csv.first, claim.uploaded_files.et1_input_claim_details.first, reference: claim.reference)
         end
 
-        def has_correct_subject? # rubocop:disable Naming/PredicateName
+        def has_correct_subject?
           mail.subject == t('claim_email.subject', locale: self.class.template_reference)
         end
 
@@ -140,29 +141,29 @@ module EtApi
             define_method :value do
               root_element.text.gsub(/#{t('claim_email.tribunal_office_contact', locale: template_reference)}/, '').strip
             end
-            def email_value
+            def email_value # rubocop:disable Lint/NestedMethodDefinition
               value.split(', ').first
             end
 
-            def telephone_value
+            def telephone_value # rubocop:disable Lint/NestedMethodDefinition
               value.split(', ').last
             end
           end
 
           section(:attached_pdf_file, :xpath, XPath.generate { |x| x.descendant(:p)[x.preceding_sibling(:p)[1][x.string.n.starts_with(t('claim_email.see_attached_pdf', locale: template_reference))]] }) do
-            def value
+            def value # rubocop:disable Lint/NestedMethodDefinition
               text.strip
             end
           end
 
           section(:attached_claimants_file, :xpath, XPath.generate { |x| x.descendant(:p)[x.preceding_sibling(:p)[2][x.string.n.starts_with(t('claim_email.group_claim_file', locale: template_reference))]] }) do
-            def value
+            def value # rubocop:disable Lint/NestedMethodDefinition
               text.strip
             end
           end
 
           section(:attached_info_file, :xpath, XPath.generate { |x| x.descendant(:p)[x.preceding_sibling(:p)[2][x.string.n.starts_with(t('claim_email.additional_information_file.label', locale: template_reference))]] }) do
-            def value
+            def value # rubocop:disable Lint/NestedMethodDefinition
               text.strip
             end
           end
@@ -173,7 +174,7 @@ module EtApi
             section(:what_happens_next, :xpath, XPath.generate { |x| x.child(:td)[1] }) do
               include RSpec::Matchers
               include EtApi::Test::I18n
-              def assert_valid(template_reference:)
+              def assert_valid(template_reference:) # rubocop:disable Lint/NestedMethodDefinition
                 expect(root_element).to have_content(t('claim_email.next_steps.well_contact_you', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.next_steps.once_sent_claim', locale: template_reference))
               end
@@ -183,7 +184,7 @@ module EtApi
               include RSpec::Matchers
               include EtApi::Test::I18n
 
-              def assert_valid(primary_claimant_data, claimants_file, claim_details_file, template_reference:)
+              def assert_valid(primary_claimant_data, claimants_file, claim_details_file, template_reference:) # rubocop:disable Lint/NestedMethodDefinition
                 expect(root_element).to have_content(t('claim_email.submission_details', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.claim_completed', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.see_attached_pdf', locale: template_reference))
@@ -205,13 +206,15 @@ module EtApi
 
               private
 
-              def scrubber(text)
+              def scrubber(text) # rubocop:disable Lint/NestedMethodDefinition
                 text.gsub(/\s/, '_').gsub(/\W/, '')
               end
             end
 
           end
         end
+
+        private_class_method :define_site_prism_elements
 
         define_site_prism_elements(template_reference)
 

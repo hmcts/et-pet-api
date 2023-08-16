@@ -9,7 +9,7 @@ RSpec.describe ClaimExportedHandler do
   it 'creates an export record' do
 
     # Act - call the handle method
-    subject.handle(external_system_id: example_external_system.id, claim_id: example_claim.id, event_service: mock_event_service)
+    handler.handle(external_system_id: example_external_system.id, claim_id: example_claim.id, event_service: mock_event_service)
 
     # Assert - Check that an export record has been created
     expect(Export.where(external_system_id: example_external_system.id, resource_id: example_claim.id, resource_type: 'Claim', state: 'created').count).to be 1
@@ -17,7 +17,7 @@ RSpec.describe ClaimExportedHandler do
 
   it 'fires the ClaimQueuedForExport event' do
     # Act - call the handle method
-    subject.handle(external_system_id: example_external_system.id, claim_id: example_claim.id, event_service: mock_event_service)
+    handler.handle(external_system_id: example_external_system.id, claim_id: example_claim.id, event_service: mock_event_service)
 
     # Assert - Check that the event was fired
     expect(mock_event_service).to have_received(:publish).with('ClaimQueuedForExport', an_object_having_attributes(external_system_id: example_external_system.id, resource_type: 'Claim', resource_id: example_claim.id, state: 'created'))

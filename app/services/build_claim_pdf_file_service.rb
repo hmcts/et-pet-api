@@ -28,7 +28,7 @@ class BuildClaimPdfFileService
     et1 = BuildClaimEt1PdfFileService.call(source, template_reference: template_reference, time_zone: time_zone)
 
     if source.secondary_claimants.present?
-      et1a = BuildClaimEt1aPdfFileService.call(source, template_reference: template_reference.gsub(/et1-/, 'et1a-'), time_zone: time_zone)
+      et1a = BuildClaimEt1aPdfFileService.call(source, template_reference: template_reference.gsub("et1-", 'et1a-'), time_zone: time_zone)
     end
 
     path_specs = [{ et1.output_file.path => ['1-12'] }]

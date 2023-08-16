@@ -1,5 +1,5 @@
 require 'csv'
-class ClaimClaimantsFileImporterService
+class ClaimClaimantsFileImporterService # rubocop:disable Metrics/ClassLength
   ADDRESS_COLUMNS = ['building', 'street', 'locality', 'county', 'post_code'].freeze
   CLAIMANT_COLUMNS = ['title', 'first_name', 'last_name', 'date_of_birth'].freeze
 
@@ -51,7 +51,7 @@ class ClaimClaimantsFileImporterService
     to_import = OpenStruct.new(claimants: [], addresses: []).freeze
     CSV.foreach(file, headers: true) do |row|
       claimant = build_claimant_from row
-      errors << claimant.errors && next unless claimant.valid?
+      (errors << claimant.errors) && next unless claimant.valid?
 
       append_to_import(claimant, to_import)
     end

@@ -26,6 +26,9 @@ module EtApi
         Claim.new(job)
       end
 
+      # @param [String] reference The reference of the claim to assert has been exported
+      # @return [void]
+      # @raise [RuntimeError] If the claim has not been exported
       def self.find_response_by_reference(reference)
         job = Sidekiq::Worker.jobs.find do |j|
           j['class'] =~ /EtExporter::ExportResponseWorker/ && JSON.parse(j['args'].first).dig('resource', 'reference') == reference

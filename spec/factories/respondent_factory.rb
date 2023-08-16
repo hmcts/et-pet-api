@@ -12,7 +12,6 @@ FactoryBot.define do
       name { 'Respondent Name' }
       contact { 'Respondent Contact Name' }
       association :address,
-                  factory: :address,
                   building: '108',
                   street: 'Regent Street',
                   locality: 'London',

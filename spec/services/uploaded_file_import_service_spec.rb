@@ -69,7 +69,7 @@ RSpec.describe UploadedFileImportService do
       service.import_from_key(remote_file.file.blob.key, into: uploaded_file)
 
       # Assert - Make sure original has gone
-      expect(DirectUploadedFile.find_by_key(remote_file.file.blob.key)).to be nil
+      expect(DirectUploadedFile.find_by_key(remote_file.file.blob.key)).to be_nil # rubocop:disable Rails/DynamicFindBy
     end
   end
 end

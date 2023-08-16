@@ -10,7 +10,7 @@ RSpec.describe ClaimManuallyAssignedHandler do
   it 'creates an export record' do
 
     # Act - call the handle method
-    subject.handle(claim: example_claim, event_service: mock_event_service)
+    handler.handle(claim: example_claim, event_service: mock_event_service)
 
     # Assert - Check that an export record has been created
     expect(mock_event_service).to have_received(:publish).with('ClaimExported', external_system_id: example_external_system.id, claim_id: example_claim.id)
@@ -19,7 +19,7 @@ RSpec.describe ClaimManuallyAssignedHandler do
   it 'creates an export record for the second external system' do
 
     # Act - call the handle method
-    subject.handle(claim: example_claim, event_service: mock_event_service)
+    handler.handle(claim: example_claim, event_service: mock_event_service)
 
     # Assert - Check that an export record has been created
     expect(mock_event_service).to have_received(:publish).with('ClaimExported', external_system_id: second_example_external_system.id, claim_id: example_claim.id)

@@ -1,11 +1,11 @@
 class ResponseEmailHandler
   def handle(response)
-    send_email(response) unless has_no_recipient(response) || sent?(response)
+    send_email(response) unless no_recipient?(response) || sent?(response)
   end
 
   private
 
-  def has_no_recipient(response)
+  def no_recipient?(response)
     response.email_receipt.blank?
   end
 

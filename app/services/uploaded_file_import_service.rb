@@ -57,7 +57,7 @@ module UploadedFileImportService
 
     def delete_source_blob(key)
       timings[:delete_source] = measure do
-        DirectUploadedFile.find_by_key!(key).destroy!
+        DirectUploadedFile.find_by_key!(key).destroy! # rubocop:disable Rails/DynamicFindBy
       end
     end
 
@@ -90,7 +90,7 @@ module UploadedFileImportService
     attr_accessor :model, :timings, :logger
 
     def blob_attributes_for(value)
-      DirectUploadedFile.find_by_key!(value).file.blob.
+      DirectUploadedFile.find_by_key!(value).file.blob. # rubocop:disable Rails/DynamicFindBy
         attributes.
         to_h.
         symbolize_keys.

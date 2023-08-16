@@ -5,7 +5,7 @@ class RepairClaimCommand < BaseCommand
 
   # @param [Hash] root_object Not used - nothing to update from using this command
   # @param [Hash] meta - Not used in this command
-  def apply(_root_object, meta: {})
+  def apply(_root_object, meta: {}) # rubocop:disable Lint/UnusedMethodArgument
     event_service.publish('ClaimCreated', claim)
   end
 

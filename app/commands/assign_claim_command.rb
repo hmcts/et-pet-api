@@ -8,7 +8,7 @@ class AssignClaimCommand < BaseCommand
 
   # @param [Export] root_object The export instance to populate
   # @param [Hash] meta - Not used in this command
-  def apply(_root_object, meta: {}, external_systems_repo: ExternalSystem)
+  def apply(_root_object, meta: {}) # rubocop:disable Lint/UnusedMethodArgument
     claim.update office_code: office.code
     claim.events.claim_manually_assigned.create data: { office_code: office.code, user_id: user_id }
     event_service.publish('ClaimManuallyAssigned', claim: claim)
@@ -25,7 +25,7 @@ class AssignClaimCommand < BaseCommand
   def claim
     return @claim if defined?(@claim)
 
-    @@claim = Claim.where(id: claim_id).first
+    @claim = Claim.where(id: claim_id).first
   end
 
   def validate_office_presence

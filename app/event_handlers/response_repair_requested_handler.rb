@@ -15,7 +15,7 @@ class ResponseRepairRequestedHandler
     converted_json = json.dup
     converted_json[:command] = 'RecreateResponse'
     converted_json[:data].each do |command|
-      command[:command] = command[:command].gsub(/Build/, 'Rebuild')
+      command[:command] = command[:command].gsub("Build", 'Rebuild')
     end
     converted_json
   end

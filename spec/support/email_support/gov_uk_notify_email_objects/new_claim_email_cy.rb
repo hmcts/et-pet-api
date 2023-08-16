@@ -1,7 +1,7 @@
-require_relative './base'
+require_relative 'base'
 require_relative '../../helpers/office_helper'
 require_relative '../../helpers/claim_helper'
-require_relative './new_claim_email_en'
+require_relative 'new_claim_email_en'
 module EtApi
   module Test
     module GovUkNotifyEmailObjects
@@ -12,7 +12,7 @@ module EtApi
 
         define_site_prism_elements(template_reference)
 
-        def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:) # rubocop:disable Naming/PredicateName
+        def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:)
           office = office_for(case_number: reference)
           aggregate_failures 'validating content' do
             assert_reference_element(reference)

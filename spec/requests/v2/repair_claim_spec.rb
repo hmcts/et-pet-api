@@ -4,7 +4,7 @@ RSpec.describe 'Import Claim Request', type: :request do
   describe 'POST /api/v2/claims/repair_claim' do
     let(:default_headers) do
       {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     end

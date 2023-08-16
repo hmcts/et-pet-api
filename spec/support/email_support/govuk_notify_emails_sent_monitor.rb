@@ -13,7 +13,7 @@ module EtApi
       def deliveries(config: Rails.application.config.govuk_notify)
         api_key = config["#{config.mode}_api_key"]
         args = []
-        args << config.custom_url unless config.custom_url === false
+        args << config.custom_url unless config.custom_url == false
         client = Notifications::Client.new(api_key, *args)
         client.get_notifications(template_type: :email).collection
       end

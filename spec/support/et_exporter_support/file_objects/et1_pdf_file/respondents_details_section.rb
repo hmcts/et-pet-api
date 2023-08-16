@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require_relative './base'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects

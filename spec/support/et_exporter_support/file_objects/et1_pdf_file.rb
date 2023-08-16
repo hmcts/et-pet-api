@@ -1,12 +1,12 @@
 require 'rspec/matchers'
-require_relative './base_pdf_file'
+require_relative 'base_pdf_file'
 
 module EtApi
   module Test
     module FileObjects
       # Represents the ET3 PDF file and provides assistance in validating its contents
       class Et1PdfFile < BasePdfFile
-        def has_correct_contents_for?(claim:, claimants:, respondents:, representative:, assert_missing_et1a: true) # rubocop:disable Naming/PredicateName
+        def has_correct_contents_for?(claim:, claimants:, respondents:, representative:, assert_missing_et1a: true)
           Et1PdfFileSection::OfficialUseOnlySection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim, respondent: respondents.first)
           Et1PdfFileSection::YourDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
           Et1PdfFileSection::RespondentsDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
@@ -27,7 +27,7 @@ module EtApi
           true
         end
 
-        def has_correct_contents_from_db_for?(claim:, errors: [], indent: 1, assert_missing_et1a: true)
+        def has_correct_contents_from_db_for?(claim:, errors: [], indent: 1, assert_missing_et1a: true) # rubocop:disable Lint/UnusedMethodArgument
           respondents = respondents_json(claim)
           claimants = claimants_json(claim)
           representative = representative_json(claim)

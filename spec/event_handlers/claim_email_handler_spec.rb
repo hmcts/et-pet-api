@@ -21,7 +21,7 @@ describe ClaimEmailHandler do
       end
     end
 
-    context 'with english template v1, a pdf file, a claim details file  and no csv' do
+    context 'with english template v1, a pdf file, a claim details file and no csv' do
       let(:claim) { create(:claim, :with_pdf_file, :with_input_claim_details_file, :with_output_claim_details_file, confirmation_email_recipients: ['fred@bloggs.com']) }
 
       it 'sends the email correctly' do

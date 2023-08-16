@@ -4,7 +4,7 @@ RSpec.describe "V2 RequestReferenceNumbers", type: :request do
   describe "POST /api/v2/references/create_reference" do
     let(:default_headers) do
       {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     end

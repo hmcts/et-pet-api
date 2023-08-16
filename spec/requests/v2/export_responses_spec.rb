@@ -31,14 +31,14 @@ RSpec.describe 'Export Response Request', type: :request do
     include_context 'with local storage'
     let(:default_headers) do
       {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     end
     let(:errors) { [] }
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
     let(:example_response_reference) do
-      command = FactoryBot.build(:json_build_response_commands)
+      command = build(:json_build_response_commands)
       post '/api/v2/respondents/build_response', params: command.to_json, headers: default_headers
       JSON.parse(response.body).dig('meta', 'BuildResponse', 'reference').tap { reset! }
     end
@@ -50,7 +50,7 @@ RSpec.describe 'Export Response Request', type: :request do
 
     it 'returns 202 accepted' do
       # Arrange - Setup the response record and provide the ids
-      command = FactoryBot.build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
+      command = build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
 
       # Act - Run the command and all background jobs
       post '/api/v2/exports/export_responses', params: command.to_json, headers: default_headers
@@ -61,7 +61,7 @@ RSpec.describe 'Export Response Request', type: :request do
 
     it 'creates a new export record with the correct status' do
       # Arrange - Setup the response record and provide the ids
-      command = FactoryBot.build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
+      command = build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
 
       # Act - Run the command and all background jobs
       post '/api/v2/exports/export_responses', params: command.to_json, headers: default_headers
@@ -74,7 +74,7 @@ RSpec.describe 'Export Response Request', type: :request do
 
     it 'returns identical data if called twice with the same uuid', background_jobs: :disable do
       # Arrange - get the response from the first call and reset the session ready for the second
-      command = FactoryBot.build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
+      command = build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
       post '/api/v2/exports/export_responses', params: command.to_json, headers: default_headers
       response1 = JSON.parse(response.body).with_indifferent_access
       reset!
@@ -89,7 +89,7 @@ RSpec.describe 'Export Response Request', type: :request do
 
     it 'creates no more records if called a second time with same uuid', background_jobs: :disable do
       # Arrange - setup the action to perform twice, but call it once in setup
-      command = FactoryBot.build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
+      command = build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
       perform_action = lambda {
         post '/api/v2/exports/export_responses', params: command.to_json, headers: default_headers
         run_background_jobs
@@ -103,7 +103,7 @@ RSpec.describe 'Export Response Request', type: :request do
 
     it 'returns errors if the external_system is not found' do
       # Arrange - Setup the response record and provide the ids
-      command = FactoryBot.build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: -1)
+      command = build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: -1)
 
       # Act - Run the command and all background jobs
       post '/api/v2/exports/export_responses', params: command.to_json, headers: default_headers
@@ -125,7 +125,7 @@ RSpec.describe 'Export Response Request', type: :request do
 
     it 'returns errors if multiple responses are not found' do
       # Arrange - Setup the response record and provide the ids
-      command = FactoryBot.build(:json_export_responses_command, response_ids: [example_response.id, -1, -2], external_system_id: example_external_system.id)
+      command = build(:json_export_responses_command, response_ids: [example_response.id, -1, -2], external_system_id: example_external_system.id)
 
       # Act - Run the command and all background jobs
       post '/api/v2/exports/export_responses', params: command.to_json, headers: default_headers

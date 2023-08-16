@@ -6,7 +6,7 @@ RSpec.describe 'Validate Claimants File Request', type: :request do
   describe 'POST /api/v2/validate' do
     let(:default_headers) do
       {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     end
@@ -14,7 +14,7 @@ RSpec.describe 'Validate Claimants File Request', type: :request do
 
     context 'with valid input data' do
       let(:input_factory) do
-        FactoryBot.build(:json_validate_claimants_file_command, :valid)
+        build(:json_validate_claimants_file_command, :valid)
       end
 
       it 'returns 200 success' do
@@ -42,7 +42,7 @@ RSpec.describe 'Validate Claimants File Request', type: :request do
 
     context 'with invalid input data' do
       let(:input_factory) do
-        FactoryBot.build(:json_validate_claimants_file_command, :invalid)
+        build(:json_validate_claimants_file_command, :invalid)
       end
 
       before do
@@ -58,7 +58,7 @@ RSpec.describe 'Validate Claimants File Request', type: :request do
         expect(response).to(have_http_status(:unprocessable_entity))
       end
 
-      it 'returns the status  as not accepted' do
+      it 'returns the status as not accepted' do
         # Assert - Make sure we get the uuid in the response
         expect(json_response).to include status: 'not_accepted', uuid: input_factory.uuid
       end
