@@ -62,6 +62,9 @@ group :development, :test do
   gem 'bullet', '~> 7.0'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'parallel_tests', '~> 4.1'
+  gem 'rubocop', '~> 1.8', require: false
+  gem "rubocop-rails", "~> 2.17", require: false
+  gem 'rubocop-rspec', '~> 2.1', require: false
   gem 'rspec-rails', '~> 6.0'
   gem 'simplecov', '~> 0.21', require: false
   gem 'simplecov-lcov', '~> 0.3', require: false
@@ -71,9 +74,6 @@ end
 group :development do
   gem 'listen', '~> 3.4'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'rubocop', '~> 1.8', require: false
-  gem "rubocop-rails", "~> 2.17", require: false
-  gem 'rubocop-rspec', '~> 2.1', require: false
   gem 'spring', '~> 4.1'
   gem 'spring-watcher-listen', '~> 2.1.0'
 end

@@ -78,6 +78,10 @@ jobs:
           mv .dockerignore.backup .dockerignore
         displayName: 'Run tests in docker'
       - script: |
+          SOURCE_DOCKER_IMAGE="$(application.name):$(getDockerTag.DOCKER_TAG)" docker-compose -p $(Build.BuildId) -f docker-compose-test.yml run --rm test bash -c "bundle exec rubocop"
+        condition: always()
+        displayName: Run rubocop
+      - script: |
           docker-compose -p $(Build.BuildId) -f docker-compose-test.yml down --rmi local -v
         condition: always()
         displayName: Cleanup

@@ -12,7 +12,6 @@ tmp/**/*
 /.bundle
 /.git
 /.env.*
-/.rubocop*
 /.ruby-version
 /azure-pipelines.yml
 /docker-compose*
