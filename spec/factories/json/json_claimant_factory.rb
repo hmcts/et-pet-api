@@ -50,7 +50,7 @@ FactoryBot.define do
       fax_number { nil }
       contact_preference { 'Email' }
       gender { 'Male' }
-      date_of_birth { '1982-11-21' }
+      date_of_birth { nil }
       special_needs { nil }
       allow_video_attendance { true }
     end
@@ -262,7 +262,6 @@ FactoryBot.define do
       title { "Mrs" }
       first_name { "eulalia" }
       last_name { "hammes" }
-      date_of_birth { '1998-10-04' }
     end
   end
 end

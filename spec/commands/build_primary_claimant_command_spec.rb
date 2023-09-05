@@ -31,8 +31,7 @@ RSpec.describe BuildPrimaryClaimantCommand do
         command.apply(root_object)
 
         # Assert
-        expect(root_object.primary_claimant).to have_attributes(data.except('date_of_birth')).
-          and(have_attributes(date_of_birth: an_instance_of(Date))).
+        expect(root_object.primary_claimant).to have_attributes(data).
           and(have_attributes(address: nil))
       end
     end

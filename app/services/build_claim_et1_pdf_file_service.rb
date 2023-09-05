@@ -58,9 +58,9 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, format_post_code(pca.post_code), :your_details, :post_code
     apply_field result, primary_claimant.mobile_number, :your_details, :alternative_telephone_number
     apply_field result, primary_claimant.contact_preference, :your_details, :correspondence
-    apply_field result, primary_claimant.date_of_birth.strftime('%d'), :your_details, :dob_day
-    apply_field result, primary_claimant.date_of_birth.strftime('%m'), :your_details, :dob_month
-    apply_field result, primary_claimant.date_of_birth.strftime('%Y'), :your_details, :dob_year
+    apply_field result, primary_claimant&.date_of_birth&.strftime('%d'), :your_details, :dob_day
+    apply_field result, primary_claimant&.date_of_birth&.strftime('%m'), :your_details, :dob_month
+    apply_field result, primary_claimant&.date_of_birth&.strftime('%Y'), :your_details, :dob_year
     apply_field result, primary_claimant.email_address, :your_details, :email_address
     apply_field result, primary_claimant.address_telephone_number, :your_details, :telephone_number
     apply_field result, primary_claimant.allow_video_attendance, :your_details, :allow_video_attendance
