@@ -69,31 +69,31 @@ RSpec.describe BuildClaimPdfFileService do
     end
 
     context 'with a respondent with no acas (joint claimant has acas number)' do
-      let(:claim) { build(:claim, :example_data, primary_respondent_traits: %i[example_data no_acas_joint_claimant]) }
+      let(:claim) { build(:claim, :example_data, primary_respondent_traits: [:example_data, :no_acas_joint_claimant]) }
 
       include_examples 'for any claim variation'
     end
 
     context 'with a respondent with no acas (no jurisdiction)' do
-      let(:claim) { build(:claim, :example_data, primary_respondent_traits: %i[example_data no_acas_no_jurisdiction]) }
+      let(:claim) { build(:claim, :example_data, primary_respondent_traits: [:example_data, :no_acas_no_jurisdiction]) }
 
       include_examples 'for any claim variation'
     end
 
     context 'with a respondent with no acas (employer contacted acas)' do
-      let(:claim) { build(:claim, :example_data, primary_respondent_traits: %i[example_data no_acas_employer_contacted]) }
+      let(:claim) { build(:claim, :example_data, primary_respondent_traits: [:example_data, :no_acas_employer_contacted]) }
 
       include_examples 'for any claim variation'
     end
 
     context 'with a respondent with no acas (interim_relief)' do
-      let(:claim) { build(:claim, :example_data, primary_respondent_traits: %i[example_data no_acas_interim_relief]) }
+      let(:claim) { build(:claim, :example_data, primary_respondent_traits: [:example_data, :no_acas_interim_relief]) }
 
       include_examples 'for any claim variation'
     end
 
     context 'with a primary respondent with acas number and 4 secondary respondents with no acas (joint claimant has acas number)' do
-      let(:claim) { build(:claim, :example_data, number_of_respondents: 5, secondary_respondent_traits: %i[example_data unique_name no_acas_joint_claimant]) }
+      let(:claim) { build(:claim, :example_data, number_of_respondents: 5, secondary_respondent_traits: [:example_data, :unique_name, :no_acas_joint_claimant]) }
 
       include_examples 'for any claim variation'
     end

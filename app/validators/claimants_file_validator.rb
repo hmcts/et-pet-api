@@ -88,7 +88,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     generate_errors(attribute, claimants_file, record, row_index)
   end
 
-  def normalize_row(row) # rubocop:disable Metrics/AbcSize
+  def normalize_row(row) # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
     { title: row['Title']&.strip&.downcase&.capitalize,
       first_name: row['First name']&.strip,
       last_name: row['Last name']&.strip,
@@ -144,7 +144,6 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     validate :illegal_birth_year
     validate :age_between_range
 
-
     private
 
     def illegal_birth_year
@@ -154,7 +153,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     def age_between_range
       return if date_of_birth.nil?
 
-      errors.add :date_of_birth, :date_range if !(date_of_birth > 100.years.ago and date_of_birth < 10.years.ago)
+      errors.add :date_of_birth, :date_range unless (date_of_birth > 100.years.ago) && (date_of_birth < 10.years.ago)
     end
   end
 end

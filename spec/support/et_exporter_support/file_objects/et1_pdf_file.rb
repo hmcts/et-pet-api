@@ -1,12 +1,12 @@
 require 'rspec/matchers'
-require_relative './base_pdf_file'
+require_relative 'base_pdf_file'
 
 module EtApi
   module Test
     module FileObjects
       # Represents the ET3 PDF file and provides assistance in validating its contents
       class Et1PdfFile < BasePdfFile
-        def has_correct_contents_for?(claim:, claimants:, respondents:, representative:, assert_missing_et1a: true) # rubocop:disable Naming/PredicateName
+        def has_correct_contents_for?(claim:, claimants:, respondents:, representative:, assert_missing_et1a: true)
           Et1PdfFileSection::OfficialUseOnlySection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim, respondent: respondents.first)
           Et1PdfFileSection::YourDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
           Et1PdfFileSection::RespondentsDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
@@ -27,7 +27,7 @@ module EtApi
           true
         end
 
-        def has_correct_contents_from_db_for?(claim:, errors: [], indent: 1, assert_missing_et1a: true)
+        def has_correct_contents_from_db_for?(claim:, errors: [], indent: 1, assert_missing_et1a: true) # rubocop:disable Lint/UnusedMethodArgument
           respondents = respondents_json(claim)
           claimants = claimants_json(claim)
           representative = representative_json(claim)
@@ -55,7 +55,7 @@ module EtApi
 
         def respondents_json(claim)
           respondents = [claim.primary_respondent.as_json(include: [:address, :work_address]).symbolize_keys]
-          respondents.concat claim.secondary_respondents.map { |r| r.as_json(include: [:address, :work_address]).symbolize_keys }
+          respondents.concat(claim.secondary_respondents.map { |r| r.as_json(include: [:address, :work_address]).symbolize_keys })
           respondents.map do |r|
             r[:address_attributes] = OpenStruct.new(r.delete(:address)).freeze
             r[:work_address_attributes] = OpenStruct.new(r.delete(:work_address) || {}).freeze
@@ -65,7 +65,7 @@ module EtApi
 
         def claimants_json(claim)
           claimants = [claim.primary_claimant.as_json(include: :address).symbolize_keys]
-          claimants.concat claim.secondary_claimants.map { |r| r.as_json(include: :address).symbolize_keys }
+          claimants.concat(claim.secondary_claimants.map { |r| r.as_json(include: :address).symbolize_keys })
           claimants.map do |c|
             c[:address_attributes] = OpenStruct.new(c.delete(:address)).freeze
             OpenStruct.new(c).freeze

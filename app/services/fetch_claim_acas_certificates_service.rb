@@ -17,7 +17,7 @@ class FetchClaimAcasCertificatesService
     certificates.each do |cert|
       if cert.is_a?(::EtAcasApi::Certificate)
         build_file(cert, claim)
-        claim.touch
+        claim.touch # rubocop:disable Rails/SkipsModelValidations
         claim.events.claim_acas_requested.create data: { status: 'found' }
       elsif cert.is_a?(::EtAcasApi::CertificateNotFound)
         claim.events.claim_acas_requested.create data: { status: 'not_found' }
@@ -49,6 +49,10 @@ class FetchClaimAcasCertificatesService
     errors.present?
   end
 
+  def self.respondents_needing_acas(claim)
+    ([claim.primary_respondent] + claim.secondary_respondents).select { |resp| resp.acas_certificate_number.present? }
+  end
+
   private
 
   attr_reader :claim, :certificates
@@ -74,9 +78,4 @@ class FetchClaimAcasCertificatesService
       claim.events.claim_acas_attempt_failed.create data: { errors: result.errors }
     end
   end
-
-  def self.respondents_needing_acas(claim)
-    ([claim.primary_respondent] + claim.secondary_respondents).select { |resp| resp.acas_certificate_number.present? }
-  end
-
 end

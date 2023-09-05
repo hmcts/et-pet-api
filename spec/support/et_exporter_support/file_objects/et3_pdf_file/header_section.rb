@@ -1,10 +1,10 @@
-require_relative './base'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects
       module Et3PdfFileSection
         class HeaderSection < ::EtApi::Test::FileObjects::Et3PdfFileSection::Base
-          def has_contents_for?(response:) # rubocop:disable Naming/PredicateName
+          def has_contents_for?(response:)
             # @TODO Review this conditional after march 2019 - once the pdf has been sorted, it should have the date_received and rtf fields
             if template == 'et3-v2-cy'
               expected_values = {

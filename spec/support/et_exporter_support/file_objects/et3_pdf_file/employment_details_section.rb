@@ -1,10 +1,10 @@
-require_relative './base'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects
       module Et3PdfFileSection
         class EmploymentDetailsSection < ::EtApi::Test::FileObjects::Et3PdfFileSection::Base
-          def has_contents_for?(response:) # rubocop:disable Naming/PredicateName
+          def has_contents_for?(response:)
             expected_values = {
               agree_with_dates: response[:agree_with_employment_dates],
               employment_start: response[:employment_start].nil? ? '' : formatted_date(response[:employment_start]),

@@ -17,7 +17,7 @@ FactoryBot.define do
 
     after(:build) do |export, evaluator|
       if evaluator.external_system_reference
-        export.external_system = ExternalSystem.find_by_reference! evaluator.external_system_reference
+        export.external_system = ExternalSystem.find_by! reference: evaluator.external_system_reference
       end
     end
   end

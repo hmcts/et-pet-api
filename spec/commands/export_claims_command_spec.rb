@@ -2,10 +2,11 @@ require 'rails_helper'
 
 RSpec.describe ExportClaimsCommand do
   subject(:command) { described_class.new(event_service: mock_event_service, **data) }
+
   let(:mock_event_service) { class_spy(EventService) }
   let(:example_external_system_reference) { "ccd_manchester" }
   let(:example_claims) { create_list(:claim, 3) }
-  let(:example_external_system) { ExternalSystem.find_by_reference!(example_external_system_reference) }
+  let(:example_external_system) { ExternalSystem.find_by!(reference: example_external_system_reference) }
 
   let(:uuid) { SecureRandom.uuid }
   let(:data) { build(:json_export_claims_command, external_system_id: example_external_system.id, claim_ids: example_claims.map(&:id)).as_json }

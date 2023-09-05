@@ -1,4 +1,4 @@
-require_relative './base'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects
@@ -6,6 +6,7 @@ module EtApi
         class RepresentativeSection < ::EtApi::Test::FileObjects::Et3PdfFileSection::Base
           def has_contents_for?(representative:)
             return has_no_representative? if representative.nil?
+
             address = representative[:address_attributes] || empty_address_attributes
             expected_values = {
               name: representative[:name] || '',

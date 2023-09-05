@@ -11,7 +11,7 @@ module Api
 
         def create
           root_object = ::Claim.new
-          set_sentry_claim(root_object)
+          configure_sentry_for_claim(root_object)
           command = CommandService.command_for(**build_claims_params.merge(command: 'CreateClaim').symbolize_keys)
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object

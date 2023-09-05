@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :json_validate_claimants_file_command, class: ::EtApi::Test::Json::Document do
+  factory :json_validate_claimants_file_command, class: '::EtApi::Test::Json::Document' do
     uuid { SecureRandom.uuid }
     command { 'ValidateClaimantsFile' }
 

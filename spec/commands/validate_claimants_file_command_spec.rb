@@ -10,7 +10,7 @@ RSpec.describe ValidateClaimantsFileCommand do
 
   describe '#valid?' do
     context 'with valid data' do
-      let(:data) { FactoryBot.build(:json_validate_claimants_file_command, :valid) }
+      let(:data) { build(:json_validate_claimants_file_command, :valid) }
 
       it 'is valid' do
         # Act
@@ -19,7 +19,7 @@ RSpec.describe ValidateClaimantsFileCommand do
     end
 
     context 'with date of birth that is invalid in one row and a title that is not in the list in another' do
-      let(:data) { FactoryBot.build(:json_validate_claimants_file_command, :invalid) }
+      let(:data) { build(:json_validate_claimants_file_command, :invalid) }
 
       it 'is invalid' do
         # Act
@@ -34,10 +34,10 @@ RSpec.describe ValidateClaimantsFileCommand do
         expect(command.errors.details.to_hash).to include \
           'data_from_key[0].date_of_birth': a_collection_containing_exactly(
             a_hash_including(error: :invalid, uuid: data.uuid, command: data.command)
-        ),
+          ),
           'data_from_key[9].date_of_birth': a_collection_containing_exactly(
             a_hash_including(error: :date_range, uuid: data.uuid, command: data.command)
-        ),
+          ),
           'data_from_key[1].title': a_collection_containing_exactly(
             a_hash_including(error: :inclusion, uuid: data.uuid, command: data.command)
           )
@@ -56,8 +56,7 @@ RSpec.describe ValidateClaimantsFileCommand do
     end
 
     context 'with a file containing a missing column' do
-      let(:data) { FactoryBot.build(:json_validate_claimants_file_command, :missing_column) }
-
+      let(:data) { build(:json_validate_claimants_file_command, :missing_column) }
 
       it 'is invalid' do
         # Act
@@ -70,9 +69,9 @@ RSpec.describe ValidateClaimantsFileCommand do
 
         # Assert
         expect(command.errors.details.to_hash).to include \
-          'base': a_collection_containing_exactly(
-          a_hash_including(error: :invalid_columns, uuid: data.uuid, command: data.command)
-        )
+          base: a_collection_containing_exactly(
+            a_hash_including(error: :invalid_columns, uuid: data.uuid, command: data.command)
+          )
       end
 
       it 'contains the correct error messages for this example' do
@@ -81,13 +80,12 @@ RSpec.describe ValidateClaimantsFileCommand do
 
         # Assert
         expect(command.errors.messages.to_hash).to include \
-          'base': a_collection_containing_exactly('file does not contain the correct columns')
+          base: a_collection_containing_exactly('file does not contain the correct columns')
       end
     end
 
     context 'with an missing file' do
-      let(:data) { FactoryBot.build(:json_validate_claimants_file_command, :missing) }
-
+      let(:data) { build(:json_validate_claimants_file_command, :missing) }
 
       it 'is invalid' do
         # Act
@@ -100,9 +98,9 @@ RSpec.describe ValidateClaimantsFileCommand do
 
         # Assert
         expect(command.errors.details.to_hash).to include \
-          'base': a_collection_containing_exactly(
-          a_hash_including(error: :missing_file, uuid: data.uuid, command: data.command)
-        )
+          base: a_collection_containing_exactly(
+            a_hash_including(error: :missing_file, uuid: data.uuid, command: data.command)
+          )
       end
 
       it 'contains the correct error messages for this example' do
@@ -111,7 +109,7 @@ RSpec.describe ValidateClaimantsFileCommand do
 
         # Assert
         expect(command.errors.messages.to_hash).to include \
-          'base': a_collection_containing_exactly('file is missing')
+          base: a_collection_containing_exactly('file is missing')
       end
 
     end

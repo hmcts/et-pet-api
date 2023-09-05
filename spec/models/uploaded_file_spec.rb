@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe UploadedFile, type: :model do
   subject(:uploaded_file) { described_class.new filename: 'anything' }
 
-  let(:fixture_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf') }
+  let(:fixture_file) { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/et1_first_last.pdf"), 'application/pdf') }
 
   describe '#file=' do
     it 'persists it in memory as an activestorage attachment' do

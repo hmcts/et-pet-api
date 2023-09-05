@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe RepairClaimCommand do
   subject(:command) { described_class.new(event_service: mock_event_service, **data) }
+
   let(:mock_event_service) { class_spy(EventService) }
   let(:claim_to_repair) { create(:claim, :example_data) }
 

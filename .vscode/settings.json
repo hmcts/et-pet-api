@@ -2,5 +2,8 @@
   "files.watcherExclude": {
     "log/*.log": true
   },
-  "simplecov-vscode.enabled": true
+  "simplecov-vscode.enabled": true,
+  "solargraph.commandPath": "/home/coder/.rbenv/shims/solargraph",
+  "solargraph.bundlerPath": "",
+  "solargraph.useBundler": true
 }

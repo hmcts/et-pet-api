@@ -5,7 +5,7 @@ class ValidateClaimantsFileCommand < BaseCommand
   attribute :data_url, :string
 
   validates :data_from_key, claimants_file: { save_line_count: :validation_line_count }
-  def apply(root_object, meta: {})
+  def apply(root_object, meta: {}) # rubocop:disable Lint/UnusedMethodArgument
     root_object[:line_count] = @validation_line_count
   end
 

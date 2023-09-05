@@ -6,7 +6,7 @@ module PdfBuilder
   module MultiTemplate
     extend ActiveSupport::Concern
 
-    def initialize(source, template_reference:, template_dir: Rails.root.join('vendor', 'assets', 'pdf_forms'), **kw_args)
+    def initialize(source, template_reference:, template_dir: Rails.root.join("vendor/assets/pdf_forms"), **kw_args)
       super(source, **kw_args)
       self.template_dir = template_dir
       self.template_reference = template_reference

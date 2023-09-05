@@ -4,6 +4,7 @@ class FetchAcasCertificatesJob < ApplicationJob
   sidekiq_options(retry: false)
   class RetriableError < RuntimeError
     attr_reader :claim
+
     def initialize(msg, claim)
       @claim = claim
       super(msg)
@@ -29,10 +30,8 @@ class FetchAcasCertificatesJob < ApplicationJob
       return
     end
 
-    raise RetriableError.new(result.errors.values.flatten.join("\n"), claim)
+    raise RetriableError.new(result.errors.values.flatten.join("\n"), claim) # rubocop:disable Rails/DeprecatedActiveModelErrorsMethods
   end
-
-  private
 
   def self.needs_certificates?(claim)
     FetchClaimAcasCertificatesService.respondents_needing_acas(claim).present?
@@ -43,7 +42,10 @@ class FetchAcasCertificatesJob < ApplicationJob
     EventService.publish('ClaimPrepared', claim)
   end
 
+  private
+
   def emit_claim_prepared_event(*args)
     self.class.emit_claim_prepared_event(*args)
   end
+
 end

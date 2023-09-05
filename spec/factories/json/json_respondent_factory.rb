@@ -2,7 +2,7 @@ require 'faker'
 require 'securerandom'
 
 FactoryBot.define do
-  factory :json_respondent_data, class: ::EtApi::Test::Json::Node do
+  factory :json_respondent_data, class: '::EtApi::Test::Json::Node' do
     trait :minimal do
       name { 'dodgy_co' }
       association :address_attributes, :the_shard, factory: :json_address_data

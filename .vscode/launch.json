@@ -4,6 +4,18 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+
+    {
+      "name": "RSpec - active spec file only",
+      "type": "Ruby",
+      "request": "launch",
+      "program": "${workspaceRoot}/bin/rspec",
+      "args": [
+        "-I",
+        "${workspaceRoot}",
+        "${file}"
+      ]
+    },
     {
       "name": "Listen for rdebug-ide",
       "type": "Ruby",
@@ -19,6 +31,18 @@
       "name": "Launch Edge against localhost",
       "url": "http://localhost:8080",
       "webRoot": "${workspaceFolder}"
-    }
+    },
+    {
+      "type": "rdbg",
+      "name": "WIP",
+      "request": "launch",
+      "script": "/home/coder/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/rspec-core-3.12.2/exe/rspec",
+      "cwd": "${workspaceFolder}",
+      "useBundler": true,
+      "args": [
+        "spec/jobs/fetch_acas_certificates_job_spec.rb:81"
+      ],
+      "askParameters": false
+}
   ]
 }

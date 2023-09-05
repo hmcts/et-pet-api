@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe SerialSequenceCommand do
+  subject(:command) { described_class.new(uuid: uuid, data: data, command_service: command_service) }
+
   shared_context 'with fake command service' do
     # A command like it is declared in the app
 
@@ -42,17 +44,15 @@ RSpec.describe SerialSequenceCommand do
   end
 
   shared_context 'with fake commands from data' do
-    let(:command1) { my_command_class.new(**data[0].symbolize_keys) }
-    let(:command2) { my_command_class.new(**data[1].symbolize_keys) }
+    let(:first_command) { my_command_class.new(**data[0].symbolize_keys) }
+    let(:second_command) { my_command_class.new(**data[1].symbolize_keys) }
     before do
-      allow(command_service).to receive(:command_for).with(**data[0].symbolize_keys).and_return(command1)
-      allow(command_service).to receive(:command_for).with(**data[1].symbolize_keys).and_return(command2)
-      allow(command_service).to receive(:dispatch).with(command: command1, root_object: anything).and_return(my_command_response_class.new(command: command1, meta: { reference: '123456' }))
-      allow(command_service).to receive(:dispatch).with(command: command2, root_object: anything).and_return(my_command_response_class.new(command: command2, meta: { reference: '789123' }))
+      allow(command_service).to receive(:command_for).with(**data[0].symbolize_keys).and_return(first_command)
+      allow(command_service).to receive(:command_for).with(**data[1].symbolize_keys).and_return(second_command)
+      allow(command_service).to receive(:dispatch).with(command: first_command, root_object: anything).and_return(my_command_response_class.new(command: first_command, meta: { reference: '123456' }))
+      allow(command_service).to receive(:dispatch).with(command: second_command, root_object: anything).and_return(my_command_response_class.new(command: second_command, meta: { reference: '789123' }))
     end
   end
-
-  subject(:command) { described_class.new(uuid: uuid, data: data, command_service: command_service) }
 
   let(:uuid) { SecureRandom.uuid }
   let(:data) do
@@ -82,8 +82,8 @@ RSpec.describe SerialSequenceCommand do
 
       # Assert
       aggregate_failures 'assert that the command service has been called twice' do
-        expect(command_service).to have_received(:dispatch).with(command: command1, root_object: root_object)
-        expect(command_service).to have_received(:dispatch).with(command: command2, root_object: root_object)
+        expect(command_service).to have_received(:dispatch).with(command: first_command, root_object: root_object)
+        expect(command_service).to have_received(:dispatch).with(command: second_command, root_object: root_object)
       end
     end
 

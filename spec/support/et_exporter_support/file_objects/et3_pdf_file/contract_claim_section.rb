@@ -1,10 +1,10 @@
-require_relative './base'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects
       module Et3PdfFileSection
         class ContractClaimSection < ::EtApi::Test::FileObjects::Et3PdfFileSection::Base
-          def has_contents_for?(response:) # rubocop:disable Naming/PredicateName
+          def has_contents_for?(response:)
             expected_values = {
               make_employer_contract_claim: response[:make_employer_contract_claim].present?,
               information: response[:claim_information] || ''

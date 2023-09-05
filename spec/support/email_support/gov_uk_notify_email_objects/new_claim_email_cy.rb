@@ -1,7 +1,7 @@
-require_relative './base'
+require_relative 'base'
 require_relative '../../helpers/office_helper'
 require_relative '../../helpers/claim_helper'
-require_relative './new_claim_email_en'
+require_relative 'new_claim_email_en'
 module EtApi
   module Test
     module GovUkNotifyEmailObjects
@@ -12,7 +12,7 @@ module EtApi
 
         define_site_prism_elements(template_reference)
 
-        def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:) # rubocop:disable Naming/PredicateName
+        def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:)
           office = office_for(case_number: reference)
           aggregate_failures 'validating content' do
             assert_reference_element(reference)
@@ -23,12 +23,12 @@ module EtApi
             assert_claimant(primary_claimant_data)
             expect(attached_pdf_file.value).to be_present
             if claimants_file.present?
-              expect(attached_claimants_file.value).to match /Rydych wedi llwyddo i lwytho hawliad grŵp ar ffurf ffeil csv o'r enw .* gyda'ch hawliad\. Maint y ffeil yw .*./
+              expect(attached_claimants_file.value).to match(/Rydych wedi llwyddo i lwytho hawliad grŵp ar ffurf ffeil csv o'r enw .* gyda'ch hawliad\. Maint y ffeil yw .*./)
             else
               expect(attached_claimants_file.value).to eq 'Dim ffeil ychwanegol wedi’i llwytho i fyny'
             end
             if claim_details_file.present?
-              expect(attached_info_file.value).to match /Rydych wedi llwyddo i lwytho dogfen ychwanegol o’ enw .* gyda’ch hawliad\. Maint y ffeil yw .*\./
+              expect(attached_info_file.value).to match(/Rydych wedi llwyddo i lwytho dogfen ychwanegol o’ enw .* gyda’ch hawliad\. Maint y ffeil yw .*\./)
             else
               expect(attached_info_file.value).to eq 'Dim ffeil ychwanegol wedi’i llwytho i fyny'
             end

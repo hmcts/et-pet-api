@@ -7,8 +7,10 @@ RSpec.describe DirectUploadedFile, type: :model do
       example_file = Rack::Test::UploadedFile.new(example_file_path, 'application/rtf', false)
       uploaded_file = described_class.new(file: example_file, filename: File.basename(example_file_path))
       uploaded_file.valid?
-      expect(uploaded_file.errors.where(:file, :mismatching_file_content_type)).to be_present
-      expect(uploaded_file.errors[:file]).to include "The contents of the file does not appear to be valid for the file extension 'rtf'"
+      aggregate_failures 'errors' do
+        expect(uploaded_file.errors.where(:file, :mismatching_file_content_type)).to be_present
+        expect(uploaded_file.errors[:file]).to include "The contents of the file does not appear to be valid for the file extension 'rtf'"
+      end
     end
 
     it 'accepts a file if the content type does match the file extension' do

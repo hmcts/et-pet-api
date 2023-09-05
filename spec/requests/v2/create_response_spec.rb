@@ -7,7 +7,7 @@ RSpec.describe 'Create Response Request', type: :request do
 
     let(:default_headers) do
       {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     end
@@ -47,15 +47,15 @@ RSpec.describe 'Create Response Request', type: :request do
 
     shared_context 'with fake sidekiq' do
       around do |example|
-        begin
-          original_adapter = ActiveJob::Base.queue_adapter
-          ActiveJob::Base.queue_adapter = :test
-          ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-          ActiveJob::Base.queue_adapter.performed_jobs.clear
-          example.run
-        ensure
-          ActiveJob::Base.queue_adapter = original_adapter
-        end
+
+        original_adapter = ActiveJob::Base.queue_adapter
+        ActiveJob::Base.queue_adapter = :test
+        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+        ActiveJob::Base.queue_adapter.performed_jobs.clear
+        example.run
+      ensure
+        ActiveJob::Base.queue_adapter = original_adapter
+
       end
 
       def run_background_jobs
@@ -102,14 +102,14 @@ RSpec.describe 'Create Response Request', type: :request do
         # Assert - Make sure we get the pdf url in the metadata and it returns a 404 when accessed
         url = json_response.dig(:meta, 'BuildResponse', 'pdf_url')
         get(url)
-        expect(response.code).to eql '404'
+        expect(response).to have_http_status :not_found
       end
 
       it 'returns the actual pdf url which should be accessible after the background jobs have run' do
         # Assert - Make sure we get the pdf url in the metadata and it returns a 404 when accessed
         url = json_response.dig(:meta, 'BuildResponse', 'pdf_url')
         get(url)
-        expect(response.code).to eql '200'
+        expect(response).to have_http_status :ok
       end
 
       it 'returns identical data if called twice with the same uuid', background_jobs: :disable do
@@ -181,6 +181,7 @@ RSpec.describe 'Create Response Request', type: :request do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         et_exporter.find_response_by_reference(reference).assert_respondent(input_respondent_factory)
       end
+
       it 'has the representative in the payload' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         et_exporter.find_response_by_reference(reference).assert_representative(input_representative_factory)
@@ -202,7 +203,7 @@ RSpec.describe 'Create Response Request', type: :request do
         expect(response).to have_http_status(:bad_request)
       end
 
-      it 'returns the status  as not accepted', background_jobs: :disable do
+      it 'returns the status as not accepted', background_jobs: :disable do
         # Assert - Make sure we get the uuid in the response
         expect(json_response).to include status: 'not_accepted', uuid: input_factory.uuid
       end
@@ -243,7 +244,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
@@ -255,7 +256,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf, :with_welsh_email) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf, :with_welsh_email) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
@@ -267,7 +268,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
@@ -278,7 +279,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
@@ -290,7 +291,7 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :for_default_office) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :for_default_office) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for the default office'
@@ -302,12 +303,12 @@ RSpec.describe 'Create Response Request', type: :request do
     end
 
     context 'with json for a response with an additional_information file upload in local mode' do
-      rtf_file_path = Rails.root.join('spec', 'fixtures', 'example.rtf').to_s
+      rtf_file_path = Rails.root.join("spec/fixtures/example.rtf").to_s
       include_context 'with local storage'
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response with meta for office 22 bristol'
@@ -319,18 +320,18 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, :invalid_case_number) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :invalid_case_number) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
       it 'has the correct error in the case_number field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildResponse' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "invalid_office_code",
-                                                                                           title: "Invalid case number",
-                                                                                           detail: "Invalid case number",
-                                                                                           source: "/data/0/case_number",
-                                                                                           command: "BuildResponse",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "invalid_office_code",
+                                                                                       title: "Invalid case number",
+                                                                                       detail: "Invalid case number",
+                                                                                       source: "/data/0/case_number",
+                                                                                       command: "BuildResponse",
+                                                                                       uuid: expected_uuid
       end
     end
 
@@ -338,18 +339,18 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, representative_traits: [:full, :invalid_address_keys]) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, representative_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
       it 'has the correct error in the address_attributes field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildRepresentative' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "invalid_address",
-                                                                                           title: "Invalid address",
-                                                                                           detail: "Invalid address",
-                                                                                           source: "/data/2/address_attributes",
-                                                                                           command: "BuildRepresentative",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "invalid_address",
+                                                                                       title: "Invalid address",
+                                                                                       detail: "Invalid address",
+                                                                                       source: "/data/2/address_attributes",
+                                                                                       command: "BuildRepresentative",
+                                                                                       uuid: expected_uuid
       end
     end
 
@@ -357,18 +358,18 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-        json_factory: -> { FactoryBot.build(:json_build_response_commands, respondent_traits: [:full, :invalid_address_keys]) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, respondent_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
       it 'has the correct error in the address_attributes field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildRespondent' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "invalid_address",
-                                                                                           title: "Invalid address",
-                                                                                           detail: "Invalid address",
-                                                                                           source: "/data/1/address_attributes",
-                                                                                           command: "BuildRespondent",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "invalid_address",
+                                                                                       title: "Invalid address",
+                                                                                       detail: "Invalid address",
+                                                                                       source: "/data/1/address_attributes",
+                                                                                       command: "BuildRespondent",
+                                                                                       uuid: expected_uuid
       end
     end
 
@@ -376,18 +377,18 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-                      json_factory: -> { FactoryBot.build(:json_build_response_commands, response_traits: [:full, :invalid_queried_hours]) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, response_traits: [:full, :invalid_queried_hours]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any bad request error variation'
       it 'has the correct error in the queried_hours field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildResponse' }.uuid
-        expect(json_response.dig(:errors).map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                           code: "less_than_or_equal_to",
-                                                                                           title: "must be less than or equal to 168.0",
-                                                                                           detail: "must be less than or equal to 168.0",
-                                                                                           source: "/data/0/queried_hours",
-                                                                                           command: "BuildResponse",
-                                                                                           uuid: expected_uuid
+        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                       code: "less_than_or_equal_to",
+                                                                                       title: "must be less than or equal to 168.0",
+                                                                                       detail: "must be less than or equal to 168.0",
+                                                                                       source: "/data/0/queried_hours",
+                                                                                       command: "BuildResponse",
+                                                                                       uuid: expected_uuid
       end
 
     end

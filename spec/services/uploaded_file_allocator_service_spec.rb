@@ -1,6 +1,7 @@
 require 'rails_helper'
 RSpec.describe UploadedFileAllocatorService do
   subject(:service) { described_class.new }
+
   let(:response_object) { build(:response) }
 
   around do |example|
@@ -24,7 +25,7 @@ RSpec.describe UploadedFileAllocatorService do
     def app
       ::Rails.application
     end
-    context 'using azure storage' do
+    context 'with azure storage' do
       include_context 'with local storage'
       it 'returns the url of the allocated file on azure' do
         # Arrange - Allocate a file

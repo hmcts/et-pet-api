@@ -13,11 +13,11 @@ RSpec.describe CreateClaimCommand do
   shared_context 'with mocked sub commands' do
     before do
       singular_commands = [:build_claim, :build_primary_respondent, :build_primary_claimant,
-                  :build_primary_representative, :build_pdf_file, :build_claimants_file, :build_claim_details_file, :assign_reference_to_claim,
-                  :assign_office_to_claim, :pre_allocate_pdf_file]
+                           :build_primary_representative, :build_pdf_file, :build_claimants_file, :build_claim_details_file, :assign_reference_to_claim,
+                           :assign_office_to_claim, :pre_allocate_pdf_file]
       singular_commands.each do |command|
         mock_command_classes[command] = Class.new(BaseCommand) do
-          define_method :apply do | root_object, meta: {} |
+          define_method :apply do |_root_object, meta: {}|
             meta[:"dummy_key_for_#{command}"] = :"dummy_value_for_#{command}"
           end
         end
@@ -29,11 +29,11 @@ RSpec.describe CreateClaimCommand do
       collection_commands = [:build_secondary_claimants, :build_secondary_respondents]
       collection_commands.each do |command|
         mock_command_classes[command] = Class.new(BaseCommand) do
-          define_method :initialize do | uuid:, data:, **args |
+          define_method :initialize do |uuid:, data:, **args|
             super(uuid: uuid, data: { collection: data }, **args)
           end
 
-          define_method :apply do | root_object, meta: {} |
+          define_method :apply do |_root_object, meta: {}|
             meta[:"dummy_key_for_#{command}"] = :"dummy_value_for_#{command}"
           end
         end
@@ -76,7 +76,7 @@ RSpec.describe CreateClaimCommand do
       command.apply(root_object, meta: example_meta_hash)
 
       # Assert
-      expect(example_meta_hash).to include "BuildSecondaryClaimants" => { dummy_key_for_build_secondary_claimants: :dummy_value_for_build_secondary_claimants}
+      expect(example_meta_hash).to include "BuildSecondaryClaimants" => { dummy_key_for_build_secondary_claimants: :dummy_value_for_build_secondary_claimants }
     end
 
     it 'dispatches to BuildSecondaryRespondents' do
@@ -84,7 +84,7 @@ RSpec.describe CreateClaimCommand do
       command.apply(root_object, meta: example_meta_hash)
 
       # Assert
-      expect(example_meta_hash).to include "BuildSecondaryRespondents" => { dummy_key_for_build_secondary_respondents: :dummy_value_for_build_secondary_respondents}
+      expect(example_meta_hash).to include "BuildSecondaryRespondents" => { dummy_key_for_build_secondary_respondents: :dummy_value_for_build_secondary_respondents }
     end
 
     it 'dispatches to BuildPrimaryRepresentative' do
@@ -140,7 +140,7 @@ RSpec.describe CreateClaimCommand do
       command.apply(root_object, meta: example_meta_hash)
 
       # Assert
-      input_data = data[:data].detect {|c| c[:command] == 'BuildClaim'}
+      input_data = data[:data].detect { |c| c[:command] == 'BuildClaim' }
       expect(mock_command_classes.build_claim).to have_received(:new).with(async: true, **input_data)
     end
 
@@ -149,7 +149,7 @@ RSpec.describe CreateClaimCommand do
       command.apply(root_object, meta: example_meta_hash)
 
       # Assert
-      input_data = data[:data].detect {|c| c[:command] == 'BuildPrimaryRespondent'}
+      input_data = data[:data].detect { |c| c[:command] == 'BuildPrimaryRespondent' }
       expect(mock_command_classes.build_primary_respondent).to have_received(:new).with(async: true, **input_data)
     end
 
@@ -158,7 +158,7 @@ RSpec.describe CreateClaimCommand do
       command.apply(root_object, meta: example_meta_hash)
 
       # Assert
-      input_data = data[:data].detect {|c| c[:command] == 'BuildPrimaryClaimant'}
+      input_data = data[:data].detect { |c| c[:command] == 'BuildPrimaryClaimant' }
       expect(mock_command_classes.build_primary_claimant).to have_received(:new).with(async: true, **input_data)
     end
 
@@ -167,7 +167,7 @@ RSpec.describe CreateClaimCommand do
       command.apply(root_object, meta: example_meta_hash)
 
       # Assert
-      input_data = data[:data].detect {|c| c[:command] == 'BuildSecondaryClaimants'}
+      input_data = data[:data].detect { |c| c[:command] == 'BuildSecondaryClaimants' }
       expect(mock_command_classes.build_secondary_claimants).to have_received(:new).with(async: true, **input_data)
     end
 
@@ -176,7 +176,7 @@ RSpec.describe CreateClaimCommand do
       command.apply(root_object, meta: example_meta_hash)
 
       # Assert
-      input_data = data[:data].detect {|c| c[:command] == 'BuildSecondaryRespondents'}
+      input_data = data[:data].detect { |c| c[:command] == 'BuildSecondaryRespondents' }
       expect(mock_command_classes.build_secondary_respondents).to have_received(:new).with(async: true, **input_data)
     end
 
@@ -185,7 +185,7 @@ RSpec.describe CreateClaimCommand do
       command.apply(root_object, meta: example_meta_hash)
 
       # Assert
-      input_data = data[:data].detect {|c| c[:command] == 'BuildPrimaryRepresentative'}
+      input_data = data[:data].detect { |c| c[:command] == 'BuildPrimaryRepresentative' }
       expect(mock_command_classes.build_primary_representative).to have_received(:new).with(async: true, **input_data)
     end
 
@@ -194,7 +194,7 @@ RSpec.describe CreateClaimCommand do
       command.apply(root_object, meta: example_meta_hash)
 
       # Assert
-      input_data = data[:data].detect {|c| c[:command] == 'BuildClaimantsFile'}
+      input_data = data[:data].detect { |c| c[:command] == 'BuildClaimantsFile' }
       expect(mock_command_classes.build_claimants_file).to have_received(:new).with(async: true, **input_data)
     end
 
@@ -203,7 +203,7 @@ RSpec.describe CreateClaimCommand do
       command.apply(root_object, meta: example_meta_hash)
 
       # Assert
-      input_data = data[:data].detect {|c| c[:command] == 'BuildClaimDetailsFile'}
+      input_data = data[:data].detect { |c| c[:command] == 'BuildClaimDetailsFile' }
       expect(mock_command_classes.build_claim_details_file).to have_received(:new).with(async: true, **input_data)
     end
 
@@ -253,7 +253,7 @@ RSpec.describe CreateClaimCommand do
         end
       end
 
-      it 'contains the correct error key in the pdf_template_reference attributes' do
+      it 'is invalid' do
         # Act
         result = command.valid?
 

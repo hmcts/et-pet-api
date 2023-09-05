@@ -1,12 +1,9 @@
 ---
 include:
 - "**/*.rb"
-- "/usr/local/lib/ruby/gems/2.7.0/gems/**/*.rb"
 exclude:
-- test/**/*
 - ".bundle/**/*"
-require:
-- "capybara"
+require: []
 domains: []
 reporters:
 - rubocop

@@ -6,7 +6,7 @@ RSpec.describe 'Repair Response Request', type: :request do
     include_context 'with local storage'
     let(:default_headers) do
       {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       }
     end
@@ -17,7 +17,9 @@ RSpec.describe 'Repair Response Request', type: :request do
     end
 
     shared_context 'with setup for any response' do
-      # @return [EtApi::Test::EtExporter] The exporter class to use for testing
+      # @!method et_exporter()
+      # @return [Class<EtApi::Test::EtExporter>] The exporter class to use for testing
+      # @type [Class<EtApi::Test::EtExporter>]
       let(:et_exporter) { EtApi::Test::EtExporter }
 
       let(:input_response_factory) { input_factory.data.detect { |d| d.command == 'BuildResponse' }.data }
@@ -27,10 +29,10 @@ RSpec.describe 'Repair Response Request', type: :request do
       let(:input_json) { build(:json_repair_response_command, response_id: response_to_repair.id).as_json }
       let(:input_response_attributes) { response_to_repair.attributes.to_h.with_indifferent_access }
       let(:input_respondent_attributes) do
-        build :json_respondent_data,
+        build(:json_respondent_data,
               address_attributes: build(:json_address_data, response_to_repair.respondent.address.attributes.symbolize_keys.except(:string, :created_at, :updated_at, :country, :id)),
               work_address_attributes: build(:json_address_data, response_to_repair.respondent.work_address.attributes.symbolize_keys.except(:string, :created_at, :updated_at, :country, :id)),
-              **response_to_repair.respondent.attributes.symbolize_keys
+              **response_to_repair.respondent.attributes.symbolize_keys)
       end
       let(:input_representative_attributes) do
         if response_to_repair.representative.present?
@@ -62,15 +64,15 @@ RSpec.describe 'Repair Response Request', type: :request do
 
     shared_context 'with fake sidekiq' do
       around do |example|
-        begin
-          original_adapter = ActiveJob::Base.queue_adapter
-          ActiveJob::Base.queue_adapter = :test
-          ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-          ActiveJob::Base.queue_adapter.performed_jobs.clear
-          example.run
-        ensure
-          ActiveJob::Base.queue_adapter = original_adapter
-        end
+
+        original_adapter = ActiveJob::Base.queue_adapter
+        ActiveJob::Base.queue_adapter = :test
+        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
+        ActiveJob::Base.queue_adapter.performed_jobs.clear
+        example.run
+      ensure
+        ActiveJob::Base.queue_adapter = original_adapter
+
       end
 
       def run_background_jobs
@@ -158,41 +160,44 @@ RSpec.describe 'Repair Response Request', type: :request do
         expect(response).to have_http_status(:bad_request)
       end
 
-      it 'returns the status  as not accepted', background_jobs: :disable do
+      it 'returns the status as not accepted', background_jobs: :disable do
         # Assert - Make sure we get the uuid in the response
         expect(json_response).to include status: 'not_accepted', uuid: input_factory.uuid
       end
     end
 
     context 'with json for a response with just a respondent' do
+      let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command) }
+
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response exported to et_exporter'
-      let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command) }
     end
 
     context 'with json for a response with a respondent and a representative' do
+      let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command, :with_representative) }
+
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
       include_examples 'a response exported to et_exporter'
-      let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command, :with_representative) }
     end
 
     context 'with json for a response with an additional_information file upload that has not yet been processed' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
+      let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key) }
+
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
 
-      let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key) }
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
@@ -202,18 +207,19 @@ RSpec.describe 'Repair Response Request', type: :request do
 
     context 'with json for a response with an additional_information upload that has been processed but file has been lost' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
-      include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
-      include_context 'with setup for any response'
-      include_context 'with background jobs running'
-      include_examples 'any response variation'
-
       let(:uploaded_file) do
         create(:uploaded_file, :example_response_input_rtf, :user_file_scope).tap do |uploaded_file|
           uploaded_file.file.blob.delete
         end
       end
       let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key, uploaded_files: [uploaded_file]) }
+
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response'
+      include_context 'with background jobs running'
+      include_examples 'any response variation'
+
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
@@ -223,18 +229,19 @@ RSpec.describe 'Repair Response Request', type: :request do
 
     context 'with json for a response with an additional_information file upload that has been processed but attachment is not present' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
+      let(:uploaded_file) do
+        create(:uploaded_file, :example_response_input_rtf, :user_file_scope).tap do |uploaded_file|
+          uploaded_file.file.attachment.delete
+        end
+      end
+      let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key, uploaded_files: [uploaded_file]) }
+
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
 
-      let(:uploaded_file) do
-        create(:uploaded_file,:example_response_input_rtf, :user_file_scope).tap do |uploaded_file|
-          uploaded_file.file.attachment.delete
-        end
-      end
-      let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key, uploaded_files: [uploaded_file]) }
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
@@ -244,12 +251,6 @@ RSpec.describe 'Repair Response Request', type: :request do
 
     context 'with json for a response with an additional_informatio file upload that has been processed successfully' do
       let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
-      include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
-      include_context 'with setup for any response'
-      include_context 'with background jobs running'
-      include_examples 'any response variation'
-
       let(:uploaded_files) do
         [
           build(:uploaded_file, :upload_to_blob, :example_response_input_rtf, :user_file_scope),
@@ -260,26 +261,27 @@ RSpec.describe 'Repair Response Request', type: :request do
       end
       let(:respondent_name) { 'Fred Bloggs' }
       let(:response_to_repair) do
-        create :response,
+        create(:response,
                :with_command,
                additional_information_key: additional_information_key,
                uploaded_files: uploaded_files,
-               respondent: build(:respondent, :example_data, name: respondent_name)
+               respondent: build(:respondent, :example_data, name: respondent_name))
       end
+
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response'
+      include_context 'with background jobs running'
+      include_examples 'any response variation'
+
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
         expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
       end
     end
-    context 'with json for a response with a pdf file that had been processed but lost' do
-      include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
-      include_context 'with setup for any response'
-      include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter'
 
+    context 'with json for a response with a pdf file that had been processed but lost' do
       let(:uploaded_files) do
         [
           create(:uploaded_file, :upload_to_blob, :example_response_text, :system_file_scope),
@@ -290,22 +292,22 @@ RSpec.describe 'Repair Response Request', type: :request do
       end
       let(:respondent_name) { 'Fred Bloggs' }
       let(:response_to_repair) do
-        create :response,
+        create(:response,
                :with_command,
                additional_information_key: nil,
                uploaded_files: uploaded_files,
-               respondent: build(:respondent, :example_data, name: respondent_name)
+               respondent: build(:respondent, :example_data, name: respondent_name))
       end
-    end
 
-    context 'with json for a response that had been processed but its output txt file lost' do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter', exclude_contents: true
+      include_examples 'a response exported to et_exporter'
+    end
 
+    context 'with json for a response that had been processed but its output txt file lost' do
       let(:uploaded_files) do
         [
           create(:uploaded_file, :upload_to_blob, :example_response_text, :system_file_scope).tap do |uploaded_file|
@@ -316,24 +318,23 @@ RSpec.describe 'Repair Response Request', type: :request do
       end
       let(:respondent_name) { 'Fred Bloggs' }
       let(:response_to_repair) do
-        create :response,
+        create(:response,
                :with_command,
                additional_information_key: nil,
                uploaded_files: uploaded_files,
-               respondent: build(:respondent, :example_data, name: respondent_name)
+               respondent: build(:respondent, :example_data, name: respondent_name))
       end
-    end
-    context 'with json for a response that had been processed but its output pdf file lost' do
-      let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
-      before do
-        response_to_repair.uploaded_files.find_by(filename: 'et3_atos_export.pdf').file.blob.delete
-      end
+
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
+      include_examples 'a response exported to et_exporter', exclude_contents: true
+    end
 
+    context 'with json for a response that had been processed but its output pdf file lost' do
+      let!(:additional_information_key) { build(:json_response_data, :with_rtf).additional_information_key }
       let(:uploaded_files) do
         [
           build(:uploaded_file, :upload_to_blob, :example_response_input_rtf, :user_file_scope),
@@ -344,12 +345,22 @@ RSpec.describe 'Repair Response Request', type: :request do
       end
       let(:respondent_name) { 'Fred Bloggs' }
       let(:response_to_repair) do
-        create :response,
+        create(:response,
                :with_command,
                additional_information_key: additional_information_key,
                uploaded_files: uploaded_files,
-               respondent: build(:respondent, :example_data, name: respondent_name)
+               respondent: build(:respondent, :example_data, name: respondent_name))
       end
+
+      before do
+        response_to_repair.uploaded_files.find_by(filename: 'et3_atos_export.pdf').file.blob.delete
+      end
+
+      include_context 'with transactions off for use with other processes'
+      include_context 'with fake sidekiq'
+      include_context 'with setup for any response'
+      include_context 'with background jobs running'
+      include_examples 'any response variation'
 
       it 'includes the additional_information file in the exported data' do
         reference = response_to_repair.reference

@@ -23,7 +23,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     text.gsub(/\s/, '_').gsub(/\W/, '').downcase
   end
 
-  def pdf_fields
+  def pdf_fields # rubocop:disable Metrics/MethodLength
     result = {}
     apply_office_use_only_fields(result)
     apply_your_details_fields(result)
@@ -92,7 +92,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, source.secondary_respondents.present?, :respondents_details, :additional_respondents
   end
 
-  def apply_secondary_respondents_details_fields(result)
+  def apply_secondary_respondents_details_fields(result) # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
     4.times.each do |idx|
       resp = source.secondary_respondents[idx]
       pdf_field = :"respondent#{idx + 2}"

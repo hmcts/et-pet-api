@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Create a blob in the direct upload storage', type: :request do
   let(:default_headers) do
     {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'multipart/form-data'
     }
   end

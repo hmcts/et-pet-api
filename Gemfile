@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '7.0.5.1'
 
@@ -20,8 +19,8 @@ gem 'jbuilder', '~> 2.10'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 # Wisper is used as an in process pub/sub to decouple events / commands
-gem 'wisper', git: 'https://github.com/krisleech/wisper.git', ref: '5587c1ad341a39f8d35d0a00ac78ba911e919b16'
 gem 'uk_postcode', '~> 2.1'
+gem 'wisper', git: 'https://github.com/krisleech/wisper.git', ref: '5587c1ad341a39f8d35d0a00ac78ba911e919b16'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -29,16 +28,16 @@ gem 'uk_postcode', '~> 2.1'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsights-Ruby.git', ref: '5db6b4'
+gem 'et_azure_insights', '0.3.2', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.3.2'
+gem 'notifications-ruby-client', '~> 5.3'
+gem "sentry-rails", "~> 5.7"
+gem "sentry-ruby", "~> 5.7"
+gem "sentry-sidekiq", "~> 5.7"
 gem 'sidekiq', '< 7'
+gem 'sidekiq_alive', '~> 2.0'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
-gem 'sidekiq_alive', '~> 2.0'
-gem "sentry-ruby", "~> 5.7"
-gem "sentry-rails", "~> 5.7"
-gem "sentry-sidekiq", "~> 5.7"
-gem 'et_azure_insights', '0.3.2', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.3.2'
-gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsights-Ruby.git', ref: '5db6b4'
-gem 'notifications-ruby-client', '~> 5.3'
 
 # Rubyzip used to produce and test zip files
 gem 'rubyzip', '~> 2.0'
@@ -53,45 +52,43 @@ gem 'libreconv', '~> 0.7'
 gem 'azure-storage-blob', '~> 2.0', '>= 2.0.1'
 
 # For general easy http access - mainly for test but used in app too
-gem 'httparty', '~> 0.20'
 gem 'dotenv-rails', '~> 2.7'
+gem 'httparty', '~> 0.20'
 
 gem 'rexml', '~> 3.2.5'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'bullet', '~> 7.0'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'parallel_tests', '~> 4.1'
+  gem 'rubocop', '~> 1.8', require: false
+  gem "rubocop-rails", "~> 2.17", require: false
+  gem 'rubocop-rspec', '~> 2.1', require: false
   gem 'rspec-rails', '~> 6.0'
   gem 'simplecov', '~> 0.21', require: false
   gem 'simplecov-lcov', '~> 0.3', require: false
   gem 'site_prism', '~> 4.0'
-  gem 'bullet', '~> 7.0'
-  gem 'parallel_tests', '~> 4.1'
 end
 
 group :development do
   gem 'listen', '~> 3.4'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'solargraph', require: false
   gem 'spring', '~> 4.1'
   gem 'spring-watcher-listen', '~> 2.1.0'
-  gem 'rubocop', '~> 1.8', require: false
-  gem "rubocop-rails", "~> 2.17", require: false
-  gem 'rubocop-rspec', '~> 2.1', require: false
-  gem 'solargraph', require: false
 end
 
 group :test do
   gem 'database_cleaner', '~> 2.0'
-  gem 'factory_bot', '~> 6.1'
-  gem 'rspec-eventually', '~> 0.2.2'
-  gem 'faker', '~> 3.1'
-  gem 'webmock', '~> 3.11'
   gem 'et_fake_acas_server', '~> 2.0'
+  gem 'factory_bot', '~> 6.1'
+  gem 'faker', '~> 3.1'
   gem 'gov_fake_notify', '~> 1.2'
-  gem "selenium-webdriver", "~> 4.10"
-  gem "puma", "~> 6.0"
   gem "pdf-reader", "~> 2.4"
+  gem "puma", "~> 6.0"
+  gem 'rspec-eventually', '~> 0.2.2'
+  gem "selenium-webdriver", "~> 4.10"
+  gem 'webmock', '~> 3.11'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -101,4 +98,4 @@ gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
 gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v1.0.0'
 
-gem "activerecord-nulldb-adapter", "~> 0.9.0", :group => :test
+gem "activerecord-nulldb-adapter", "~> 0.9.0", group: :test

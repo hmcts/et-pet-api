@@ -39,12 +39,11 @@ class ClaimClaimantsFileHandler
 
   def render
     ApplicationController.render "file_builders/claim_claimants",
-                                 locals:     {
-                                   claim:               claim, primary_claimant: claim.primary_claimant,
+                                 locals: {
+                                   claim: claim, primary_claimant: claim.primary_claimant,
                                    secondary_claimants: claim.secondary_claimants.includes(:address),
-                                   primary_respondent:  claim.primary_respondent
+                                   primary_respondent: claim.primary_respondent
                                  }, formats: [:text]
   end
-
 
 end

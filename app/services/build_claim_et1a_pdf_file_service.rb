@@ -1,4 +1,4 @@
-class BuildClaimEt1aPdfFileService # rubocop:disable Metrics/ClassLength
+class BuildClaimEt1aPdfFileService
   include PdfBuilder::Base
   include PdfBuilder::MultiTemplate
   include PdfBuilder::Rendering
@@ -25,7 +25,7 @@ class BuildClaimEt1aPdfFileService # rubocop:disable Metrics/ClassLength
     result = {}
     apply_header(result)
     secondary_claimants = source.secondary_claimants[0..5].to_a
-    (0..5).each do |idx|
+    6.times do |idx|
       apply_secondary_claimant(result, secondary_claimants[idx], idx)
     end
     result

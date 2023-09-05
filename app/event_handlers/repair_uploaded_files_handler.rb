@@ -12,14 +12,14 @@ class RepairUploadedFilesHandler
 
   private
 
-  def import_from_url(uploaded_file, root_object)
+  def import_from_url(uploaded_file, _root_object)
     UploadedFileImportService.import_file_url(uploaded_file.import_file_url, into: uploaded_file)
   end
 
   def import_from_key(uploaded_file, root_object)
     UploadedFileImportService.import_from_key(uploaded_file.import_from_key, into: uploaded_file)
-  rescue Azure::Core::Http::HTTPError => ex
-    if ex.status_code == 404
+  rescue Azure::Core::Http::HTTPError => e
+    if e.status_code == 404
       uploaded_file.destroy
       root_object.events.response_repair_file_failed.create data: {
         id: uploaded_file.id,
@@ -27,7 +27,7 @@ class RepairUploadedFilesHandler
         reason: 'Externally uploaded file no longer present to import'
       }
     else
-      raise ex
+      raise e
     end
   end
 

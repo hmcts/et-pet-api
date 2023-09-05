@@ -1,4 +1,4 @@
-require_relative './base.rb'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects
@@ -11,26 +11,26 @@ module EtApi
           # it simply to allow for the value to be added at some point soon.
           def has_contents_for?(claim:)
             expected_values = {
-                unfairly_dismissed: claim.is_unfair_dismissal,
-                discriminated: claim.discrimination_claims.present?,
-                discriminated_age: claim.discrimination_claims.include?('age'),
-                discriminated_race: claim.discrimination_claims.include?('race'),
-                discriminated_gender_reassignment: claim.discrimination_claims.include?('gender_reassignment'),
-                discriminated_disability: claim.discrimination_claims.include?('disability'),
-                discriminated_pregnancy: claim.discrimination_claims.include?('pregnancy_or_maternity'),
-                discriminated_marriage: claim.discrimination_claims.include?('marriage_or_civil_partnership'),
-                discriminated_sexual_orientation: claim.discrimination_claims.include?('sexual_orientation'),
-                discriminated_sex: claim.discrimination_claims.include?('sex_including_equal_pay'),
-                discriminated_religion: claim.discrimination_claims.include?('religion_or_belief'),
-                claiming_redundancy_payment: claim.pay_claims.include?('redundancy'),
-                owed: owed_anything?(claim),
-                owed_notice_pay: claim.pay_claims.include?('notice'),
-                owed_holiday_pay: claim.pay_claims.include?('holiday'),
-                owed_arrears_of_pay: claim.pay_claims.include?('arrears'),
-                owed_other_payments: claim.pay_claims.include?('other'),
-                other_type_of_claim: claim.other_claim_details.present?,
-                other_type_of_claim_details: claim.other_claim_details || '',
-                claim_description: claim.claim_details
+              unfairly_dismissed: claim.is_unfair_dismissal,
+              discriminated: claim.discrimination_claims.present?,
+              discriminated_age: claim.discrimination_claims.include?('age'),
+              discriminated_race: claim.discrimination_claims.include?('race'),
+              discriminated_gender_reassignment: claim.discrimination_claims.include?('gender_reassignment'),
+              discriminated_disability: claim.discrimination_claims.include?('disability'),
+              discriminated_pregnancy: claim.discrimination_claims.include?('pregnancy_or_maternity'),
+              discriminated_marriage: claim.discrimination_claims.include?('marriage_or_civil_partnership'),
+              discriminated_sexual_orientation: claim.discrimination_claims.include?('sexual_orientation'),
+              discriminated_sex: claim.discrimination_claims.include?('sex_including_equal_pay'),
+              discriminated_religion: claim.discrimination_claims.include?('religion_or_belief'),
+              claiming_redundancy_payment: claim.pay_claims.include?('redundancy'),
+              owed: owed_anything?(claim),
+              owed_notice_pay: claim.pay_claims.include?('notice'),
+              owed_holiday_pay: claim.pay_claims.include?('holiday'),
+              owed_arrears_of_pay: claim.pay_claims.include?('arrears'),
+              owed_other_payments: claim.pay_claims.include?('other'),
+              other_type_of_claim: claim.other_claim_details.present?,
+              other_type_of_claim_details: claim.other_claim_details || '',
+              claim_description: claim.claim_details
             }
             expect(mapped_field_values).to include expected_values
           end

@@ -1,4 +1,4 @@
-require_relative './base.rb'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects
@@ -12,36 +12,38 @@ module EtApi
 
           def has_contents_for_employment?(employment)
             expected_values = {
-                job_title: employment['job_title'] || '',
-                start_date: formatted_date(employment['start_date'], optional: true),
-                employment_continuing: employment['current_situation'] == 'still_employed' || employment['current_situation'] == 'notice_period',
-                ended_date: date_in_past(employment['end_date'], optional: true) || '',
-                ending_date: date_in_future(employment['end_date'], optional: true) || ''
+              job_title: employment['job_title'] || '',
+              start_date: formatted_date(employment['start_date'], optional: true),
+              employment_continuing: employment['current_situation'] == 'still_employed' || employment['current_situation'] == 'notice_period',
+              ended_date: date_in_past(employment['end_date'], optional: true) || '',
+              ending_date: date_in_future(employment['end_date'], optional: true) || ''
             }
             expect(mapped_field_values).to include expected_values
           end
 
           def has_contents_for_no_employment?
             expected_values = {
-                job_title: '',
-                start_date: '',
-                employment_continuing: nil,
-                ended_date: '',
-                ending_date: ''
+              job_title: '',
+              start_date: '',
+              employment_continuing: nil,
+              ended_date: '',
+              ending_date: ''
             }
             expect(mapped_field_values).to include expected_values
           end
 
           def date_in_past(date, optional: false)
             return nil if date.nil? && optional
+
             d = formatted_date(date)
-            d < Date.today ? d : nil
+            d < Time.zone.today ? d : nil
           end
 
           def date_in_future(date, optional: false)
             return nil if date.nil? && optional
+
             d = formatted_date(date)
-            d > Date.today ? d : nil
+            d > Time.zone.today ? d : nil
           end
         end
       end

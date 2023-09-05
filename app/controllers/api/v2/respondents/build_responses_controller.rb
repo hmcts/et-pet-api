@@ -11,7 +11,7 @@ module Api
 
         def create
           root_object = ::Response.new
-          set_sentry_response(root_object)
+          configure_sentry_for_response(root_object)
           command = CommandService.command_for(**build_response_params.merge(command: 'CreateResponse').to_h.symbolize_keys)
           if command.valid?
             result = CommandService.dispatch command: command, root_object: root_object
@@ -25,7 +25,7 @@ module Api
         private
 
         def build_response_params
-          params.permit(:uuid, :command, data: [:uuid, :command, data: {}]).to_h
+          params.permit(:uuid, :command, data: [:uuid, :command, { data: {} }]).to_h
         end
       end
     end

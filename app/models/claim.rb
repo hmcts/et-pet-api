@@ -19,9 +19,9 @@ class Claim < ApplicationRecord
                                        through: :claim_representatives, source: :representative
   has_many :uploaded_files, through: :claim_uploaded_files
   has_many :pre_allocated_file_keys, as: :allocated_to, dependent: :destroy, inverse_of: :allocated_to
-  belongs_to :office, foreign_key: :office_code, primary_key: :code
-  has_many :events, as: :attached_to
-  has_many :commands, as: :root_object
+  belongs_to :office, foreign_key: :office_code, primary_key: :code # rubocop:disable Rails/InverseOf
+  has_many :events, as: :attached_to, dependent: :destroy
+  has_many :commands, as: :root_object, dependent: :destroy
 
   before_save :cache_claimant_count
 

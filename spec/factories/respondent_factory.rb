@@ -12,23 +12,22 @@ FactoryBot.define do
       name { 'Respondent Name' }
       contact { 'Respondent Contact Name' }
       association :address,
-        factory: :address,
-        building: '108',
-        street: 'Regent Street',
-        locality: 'London',
-        county: 'Greater London',
-        post_code: 'G1 2FF'
+                  building: '108',
+                  street: 'Regent Street',
+                  locality: 'London',
+                  county: 'Greater London',
+                  post_code: 'G1 2FF'
 
       work_address_telephone_number { '03333 423554' }
       address_telephone_number { '02222 321654' }
       acas_certificate_number { 'NE000100/78/90' }
       association :work_address,
-        factory: :address,
-        building: '110',
-        street: 'Piccadily Circus',
-        locality: 'London',
-        county: 'Greater London',
-        post_code: 'SW1H 9ST'
+                  factory: :address,
+                  building: '110',
+                  street: 'Piccadily Circus',
+                  locality: 'London',
+                  county: 'Greater London',
+                  post_code: 'SW1H 9ST'
       alt_phone_number { '03333 423554' }
       contact_preference { 'email' }
       email_address { 'john@dodgyco.com' }
@@ -61,7 +60,6 @@ FactoryBot.define do
       acas_certificate_number { nil }
       acas_exemption_code { 'interim_relief' }
     end
-
 
     trait :mr_na_o_malley do
       example_data

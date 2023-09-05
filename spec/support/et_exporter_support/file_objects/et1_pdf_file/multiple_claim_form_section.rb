@@ -1,4 +1,4 @@
-require_relative './base.rb'
+require_relative 'base'
 module EtApi
   module Test
     module FileObjects
@@ -19,14 +19,14 @@ module EtApi
                   street: claimant&.address_attributes&.street || '',
                   locality: claimant&.address_attributes&.locality || '',
                   county: claimant&.address_attributes&.county || '',
-                  post_code: formatted_post_code(claimant&.address_attributes&.post_code, optional: claimant.nil?) || '',
+                  post_code: formatted_post_code(claimant&.address_attributes&.post_code, optional: claimant.nil?) || ''
 
                 }
                 acc
               end
               expect(mapped_field_values).to include expected_values
-            else
-              assert_is_missing if assert_missing
+            elsif assert_missing
+              assert_is_missing
             end
           end
         end

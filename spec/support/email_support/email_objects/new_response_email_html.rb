@@ -1,4 +1,4 @@
-require_relative './base'
+require_relative 'base'
 require_relative '../../helpers/office_helper'
 module EtApi
   module Test
@@ -8,7 +8,7 @@ module EtApi
         include EtApi::Test::OfficeHelper
         include EtApi::Test::I18n
 
-        def self.find(repo: ActionMailer::Base.deliveries, reference:, template_reference:)
+        def self.find(reference:, template_reference:, repo: ActionMailer::Base.deliveries)
           instances = repo.map { |mail| NewResponseEmailHtml.new(mail, template_reference: template_reference) }
           instances.detect { |instance| instance.has_correct_subject? && instance.has_reference_element?(reference) }
         end
@@ -16,10 +16,11 @@ module EtApi
         def initialize(mail, template_reference:)
           self.mail = mail
           self.template_reference = template_reference
-          multipart = mail.parts.detect { |p| p.content_type =~ %r{multipart\/alternative} }
-          part = multipart.parts.detect { |p| p.content_type =~ %r{text\/html} }
+          multipart = mail.parts.detect { |p| p.content_type =~ %r{multipart/alternative} }
+          part = multipart.parts.detect { |p| p.content_type =~ %r{text/html} }
           body = part.nil? ? '' : part.body.to_s
           load(body)
+          super()
         end
 
         def has_reference_element?(reference)
@@ -29,7 +30,7 @@ module EtApi
           false
         end
 
-        def has_correct_content_for?(input_data, reference:) # rubocop:disable Naming/PredicateName
+        def has_correct_content_for?(input_data, reference:)
           office = office_for(case_number: input_data.case_number)
           aggregate_failures 'validating content' do
             assert_reference_element(reference)
@@ -44,13 +45,13 @@ module EtApi
           true
         end
 
-        def has_correct_subject? # rubocop:disable Naming/PredicateName
+        def has_correct_subject?
           mail.subject == t('response_email.subject', locale: template_reference)
         end
 
         private
 
-        def has_correct_to_address_for?(input_data) # rubocop:disable Naming/PredicateName
+        def has_correct_to_address_for?(input_data)
           mail.to.include?(input_data.email_receipt)
         end
 
@@ -73,11 +74,12 @@ module EtApi
           now = Time.zone.now
 
           return if has_submission_date_element?(now.strftime('%d/%m/%Y'))
+
           assert_submission_date_element((now - 1.minute).strftime('%d/%m/%Y'))
         end
 
         def assert_office_address_element(office_address)
-          assert_selector(:css,'p', text: t('response_email.office_address', locale: template_reference, address: office_address), wait: 0)
+          assert_selector(:css, 'p', text: t('response_email.office_address', locale: template_reference, address: office_address), wait: 0)
         end
 
         def assert_office_telephone_element(telephone)

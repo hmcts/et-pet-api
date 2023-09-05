@@ -2,12 +2,12 @@ require 'rspec/expectations'
 
 RSpec::Matchers.define(:be_a_valid_url) do
   match do |actual|
-    begin
-      URI.parse(actual)
-      true
-    rescue URI::InvalidURIError
-      false
-    end
+
+    URI.parse(actual)
+    true
+  rescue URI::InvalidURIError
+    false
+
   end
 
   failure_message do |actual|

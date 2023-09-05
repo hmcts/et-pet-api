@@ -1,4 +1,4 @@
-require_relative './base'
+require_relative 'base'
 require_relative '../../helpers/office_helper'
 require_relative '../../helpers/claim_helper'
 require_relative '../../messaging'
@@ -11,7 +11,7 @@ module EtApi
         include EtApi::Test::ClaimHelper
         include EtApi::Test::I18n
 
-        def self.find(repo: ActionMailer::Base.deliveries, reference:)
+        def self.find(reference:, repo: ActionMailer::Base.deliveries)
           instances = repo.map { |mail| new(mail) }
           instances.detect { |instance| instance.has_correct_subject? && instance.has_reference_element?(reference) }
         end
@@ -22,10 +22,11 @@ module EtApi
 
         def initialize(mail)
           self.mail = mail
-          multipart = mail.parts.detect { |p| p.content_type =~ %r{multipart\/alternative} }
-          part = multipart.parts.detect { |p| p.content_type =~ %r{text\/html} }
+          multipart = mail.parts.detect { |p| p.content_type =~ %r{multipart/alternative} }
+          part = multipart.parts.detect { |p| p.content_type =~ %r{text/html} }
           body = part.nil? ? '' : part.body.to_s
           load(body)
+          super()
         end
 
         def template_reference
@@ -33,10 +34,10 @@ module EtApi
         end
 
         def has_reference_element?(reference)
-          claim_number.has_value?(text: reference)
+          claim_number.value?(text: reference)
         end
 
-        def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:) # rubocop:disable Naming/PredicateName
+        def has_correct_content_for?(input_data, primary_claimant_data, claimants_file, claim_details_file, reference:)
           office = office_for(case_number: reference)
           aggregate_failures 'validating content' do
             assert_reference_element(reference)
@@ -61,47 +62,47 @@ module EtApi
           true
         end
 
-        def has_correct_subject? # rubocop:disable Naming/PredicateName
+        def has_correct_subject?
           mail.subject == t('claim_email.subject', locale: template_reference)
         end
 
         private
 
         def self.define_site_prism_elements(template_reference)
-          section :claim_number, :xpath, XPath.generate {|x| x.descendant(:td)[x.child(:p)[x.string.n.is(t('claim_email.reference', locale: template_reference))]]} do
-            element :value, :xpath, XPath.generate {|x| x.child(:p)[2]}
+          section(:claim_number, :xpath, XPath.generate { |x| x.descendant(:td)[x.child(:p)[x.string.n.is(t('claim_email.reference', locale: template_reference))]] }) do
+            element(:value, :xpath, XPath.generate { |x| x.child(:p)[2] })
           end
 
-          section :submission_info, :xpath, XPath.generate {|x| x.descendant(:tr)[x.child(:td)[x.child(:p)[x.string.n.is(t('claim_email.submission_info', locale: template_reference))]]]} do
-            element :submission_date, :xpath, XPath.generate {|x| x.child(:td)[2].child(:p)}
+          section(:submission_info, :xpath, XPath.generate { |x| x.descendant(:tr)[x.child(:td)[x.child(:p)[x.string.n.is(t('claim_email.submission_info', locale: template_reference))]]] }) do
+            element(:submission_date, :xpath, XPath.generate { |x| x.child(:td)[2].child(:p) })
           end
 
-          section :office_information, :xpath, XPath.generate {|x| x.descendant(:tr)[x.child(:td)[x.child(:p)[x.string.n.is(t('claim_email.tribunal_office', locale: template_reference))]]] } do
-            element :office_summary, :xpath, XPath.generate {|x| x.child(:td)[2].child(:p)  }
+          section(:office_information, :xpath, XPath.generate { |x| x.descendant(:tr)[x.child(:td)[x.child(:p)[x.string.n.is(t('claim_email.tribunal_office', locale: template_reference))]]] }) do
+            element(:office_summary, :xpath, XPath.generate { |x| x.child(:td)[2].child(:p) })
           end
 
-          element :claimant_full_name, :xpath, XPath.generate {|x| x.descendant(:tr).child(:td)[1].child(:p)}
+          element(:claimant_full_name, :xpath, XPath.generate { |x| x.descendant(:tr).child(:td)[1].child(:p) })
 
-          section :submission, :xpath, XPath.generate {|x| x.descendant(:tr)[x.child(:td)[1][x.child(:p)[x.string.n.is(t('claim_email.thank_you', locale: template_reference))]]]} do
-            section :what_happens_next, :xpath, XPath.generate {|x| x.child(:td)[1]} do
+          section(:submission, :xpath, XPath.generate { |x| x.descendant(:tr)[x.child(:td)[1][x.child(:p)[x.string.n.is(t('claim_email.thank_you', locale: template_reference))]]] }) do
+            section(:what_happens_next, :xpath, XPath.generate { |x| x.child(:td)[1] }) do
               include RSpec::Matchers
               include EtApi::Test::I18n
-              def assert_valid(template_reference:)
+              def assert_valid(template_reference:) # rubocop:disable Lint/NestedMethodDefinition
                 expect(root_element).to have_content(t('claim_email.next_steps.well_contact_you', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.next_steps.once_sent_claim', locale: template_reference))
               end
             end
 
-            section :submission_details, :xpath, XPath.generate {|x| x.child(:td)[1]} do
+            section(:submission_details, :xpath, XPath.generate { |x| x.child(:td)[1] }) do
               include RSpec::Matchers
               include EtApi::Test::I18n
 
-              def assert_valid(primary_claimant_data, claimants_file, claim_details_file, template_reference:)
+              def assert_valid(primary_claimant_data, claimants_file, claim_details_file, template_reference:) # rubocop:disable Lint/NestedMethodDefinition
                 expect(root_element).to have_content(t('claim_email.submission_details', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.claim_completed', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.see_attached_pdf', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.claim_submitted', locale: template_reference))
-                now = Time.now
+                now = Time.zone.now
                 expect(root_element).to have_content(t('claim_email.submitted_at', date: l(now, format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference)).or have_content(t('claim_email.submitted_at', date: l((now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference))
                 if claimants_file.present?
                   expect(root_element).to have_content "et1a_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.csv"
@@ -118,18 +119,19 @@ module EtApi
 
               private
 
-              def scrubber(text)
+              def scrubber(text) # rubocop:disable Lint/NestedMethodDefinition
                 text.gsub(/\s/, '_').gsub(/\W/, '')
               end
             end
 
-
           end
         end
 
+        private_class_method :define_site_prism_elements
+
         define_site_prism_elements(template_reference)
 
-        def assert_correct_to_address_for?(input_data) # rubocop:disable Naming/PredicateName
+        def assert_correct_to_address_for?(input_data)
           expect(mail.to).to match_array(input_data.confirmation_email_recipients)
         end
 
@@ -148,8 +150,9 @@ module EtApi
         def assert_submission_date
           now = Time.zone.now
 
-          return if has_submission_date_element?(l now, format: '%d %B %Y', locale: template_reference.split('-').last)
-          assert_submission_date_element(l (now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last)
+          return if has_submission_date_element?(l(now, format: '%d %B %Y', locale: template_reference.split('-').last))
+
+          assert_submission_date_element(l((now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last))
         end
 
         def assert_office_information(office)
@@ -174,7 +177,7 @@ module EtApi
           mail.parts.attachments.detect { |a| a.filename == "et1a_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.csv" }
         end
 
-        def attached_info_file_for(primary_claimant_data:)
+        def attached_info_file_for(primary_claimant_data:) # rubocop:disable Lint/UnusedMethodArgument
           mail.parts.attachments.detect { |a| a.filename.end_with? '.rtf' }
         end
 

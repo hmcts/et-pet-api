@@ -15,7 +15,7 @@ RSpec::Matchers.define(:be_a_pdf_file_containing_title) do |expected|
     true
   end
 
-  failure_message do |actual|
+  failure_message do |_actual|
     @error_message
   end
 end

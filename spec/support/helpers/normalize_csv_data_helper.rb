@@ -6,7 +6,7 @@ module EtApi
         block_size = 1024
         tempfile = Tempfile.new
         input_file = File.open(file, 'r')
-        while true
+        loop do
           chunk = input_file.read(block_size)
           break if chunk.nil?
 

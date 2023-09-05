@@ -26,6 +26,9 @@ module EtApi
         Claim.new(job)
       end
 
+      # @param [String] reference The reference of the claim to assert has been exported
+      # @return [void]
+      # @raise [RuntimeError] If the claim has not been exported
       def self.find_response_by_reference(reference)
         job = Sidekiq::Worker.jobs.find do |j|
           j['class'] =~ /EtExporter::ExportResponseWorker/ && JSON.parse(j['args'].first).dig('resource', 'reference') == reference
@@ -175,13 +178,12 @@ module EtApi
         end
 
         def assert_representative(representative)
-          if representative.nil? || representative.empty?
+          if representative.blank?
             expect(data.dig(:resource, :representative)).to be_nil
           else
             expect(data.dig(:resource, :representative)).to include(representative.to_h.except(:address_attributes).merge(address: representative[:address_attributes]&.to_h))
           end
         end
-
 
         def et3_pdf_file(template: 'et3-v2-en')
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et3_atos_export.pdf" }
@@ -193,7 +195,6 @@ module EtApi
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == 'additional_information.pdf' }
           EtApi::Test::FileObjects::Et3AdditionalInformationFile.new download(file_data)
         end
-
 
         private
 

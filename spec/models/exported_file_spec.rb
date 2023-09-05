@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe ExportedFile, type: :model do
   subject(:exported_file) { described_class.new }
 
-  let(:fixture_file) { Rack::Test::UploadedFile.new(Rails.root.join('spec', 'fixtures', 'et1_first_last.pdf'), 'application/pdf') }
+  let(:fixture_file) { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/et1_first_last.pdf"), 'application/pdf') }
 
   describe '#file=' do
     it 'persists it in memory as an activestorage attachment' do
@@ -14,7 +14,7 @@ RSpec.describe ExportedFile, type: :model do
   end
 
   describe '#url' do
-    context 'using azure cloud provider' do
+    context 'with azure cloud provider' do
       include_context 'with local storage'
       it 'returns an azurite test server url as we are in test mode' do
         exported_file.file = fixture_file
@@ -26,6 +26,7 @@ RSpec.describe ExportedFile, type: :model do
 
   describe '#download_blob_to' do
     subject(:exported_file) { create(:exported_file, file: fixture_file) }
+
     it 'downloads a file to the specified location' do
       Dir.mktmpdir do |dir|
         filename = File.join(dir, 'my_file.pdf')

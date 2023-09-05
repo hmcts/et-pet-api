@@ -5,9 +5,9 @@ class ExportResponsesCommand < BaseCommand
   validate :validate_external_system_presence
   validate :validate_responses_presence
 
-# @param [Export] root_object The export instance to populate
-# @param [Hash] meta - Not used in this command
-  def apply(root_object, meta: {})
+  # @param [Export] root_object The export instance to populate
+  # @param [Hash] meta - Not used in this command
+  def apply(_root_object, meta: {}) # rubocop:disable Lint/UnusedMethodArgument
     response_ids.each do |response_id|
       event_service.publish('ResponseExported', external_system_id: external_system_id, response_id: response_id)
     end
@@ -16,7 +16,7 @@ class ExportResponsesCommand < BaseCommand
   private
 
   def validate_external_system_presence
-    return if ExternalSystem.where(id: external_system_id).count > 0
+    return if ExternalSystem.where(id: external_system_id).count.positive?
 
     errors.add :external_system_id, :external_system_not_found,
                external_system_id: external_system_id,
