@@ -5,13 +5,14 @@ module EtApi
       module Et1PdfFileSection
         class YourDetailsSection < EtApi::Test::FileObjects::Et1PdfFileSection::Base
           def has_contents_for?(claimant:)
+            date_of_birth = formatted_date(claimant.date_of_birth, optional: true)&.split('/') || ['', '', '']
             expected_values = {
               title: claimant.title,
               first_name: claimant.first_name,
               last_name: claimant.last_name,
-              dob_day: formatted_date(claimant.date_of_birth).split('/')[0],
-              dob_month: formatted_date(claimant.date_of_birth).split('/')[1],
-              dob_year: formatted_date(claimant.date_of_birth).split('/')[2],
+              dob_day: date_of_birth[0],
+              dob_month: date_of_birth[1],
+              dob_year: date_of_birth[2],
               gender: claimant.gender,
               building: claimant.address_attributes.building,
               street: claimant.address_attributes.street,
