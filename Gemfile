@@ -60,14 +60,15 @@ gem 'rexml', '~> 3.2.5'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet', '~> 7.0'
+  gem 'bundler-audit', '~> 0.9.1'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'parallel_tests', '~> 4.1'
   gem 'rubocop', '~> 1.8', require: false
   gem "rubocop-rails", "~> 2.17", require: false
   gem 'rubocop-rspec', '~> 2.1', require: false
   gem 'rspec-rails', '~> 6.0'
+  gem 'rspec_junit_formatter', '~> 0.6.0'
   gem 'simplecov', '~> 0.21', require: false
-  gem 'simplecov-lcov', '~> 0.3', require: false
   gem 'site_prism', '~> 4.0'
 end
 
