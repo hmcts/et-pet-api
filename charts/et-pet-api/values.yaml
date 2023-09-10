@@ -3,8 +3,94 @@ base:
   readinessPath: /ping.json
   livenessPath: /ping.json
   startupPath: /ping.json
-  image: 'hmctspublic.azurecr.io/et-pet/api:latest'
+  image: "hmctspublic.azurecr.io/et-pet/api:latest"
   ingressHost: et-pet-api.{{ .Values.global.environment }}.platform.hmcts.net
   aadIdentityName: api-pet
   environment:
-    RAILS_ENV: 'production'
+    RAILS_ENV: "production"
+    SECRETS_PATH: "/kvmnt/"
+    SECRET_KEY_BASE:
+      secretRef: "api-secret-key-base"
+      key: "api-secret-key-base"
+      disabled: false
+    DEVISE_SECRET_KEY:
+      secretRef: "api-devise-secret-key"
+      key: "api-devise-secret-key"
+      disabled: false
+    ATOS_API_USERNAME:
+      secretRef: "api-atos-api-username"
+      key: "api-atos-api-username"
+      disabled: false
+    ATOS_API_PASSWORD:
+      secretRef: "api-atos-api-password"
+      key: "api-atos-api-password"
+      disabled: false
+    RSA_ACAS_PUBLIC_CERTIFICATE_BASE64:
+      secretRef: "api-rsa-acas-public-certificate-new"
+      key: "api-rsa-acas-public-certificate-new"
+      disabled: false
+    RSA_ET_PUBLIC_CERTIFICATE_BASE64:
+      secretRef: "api-rsa-et-public-certificate-new"
+      key: "api-rsa-et-public-certificate-new"
+      disabled: false
+    RSA_ET_PRIVATE_KEY_BASE64:
+      secretRef: "api-rsa-et-private-key-new"
+      key: "api-rsa-et-private-key-new"
+      disabled: false
+    SMTP_USERNAME:
+      secretRef: "api-smtp-sendgrid-username"
+      key: "api-smtp-sendgrid-username"
+      disabled: false
+    SMTP_PASSWORD:
+      secretRef: "api-smtp-sendgrid-password"
+      key: "api-smtp-sendgrid-password"
+      disabled: false
+    RAVEN_DSN:
+      secretRef: "api-raven-dsn"
+      key: "api-raven-dsn"
+      disabled: false
+    AZURE_STORAGE_ACCESS_KEY:
+      secretRef: "api-azure-storage-access-key"
+      key: "api-azure-storage-access-key"
+      disabled: false
+    AZURE_STORAGE_DIRECT_UPLOAD_ACCESS_KEY:
+      secretRef: "api-azure-storage-direct-upload-access-key"
+      key: "api-azure-storage-direct-upload-access-key"
+      disabled: false
+    GOVUK_NOTIFY_API_KEY_LIVE:
+      secretRef: "api-govuk-notify-api-key"
+      key: "api-govuk-notify-api-key"
+      disabled: false
+    CLOUD_PROVIDER: "azure"
+    AZURE_STORAGE_ACCOUNT: "devet"
+    AZURE_STORAGE_DIRECT_UPLOAD_ACCOUNT: "devetupload"
+    AZURE_STORAGE_CONTAINER: "et-container"
+    AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER: "et-upload-container"
+    DB_HOST: "employment-tribunals-api-demo.postgres.database.azure.com"
+    DB_PORT: 5432
+    DB_USERNAME: "employment_tribunals_postgresql_user@employment-tribunals-api-demo"
+    DB_NAME: "etapi"
+    SEED_EXAMPLE_USERS: true
+    ACAS_SERVICE_URL: "https://testec.acas.org.uk/Lookup/ECService.svc"
+    ACAS_JSON_SERVICE_URL: "https://api-dev-acas-01.azure-api.net/ECCLDev"
+    ACAS_SUBSCRIPTION_KEY:
+      secretRef: "api-acas-json-subscription-key"
+      key: "api-acas-json-subscription-key"
+      disabled: false
+    ACAS_SERVICE_API_VERSION: 2
+    SMTP_HOSTNAME: "smtp.sendgrid.net"
+    SMTP_PORT: 587
+    RAILS_MAX_THREADS: 10
+    RAILS_LOG_LEVEL: "info"
+    RACK_ENV: "production"
+    WEB_CONCURRENCY: 3
+    DOCKER_STATE: "migrate"
+    RAILS_LOG_TO_STDOUT: true
+    FLATTEN_PDF: true
+    RAVEN_SSL_VERIFICATION: false
+    AZURE_APP_INSIGHTS_KEY:
+      secretRef: "api-appinsights-key"
+      key: "api-appinsights-key"
+      disabled: false
+    AZURE_APP_INSIGHTS_ROLE_NAME: "ET-API"
+    SERVICE_NOW_EMAIL: "DCD-ETOnlineServiceDesk@HMCTS.NET"
