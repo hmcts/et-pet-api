@@ -1,8 +1,5 @@
 base:
   applicationPort: 8080
-  readinessPath: /ping.json
-  livenessPath: /ping.json
-  startupPath: /ping.json
   image: "hmctspublic.azurecr.io/et-pet/api:latest"
   ingressHost: et-pet-api.{{ .Values.global.environment }}.platform.hmcts.net
   aadIdentityName: et-pet
@@ -32,8 +29,8 @@ base:
     DB_SSL_MODE: "require"
     REDIS_HOST: "et-pet-api-{{ .Values.global.environment }}.redis.cache.windows.net"
     REDIS_PORT: 6379
-    AZURE_STORAGE_ACCOUNT: etpetsaaat
-    AZURE_STORAGE_DIRECT_UPLOAD_ACCOUNT: etpetsaaat
+    AZURE_STORAGE_ACCOUNT: etpetsa{{ .Values.global.environment }}
+    AZURE_STORAGE_DIRECT_UPLOAD_ACCOUNT: etpetsa{{ .Values.global.environment }}
     AZURE_STORAGE_CONTAINER: private
     AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER: public
   keyVaults:

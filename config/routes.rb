@@ -36,7 +36,7 @@ Rails.application.routes.draw do
   end
   mount EtAcasApi::Engine => "/et_acas_api"
 
-  get '/ping' => 'status#ping'
-  get '/healthcheck' => 'status#healthcheck'
-
+  get '/health' => 'status#healthcheck', defaults: { format: 'json' }
+  get '/health/readiness' => 'status#healthcheck', defaults: { format: 'json' }
+  get '/health/liveness' => 'status#healthcheck', defaults: { format: 'json' }
 end
