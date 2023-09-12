@@ -1,0 +1,107 @@
+{{- $globals := .Values.global | default dict -}}
+{{- $baseValues := dict "Values" .Values.base -}}
+{{- $noValues := omit . "Values" -}}
+{{- $base := merge $baseValues  $noValues }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "hmcts.releasename.v2" $base }}-sidekiq
+  labels:
+    app.kubernetes.io/name: {{ template "hmcts.releasename.v2" $base }}-sidekiq
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ template "hmcts.releasename.v2" $base }}-sidekiq
+    aadpodidbinding: {{ .Values.base.aadIdentityName }}
+{{- include "hmcts.annotations.v2" $base | indent 2 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ template "hmcts.releasename.v2" $base }}-sidekiq
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ template "hmcts.releasename.v2" $base }}-sidekiq
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/instance: {{ template "hmcts.releasename.v2" $base }}-sidekiq
+        aadpodidbinding: {{ .Values.base.aadIdentityName }}
+    {{- (include "hmcts.annotations.v2" $base) | indent 6 }}
+    spec:
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      {{- include "hmcts.interpodantiaffinity.v2" $base | indent 6 }}
+      {{- ( include "hmcts.dnsConfig.v2" $base ) | indent 6 }}
+      {{- if $globals.enableKeyVaults }}
+      volumes:
+        - name: vault-et-pet
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ .Release.Name }}-base-et
+      {{- end }}
+      containers:
+        - name: sidekiq
+          image: {{ .Values.base.image }}
+          command: ["./run_sidekiq.sh"]
+          resources:
+            requests:
+              cpu: 20m
+              memory: 500Mi
+            limits:
+              cpu: 250m
+              memory: 4Gi
+          ports:
+            - containerPort: 7433
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 7433
+            initialDelaySeconds: 80
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 7433
+            initialDelaySeconds: 80
+            timeoutSeconds: 5
+          securityContext:
+            allowPrivilegeEscalation: false
+          {{- ( include "hmcts.secretMounts.v2" $base ) | indent 10 }}
+          env:
+            SECRETS_PATH: "/mnt/secrets/et-pet"
+            CLOUD_PROVIDER: "azure"
+            AZURE_STORAGE_CONTAINER: "et-container"
+            AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER: "et-upload-container"
+            SEED_EXAMPLE_USERS: true
+            ACAS_SERVICE_URL: "https://testec.acas.org.uk/Lookup/ECService.svc"
+            ACAS_JSON_SERVICE_URL: "https://api-dev-acas-01.azure-api.net/ECCLUAT"
+            ACAS_SERVICE_API_VERSION: 2
+            SMTP_HOSTNAME: "smtp.sendgrid.net"
+            SMTP_PORT: 587
+            RAILS_ENV: "production"
+            RAILS_MAX_THREADS: 10
+            RAILS_LOG_LEVEL: "info"
+            RACK_ENV: "production"
+            WEB_CONCURRENCY: 3
+            DOCKER_STATE: "migrate"
+            RAILS_LOG_TO_STDOUT: true
+            FLATTEN_PDF: true
+            RAVEN_SSL_VERIFICATION: false
+            AZURE_APP_INSIGHTS_ROLE_NAME: "ET-API"
+            SERVICE_NOW_EMAIL: "DCD-ETOnlineServiceDesk@HMCTS.NET"
+            SERVICE_FQDN: ${SERVICE_FQDN}
+            DB_SSL_MODE: "require"
+            AZURE_STORAGE_ACCOUNT: etpetsa{{ .Values.global.environment }}
+            AZURE_STORAGE_DIRECT_UPLOAD_ACCOUNT: etpetsa{{ .Values.global.environment }}
+            AZURE_STORAGE_CONTAINER: private
+            AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER: public
+          volumeMounts:
+            - name: vault-et-pet
+              readOnly: true
+              mountPath: /mnt/secrets/et-pet
+

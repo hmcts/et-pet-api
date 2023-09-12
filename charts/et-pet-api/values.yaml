@@ -27,8 +27,6 @@ base:
     SERVICE_NOW_EMAIL: "DCD-ETOnlineServiceDesk@HMCTS.NET"
     SERVICE_FQDN: ${SERVICE_FQDN}
     DB_SSL_MODE: "require"
-    REDIS_HOST: "et-pet-api-{{ .Values.global.environment }}.redis.cache.windows.net"
-    REDIS_PORT: 6379
     AZURE_STORAGE_ACCOUNT: etpetsa{{ .Values.global.environment }}
     AZURE_STORAGE_DIRECT_UPLOAD_ACCOUNT: etpetsa{{ .Values.global.environment }}
     AZURE_STORAGE_CONTAINER: private
@@ -36,8 +34,8 @@ base:
   keyVaults:
     et-pet:
       secrets:
-        - name: etapi-redis-access-key
-          alias: REDIS_PASSWORD
+        - name: et-pet-api-redis-url
+          alias: REDIS_URL
         - name: api-azure-storage-access-key
           alias: AZURE_STORAGE_ACCESS_KEY
         - name: api-azure-storage-direct-upload-access-key
