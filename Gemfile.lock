@@ -408,7 +408,7 @@ GEM
       sidekiq (>= 6)
     sidekiq-failures (1.0.4)
       sidekiq (>= 4.0.0)
-    sidekiq_alive (2.2.2)
+    sidekiq_alive (2.3.0)
       rack (< 3)
       sidekiq (>= 5, < 8)
       webrick (>= 1, < 2)
