@@ -31,6 +31,43 @@ base:
     AZURE_STORAGE_DIRECT_UPLOAD_ACCOUNT: etpetsa{{ .Values.global.environment }}
     AZURE_STORAGE_CONTAINER: private
     AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER: public
+sidekiq:
+  applicationPort: 7433
+  readinessPath: /health
+  livenessPath: /health
+  startupPath: /health
+  image: "hmctspublic.azurecr.io/et-pet/api:latest"
+  ingressHost: et-pet-api.{{ .Values.global.environment }}.platform.hmcts.net
+  command: ["./run_sidekiq.sh"]
+  aadIdentityName: et-pet
+  environment:
+    SECRETS_PATH: "/mnt/secrets/et-pet"
+    CLOUD_PROVIDER: "azure"
+    AZURE_STORAGE_CONTAINER: "et-container"
+    AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER: "et-upload-container"
+    SEED_EXAMPLE_USERS: true
+    ACAS_SERVICE_URL: "https://testec.acas.org.uk/Lookup/ECService.svc"
+    ACAS_JSON_SERVICE_URL: "https://api-dev-acas-01.azure-api.net/ECCLUAT"
+    ACAS_SERVICE_API_VERSION: 2
+    SMTP_HOSTNAME: "smtp.sendgrid.net"
+    SMTP_PORT: 587
+    RAILS_ENV: "production"
+    RAILS_MAX_THREADS: 10
+    RAILS_LOG_LEVEL: "info"
+    RACK_ENV: "production"
+    WEB_CONCURRENCY: 3
+    DOCKER_STATE: "migrate"
+    RAILS_LOG_TO_STDOUT: true
+    FLATTEN_PDF: true
+    RAVEN_SSL_VERIFICATION: false
+    AZURE_APP_INSIGHTS_ROLE_NAME: "ET-API"
+    SERVICE_NOW_EMAIL: "DCD-ETOnlineServiceDesk@HMCTS.NET"
+    SERVICE_FQDN: ${SERVICE_FQDN}
+    DB_SSL_MODE: "require"
+    AZURE_STORAGE_ACCOUNT: etpetsa{{ .Values.global.environment }}
+    AZURE_STORAGE_DIRECT_UPLOAD_ACCOUNT: etpetsa{{ .Values.global.environment }}
+    AZURE_STORAGE_CONTAINER: private
+    AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER: public
   keyVaults:
     et-pet:
       secrets:
