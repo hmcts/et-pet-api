@@ -88,8 +88,7 @@ sidekiq:
   image: "hmctspublic.azurecr.io/et-pet/api:latest"
   ingressHost: et-pet-api.{{ .Values.global.environment }}.platform.hmcts.net
   aadIdentityName: et-pet
-  command: ['./run_sidekiq.sh']
-  args: []
+  args: ['./run_sidekiq.sh']
   environment:
     SECRETS_PATH: "/mnt/secrets/et-pet"
     CLOUD_PROVIDER: "azure"
