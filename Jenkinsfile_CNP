@@ -19,7 +19,7 @@ withPipeline(type, product, component) {
 
     before('test') {
         sh script:"""
-            docker stop pet-et-api-test-postgres && docker rm pet-et-api-test-postgres || echo 'Ignoring failure in stopping old postgres'
+            rm -rf ~/.gov_fake_notify && docker stop pet-et-api-test-postgres && docker rm pet-et-api-test-postgres || echo 'Ignoring failure in stopping old postgres'
             docker run --rm --name pet-et-api-test-postgres --publish 5421:5432 -e POSTGRES_PASSWORD=postgres -d postgres
         """, label: 'Start test postgres'
 
