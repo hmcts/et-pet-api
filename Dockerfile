@@ -35,6 +35,7 @@ RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext sh
     bundle install --no-cache --jobs=5 --retry=3 && \
     apk del .build-tools && \
     chown -R app:app /usr/local/bundle && \
+    chown -R app:app /home/app/api/vendor/bundle && \
     mkdir -p /home/app/api/tmp && \
     chown -R app:app /home/app/api/tmp
 
