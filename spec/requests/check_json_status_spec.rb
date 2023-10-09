@@ -25,5 +25,4 @@ RSpec.describe "Check JSON Status", type: :request do
     end
   end
 
-
 end

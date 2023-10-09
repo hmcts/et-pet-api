@@ -141,8 +141,8 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     validates :first_name, :last_name, length: { maximum: NAME_LENGTH }, presence: true
     validates :post_code, post_code: true, length: { maximum: POSTCODE_LENGTH }
     validates :street, :locality, length: { maximum: 50 }
-    validate :illegal_birth_year
-    validate :age_between_range
+    validate :illegal_birth_year, unless: :date_of_birth_blank?
+    validate :age_between_range, unless: :date_of_birth_blank?
 
     private
 
@@ -154,6 +154,10 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
       return if date_of_birth.nil?
 
       errors.add :date_of_birth, :date_range unless (date_of_birth > 100.years.ago) && (date_of_birth < 10.years.ago)
+    end
+
+    def date_of_birth_blank?
+      date_of_birth.blank? && @attributes.values_before_type_cast['date_of_birth'].blank?
     end
   end
 end

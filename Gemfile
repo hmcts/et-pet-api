@@ -89,6 +89,7 @@ group :test do
   gem "puma", "~> 6.0"
   gem 'rspec-eventually', '~> 0.2.2'
   gem "selenium-webdriver", "~> 4.10"
+  gem 'super_diff', '~> 0.10.0'
   gem 'webmock', '~> 3.11'
 end
 

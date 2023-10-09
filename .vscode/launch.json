@@ -40,7 +40,7 @@
       "cwd": "${workspaceFolder}",
       "useBundler": true,
       "args": [
-        "spec/jobs/fetch_acas_certificates_job_spec.rb:81"
+        "spec/services/claim_claimants_file_importer_service_spec.rb:51"
       ],
       "askParameters": false
 }

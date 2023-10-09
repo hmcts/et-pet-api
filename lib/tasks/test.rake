@@ -1,4 +1,4 @@
-task :test => :environment do
+task test: :environment do
   unless system("rspec -t ~smoke --format RspecJunitFormatter --out tmp/test/rspec.xml")
     raise "Rspec testing failed #{$?}"
   end
@@ -13,4 +13,3 @@ namespace :test do
     puts "No functional tests yet"
   end
 end
-

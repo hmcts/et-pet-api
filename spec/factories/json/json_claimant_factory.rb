@@ -175,7 +175,7 @@ FactoryBot.define do
       fax_number { nil }
       contact_preference { '' }
       gender { '' }
-      date_of_birth { '1993-06-14' }
+      date_of_birth { nil }
       special_needs { nil }
     end
 
