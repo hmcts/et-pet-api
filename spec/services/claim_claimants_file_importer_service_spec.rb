@@ -57,7 +57,7 @@ RSpec.describe ClaimClaimantsFileImporterService do
             c[:address] = an_object_having_attributes(c[:address])
             an_object_having_attributes(c)
           end
-          expect(claim.secondary_claimants.includes(:address)).to match_array normalize_claimants_from_file.map(&map)
+          expect(claim.secondary_claimants.includes(:address)).to match_array normalize_claimants_from_file(file: File.absolute_path(File.join('../fixtures/simple_user_with_csv_group_claims_with_spaces.csv'), __dir__)).map(&map)
         end
       end
     end

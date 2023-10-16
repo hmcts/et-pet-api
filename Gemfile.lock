@@ -122,6 +122,7 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     afm (0.2.2)
     ast (2.4.2)
+    attr_extras (7.1.0)
     azure-storage-blob (2.0.3)
       azure-storage-common (~> 2.0)
       nokogiri (~> 1, >= 1.10.8)
@@ -272,12 +273,15 @@ GEM
       racc (~> 1.4)
     notifications-ruby-client (5.4.0)
       jwt (>= 1.5, < 3)
+    optimist (3.1.0)
     parallel (1.23.0)
     parallel_tests (4.2.1)
       parallel
     parser (3.2.2.3)
       ast (~> 2.4.1)
       racc
+    patience_diff (1.2.0)
+      optimist (~> 3.0)
     pdf-forms (1.4.0)
       cliver (~> 0.3.2)
       safe_shell (>= 1.0.3, < 2.0)
@@ -438,6 +442,10 @@ GEM
     spring-watcher-listen (2.1.0)
       listen (>= 2.7, < 4.0)
       spring (>= 4)
+    super_diff (0.10.0)
+      attr_extras (>= 6.2.4)
+      diff-lcs
+      patience_diff
     thor (1.2.2)
     tilt (2.2.0)
     timeout (0.4.0)
@@ -512,6 +520,7 @@ DEPENDENCIES
   site_prism (~> 4.0)
   spring (~> 4.1)
   spring-watcher-listen (~> 2.1.0)
+  super_diff (~> 0.10.0)
   tzinfo-data
   uk_postcode (~> 2.1)
   webmock (~> 3.11)

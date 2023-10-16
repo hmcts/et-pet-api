@@ -16,10 +16,10 @@ module EtApi
 
         claimants_array = []
         CSV.foreach tempfile, headers: true do |row|
-          date_of_birth = Date.parse(row['Date of birth']&.strip)
-          date_of_birth = date_of_birth.strftime('%Y-%m-%d') if dates == :string
+          date_of_birth = row['Date of birth'].nil? ? nil : Date.parse(row['Date of birth']&.strip)
+          date_of_birth = date_of_birth.strftime('%Y-%m-%d') if dates == :string && date_of_birth.present?
           claimants_array << {
-            title: row['Title']&.downcase&.capitalize&.strip,
+            title: row['Title']&.strip&.downcase&.capitalize,
             first_name: row['First name']&.strip,
             last_name: row['Last name']&.strip,
             date_of_birth: date_of_birth,
