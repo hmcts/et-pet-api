@@ -1,6 +1,6 @@
 class RemovePgcrypto < ActiveRecord::Migration[7.0]
   def up
-    disable_extension 'pgcrypto'
+    disable_extension 'pgcrypto' unless server_version >= 13.0 || !extension_enabled?('pgcrypto')
   end
 
   def down
