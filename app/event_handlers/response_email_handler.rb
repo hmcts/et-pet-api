@@ -14,6 +14,13 @@ class ResponseEmailHandler
     response.events.confirmation_email_sent.present?
   end
 
+  def build_client(config: Rails.application.config.govuk_notify)
+    api_key = config["#{config.mode}_api_key"]
+    args = []
+    args << config.custom_url unless config.custom_url == false
+    Notifications::Client.new(api_key, *args)
+  end
+
   def send_email(response, template_reference: response.email_template_reference)
     office = OfficeService.lookup_by_case_number(response.case_number)
 
@@ -23,7 +30,6 @@ class ResponseEmailHandler
     else
       locale = template_reference.split('-').last
       client = build_client
-
       res = send_email_to_recipient response, client, find_template_id(client, template_reference), locale, response.email_receipt, office
 
       record_event(response, response.email_receipt, res)
@@ -56,7 +62,7 @@ class ResponseEmailHandler
                         'office.address': office.address,
                         'office.telephone': office.telephone,
                         'response.reference': response.reference,
-                        submitted_date: I18n.l(claim.date_of_receipt, format: '%d %B %Y', locale: locale)
+                        submitted_date: I18n.l(response.date_of_receipt, format: '%d %B %Y', locale: locale)
                       }
   rescue Notifications::Client::RequestError => e
     e
