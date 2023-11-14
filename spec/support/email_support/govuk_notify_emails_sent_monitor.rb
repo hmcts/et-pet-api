@@ -34,6 +34,20 @@ module EtApi
         email
       end
 
+      def new_response_email_for(reference:, template_reference:)
+        email = case template_reference
+                when /-en\z/
+                  EtApi::Test::GovUkNotifyEmailObjects::NewResponseEmailEn.find(reference: reference)
+                when /-cy\z/
+                  EtApi::Test::GovUkNotifyEmailObjects::NewClaimEmailCy.find(reference: reference)
+                else
+                  raise "Unknown template reference #{template_reference}"
+                end
+        raise "No govuk notify response (ET1) email has been sent for reference #{reference} using template reference #{template_reference}\n\n#{GovUkNotifyEmailsSentMonitor.instance.deliveries}" if email.blank?
+
+        email
+      end
+
       def new_claim_email_count_for(reference:, template_reference:)
         case template_reference
         when /-en\z/
