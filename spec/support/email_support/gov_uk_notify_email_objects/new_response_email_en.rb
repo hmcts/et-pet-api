@@ -1,6 +1,6 @@
 require_relative 'base'
 require_relative '../../helpers/office_helper'
-require_relative '../../helpers/claim_helper'
+require_relative '../../helpers/response_helper'
 require_relative '../../messaging'
 module EtApi
   module Test
