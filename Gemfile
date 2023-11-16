@@ -34,7 +34,7 @@ gem 'notifications-ruby-client', '~> 5.3'
 gem "sentry-rails", "~> 5.7"
 gem "sentry-ruby", "~> 5.7"
 gem "sentry-sidekiq", "~> 5.7"
-gem 'sidekiq', '< 7'
+gem 'sidekiq', '< 8'
 gem 'sidekiq_alive', '~> 2.0'
 gem 'sidekiq-cron', '~> 1.1'
 gem 'sidekiq-failures', '~> 1.0'
@@ -89,7 +89,6 @@ group :test do
   gem "puma", "~> 6.0"
   gem 'rspec-eventually', '~> 0.2.2'
   gem "selenium-webdriver", "~> 4.10"
-  gem 'super_diff', '~> 0.10.0'
   gem 'webmock', '~> 3.11'
 end
 
