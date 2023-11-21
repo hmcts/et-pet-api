@@ -8,7 +8,7 @@ RSpec.describe BuildResponseCommand do
   let(:root_object) { Response.new }
 
   around do |example|
-    ActiveStorage::Current.set(host: 'www.example.com') do
+    ActiveStorage::Current.set(url_options: { host: 'www.example.com' }) do
       example.run
     end
   end

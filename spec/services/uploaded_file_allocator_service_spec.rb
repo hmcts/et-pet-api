@@ -5,7 +5,7 @@ RSpec.describe UploadedFileAllocatorService do
   let(:response_object) { build(:response) }
 
   around do |example|
-    ActiveStorage::Current.set(host: 'www.example.com') do
+    ActiveStorage::Current.set(url_options: { host: 'www.example.com' }) do
       example.run
     end
   end

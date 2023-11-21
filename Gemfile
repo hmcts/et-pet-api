@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '7.0.7.1'
+gem 'rails', '7.1.2'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', tag: 'v1.0.1'
@@ -100,4 +100,4 @@ gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
 gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v1.0.0'
 
-gem "activerecord-nulldb-adapter", "~> 0.9.0", group: :test
+gem "activerecord-nulldb-adapter", "~> 1.0", group: :test
