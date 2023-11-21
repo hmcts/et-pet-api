@@ -28,7 +28,7 @@ FactoryBot.define do
     agree_with_claimant_notice { true }
     agree_with_claimant_pension_benefits { true }
     pdf_template_reference { 'et3-v2-en' }
-    email_template_reference { 'et3-v1-en' }
+    email_template_reference { 'et3-v2-en' }
 
     sequence :reference do |n|
       "22#{20000000 + n}00"

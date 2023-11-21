@@ -22,7 +22,7 @@ class ResponseEmailHandler
   end
 
   def send_email(response, template_reference: response.email_template_reference)
-    office = OfficeService.lookup_by_case_number(response.case_number)
+    office = OfficeService.lookup_by_case_number(response.reference)
 
     if response.email_template_reference.include?("v1")
       ResponseMailer.with(response: response, office: office, template_reference: template_reference).confirmation_email.deliver_now
