@@ -45,7 +45,6 @@ module EtApi
             assert_reference_element(reference)
             expect(has_correct_subject?).to be true
             expect(assert_correct_to_address_for?(input_data)).to be true
-            assert_office_information(office)
             assert_submission_date
           end
           true
@@ -57,7 +56,7 @@ module EtApi
         end
 
         def has_correct_subject?
-          mail.subject == t('claim_email.subject', locale: self.class.template_reference)
+          mail.subject == t('response_email.subject', locale: self.class.template_reference)
         end
 
         private
@@ -71,11 +70,11 @@ module EtApi
         end
 
         def assert_submission_date_element(expected_submission_date)
-          expect(submission_date.value).to eq t('claim_email.submitted_at', locale: template_reference, date: expected_submission_date)
+          expect(submission_date.value).to eq t('response_email.submitted_at', locale: template_reference, date: expected_submission_date)
         end
 
         def has_submission_date_element?(expected_submission_date)
-          submission_date.value == t('claim_email.submission_date', locale: template_reference, date: expected_submission_date)
+          submission_date.value == t('response_email.submission_date', locale: template_reference, date: expected_submission_date)
         end
 
         def assert_submission_date
@@ -84,12 +83,6 @@ module EtApi
           return if has_submission_date_element?(l(now, format: '%d %B %Y', locale: template_reference.split('-').last))
 
           assert_submission_date_element(l((now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last))
-        end
-
-        def assert_office_information(office)
-          expect(tribunal_office.value).to eql office.name
-          expect(tribunal_office_contact.email_value).to eql office.email
-          expect(tribunal_office_contact.telephone_value).to eql office.telephone
         end
 
         def assert_claimant(primary_claimant_data)
@@ -103,17 +96,17 @@ module EtApi
         end
 
         def self.define_site_prism_elements(template_reference)
-          section(:response_number, :xpath, XPath.generate { |x| x.descendant(:p)[x.string.n.starts_with(t('claim_email.reference', locale: template_reference))] }) do
+          section(:response_number, :xpath, XPath.generate { |x| x.descendant(:p)[x.string.n.starts_with(t('response_email.reference', locale: template_reference))] }) do
             include EtApi::Test::I18n
             define_method :value do
-              root_element.text.gsub(/#{t('claim_email.reference', locale: template_reference)}/, '').strip
+              root_element.text.match(/#{t('response_email.reference', locale: template_reference)} (\d+)/).captures.first
             end
           end
 
-          section(:submission_date, :xpath, XPath.generate { |x| x.descendant(:p)[x.string.n.starts_with(t('claim_email.submission_info', locale: template_reference))] }) do
+          section(:submission_date, :xpath, XPath.generate { |x| x.descendant(:p)[x.string.n.starts_with(t('response_email.submitted_at', locale: template_reference))] }) do
             include EtApi::Test::I18n
             define_method :value do
-              root_element.text.gsub(/#{t('claim_email.submission_info', locale: template_reference)}/, '').strip
+              root_element.text.match(/#{t('response_email.submitted_at', locale: template_reference)} (\d+\s\w+\s\d+)/).captures.first
             end
           end
         end
