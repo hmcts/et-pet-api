@@ -2,7 +2,6 @@ et3-v2-en:
   response_email:
     reference: 'This is your reference number:'
     subject: 'Your Response to Employment Tribunal claim online form receipt'
-    submission_details: Submission details
     submitted_at: 'Submission date:'
     submission_date: '%{date}'
 
