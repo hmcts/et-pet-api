@@ -39,7 +39,7 @@ module EtApi
                 when /-en\z/
                   EtApi::Test::GovUkNotifyEmailObjects::NewResponseEmailEn.find(reference: reference)
                 when /-cy\z/
-                  EtApi::Test::GovUkNotifyEmailObjects::NewClaimEmailCy.find(reference: reference)
+                  EtApi::Test::GovUkNotifyEmailObjects::NewResponseEmailCy.find(reference: reference)
                 else
                   raise "Unknown template reference #{template_reference}"
                 end
