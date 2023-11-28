@@ -25,6 +25,10 @@ FactoryBot.define do
       email_template { 'et3-v1-cy' }
     end
 
+    trait :with_welsh_email_v2 do
+      email_template { 'et3-v2-cy' }
+    end
+
     trait :with_representative do
       response_traits { [:full] }
       respondent_traits { [:full] }
