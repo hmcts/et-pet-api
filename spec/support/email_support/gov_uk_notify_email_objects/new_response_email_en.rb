@@ -40,7 +40,6 @@ module EtApi
         end
 
         def has_correct_content_for?(input_data, reference:)
-          office = office_for(case_number: reference)
           aggregate_failures 'validating content' do
             assert_reference_element(reference)
             expect(has_correct_subject?).to be true
