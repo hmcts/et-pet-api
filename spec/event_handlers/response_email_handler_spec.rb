@@ -15,15 +15,23 @@ describe ResponseEmailHandler do
       expect(ActionMailer::Base.deliveries.length).to be 1
     end
 
-    context 'with english template v1' do
-      it 'sends the email via SMTP correctly' do
-        skip
-      end
-    end
+    describe 'v1' do
+      context 'with english template' do
+        let(:response) { create(:response, :with_english_v1_template, :with_pdf_file, email_receipt: 'fred@bloggs.com')}
 
-    context 'with welsh template v1' do
-      it 'sends the email via SMTP correctly' do
-        skip
+        it 'sends the email via SMTP correctly' do
+          handler.handle(response)
+          expect(ActionMailer::Base.deliveries.length).to be 1
+        end
+      end
+
+      context 'with welsh template' do
+        let(:response) { create(:response, :with_welsh_v1_template, :with_pdf_file, email_receipt: 'fred@bloggs.com')}
+
+        it 'sends the email via SMTP correctly' do
+          handler.handle(response)
+          expect(ActionMailer::Base.deliveries.length).to be 1
+        end
       end
     end
 
