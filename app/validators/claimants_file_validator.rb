@@ -101,11 +101,8 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
   end
 
   def generate_errors(attribute, claimants_file, record, row_index)
-    claimants_file.errors.details.each_pair do |attr, row_errors|
-      messages = claimants_file.errors.messages[attr]
-      row_errors.each_with_index do |error, idx|
-        record.errors.add(:"#{attribute}[#{row_index}].#{attr}", messages[idx], **error.merge(extra_error_details(record)))
-      end
+    claimants_file.errors.each do |error|
+      record.errors.add(:"#{attribute}[#{row_index}].#{error.attribute}", error.message, **error.details.merge(extra_error_details(record)))
     end
   end
 
@@ -139,8 +136,8 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
 
     validates :title, inclusion: { in: TITLES }, allow_blank: true
     validates :first_name, :last_name, length: { maximum: NAME_LENGTH }, presence: true
-    validates :post_code, post_code: true, length: { maximum: POSTCODE_LENGTH }
-    validates :street, :locality, length: { maximum: 50 }
+    validates :post_code, post_code: true, presence: true, length: { maximum: POSTCODE_LENGTH }
+    validates :street, :locality, :building, :county, presence: true, length: { maximum: 50 }
     validate :illegal_birth_year, unless: :date_of_birth_blank?
     validate :age_between_range, unless: :date_of_birth_blank?
 
