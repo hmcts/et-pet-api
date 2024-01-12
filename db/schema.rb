@@ -11,7 +11,9 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2023_11_14_065727) do
+
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -452,7 +454,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_11_14_065727) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "pdf_template_reference", null: false
-    t.string "email_template_reference", null: false
+    t.string "email_template_reference", default: "et3-v2-en", null: false
     t.integer "office_id"
     t.index ["office_id"], name: "index_responses_on_office_id"
     t.index ["representative_id"], name: "index_responses_on_representative_id"

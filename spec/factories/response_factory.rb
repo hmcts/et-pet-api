@@ -28,7 +28,7 @@ FactoryBot.define do
     agree_with_claimant_notice { true }
     agree_with_claimant_pension_benefits { true }
     pdf_template_reference { 'et3-v2-en' }
-    email_template_reference { 'et3-v1-en' }
+    email_template_reference { 'et3-v2-en' }
 
     sequence :reference do |n|
       "22#{20000000 + n}00"
@@ -48,6 +48,18 @@ FactoryBot.define do
       after(:build) do |response, _evaluator|
         response.uploaded_files << build(:uploaded_file, :example_response_pdf, :system_file_scope)
       end
+    end
+
+    trait :with_welsh_email_v2 do
+      email_template_reference { 'et3-v2-cy' }
+    end
+
+    trait :with_english_v1_template do
+      email_template_reference { 'et3-v1-en' }
+    end
+
+    trait :with_welsh_v1_template do
+      email_template_reference { 'et3-v1-cy' }
     end
 
     trait :with_output_additional_information_file do

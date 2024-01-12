@@ -1,0 +1,6 @@
+et3-v2-cy:
+  response_email:
+    reference: 'Eich cyfeirnod yw:'
+    subject: 'E-bost yn cadarnhau bod eich ymateb i’r hawliad Tribiwnlys Cyflogaeth ar-lein wedi cyrraedd'
+    submitted_at: 'Dyddiad cyflwyno:'
+    submission_date: '%{date}'
