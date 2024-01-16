@@ -89,15 +89,21 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
   end
 
   def normalize_row(row) # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-    { title: row['Title']&.strip&.downcase&.capitalize,
-      first_name: row['First name']&.strip,
-      last_name: row['Last name']&.strip,
-      date_of_birth: row['Date of birth']&.strip,
-      building: row['Building number or name']&.strip,
-      street: row['Street']&.strip,
-      locality: row['Town/city']&.strip,
-      county: row['County']&.strip,
-      post_code: row['Postcode']&.strip }
+    { title: clean(row['Title'])&.downcase&.capitalize,
+      first_name: clean(row['First name']),
+      last_name: clean(row['Last name']),
+      date_of_birth: clean(row['Date of birth']),
+      building: clean(row['Building number or name']),
+      street: clean(row['Street']),
+      locality: clean(row['Town/city']),
+      county: clean(row['County']),
+      post_code: clean(row['Postcode']) }
+  end
+
+  def clean(value)
+    return if value.nil?
+
+    value.strip.gsub(160.chr, '').gsub(/^\s+|\s+$/, '')
   end
 
   def generate_errors(attribute, claimants_file, record, row_index)
