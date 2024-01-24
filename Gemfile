@@ -86,7 +86,7 @@ group :test do
   gem 'faker', '~> 3.1'
   gem 'gov_fake_notify', '~> 1.2'
   gem "pdf-reader", "~> 2.4"
-  gem "puma", "~> 6.0"
+  gem 'puma', '~> 6.3'
   gem 'rspec-eventually', '~> 0.2.2'
   gem "selenium-webdriver", "~> 4.10"
   gem 'super_diff', '~> 0.10.0'
