@@ -28,7 +28,8 @@ RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext sh
     apk add --no-cache --virtual .build-tools git build-base openjdk11 && \
     jlink --add-modules java.base,java.desktop,java.naming,java.sql --strip-debug --no-man-pages --no-header-files --compress=2 --output=/opt/java/openjdk-trimmed && \
     cd /home/app/api && \
-    gem install bundler foreman && \
+    BUNDLER_VERSION=$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1 | awk '{$1=$1};1') && \
+    gem install bundler:$BUNDLER_VERSION invoker && \
     bundle config set without 'test development' && \
     bundle config set deployment 'true' && \
     bundle config set with 'production' && \
