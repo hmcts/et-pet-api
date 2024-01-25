@@ -14,6 +14,14 @@ GIT
       application_insights (~> 0.5.7)
 
 GIT
+  remote: https://github.com/hmcts/et-full-system-control.git
+  revision: 4a3991b399d8dae1ed55a6965a2e7587f8fda71d
+  specs:
+    et_full_system_control (0.1.0)
+      docker-api (~> 2.2)
+      rails (>= 7.0.0)
+
+GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
   revision: eb238aff5583d133fd2bdabe35d90d3559bedec8
   tag: v1.0.0
@@ -174,6 +182,9 @@ GEM
     date (3.3.4)
     diff-lcs (1.5.0)
     docile (1.4.0)
+    docker-api (2.2.0)
+      excon (>= 0.47.0)
+      multi_json
     dotenv (2.8.1)
     dotenv-rails (2.8.1)
       dotenv (= 2.8.1)
@@ -189,6 +200,7 @@ GEM
       nokogiri (~> 1.8, >= 1.8.2)
       sinatra (~> 3.0)
       sinatra-contrib (~> 3.0)
+    excon (0.109.0)
     factory_bot (6.3.0)
       activesupport (>= 5.0.0)
     faker (3.2.0)
@@ -515,6 +527,7 @@ DEPENDENCIES
   et_azure_insights (= 0.3.2)!
   et_exporter!
   et_fake_acas_server (~> 2.0)
+  et_full_system_control!
   factory_bot (~> 6.1)
   faker (~> 3.1)
   gov_fake_notify (~> 1.2)
