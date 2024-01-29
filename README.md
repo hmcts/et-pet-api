@@ -74,6 +74,7 @@ Used for background jobs - not entirely nescessary depending on what you are wor
 
 ### Libre Office
 
+(Code that uses this has been disabled - this requirement will be removed shortly)
 Technically, we only need the command line utility from libre office, but, it is rare for this to be distributed by itself.
 
 To install libre office, do the following
