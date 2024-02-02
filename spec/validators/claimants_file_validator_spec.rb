@@ -58,5 +58,39 @@ RSpec.describe ClaimantsFileValidator do
         expect(model.errors.where(:'data_from_key[4].post_code', "can't be blank")).to be_present
       end
     end
+
+    context 'when the file has spaces around fields to be validated' do
+      let(:example_file) do
+        build(:claimants_file).tap do |file|
+          file.claimants << build(:claimant, :tamara_swift).tap { |c| c.address.building = "\xA0\t #{c.address.building} " }
+          file.claimants << build(:claimant, :tamara_swift).tap { |c| c.address.street = "\xA0\t #{c.address.street} " }
+          file.claimants << build(:claimant, :tamara_swift).tap { |c| c.address.locality = "\xA0\t #{c.address.locality} " }
+          file.claimants << build(:claimant, :tamara_swift).tap { |c| c.address.county = "\xA0\t #{c.address.county} " }
+          file.claimants << build(:claimant, :tamara_swift).tap { |c| c.address.post_code = "\xA0\t #{c.address.post_code} " }
+        end.generate!
+      end
+
+      before { model.valid? }
+
+      it 'has no error for building' do
+        expect(model.errors.where(:'data_from_key[0].building')).to be_empty
+      end
+
+      it 'has no error for street' do
+        expect(model.errors.where(:'data_from_key[1].street')).to be_empty
+      end
+
+      it 'has no error for locality' do
+        expect(model.errors.where(:'data_from_key[2].locality')).to be_empty
+      end
+
+      it 'has no error for county' do
+        expect(model.errors.where(:'data_from_key[3].county')).to be_empty
+      end
+
+      it 'has no error for post code' do
+        expect(model.errors.where(:'data_from_key[4].post_code')).to be_empty
+      end
+    end
   end
 end
