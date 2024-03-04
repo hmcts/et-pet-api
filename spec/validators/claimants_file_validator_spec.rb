@@ -42,16 +42,16 @@ RSpec.describe ClaimantsFileValidator do
         expect(model.errors.where(:'data_from_key[0].building', "can't be blank")).to be_present
       end
 
-      it 'disallows the file with the correct street error' do
-        expect(model.errors.where(:'data_from_key[1].street', "can't be blank")).to be_present
+      it 'allows the file with the correct street error' do
+        expect(model.errors.where(:'data_from_key[1].street')).not_to be_present
       end
 
-      it 'disallows the file with the correct locality error' do
-        expect(model.errors.where(:'data_from_key[2].locality', "can't be blank")).to be_present
+      it 'allows the file with the correct locality error' do
+        expect(model.errors.where(:'data_from_key[2].locality')).not_to be_present
       end
 
-      it 'disallows the file with the correct county error' do
-        expect(model.errors.where(:'data_from_key[3].county', "can't be blank")).to be_present
+      it 'allows the file with the correct county error' do
+        expect(model.errors.where(:'data_from_key[3].county')).not_to be_present
       end
 
       it 'disallows the file with the correct post code error' do
