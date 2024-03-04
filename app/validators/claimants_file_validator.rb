@@ -143,7 +143,8 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     validates :title, inclusion: { in: TITLES }, allow_blank: true
     validates :first_name, :last_name, length: { maximum: NAME_LENGTH }, presence: true
     validates :post_code, post_code: true, presence: true, length: { maximum: POSTCODE_LENGTH }
-    validates :street, :locality, :building, :county, presence: true, length: { maximum: 50 }
+    validates :building, presence: true, length: { maximum: 50 }
+    validates :street, :locality, :county, length: { maximum: 50 }
     validate :illegal_birth_year, unless: :date_of_birth_blank?
     validate :age_between_range, unless: :date_of_birth_blank?
 
