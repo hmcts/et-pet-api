@@ -7,7 +7,6 @@ if last_unique_reference.nil? || last_unique_reference.id < 20000000
 end
 OfficePostCode.delete_all
 Office.delete_all
-ExportedFile.delete_all
 Export.delete_all
 ExternalSystem.delete_all
 ExternalSystemConfiguration.delete_all
@@ -27,21 +26,6 @@ offices.each do |office_row|
 end
 
 
-
-atos = ExternalSystem.create name: 'ATOS Primary',
-  reference: 'atos',
-  enabled: true,
-  export_claims: false,
-  export_responses: false,
-  always_save_export: true,
-  office_codes: Office.pluck(:code).to_a - [99]
-atos2 = ExternalSystem.create name: 'ATOS Secondary',
-  reference: 'atos_secondary',
-  enabled: true,
-  export_claims: false,
-  export_responses: false,
-  always_save_export: true,
-  office_codes: [99]
 
 ccd_manc = ExternalSystem.create name: 'CCD Manchester',
   reference: 'ccd_manchester',
@@ -75,14 +59,6 @@ ccd_bristol = ExternalSystem.create name: 'CCD Bristol',
   export_queue: 'external_system_ccd',
   office_codes: [14]
 
-ExternalSystemConfiguration.create external_system_id: atos.id,
-  key: 'username', value: ENV.fetch('ATOS_API_USERNAME', 'atos')
-ExternalSystemConfiguration.create external_system_id: atos.id,
-  key: 'password', value: ENV.fetch('ATOS_API_PASSWORD', 'password'), can_read: false
-ExternalSystemConfiguration.create external_system_id: atos2.id,
-  key: 'username', value: 'atos2'
-ExternalSystemConfiguration.create external_system_id: atos2.id,
-  key: 'password', value: 'password', can_read: false
 ExternalSystemConfiguration.create external_system_id: ccd_manc.id,
   key: 'case_type_id', value: 'Manchester_Dev'
 ExternalSystemConfiguration.create external_system_id: ccd_manc.id,

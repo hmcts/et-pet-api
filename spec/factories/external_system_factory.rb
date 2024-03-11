@@ -1,14 +1,6 @@
 FactoryBot.define do
   factory :external_system do
-
-    trait :atos do
-      name { "Atos" }
-      reference { "atos" }
-      office_codes { [] }
-      enabled { true }
-      export_claims { false }
-    end
-
+    
     trait :minimal do
       name { "Anything" }
       sequence(:reference) { |idx| "reference#{idx}" }

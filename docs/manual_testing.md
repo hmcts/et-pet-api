@@ -21,9 +21,3 @@ db:seed rake task, you will be able to login with these users - all with passwor
 These 3 users are primarily for demonstrating the roles functionality and
 how users can be restricted.
 
-## Seeing What ATOS Sees
-
-There is an API endpoint which at least for the time being you will be able
-to access.  When the system is properly deployed, this will be behind locked
-doors and a browser certainly not be able to access it.
-

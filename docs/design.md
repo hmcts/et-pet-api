@@ -41,9 +41,5 @@ This system is a fairly standard rails application with the following additions 
   and allows developers to run multiple instances of things whilst being in control of ports etc.. without having to change source code and remembering not to commit the change !!
 * SQL based schema - You might notice that we don't have a schema.db - but instead an SQL version.  This is because the ruby representation of the schema doesn't allow
   us to do everything that SQL does.  In this case, something as simple as making sure a sequence starts from a set number (so reference numbers start at 20000000)
-* Vendored Gem - A separate gem has been developed for the ATOS interface as it is ugly and I didn't want that code in the main app.  Another reason is that dev-ops might
-  choose to deploy this app separately (at the moment, it is mounted in the main app's routes) as it is exposed to the outside world which is a
-  third party system.  Deploying separately means the attack surface is much smaller from a security point of view.
-
 
 
