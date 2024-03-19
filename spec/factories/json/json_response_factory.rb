@@ -99,7 +99,7 @@ FactoryBot.define do
     trait :full do
       minimal
       claimants_name { "Jane Doe" }
-      agree_with_early_conciliation_details { false }
+      agree_with_early_conciliation_details { nil }
       disagree_conciliation_reason { "lorem ipsum conciliation" }
       employment_start { "2017-01-01" }
       employment_end { "2017-12-31" }

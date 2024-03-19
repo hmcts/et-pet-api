@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :external_system do
-    
+
     trait :minimal do
       name { "Anything" }
       sequence(:reference) { |idx| "reference#{idx}" }

@@ -71,7 +71,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_acas_pdf_fields(result)
-    apply_field result, source.agree_with_early_conciliation_details?, :acas, :agree
+    apply_field result, source.agree_with_early_conciliation_details, :acas, :agree
     apply_field result, source.disagree_conciliation_reason, :acas, :disagree_explanation
   end
 
@@ -80,7 +80,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, source.employment_start.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_start
     apply_field result, source.employment_end.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_end
     apply_field result, source.disagree_employment, :employment_details, :disagree_with_dates_reason
-    apply_field result, source.continued_employment?, :employment_details, :continuing
+    apply_field result, source.continued_employment, :employment_details, :continuing
     apply_field result, source.agree_with_claimants_description_of_job_or_title, :employment_details, :agree_with_job_title
     apply_field result, source.disagree_claimants_job_or_title, :employment_details, :correct_job_title
   end
