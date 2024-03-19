@@ -88,7 +88,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     generate_errors(attribute, claimants_file, record, row_index)
   end
 
-  def normalize_row(row) # rubocop:disable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
+  def normalize_row(row)
     { title: clean(row['Title'])&.downcase&.capitalize,
       first_name: clean(row['First name']),
       last_name: clean(row['Last name']),
