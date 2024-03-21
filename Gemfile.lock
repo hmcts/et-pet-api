@@ -181,7 +181,7 @@ GEM
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
     date (3.3.4)
-    diff-lcs (1.5.0)
+    diff-lcs (1.5.1)
     docile (1.4.0)
     docker-api (2.2.0)
       excon (>= 0.47.0)
@@ -484,7 +484,7 @@ GEM
       listen (>= 2.7, < 4.0)
       spring (>= 4)
     stringio (3.1.0)
-    super_diff (0.10.0)
+    super_diff (0.11.0)
       attr_extras (>= 6.2.4)
       diff-lcs
       patience_diff
@@ -563,7 +563,7 @@ DEPENDENCIES
   site_prism (~> 4.0)
   spring (~> 4.1)
   spring-watcher-listen (~> 2.1.0)
-  super_diff (~> 0.10.0)
+  super_diff (~> 0.10)
   tzinfo-data
   uk_postcode (~> 2.1)
   webmock (~> 3.11)
