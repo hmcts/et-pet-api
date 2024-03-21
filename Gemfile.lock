@@ -261,7 +261,8 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.7.1)
-    jwt (2.7.1)
+    jwt (2.8.1)
+      base64
     language_server-protocol (3.17.0.3)
     libreconv (0.9.5)
     listen (3.9.0)
@@ -382,7 +383,7 @@ GEM
     reline (0.4.3)
       io-console (~> 0.5)
     rexml (3.2.6)
-    roda (3.69.0)
+    roda (3.78.0)
       rack
     rspec-core (3.13.0)
       rspec-support (~> 3.13.0)
