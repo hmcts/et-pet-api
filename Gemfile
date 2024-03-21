@@ -64,7 +64,6 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'et_full_system_control', git: 'https://github.com/hmcts/et-full-system-control.git'
   gem 'parallel_tests', '~> 4.1'
-  gem 'rubocop', '~> 1.8', require: false
   gem "rubocop-rails", "~> 2.17", require: false
   gem 'rubocop-rspec', '~> 2.1', require: false
   gem 'rspec-rails', '~> 6.0'

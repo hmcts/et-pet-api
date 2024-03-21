@@ -107,13 +107,13 @@ module EtApi
                 if claimants_file.present?
                   expect(root_element).to have_content "et1a_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.csv"
                 else
-                  expect(root_element).not_to have_content "et1a_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.csv"
+                  expect(root_element).to have_no_content "et1a_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.csv"
                 end
 
                 if claim_details_file.present?
                   expect(root_element).to have_content("et1_attachment_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.rtf")
                 else
-                  expect(root_element).not_to have_content("et1_attachment_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.rtf")
+                  expect(root_element).to have_no_content("et1_attachment_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.rtf")
                 end
               end
 
