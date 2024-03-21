@@ -186,10 +186,10 @@ GEM
     docker-api (2.2.0)
       excon (>= 0.47.0)
       multi_json
-    dotenv (2.8.1)
-    dotenv-rails (2.8.1)
-      dotenv (= 2.8.1)
-      railties (>= 3.2)
+    dotenv (3.1.0)
+    dotenv-rails (3.1.0)
+      dotenv (= 3.1.0)
+      railties (>= 6.1)
     drb (2.2.1)
     erubi (1.12.0)
     et-orbi (1.2.9)
@@ -529,7 +529,7 @@ DEPENDENCIES
   bundler-audit (~> 0.9.1)
   byebug
   database_cleaner (~> 2.0)
-  dotenv-rails (~> 2.7)
+  dotenv-rails (~> 3.1)
   et_acas_api!
   et_azure_insights (= 0.3.2)!
   et_exporter!
