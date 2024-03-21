@@ -201,7 +201,7 @@ GEM
       sinatra (~> 3.0)
       sinatra-contrib (~> 3.0)
     excon (0.109.0)
-    factory_bot (6.3.0)
+    factory_bot (6.4.6)
       activesupport (>= 5.0.0)
     faker (3.2.3)
       i18n (>= 1.8.11, < 2)
