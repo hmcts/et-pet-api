@@ -200,7 +200,7 @@ GEM
       nokogiri (~> 1.8, >= 1.8.2)
       sinatra (~> 3.0)
       sinatra-contrib (~> 3.0)
-    excon (0.109.0)
+    excon (0.110.0)
     factory_bot (6.4.6)
       activesupport (>= 5.0.0)
     faker (3.2.3)
