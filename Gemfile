@@ -30,7 +30,7 @@ gem 'wisper', git: 'https://github.com/krisleech/wisper.git', ref: '5587c1ad341a
 
 gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsights-Ruby.git', ref: '5db6b4'
 gem 'et_azure_insights', '0.3.2', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.3.2'
-gem 'notifications-ruby-client', '~> 5.3'
+gem 'notifications-ruby-client', '~> 6.0'
 gem "sentry-rails", "~> 5.7"
 gem "sentry-ruby", "~> 5.7"
 gem "sentry-sidekiq", "~> 5.7"
