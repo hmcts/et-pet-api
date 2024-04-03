@@ -9,6 +9,16 @@ FactoryBot.define do
       export_claims { false }
     end
 
+    trait :atos do
+      for_all_offices
+      name { "ATOS Secondary" }
+      reference { "atos_secondary" }
+      enabled { true }
+      export_claims { false }
+      export_responses { false }
+      always_save_export { true }
+    end
+
     trait :ccd do
       name { "CCD" }
       reference { "ccd_manchester" }

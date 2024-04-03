@@ -219,12 +219,6 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-
-      it 'includes the additional information file in the exported data' do
-        reference = response_to_repair.reference
-        full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
-        expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
-      end
     end
 
     context 'with json for a response with an additional_information file upload that has been processed but attachment is not present' do
@@ -241,12 +235,6 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-
-      it 'includes the additional information file in the exported data' do
-        reference = response_to_repair.reference
-        full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
-        expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
-      end
     end
 
     context 'with json for a response with an additional_informatio file upload that has been processed successfully' do

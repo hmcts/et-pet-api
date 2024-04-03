@@ -7,4 +7,12 @@ assign_root_object_to_commands:
       job_class: AssignRootObjectToCommandsJob
       arguments:
         -
-
+housekeeping:
+  cron: "0 2 * * *"
+  class: "ActiveJob::QueueAdapters::SidekiqAdapter::JobWrapper"
+  description: "HousekeepingJob"
+  args:
+    -
+      job_class: HousekeepingJob
+      arguments:
+        -

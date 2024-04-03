@@ -77,5 +77,23 @@ FactoryBot.define do
         instance.commands = [build(:build_response_command, :from_db, db_source: instance, additional_information_key: evaluator.additional_information_key)]
       end
     end
+
+    trait :ready_for_export_to_ccd do
+      exports { [build(:export, :ccd)] }
+    end
+
+    trait :exported_to_ccd do
+      transient do
+        exported_to_ccd_on { Time.current }
+      end
+      after(:create) do |response, evaluator|
+        create(:export, :ccd, :exported, exported_on: evaluator.exported_to_ccd_on, resource: response)
+      end
+    end
+
+    trait :exported_to_atos do
+      exports { [build(:export, :atos, :exported)] }
+
+    end
   end
 end

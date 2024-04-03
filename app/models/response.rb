@@ -1,4 +1,5 @@
 class Response < ApplicationRecord
+  include CcdExportable
   belongs_to :respondent
   belongs_to :representative, optional: true
   has_many :response_uploaded_files, dependent: :destroy
@@ -7,6 +8,11 @@ class Response < ApplicationRecord
   has_many :events, as: :attached_to, dependent: :destroy
   belongs_to :office
   has_many :commands, as: :root_object, dependent: :destroy
+  has_many :exports, as: :resource, dependent: :destroy
+
+  scope :submitted_before, lambda { |date_time|
+    where(date_of_receipt: ..date_time)
+  }
 
   def office_code
     reference[0..1]
