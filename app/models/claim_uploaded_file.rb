@@ -4,6 +4,6 @@
 # An internal join model not to be used directly
 class ClaimUploadedFile < ApplicationRecord
   belongs_to :claim
-  belongs_to :uploaded_file
+  belongs_to :uploaded_file, dependent: :destroy
   default_scope { order(created_at: :asc) }
 end

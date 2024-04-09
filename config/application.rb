@@ -83,5 +83,7 @@ module EtApi
     config.file_conversions = ActiveSupport::OrderedOptions.new
     config.file_conversions.enabled = ENV.fetch('FILE_CONVERSIONS_ENABLED', 'true') == 'true'
     config.file_conversions.allowed_types = ['application/rtf']
+
+    config.delete_records_after = 1.year
   end
 end

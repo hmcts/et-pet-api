@@ -127,5 +127,23 @@ FactoryBot.define do
       end
       uploaded_files { [build(:uploaded_file, :example_data, :system_file_scope), build(:uploaded_file, :example_claim_claimants_csv, :user_file_scope)] }
     end
+
+    trait :ready_for_export_to_ccd do
+      exports { [build(:export, :ccd)] }
+    end
+
+    trait :exported_to_ccd do
+      transient do
+        exported_to_ccd_on { Time.current }
+      end
+      after(:create) do |claim, evaluator|
+        create(:export, :ccd, :exported, exported_on: evaluator.exported_to_ccd_on, resource: claim)
+      end
+    end
+
+    trait :exported_to_atos do
+      exports { [build(:export, :atos, :exported)] }
+
+    end
   end
 end

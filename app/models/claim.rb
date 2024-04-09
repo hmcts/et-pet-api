@@ -2,32 +2,39 @@
 
 # A claim is an employee tribunal claim (form the ET1 form)
 class Claim < ApplicationRecord
+  include CcdExportable
+
   has_many :claim_claimants, dependent: :destroy
   has_many :claim_respondents, dependent: :destroy
   has_many :claim_representatives, dependent: :destroy
   has_many :claim_uploaded_files, dependent: :destroy
 
-  belongs_to :primary_claimant, class_name: 'Claimant', inverse_of: false
+  belongs_to :primary_claimant, class_name: 'Claimant', inverse_of: false, dependent: :destroy
 
   has_many :secondary_claimants, dependent: :destroy, class_name: 'Claimant',
                                  through: :claim_claimants, source: :claimant
-  belongs_to :primary_respondent, class_name: 'Respondent', inverse_of: false, optional: true
+  belongs_to :primary_respondent, class_name: 'Respondent', inverse_of: false, optional: true, dependent: :destroy
   has_many :secondary_respondents, dependent: :destroy, class_name: 'Respondent',
                                    through: :claim_respondents, source: :respondent
-  belongs_to :primary_representative, class_name: 'Representative', inverse_of: false, optional: true
+  belongs_to :primary_representative, class_name: 'Representative', inverse_of: false, optional: true, dependent: :destroy
   has_many :secondary_representatives, class_name: 'Representative',
-                                       through: :claim_representatives, source: :representative
+                                       through: :claim_representatives, source: :representative, dependent: :destroy
   has_many :uploaded_files, through: :claim_uploaded_files
   has_many :pre_allocated_file_keys, as: :allocated_to, dependent: :destroy, inverse_of: :allocated_to
   belongs_to :office, foreign_key: :office_code, primary_key: :code # rubocop:disable Rails/InverseOf
   has_many :events, as: :attached_to, dependent: :destroy
   has_many :commands, as: :root_object, dependent: :destroy
+  has_many :exports, as: :resource, dependent: :destroy
 
   before_save :cache_claimant_count
 
   accepts_nested_attributes_for :secondary_claimants
   accepts_nested_attributes_for :primary_claimant
   accepts_nested_attributes_for :uploaded_files
+
+  scope :submitted_before, lambda { |date_time|
+    where(date_of_receipt: ..date_time)
+  }
 
   # A claim can now have multiple pdf's but this method returns the application pdf
   #
