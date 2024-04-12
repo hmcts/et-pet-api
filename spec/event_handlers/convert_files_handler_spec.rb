@@ -9,7 +9,9 @@ RSpec.describe ConvertFilesHandler do
         "et1_attachment_#{claimant[:first_name].tr(' ', '_')}_#{claimant[:last_name]}"
       end
 
-      it 'converts the rtf file to a pdf file' do
+      it 'converts the rtf file to a pdf file if enabled' do
+        # Arrange
+        allow(Rails.configuration.file_conversions).to receive(:enabled).and_return(true)
         # Act
         described_class.new.handle(claim)
         # Assert
@@ -19,9 +21,7 @@ RSpec.describe ConvertFilesHandler do
         end
       end
 
-      it 'copies the rtf file if disabled' do
-        # Arrange
-        allow(Rails.configuration.file_conversions).to receive(:enabled).and_return(false)
+      it 'copies the rtf file' do
         # Act
         described_class.new.handle(claim)
         # Assert
@@ -51,6 +51,7 @@ RSpec.describe ConvertFilesHandler do
 
       it 'does nothing if the rtf file is already converted' do
         # Arrange
+        allow(Rails.configuration.file_conversions).to receive(:enabled).and_return(true)
         described_class.new.handle(claim)
         # Act
         described_class.new.handle(claim)
