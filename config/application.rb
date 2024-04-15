@@ -81,7 +81,7 @@ module EtApi
     config.flatten_pdf = ENV.fetch('FLATTEN_PDF', "false") == 'true'
 
     config.file_conversions = ActiveSupport::OrderedOptions.new
-    config.file_conversions.enabled = ENV.fetch('FILE_CONVERSIONS_ENABLED', 'true') == 'true'
+    config.file_conversions.enabled = ENV.fetch('FILE_CONVERSIONS_ENABLED', 'false') == 'true'
     config.file_conversions.allowed_types = ['application/rtf']
   end
 end

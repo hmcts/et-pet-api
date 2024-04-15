@@ -137,7 +137,7 @@ module EtApi
 
         def claim_details_file
           claimant = data.dig(:resource, :primary_claimant)
-          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1_attachment_#{claimant[:first_name]}_#{claimant[:last_name]}.pdf" }
+          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1_attachment_#{claimant[:first_name]}_#{claimant[:last_name]}.rtf" }
           download(file_data)
         end
 
@@ -192,7 +192,7 @@ module EtApi
         end
 
         def additional_information_file
-          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == 'additional_information.pdf' }
+          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] =~ /additional_information\.(?:pdf|rtf)/ }
           EtApi::Test::FileObjects::Et3AdditionalInformationFile.new download(file_data)
         end
 

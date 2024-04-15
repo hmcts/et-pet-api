@@ -201,7 +201,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
-        expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
+        expect(full_path).to be_a_file_copy_of(Rails.root.join("spec/fixtures/example.rtf"))
       end
     end
 
@@ -223,7 +223,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
-        expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
+        expect(full_path).to be_a_file_copy_of(Rails.root.join("spec/fixtures/example.rtf"))
       end
     end
 
@@ -245,7 +245,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
-        expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
+        expect(full_path).to be_a_file_copy_of(Rails.root.join("spec/fixtures/example.rtf"))
       end
     end
 
@@ -277,7 +277,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
-        expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
+        expect(full_path).to be_a_file_copy_of(Rails.root.join("spec/fixtures/example.rtf"))
       end
     end
 
@@ -365,7 +365,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       it 'includes the additional_information file in the exported data' do
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
-        expect(full_path).to be_a_pdf_file_containing_title('This is a test rtf file')
+        expect(full_path).to be_a_file_copy_of(Rails.root.join("spec/fixtures/example.rtf"))
       end
     end
   end
