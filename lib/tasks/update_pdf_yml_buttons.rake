@@ -11,7 +11,7 @@ task update_pdf_yml_buttons: :environment do
       node = find_yaml_node.call(name, from: value, path: path + [key])
       return node unless node.nil?
     end
-    return nil
+    nil
   end
 
   node_unselected_option = lambda do |field|

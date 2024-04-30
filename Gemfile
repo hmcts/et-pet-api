@@ -30,7 +30,7 @@ gem 'wisper', git: 'https://github.com/krisleech/wisper.git', ref: '5587c1ad341a
 
 gem 'application_insights', git: 'https://github.com/microsoft/ApplicationInsights-Ruby.git', ref: '5db6b4'
 gem 'et_azure_insights', '0.3.2', git: 'https://github.com/hmcts/et-azure-insights.git', tag: 'v0.3.2'
-gem 'notifications-ruby-client', '~> 5.3'
+gem 'notifications-ruby-client', '~> 6.0'
 gem "sentry-rails", "~> 5.7"
 gem "sentry-ruby", "~> 5.7"
 gem "sentry-sidekiq", "~> 5.7"
@@ -52,7 +52,7 @@ gem 'libreconv', '~> 0.7'
 gem 'azure-storage-blob', '~> 2.0', '>= 2.0.1'
 
 # For general easy http access - mainly for test but used in app too
-gem 'dotenv-rails', '~> 2.7'
+gem 'dotenv-rails', '~> 3.1'
 gem 'httparty', '~> 0.20'
 
 gem 'rexml', '~> 3.2.5'
@@ -64,7 +64,6 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'et_full_system_control', git: 'https://github.com/hmcts/et-full-system-control.git'
   gem 'parallel_tests', '~> 4.1'
-  gem 'rubocop', '~> 1.8', require: false
   gem "rubocop-rails", "~> 2.17", require: false
   gem 'rubocop-rspec', '~> 2.1', require: false
   gem 'rspec-rails', '~> 6.0'
@@ -90,7 +89,7 @@ group :test do
   gem "puma", "~> 6.0"
   gem 'rspec-eventually', '~> 0.2.2'
   gem "selenium-webdriver", "~> 4.10"
-  gem 'super_diff', '~> 0.10.0'
+  gem 'super_diff', '~> 0.10'
   gem 'webmock', '~> 3.11'
 end
 
