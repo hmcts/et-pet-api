@@ -1,4 +1,4 @@
-et1-v3-en:
+et1-v4-en:
   claim_pdf_fields:
     your_details:
       title:
@@ -13,8 +13,10 @@ et1-v3-en:
             - 'Off'
             - 'Miss'
             - 'Off'
+            - 'Off'
           Mr:
             - 'Mister'
+            - 'Off'
             - 'Off'
             - 'Off'
             - 'Off'
@@ -23,7 +25,15 @@ et1-v3-en:
             - 'Missus'
             - 'Off'
             - 'Off'
+            - 'Off'
           Ms:
+            - 'Off'
+            - 'Off'
+            - 'Off'
+            - 'Miz'
+            - 'Miz'
+          Other:
+            - 'Off'
             - 'Off'
             - 'Off'
             - 'Off'
@@ -33,6 +43,9 @@ et1-v3-en:
           - 'Off'
           - 'Off'
           - 'Off'
+          - 'Off'
+      other_specify:
+        field_name: '1.1 other specify'
       first_name:
         field_name: '1.2 first names'
       last_name:
@@ -45,29 +58,28 @@ et1-v3-en:
         field_name: '1.4 DOB year'
       gender:
         field_name:
-          - 1.4 gender - Male
-          - 1.4 gender - Female
+          - 1.5 sex
+          - 1.5 sex female
+          - 1.5 sex prefer not to say
         select_values:
           Female:
             - 'Off'
-            - Female
+            - female
+            - 'Off'
           Male:
-            - Male
+            - 'Yes'
+            - 'Off'
             - 'Off'
           'N/K':
             - 'Off'
             - 'Off'
+            - prefer not to say
         unselected_value:
           - 'Off'
           - 'Off'
-      building:
-        field_name: '1.5 number'
-      street:
-        field_name: '1.5 street'
-      locality:
-        field_name: '1.5 town city'
-      county:
-        field_name: '1.5 county'
+          - 'Off'
+      address:
+        field_name: 1.5 number
       post_code:
         field_name: '1.5 postcode'
       telephone_number:
@@ -80,54 +92,38 @@ et1-v3-en:
         field_name:
           - 1.8 How should we contact you - Email
           - 1.8 How should we contact you - Post
-          - 1.8 How should we contact you - Fax
         select_values:
           Email:
             - Email
             - 'Off'
-            - 'Off'
-          Fax:
-            - 'Off'
-            - 'Off'
-            - Fax
           Post:
             - 'Off'
             - Post
-            - 'Off'
         unselected_value:
           - 'Off'
           - 'Off'
-          - 'Off'
-      allow_video_attendance:
-        field_name:
-          - 1.11 Able to take part in a hearing by video - yes
-          - 1.11 Able to take part in a hearing by video - no
+      allow_video_hearings:
+        field_name: 1.11 video
         select_values:
-          yes:
-            - 'Yes'
-            - 'Off'
-          no:
-            - 'Off'
-            - 'No'
-        unselected_value:
-          - 'Off'
-          - 'Off'
+          yes: 'Yes'
+          no: 'Off'
+        unselected_value: 'Off'
+      allow_phone_hearings:
+        field_name: 1.11 phone
+        select_values:
+          yes: 'Yes'
+          no: 'Off'
+        unselected_value: 'Off'
+      no_phone_or_video_reason:
+        field_name: 1.11 explain
     respondents_details:
       name:
         field_name: '2.1 Give the name of your employer or the person or organisation you are claiming against'
       address:
-        building:
+        details:
           field_name: '2.2 number'
-        street:
-          field_name: '2.2 street'
-        locality:
-          field_name: '2.2 town city'
-        county:
-          field_name: '2.2 county'
         post_code:
           field_name: '2.2 postcode'
-        telephone_number:
-          field_name: '2.2 phone number'
       acas:
         have_acas:
           field_name:
@@ -179,17 +175,9 @@ et1-v3-en:
             - 'Off'
       different_address:
         building:
-          field_name: '2.4 Full, different working address - Number or name'
-        street:
-          field_name: '2.4 Full, different working address - Street'
-        locality:
-          field_name: '2.4 Full, different working address - Town or city'
-        county:
-          field_name: '2.4 Full, different working address - County'
+          details: '2.4 Full, different working address - Number or name'
         post_code:
           field_name: '2.4 Full, different working address - postcode'
-        telephone_number:
-          field_name: '2.4 Full, different working address - phone number'
       additional_respondents:
         field_name: 2.5 If there are other respondents please tick this box and put their names and addresses here
         select_values:
@@ -199,18 +187,10 @@ et1-v3-en:
         name:
           field_name: '2.5 R2 name'
         address:
-          building:
+          details:
             field_name: '2.5 R2 number'
-          street:
-            field_name: '2.5 R2 street'
-          locality:
-            field_name: '2.5 R2 town'
-          county:
-            field_name: '2.5 R2 county'
           post_code:
             field_name: '2.5 R2 postcode'
-          telephone_number:
-            field_name: '2.5 R2 phone number'
         acas:
           have_acas:
             field_name:
@@ -264,18 +244,10 @@ et1-v3-en:
         name:
           field_name: '2.7 R3 name'
         address:
-          building:
+          details:
             field_name: '2.7 R3 number'
-          street:
-            field_name: '2.7 R3 street'
-          locality:
-            field_name: '2.7 R3 town city'
-          county:
-            field_name: '2.7 R3 county'
           post_code:
             field_name: '2.7 R3 postcode'
-          telephone_number:
-            field_name: '2.7 R3 phone number'
         acas:
           have_acas:
             field_name:
@@ -343,8 +315,20 @@ et1-v3-en:
       other_claimants:
         field_name: '3.1 if yes, give the names of any other claimants'
     not_your_employer:
-      claim_type:
-        field_name: '4.1 where the respondent was not your employer, state the type pf claim you are making'
+      was_employed:
+        field_name:
+          - 4.1 yes
+          - 4.1 no
+        select_values:
+          false:
+            - 'Off'
+            - 'no'
+          true:
+            - 'Yes'
+            - 'Off'
+        unselected_value:
+          - 'Off'
+          - 'Off'
     employment_details:
       job_title:
         field_name: '5.2 Please say what job you do or did'
@@ -378,14 +362,22 @@ et1-v3-en:
           field_name:
             - 6.2 pay before tax - weekly
             - 6.2 pay before tax - monthly
+            - 6.2 pay before tax - annually
           select_values:
             weekly:
               - 'Weekly'
               - 'Off'
+              - 'Off'
             monthly:
               - 'Off'
               - 'Monthly'
+              - 'Off'
+            annually:
+              - 'Off'
+              - 'Off'
+              - 'annually'
           unselected_value:
+            - 'Off'
             - 'Off'
             - 'Off'
       pay_after_tax:
@@ -395,14 +387,22 @@ et1-v3-en:
           field_name:
             - 6.2 normal pay - weekly
             - 6.2 normal pay - monthly
+            - 6.2 normal pay - annually
           select_values:
             weekly:
               - 'Weekly'
               - 'Off'
+              - 'Off'
             monthly:
               - 'Off'
               - 'Monthly'
+              -  'Off'
+            annually:
+              - 'Off'
+              - 'Off'
+              - 'annually'
           unselected_value:
+            - 'Off'
             - 'Off'
             - 'Off'
       paid_for_notice_period:
@@ -459,6 +459,28 @@ et1-v3-en:
         field_name: '7.2 Please say when you started (or will start) work'
       salary:
         field_name: '7.3 Please say how much you are now earning (or will earn)'
+      salary_period:
+        field_name:
+          - 7.3 weekly
+          - 7.3 monthly
+          - 7.3 annually
+        select_values:
+          weekly:
+            - 'Weekly'
+            - 'Off'
+            - 'Off'
+          monthly:
+            - 'Off'
+            - 'Monthly'
+            - 'Off'
+          annually:
+            - 'Off'
+            - 'Off'
+            - 'annually'
+        unselected_value:
+          - 'Off'
+          - 'Off'
+          - 'Off'
     type_and_details:
       unfairly_dismissed:
         field_name: 8.1 I was unfairly dismissed (including constructive dismissal)
@@ -512,6 +534,11 @@ et1-v3-en:
           true: 'Yes'
       discriminated_religion:
         field_name: 8.1 religion or belief
+        select_values:
+          false: 'Off'
+          true: 'Yes'
+      whistleblowing:
+        field_name: 8.1 whistleblowing
         select_values:
           false: 'Off'
           true: 'Yes'
@@ -578,24 +605,20 @@ et1-v3-en:
       compensation:
         field_name: '9.2 What compensation or remedy are you seeking?'
     information_to_regulators:
-    whistle_blowing:
-      field_name: '10.1 If your claim consists of, or includes, a claim that you are making a protected disclosure under the Employment Rights Act 1996 (otherwise known as a ‘whistleblowing’ claim), please tick the box if you want a copy of this form, or information from it, to be forwarded on your behalf to a relevant regulator (known as a ‘prescribed person’ under the relevant legislation) by tribunal staff. (See Guidance)'
-      select_values:
-        false: 'Off'
-        true: 'yes'
+      whistle_blowing:
+        field_name: '10.1 If your claim consists of, or includes, a claim that you are making a protected disclosure under the Employment Rights Act 1996 (otherwise known as a ‘whistleblowing’ claim), please tick the box if you want a copy of this form, or information from it, to be forwarded on your behalf to a relevant regulator (known as a ‘prescribed person’ under the relevant legislation) by tribunal staff. (See Guidance)'
+        select_values:
+          false: 'Off'
+          true: 'yes'
+      regulator_name:
+        field_name: 10.1 name of relevant regulator
     your_representative:
       name_of_representative:
         field_name: '11.1 Name of representative'
       name_of_organisation:
         field_name: '11.2 Name of organisation'
-      building:
+      address:
         field_name: "11.3 Representative's address: number or name"
-      street:
-        field_name: "11.3 Representative's address: street"
-      locality:
-        field_name: "11.3 Representative's address: town or city"
-      county:
-        field_name: "11.3 Representative's address: county"
       post_code:
         field_name: "11.3 Representative's address: postcode"
       dx_number:
@@ -612,26 +635,16 @@ et1-v3-en:
         field_name:
           - 11.9 How would you prefer us to communicate with them? Email
           - 11.9 How would you prefer us to communicate with them? Post
-          - 11.9 How would you prefer us to communicate with them? Fax
         unselected_value:
-          - 'Off'
           - 'Off'
           - 'Off'
         select_values:
           email:
             - 'Email'
             - 'Off'
-            - 'Off'
-          fax:
-            - 'Off'
-            - 'Off'
-            - 'Fax'
           post:
             - 'Off'
             - 'Post'
-            - 'Off'
-      fax_number:
-        field_name: '11.10 Fax number'
     disability:
       has_special_needs:
         field_name:
@@ -654,18 +667,10 @@ et1-v3-en:
         name:
           field_name: '13 R4 name'
         address:
-          building:
+          details:
             field_name: '13 R4 number'
-          street:
-            field_name: '13 R4 street'
-          locality:
-            field_name: '13 R4 town city'
-          county:
-            field_name: '13 R4 county'
           post_code:
             field_name: '13 R4 postcode'
-          telephone_number:
-            field_name: '13 R4 phone number'
         acas:
           have_acas:
             field_name:
@@ -719,18 +724,10 @@ et1-v3-en:
         name:
           field_name: '13 R5 name'
         address:
-          building:
+          details:
             field_name: '13 R5 number'
-          street:
-            field_name: '13 R5 street'
-          locality:
-            field_name: '13 R5 town city'
-          county:
-            field_name: '13 R5 county'
           post_code:
             field_name: '13 R5 postcode'
-          telephone_number:
-            field_name: '13 R5 phone number'
         acas:
           have_acas:
             field_name:

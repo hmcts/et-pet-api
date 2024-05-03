@@ -7,6 +7,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
   attr_reader :output_file
 
   PAY_CLAIMS = ['redundancy', 'notice', 'holiday', 'arrears', 'other'].freeze
+  TITLES_WITHOUT_OTHER = %w[Mr Mrs Miss Ms].freeze
 
   def self.call(source, template_reference: 'et1-v3-en', time_zone: 'London', **)
     new(source, template_reference: template_reference, time_zone: time_zone).call
@@ -30,6 +31,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_respondents_details_fields(result)
     apply_secondary_respondents_details_fields(result)
     apply_multiple_cases_section(result)
+    apply_not_your_employer_section(result)
     apply_employment_details_section(result)
     apply_earnings_and_benefits_section(result)
     apply_what_happened_since_section(result)
@@ -47,14 +49,19 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
   def apply_your_details_fields(result)
     primary_claimant = source.primary_claimant
     pca = primary_claimant.address
-    apply_field result, primary_claimant.title, :your_details, :title
+    apply_field result, primary_claimant.title.in?(TITLES_WITHOUT_OTHER) ? primary_claimant.title : 'Other', :your_details, :title
+    apply_field result, primary_claimant.title.in?(TITLES_WITHOUT_OTHER) ? nil : primary_claimant.title, :your_details, :other_specify
     apply_field result, primary_claimant.first_name, :your_details, :first_name
     apply_field result, primary_claimant.last_name, :your_details, :last_name
     apply_field result, primary_claimant.gender, :your_details, :gender
-    apply_field result, pca.building, :your_details, :building
-    apply_field result, pca.street, :your_details, :street
-    apply_field result, pca.locality, :your_details, :locality
-    apply_field result, pca.county, :your_details, :county
+    if has_field_definition?(:your_details, :address)
+      apply_field result, [pca.building, pca.street, pca.locality, pca.county].join("\n"), :your_details, :address
+    else
+      apply_field result, pca.building, :your_details, :building
+      apply_field result, pca.street, :your_details, :street
+      apply_field result, pca.locality, :your_details, :locality
+      apply_field result, pca.county, :your_details, :county
+    end
     apply_field result, format_post_code(pca.post_code), :your_details, :post_code
     apply_field result, primary_claimant.mobile_number, :your_details, :alternative_telephone_number
     apply_field result, primary_claimant.contact_preference, :your_details, :correspondence
@@ -63,7 +70,13 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, primary_claimant&.date_of_birth&.strftime('%Y'), :your_details, :dob_year
     apply_field result, primary_claimant.email_address, :your_details, :email_address
     apply_field result, primary_claimant.address_telephone_number, :your_details, :telephone_number
-    apply_field result, primary_claimant.allow_video_attendance, :your_details, :allow_video_attendance
+    if has_field_definition?(:your_details, :allow_video_hearings)
+      apply_field result, primary_claimant.allow_video_hearings, :your_details, :allow_video_hearings
+      apply_field result, primary_claimant.allow_phone_hearings, :your_details, :allow_phone_hearings
+      apply_field result, primary_claimant.no_phone_or_video_reason, :your_details, :no_phone_or_video_reason
+    else
+      apply_field result, primary_claimant.allow_video_attendance, :your_details, :allow_video_hearings
+    end
   end
 
   def apply_office_use_only_fields(result)
@@ -77,16 +90,24 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, resp1.acas_certificate_number, :respondents_details, :acas, :acas_number
     apply_field result, resp1.acas_certificate_number.present?, :respondents_details, :acas, :have_acas
     apply_field result, resp1.acas_exemption_code, :respondents_details, :acas, :no_acas_number_reason
-    apply_field result, resp1.address.building, :respondents_details, :address, :building
-    apply_field result, resp1.address.street, :respondents_details, :address, :street
-    apply_field result, resp1.address.locality, :respondents_details, :address, :locality
-    apply_field result, resp1.address.county, :respondents_details, :address, :county
+    if has_field_definition?(:respondents_details, :address)
+      apply_field result, [resp1.address.building, resp1.address.street, resp1.address.locality, resp1.address.county].join("\n"), :respondents_details, :address
+    else
+      apply_field result, resp1.address.building, :respondents_details, :address, :building
+      apply_field result, resp1.address.street, :respondents_details, :address, :street
+      apply_field result, resp1.address.locality, :respondents_details, :address, :locality
+      apply_field result, resp1.address.county, :respondents_details, :address, :county
+    end
     apply_field result, format_post_code(resp1.address.post_code), :respondents_details, :address, :post_code
     apply_field result, resp1.address_telephone_number, :respondents_details, :address, :telephone_number
-    apply_field result, resp1.work_address&.building, :respondents_details, :different_address, :building
-    apply_field result, resp1.work_address&.street, :respondents_details, :different_address, :street
-    apply_field result, resp1.work_address&.locality, :respondents_details, :different_address, :locality
-    apply_field result, resp1.work_address&.county, :respondents_details, :different_address, :county
+    if has_field_definition?(:respondents_details, :different_address, :details)
+      apply_field result, [resp1.work_address&.building, resp1.work_address&.street, resp1.work_address&.locality, resp1.work_address&.county].join("\n"), :respondents_details, :different_address, :details
+    else
+      apply_field result, resp1.work_address&.building, :respondents_details, :different_address, :building
+      apply_field result, resp1.work_address&.street, :respondents_details, :different_address, :street
+      apply_field result, resp1.work_address&.locality, :respondents_details, :different_address, :locality
+      apply_field result, resp1.work_address&.county, :respondents_details, :different_address, :county
+    end
     apply_field result, format_post_code(resp1.work_address&.post_code, optional: resp1.present?), :respondents_details, :different_address, :post_code
     apply_field result, resp1.work_address_telephone_number, :respondents_details, :different_address, :telephone_number
     apply_field result, source.secondary_respondents.present?, :respondents_details, :additional_respondents
@@ -102,10 +123,14 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
       apply_field result, resp&.acas_certificate_number, pdf_section, pdf_field, :acas, :acas_number
       apply_field result, resp&.acas_certificate_number.present?, pdf_section, pdf_field, :acas, :have_acas
       apply_field result, resp&.acas_exemption_code, pdf_section, pdf_field, :acas, :no_acas_number_reason
-      apply_field result, resp&.address&.building, pdf_section, pdf_field, :address, :building
-      apply_field result, resp&.address&.street, pdf_section, pdf_field, :address, :street
-      apply_field result, resp&.address&.locality, pdf_section, pdf_field, :address, :locality
-      apply_field result, resp&.address&.county, pdf_section, pdf_field, :address, :county
+      if has_field_definition?(pdf_section, pdf_field, :address, :details)
+        apply_field result, [resp&.address&.building, resp&.address&.street, resp&.address&.locality, resp&.address&.county].join("\n"), pdf_section, pdf_field, :address, :details
+      else
+        apply_field result, resp&.address&.building, pdf_section, pdf_field, :address, :building
+        apply_field result, resp&.address&.street, pdf_section, pdf_field, :address, :street
+        apply_field result, resp&.address&.locality, pdf_section, pdf_field, :address, :locality
+        apply_field result, resp&.address&.county, pdf_section, pdf_field, :address, :county
+      end
       apply_field result, format_post_code(resp&.address&.post_code, optional: resp.blank?), pdf_section, pdf_field, :address, :post_code
       apply_field result, resp&.address_telephone_number, pdf_section, pdf_field, :address, :telephone_number
 
@@ -115,6 +140,10 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
   def apply_multiple_cases_section(result)
     apply_field result, source.other_known_claimants, :multiple_cases, :have_similar_claims
     apply_field result, source.other_known_claimant_names, :multiple_cases, :other_claimants
+  end
+
+  def apply_not_your_employer_section(result)
+    apply_field result, !source.was_employed?, :not_your_employer, :was_employed
   end
 
   def apply_employment_details_section(result)
@@ -147,6 +176,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, ed[:found_new_job], :what_happened_since, :have_another_job
     apply_field result, format_date(ed[:new_job_start_date], optional: true), :what_happened_since, :start_date
     apply_field result, ed[:new_job_gross_pay], :what_happened_since, :salary
+    apply_field result, ed[:new_job_gross_pay_period_type], :what_happened_since, :salary_period
   end
 
   def apply_type_and_details_section(result)
@@ -161,6 +191,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, source.discrimination_claims.include?('race'), :type_and_details, :discriminated_race
     apply_field result, source.discrimination_claims.include?('religion_or_belief'), :type_and_details, :discriminated_religion
     apply_field result, source.discrimination_claims.include?('sex_including_equal_pay'), :type_and_details, :discriminated_sex
+    apply_field result, source.send_claim_to_whistleblowing_entity, :type_and_details, :whistleblowing
     apply_field result, source.other_claim_details.present?, :type_and_details, :other_type_of_claim
     apply_field result, source.other_claim_details, :type_and_details, :other_type_of_claim_details
     apply_field result, owed_anything?, :type_and_details, :owed
@@ -182,16 +213,21 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
 
   def apply_information_to_regulators_section(result)
     apply_field result, source.send_claim_to_whistleblowing_entity.present?, :information_to_regulators, :whistle_blowing
+    apply_field result, source.whistleblowing_regulator_name, :information_to_regulators, :regulator_name
   end
 
   def apply_your_representative_section(result)
     rep = source.primary_representative
     apply_field result, rep&.organisation_name, :your_representative, :name_of_organisation
     apply_field result, rep&.name, :your_representative, :name_of_representative
-    apply_field result, rep&.address&.building, :your_representative, :building
-    apply_field result, rep&.address&.street, :your_representative, :street
-    apply_field result, rep&.address&.locality, :your_representative, :locality
-    apply_field result, rep&.address&.county, :your_representative, :county
+    if has_field_definition?(:your_representative, :address)
+      apply_field result, [rep&.address&.building, rep&.address&.street, rep&.address&.locality, rep&.address&.county], :your_representative, :address
+    else
+      apply_field result, rep&.address&.building, :your_representative, :building
+      apply_field result, rep&.address&.street, :your_representative, :street
+      apply_field result, rep&.address&.locality, :your_representative, :locality
+      apply_field result, rep&.address&.county, :your_representative, :county
+    end
     apply_field result, format_post_code(rep&.address&.post_code, optional: rep.blank?), :your_representative, :post_code
     apply_field result, rep&.address_telephone_number, :your_representative, :telephone_number
     apply_field result, rep&.mobile_number, :your_representative, :alternative_telephone_number
