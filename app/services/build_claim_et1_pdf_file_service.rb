@@ -7,9 +7,9 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
   attr_reader :output_file
 
   PAY_CLAIMS = ['redundancy', 'notice', 'holiday', 'arrears', 'other'].freeze
-  TITLES_WITHOUT_OTHER = %w[Mr Mrs Miss Ms].freeze
+  TITLES_WITHOUT_OTHER = ['Mr', 'Mrs', 'Miss', 'Ms', nil].freeze
 
-  def self.call(source, template_reference: 'et1-v3-en', time_zone: 'London', **)
+  def self.call(source, template_reference: 'et1-v4-en', time_zone: 'London', **)
     new(source, template_reference: template_reference, time_zone: time_zone).call
   end
 
@@ -70,13 +70,10 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, primary_claimant&.date_of_birth&.strftime('%Y'), :your_details, :dob_year
     apply_field result, primary_claimant.email_address, :your_details, :email_address
     apply_field result, primary_claimant.address_telephone_number, :your_details, :telephone_number
-    if has_field_definition?(:your_details, :allow_video_hearings)
-      apply_field result, primary_claimant.allow_video_hearings, :your_details, :allow_video_hearings
-      apply_field result, primary_claimant.allow_phone_hearings, :your_details, :allow_phone_hearings
-      apply_field result, primary_claimant.no_phone_or_video_reason, :your_details, :no_phone_or_video_reason
-    else
-      apply_field result, primary_claimant.allow_video_attendance, :your_details, :allow_video_hearings
-    end
+    apply_field result, primary_claimant.allow_video_attendance, :your_details, :allow_video_attendance
+    apply_field result, primary_claimant.allow_phone_attendance, :your_details, :allow_phone_attendance
+    apply_field result, primary_claimant.allow_phone_attendance == false && primary_claimant.allow_video_attendance == false, :your_details, :no_phone_or_video_attendance
+    apply_field result, primary_claimant.no_phone_or_video_reason, :your_details, :no_phone_or_video_reason
   end
 
   def apply_office_use_only_fields(result)
@@ -90,8 +87,9 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, resp1.acas_certificate_number, :respondents_details, :acas, :acas_number
     apply_field result, resp1.acas_certificate_number.present?, :respondents_details, :acas, :have_acas
     apply_field result, resp1.acas_exemption_code, :respondents_details, :acas, :no_acas_number_reason
-    if has_field_definition?(:respondents_details, :address)
-      apply_field result, [resp1.address.building, resp1.address.street, resp1.address.locality, resp1.address.county].join("\n"), :respondents_details, :address
+    if has_field_definition?(:respondents_details, :address, :details)
+      apply_field result, [resp1.address.building, resp1.address.street, resp1.address.locality, resp1.address.county].compact.compact_blank.join("\n"), :respondents_details,
+                  :address, :details
     else
       apply_field result, resp1.address.building, :respondents_details, :address, :building
       apply_field result, resp1.address.street, :respondents_details, :address, :street
@@ -101,7 +99,8 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, format_post_code(resp1.address.post_code), :respondents_details, :address, :post_code
     apply_field result, resp1.address_telephone_number, :respondents_details, :address, :telephone_number
     if has_field_definition?(:respondents_details, :different_address, :details)
-      apply_field result, [resp1.work_address&.building, resp1.work_address&.street, resp1.work_address&.locality, resp1.work_address&.county].join("\n"), :respondents_details, :different_address, :details
+      apply_field result, [resp1.work_address&.building, resp1.work_address&.street, resp1.work_address&.locality, resp1.work_address&.county].compact.compact_blank.join("\n"),
+                  :respondents_details, :different_address, :details
     else
       apply_field result, resp1.work_address&.building, :respondents_details, :different_address, :building
       apply_field result, resp1.work_address&.street, :respondents_details, :different_address, :street
@@ -121,10 +120,11 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
 
       apply_field result, resp&.name, pdf_section, pdf_field, :name
       apply_field result, resp&.acas_certificate_number, pdf_section, pdf_field, :acas, :acas_number
-      apply_field result, resp&.acas_certificate_number.present?, pdf_section, pdf_field, :acas, :have_acas
+      apply_field result, resp&.acas_certificate_number&.present?, pdf_section, pdf_field, :acas, :have_acas
       apply_field result, resp&.acas_exemption_code, pdf_section, pdf_field, :acas, :no_acas_number_reason
       if has_field_definition?(pdf_section, pdf_field, :address, :details)
-        apply_field result, [resp&.address&.building, resp&.address&.street, resp&.address&.locality, resp&.address&.county].join("\n"), pdf_section, pdf_field, :address, :details
+        apply_field result, [resp&.address&.building, resp&.address&.street, resp&.address&.locality, resp&.address&.county].compact.compact_blank.join("\n"), pdf_section,
+                    pdf_field, :address, :details
       else
         apply_field result, resp&.address&.building, pdf_section, pdf_field, :address, :building
         apply_field result, resp&.address&.street, pdf_section, pdf_field, :address, :street
@@ -143,7 +143,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
   end
 
   def apply_not_your_employer_section(result)
-    apply_field result, !source.was_employed?, :not_your_employer, :was_employed
+    apply_field result, source.was_employed?, :not_your_employer, :was_employed
   end
 
   def apply_employment_details_section(result)
@@ -191,7 +191,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, source.discrimination_claims.include?('race'), :type_and_details, :discriminated_race
     apply_field result, source.discrimination_claims.include?('religion_or_belief'), :type_and_details, :discriminated_religion
     apply_field result, source.discrimination_claims.include?('sex_including_equal_pay'), :type_and_details, :discriminated_sex
-    apply_field result, source.send_claim_to_whistleblowing_entity, :type_and_details, :whistleblowing
+    apply_field result, source.is_whistleblowing?, :type_and_details, :whistleblowing
     apply_field result, source.other_claim_details.present?, :type_and_details, :other_type_of_claim
     apply_field result, source.other_claim_details, :type_and_details, :other_type_of_claim_details
     apply_field result, owed_anything?, :type_and_details, :owed
@@ -221,7 +221,8 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, rep&.organisation_name, :your_representative, :name_of_organisation
     apply_field result, rep&.name, :your_representative, :name_of_representative
     if has_field_definition?(:your_representative, :address)
-      apply_field result, [rep&.address&.building, rep&.address&.street, rep&.address&.locality, rep&.address&.county], :your_representative, :address
+      apply_field result, [rep&.address&.building, rep&.address&.street, rep&.address&.locality, rep&.address&.county].compact.compact_blank.join("\n"), :your_representative,
+                  :address
     else
       apply_field result, rep&.address&.building, :your_representative, :building
       apply_field result, rep&.address&.street, :your_representative, :street

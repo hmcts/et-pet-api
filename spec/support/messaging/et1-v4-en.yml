@@ -7,6 +7,7 @@ et1-v4-en:
           - 1.1 Title Mrs
           - 1.1 Title Miss
           - 1.1 Title Ms
+          - 1.1 Title other
         select_values:
           Miss:
             - 'Off'
@@ -102,14 +103,20 @@ et1-v4-en:
         unselected_value:
           - 'Off'
           - 'Off'
-      allow_video_hearings:
+      allow_video_attendance:
         field_name: 1.11 video
         select_values:
           yes: 'Yes'
           no: 'Off'
         unselected_value: 'Off'
-      allow_phone_hearings:
+      allow_phone_attendance:
         field_name: 1.11 phone
+        select_values:
+          yes: 'Yes'
+          no: 'Off'
+        unselected_value: 'Off'
+      no_phone_or_video_attendance:
+        field_name: 1.11 no
         select_values:
           yes: 'Yes'
           no: 'Off'
@@ -174,8 +181,8 @@ et1-v4-en:
             - 'Off'
             - 'Off'
       different_address:
-        building:
-          details: '2.4 Full, different working address - Number or name'
+        details:
+          field_name: '2.4 Full, different working address - Number or name'
         post_code:
           field_name: '2.4 Full, different working address - postcode'
       additional_respondents:
@@ -251,15 +258,15 @@ et1-v4-en:
         acas:
           have_acas:
             field_name:
-              - 2.8 Do you have an Acas early conciliation certificate number? Yes
-              - 2.8 Do you have an Acas early conciliation certificate number? No
+              - 2.8 yes
+              - 2.8 no
             select_values:
               true:
                 - 'Yes'
                 - 'Off'
               false:
                 - 'Off'
-                - 'No'
+                - 'Yes'
             unselected_value:
               - 'Off'
               - 'Off'
@@ -322,7 +329,7 @@ et1-v4-en:
         select_values:
           false:
             - 'Off'
-            - 'no'
+            - 'Yes'
           true:
             - 'Yes'
             - 'Off'

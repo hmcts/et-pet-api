@@ -4,6 +4,8 @@ require 'securerandom'
 FactoryBot.define do
   factory :json_claimant_data, class: '::EtApi::Test::Json::Document' do
     allow_video_attendance { true }
+    allow_phone_attendance { true }
+    no_phone_or_video_reason { nil }
 
     trait :mr_na_o_malley do
       mr_first_last

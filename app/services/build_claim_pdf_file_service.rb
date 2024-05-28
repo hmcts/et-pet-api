@@ -35,7 +35,7 @@ class BuildClaimPdfFileService
     path_specs << { et1a.output_file.path => ['13-15'] } if et1a
 
     [
-      Tempfile.new.tap { |file| builder.cat(*path_specs, { et1.output_file.path => ['13-15'] }, file.path) },
+      Tempfile.new.tap { |file| builder.cat(*path_specs, { et1.output_file.path => ['13-14'] }, file.path) },
       Tempfile.new.tap { |file| builder.cat(*path_specs, file.path) }
     ]
   end

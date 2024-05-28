@@ -12,6 +12,8 @@ class BuildPrimaryClaimantCommand < BaseCommand
   attribute :date_of_birth, :date
   attribute :special_needs, :string
   attribute :allow_video_attendance, :boolean
+  attribute :allow_phone_attendance, :boolean
+  attribute :no_phone_or_video_reason, :string
 
   validates :address_attributes, presence: true, address: true
   validates :contact_preference, inclusion: { in: ['Email', 'Post', 'Fax'] }
