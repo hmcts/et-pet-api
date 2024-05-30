@@ -45,4 +45,4 @@ USER app
 ENV HOME /home/app
 WORKDIR /home/app/api
 ENV RAILS_ENV=production
-CMD ["bundle", "exec", "iodine", "-port", "8080"]
+CMD ["bundle", "exec", "rails", "server:start"]
