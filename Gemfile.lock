@@ -186,9 +186,9 @@ GEM
     docker-api (2.2.0)
       excon (>= 0.47.0)
       multi_json
-    dotenv (3.1.0)
-    dotenv-rails (3.1.0)
-      dotenv (= 3.1.0)
+    dotenv (3.1.2)
+    dotenv-rails (3.1.2)
+      dotenv (= 3.1.2)
       railties (>= 6.1)
     drb (2.2.1)
     erubi (1.12.0)
