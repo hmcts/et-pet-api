@@ -1,6 +1,6 @@
 class RepairUploadedFilesHandler
   def handle(root_object)
-    root_object.uploaded_files.includes(:file_attachment).each do |uploaded_file|
+    root_object.uploaded_files.includes(:file_attachment).find_each do |uploaded_file|
       next if file_is_ok?(uploaded_file) || (uploaded_file.import_from_key.nil? && uploaded_file.import_file_url.nil?)
 
       import_from_key(uploaded_file, root_object)

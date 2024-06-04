@@ -16,7 +16,7 @@ FactoryBot.define do
       secondary_claimant_traits { [:mr_first_last] }
       secondary_respondent_traits { [:full] }
       primary_representative_traits { [:full] }
-      pdf_template { 'et1-v3-en' }
+      pdf_template { 'et1-v4-en' }
       email_template { 'et1-v1-en' }
     end
 
@@ -139,9 +139,12 @@ FactoryBot.define do
       send_claim_to_whistleblowing_entity { false }
       miscellaneous_information { 'Miscellaneous Information' }
       is_unfair_dismissal { false }
-      pdf_template_reference { "et1-v3-en" }
+      pdf_template_reference { "et1-v4-en" }
       email_template_reference { "et1-v1-en" }
       confirmation_email_recipients { ['confirmation_recipient@digital.justice.gov.uk'] }
+      was_employed { false }
+      whistleblowing_regulator_name { nil }
+      is_whistleblowing { false }
     end
     trait :full do
       minimal

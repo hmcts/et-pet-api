@@ -26,14 +26,25 @@ module PdfBuilder
     end
 
     def apply_field(result, field_value, *path)
-      field_def = yaml_data.dig(*path)
-      return if field_def.nil? || field_def[:field_name] == false
+      field_def = field_definition(*path)
+      return if field_def.nil?
 
       if field_def.key?(:select_values)
         apply_selected_value_for(result, field_def, field_value)
       else
         result[field_def[:field_name]] = field_value
       end
+    end
+
+    def field_definition(*path)
+      field_def = yaml_data.dig(*path)
+      return nil if field_def.nil? || !field_def.key?(:field_name) || field_def[:field_name] == false
+
+      field_def
+    end
+
+    def has_field_definition?(*path)
+      field_definition(*path).present?
     end
 
     def apply_selected_value_for(result, field_def, field_value)

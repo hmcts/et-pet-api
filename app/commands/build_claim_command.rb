@@ -18,11 +18,14 @@ class BuildClaimCommand < BaseCommand
   attribute :miscellaneous_information, :string
   attribute :employment_details
   attribute :is_unfair_dismissal, :boolean
-  attribute :pdf_template_reference, :string, default: 'et1-v3-en'
+  attribute :pdf_template_reference, :string, default: 'et1-v4-en'
   attribute :email_template_reference, :string, default: 'et1-v1-en'
   attribute :confirmation_email_recipients, default: []
   attribute :time_zone, :string, default: 'London'
-  validates :pdf_template_reference, inclusion: { in: ['et1-v1-en', 'et1-v1-cy', 'et1-v2-en', 'et1-v2-cy', 'et1-v3-en', 'et1-v3-cy'] }
+  attribute :was_employed, :boolean
+  attribute :is_whistleblowing, :boolean
+  attribute :whistleblowing_regulator_name, :string
+  validates :pdf_template_reference, inclusion: { in: ['et1-v1-en', 'et1-v1-cy', 'et1-v2-en', 'et1-v2-cy', 'et1-v3-en', 'et1-v3-cy', 'et1-v4-en'] }
   validates :email_template_reference, inclusion: { in: ['et1-v1-en', 'et1-v1-cy'] }
   validates :time_zone, inclusion: { in: ['London'] }
 

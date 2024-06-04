@@ -11,7 +11,7 @@ module EtApi
           Et1PdfFileSection::YourDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
           Et1PdfFileSection::RespondentsDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
           Et1PdfFileSection::MultipleCasesSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
-          Et1PdfFileSection::NotYourEmployerSection.new(field_values, lookup_root, template: template).has_contents_for?
+          Et1PdfFileSection::NotYourEmployerSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
           Et1PdfFileSection::EmploymentDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
           Et1PdfFileSection::EarningsAndBenefitsSection.new(field_values, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)
           Et1PdfFileSection::WhatHappenedSinceSection.new(field_values, lookup_root, template: template).has_contents_for?(employment: claim.employment_details)

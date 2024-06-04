@@ -91,7 +91,7 @@ module EtApi
           EtApi::Test::FileObjects::Et1aTxtFile.new download(uploaded_file)
         end
 
-        def et1_pdf_file(template: 'et1-v3-en')
+        def et1_pdf_file(template: 'et1-v4-en')
           claimant = data.dig(:resource, :primary_claimant)
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1_#{scrubber(claimant[:first_name]).downcase}_#{scrubber(claimant[:last_name]).downcase}.pdf" }
           EtApi::Test::FileObjects::Et1PdfFile.new download(file_data), template: template, lookup_root: 'claim_pdf_fields'
@@ -103,7 +103,7 @@ module EtApi
 
         def assert_secondary_claimants(claimants)
           expected_claimants = claimants.map do |claimant|
-            include(claimant.except(:address_attributes, :allow_video_attendance, :contact_preference).
+            include(claimant.except(:address_attributes, :allow_video_attendance, :allow_phone_attendance, :no_phone_or_video_reason, :contact_preference).
               merge(address: a_hash_including(claimant[:address_attributes].to_h), contact_preference: claimant[:contact_preference]&.underscore))
           end
           expect(data.dig(:resource, :secondary_claimants)).to match_array(expected_claimants)

@@ -253,7 +253,7 @@ GEM
     i18n (1.14.4)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
-    iodine (0.7.57)
+    iodine (0.7.58)
     irb (1.12.0)
       rdoc
       reline (>= 0.4.2)
@@ -279,7 +279,7 @@ GEM
     marcel (1.0.4)
     matrix (0.4.2)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.5)
+    mini_portile2 (2.8.6)
     minitest (5.22.3)
     multi_json (1.15.0)
     multi_xml (0.6.0)
@@ -299,7 +299,7 @@ GEM
     net-smtp (0.4.0.1)
       net-protocol
     nio4r (2.7.1)
-    nokogiri (1.16.3)
+    nokogiri (1.16.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     notifications-ruby-client (6.0.0)
@@ -330,7 +330,7 @@ GEM
     puma (6.4.2)
       nio4r (~> 2.0)
     raabro (1.4.0)
-    racc (1.7.3)
+    racc (1.8.0)
     rack (2.2.9)
     rack-protection (3.2.0)
       base64 (>= 0.1.0)
@@ -382,7 +382,8 @@ GEM
     regexp_parser (2.9.0)
     reline (0.4.3)
       io-console (~> 0.5)
-    rexml (3.2.6)
+    rexml (3.2.8)
+      strscan (>= 3.0.9)
     roda (3.78.0)
       rack
     rspec-core (3.13.0)
@@ -490,6 +491,7 @@ GEM
       listen (>= 2.7, < 4.0)
       spring (>= 4)
     stringio (3.1.0)
+    strscan (3.1.0)
     super_diff (0.11.0)
       attr_extras (>= 6.2.4)
       diff-lcs

@@ -4,7 +4,7 @@ class BuildClaimPdfFileService
   include PdfBuilder::Rendering
   include PdfBuilder::PreAllocation
 
-  def self.call(source, template_reference: 'et1-v3-en', time_zone: 'London', **)
+  def self.call(source, template_reference: 'et1-v4-en', time_zone: 'London', **)
     new(source, template_reference: template_reference, time_zone: time_zone).call
   end
 
@@ -35,7 +35,7 @@ class BuildClaimPdfFileService
     path_specs << { et1a.output_file.path => ['13-15'] } if et1a
 
     [
-      Tempfile.new.tap { |file| builder.cat(*path_specs, { et1.output_file.path => ['13-15'] }, file.path) },
+      Tempfile.new.tap { |file| builder.cat(*path_specs, { et1.output_file.path => ['13-14'] }, file.path) },
       Tempfile.new.tap { |file| builder.cat(*path_specs, file.path) }
     ]
   end

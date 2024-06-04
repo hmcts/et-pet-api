@@ -258,7 +258,7 @@ RSpec.describe 'Create Claim Request', type: :request do
       it 'has a claim details file' do
         submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
         input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file.downcase), __FILE__)
-        expect(et_exporter.find_claim_by_submission_reference(submission_reference).claim_details_file.path).to  be_a_file_copy_of(input_rtf_file_full_path)
+        expect(et_exporter.find_claim_by_submission_reference(submission_reference).claim_details_file.path).to be_a_file_copy_of(input_rtf_file_full_path)
       end
     end
 

@@ -22,6 +22,14 @@ module EtApi
             val = "#{match[1]}#{' ' * spaces}#{match[2]}"
             val.slice(0, 7)
           end
+
+          def template_has_combined_address_fields?
+            template.split('-')[1].gsub(/\Av/, '').to_i > 3
+          end
+
+          def template_has_phone_or_video_attendance_fields?
+            template_has_combined_address_fields?
+          end
         end
       end
     end

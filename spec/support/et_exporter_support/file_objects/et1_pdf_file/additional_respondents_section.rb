@@ -4,10 +4,15 @@ module EtApi
     module FileObjects
       module Et1PdfFileSection
         class AdditionalRespondentsSection < EtApi::Test::FileObjects::Et1PdfFileSection::Base
-          EMPTY_RESPONDENT = {
+          LEGACY_EMPTY_RESPONDENT = {
             name: '',
             address: { building: '', street: '', locality: '', county: '', post_code: '', telephone_number: '' }.freeze,
-            acas: { have_acas: false, acas_number: '', no_acas_number_reason: nil }.freeze
+            acas: { have_acas: nil, acas_number: '', no_acas_number_reason: nil }.freeze
+          }.freeze
+          EMPTY_RESPONDENT = {
+            name: '',
+            address: { details: '', post_code: '' }.freeze,
+            acas: { have_acas: nil, acas_number: '', no_acas_number_reason: nil }.freeze
           }.freeze
 
           def has_contents_for?(respondents:)
@@ -18,26 +23,40 @@ module EtApi
               expected_values[:"respondent#{4 + idx}"] = if respondents[respondents_idx].present?
                                                            {
                                                              name: respondents[respondents_idx].name,
-                                                             address: {
-                                                               building: respondents[respondents_idx].address_attributes.building,
-                                                               street: respondents[respondents_idx].address_attributes.street,
-                                                               locality: respondents[respondents_idx].address_attributes.locality,
-                                                               county: respondents[respondents_idx].address_attributes.county,
-                                                               post_code: formatted_post_code(respondents[respondents_idx].address_attributes.post_code),
-                                                               telephone_number: respondents[respondents_idx].address_telephone_number
-                                                             },
+                                                             address: address_hash(respondents[respondents_idx].address_attributes),
                                                              acas: {
-                                                               have_acas: respondents[respondents_idx].acas_certificate_number.present?,
+                                                               have_acas: respondents[respondents_idx].acas_certificate_number&.present?,
                                                                acas_number: respondents[respondents_idx].acas_certificate_number || '',
                                                                no_acas_number_reason: respondents[respondents_idx].acas_exemption_code
                                                              }
                                                            }
                                                          else
-                                                           EMPTY_RESPONDENT
+                                                           template_has_combined_address_fields? ? EMPTY_RESPONDENT : LEGACY_EMPTY_RESPONDENT
                                                          end
             end
             expect(mapped_field_values).to include expected_values
           end
+
+          private
+
+          def address_hash(address, optional_post_code: false)
+            if template_has_combined_address_fields?
+              {
+                details: [address.building, address.street, address.locality, address.county].compact.compact_blank.join("\n"),
+                post_code: formatted_post_code(address.post_code, optional: optional_post_code)
+              }
+            else
+              {
+                building: address.building,
+                street: address.street,
+                locality: address.locality,
+                county: address.county,
+                post_code: formatted_post_code(address.post_code, optional: optional_post_code),
+                telephone_number: an_instance_of(String)
+              }
+            end
+          end
+
         end
       end
     end
