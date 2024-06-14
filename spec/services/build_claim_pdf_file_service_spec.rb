@@ -66,6 +66,11 @@ RSpec.describe BuildClaimPdfFileService do
       let(:claim) { build(:claim, :example_data_multiple_claimants, uploaded_files: []) }
 
       include_examples 'for any claim variation'
+
+      it 'does not fail if flatten is on' do
+        builder.call(claim, flatten: true)
+      end
+
     end
 
     context 'with a respondent with no acas (joint claimant has acas number)' do

@@ -18,7 +18,6 @@ ENV APP_BUILD_TAG ${APP_BUILD_TAG}
 EXPOSE 8080
 
 COPY --chown=app:app . /home/app/api
-COPY --from=clevyr/pdftk-java /app/ /usr/local/bin/
 RUN ln -s /opt/java/openjdk-trimmed/bin/java /usr/local/bin/java
 RUN chown -R app:app /usr/local/bundle
 RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext shared-mime-info libc6-compat bash file libreoffice msttcorefonts-installer \
@@ -39,7 +38,8 @@ RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext sh
     chown -R app:app /home/app/api/vendor/bundle && \
     mkdir -p /home/app/api/tmp && \
     chown -R app:app /home/app/api/tmp
-
+RUN wget -O /usr/local/bin/pdftk https://gitlab.com/api/v4/projects/5024297/packages/generic/pdftk-java/v3.3.3/pdftk \
+    && chmod +x /usr/local/bin/pdftk
 
 USER app
 ENV HOME /home/app
