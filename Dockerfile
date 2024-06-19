@@ -18,14 +18,16 @@ ENV APP_BUILD_TAG ${APP_BUILD_TAG}
 EXPOSE 8080
 
 COPY --chown=app:app . /home/app/api
-RUN ln -s /opt/java/openjdk-trimmed/bin/java /usr/local/bin/java
+COPY --from=pdftk/pdftk /usr/bin/pdftk /usr/local/bin/pdftk
+COPY --from=pdftk/pdftk /usr/share/java/bcprov.jar /usr/share/java/bcprov.jar
+COPY --from=pdftk/pdftk /usr/share/java/commons-lang3.jar /usr/share/java/commons-lang3.jar
+COPY --from=pdftk/pdftk /usr/share/java/pdftk.jar /usr/share/java/pdftk.jar
 RUN chown -R app:app /usr/local/bundle
-RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext shared-mime-info libc6-compat bash file libreoffice msttcorefonts-installer \
+RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext shared-mime-info libc6-compat bash file msttcorefonts-installer openjdk8-jre \
     ttf-freefont ttf-opensans ttf-inconsolata \
     ttf-liberation ttf-dejavu && \
     apk add --no-cache postgresql-client~=11.12 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main && \
-    apk add --no-cache --virtual .build-tools git build-base openjdk11 && \
-    jlink --add-modules java.base,java.desktop,java.naming,java.sql --strip-debug --no-man-pages --no-header-files --compress=2 --output=/opt/java/openjdk-trimmed && \
+    apk add --no-cache --virtual .build-tools git build-base && \
     cd /home/app/api && \
     BUNDLER_VERSION=$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1 | awk '{$1=$1};1') && \
     gem install bundler:$BUNDLER_VERSION invoker && \
@@ -38,8 +40,6 @@ RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext sh
     chown -R app:app /home/app/api/vendor/bundle && \
     mkdir -p /home/app/api/tmp && \
     chown -R app:app /home/app/api/tmp
-RUN wget -O /usr/local/bin/pdftk https://gitlab.com/api/v4/projects/5024297/packages/generic/pdftk-java/v3.3.3/pdftk \
-    && chmod +x /usr/local/bin/pdftk
 
 USER app
 ENV HOME /home/app
