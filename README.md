@@ -72,22 +72,6 @@ Both server, client and nescessary headers for development
 
 Used for background jobs - not entirely nescessary depending on what you are working on
 
-### Libre Office
-
-Technically, we only need the command line utility from libre office, but, it is rare for this to be distributed by itself.
-
-To install libre office, do the following
-
-Mac:
-
-```bash
-brew install --cask libreoffice
-```
-
-Any other operating system:
-
-See https://www.libreoffice.org/get-help/install-howto/
-
 ### Developing And Testing Using The et_full_system gem
 
 Please refer to https://github.com/hmcts/et_full_system_gem for instructions on general use and starting an environment.

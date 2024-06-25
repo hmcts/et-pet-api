@@ -4,8 +4,8 @@ class BuildClaimPdfFileService
   include PdfBuilder::Rendering
   include PdfBuilder::PreAllocation
 
-  def self.call(source, template_reference: 'et1-v4-en', time_zone: 'London', **)
-    new(source, template_reference: template_reference, time_zone: time_zone).call
+  def self.call(source, template_reference: 'et1-v4-en', time_zone: 'London', **kwargs)
+    new(source, template_reference: template_reference, time_zone: time_zone, **kwargs).call
   end
 
   def call
