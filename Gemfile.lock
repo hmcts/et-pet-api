@@ -313,7 +313,7 @@ GEM
       racc
     patience_diff (1.2.0)
       optimist (~> 3.0)
-    pdf-forms (1.5.0)
+    pdf-forms (1.5.1)
       cliver (~> 0.3.2)
       rexml (~> 3.2, >= 3.2.6)
       safe_shell (>= 1.0.3, < 2.0)
@@ -382,8 +382,8 @@ GEM
     regexp_parser (2.9.0)
     reline (0.5.8)
       io-console (~> 0.5)
-    rexml (3.2.8)
-      strscan (>= 3.0.9)
+    rexml (3.2.9)
+      strscan
     roda (3.78.0)
       rack
     rspec-core (3.13.0)
