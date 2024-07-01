@@ -43,7 +43,7 @@ module PdfBuilder
       field_def
     end
 
-    def has_field_definition?(*path)
+    def field_definition?(*path)
       field_definition(*path).present?
     end
 
