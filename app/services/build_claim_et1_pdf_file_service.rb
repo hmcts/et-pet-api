@@ -54,7 +54,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, primary_claimant.first_name, :your_details, :first_name
     apply_field result, primary_claimant.last_name, :your_details, :last_name
     apply_field result, primary_claimant.gender, :your_details, :gender
-    if has_field_definition?(:your_details, :address)
+    if field_definition?(:your_details, :address)
       apply_field result, [pca.building, pca.street, pca.locality, pca.county].join("\n"), :your_details, :address
     else
       apply_field result, pca.building, :your_details, :building
@@ -87,7 +87,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, resp1.acas_certificate_number, :respondents_details, :acas, :acas_number
     apply_field result, resp1.acas_certificate_number.present?, :respondents_details, :acas, :have_acas
     apply_field result, resp1.acas_exemption_code, :respondents_details, :acas, :no_acas_number_reason
-    if has_field_definition?(:respondents_details, :address, :details)
+    if field_definition?(:respondents_details, :address, :details)
       apply_field result, [resp1.address.building, resp1.address.street, resp1.address.locality, resp1.address.county].compact.compact_blank.join("\n"), :respondents_details,
                   :address, :details
     else
@@ -98,7 +98,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     end
     apply_field result, format_post_code(resp1.address.post_code), :respondents_details, :address, :post_code
     apply_field result, resp1.address_telephone_number, :respondents_details, :address, :telephone_number
-    if has_field_definition?(:respondents_details, :different_address, :details)
+    if field_definition?(:respondents_details, :different_address, :details)
       apply_field result, [resp1.work_address&.building, resp1.work_address&.street, resp1.work_address&.locality, resp1.work_address&.county].compact.compact_blank.join("\n"),
                   :respondents_details, :different_address, :details
     else
@@ -122,7 +122,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
       apply_field result, resp&.acas_certificate_number, pdf_section, pdf_field, :acas, :acas_number
       apply_field result, resp&.acas_certificate_number&.present?, pdf_section, pdf_field, :acas, :have_acas
       apply_field result, resp&.acas_exemption_code, pdf_section, pdf_field, :acas, :no_acas_number_reason
-      if has_field_definition?(pdf_section, pdf_field, :address, :details)
+      if field_definition?(pdf_section, pdf_field, :address, :details)
         apply_field result, [resp&.address&.building, resp&.address&.street, resp&.address&.locality, resp&.address&.county].compact.compact_blank.join("\n"), pdf_section,
                     pdf_field, :address, :details
       else
@@ -220,7 +220,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     rep = source.primary_representative
     apply_field result, rep&.organisation_name, :your_representative, :name_of_organisation
     apply_field result, rep&.name, :your_representative, :name_of_representative
-    if has_field_definition?(:your_representative, :address)
+    if field_definition?(:your_representative, :address)
       apply_field result, [rep&.address&.building, rep&.address&.street, rep&.address&.locality, rep&.address&.county].compact.compact_blank.join("\n"), :your_representative,
                   :address
     else

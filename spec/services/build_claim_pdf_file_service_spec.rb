@@ -126,9 +126,9 @@ RSpec.describe BuildClaimPdfFileService do
     context 'when using an alternative pdf template' do
       let(:claim) { build(:claim, :example_data) }
 
-      it 'stores an ET1 pdf file from the welsh v3 template with the correct contents' do
+      it 'stores an ET1 pdf file from the welsh v4 template with the correct contents' do
         # Act
-        builder.call(claim, template_reference: 'et1-v3-cy')
+        builder.call(claim, template_reference: 'et1-v4-cy')
         claim.save!
 
         # Assert
@@ -137,7 +137,7 @@ RSpec.describe BuildClaimPdfFileService do
           full_path = File.join(dir, correct_filename)
           uploaded_file.download_blob_to(full_path)
           File.open full_path do |file|
-            et1_file = EtApi::Test::FileObjects::Et1PdfFile.new(file, template: 'et1-v3-cy', lookup_root: 'claim_pdf_fields')
+            et1_file = EtApi::Test::FileObjects::Et1PdfFile.new(file, template: 'et1-v4-cy', lookup_root: 'claim_pdf_fields')
             # We exclude missing et1a because we have clashing field names between et1 and et1a forms in welsh
             expect(et1_file).to have_correct_contents_from_db_for(errors: errors, claim: claim, assert_missing_et1a: false), -> { errors.join("\n") }
           end

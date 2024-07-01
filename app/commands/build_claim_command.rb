@@ -25,7 +25,7 @@ class BuildClaimCommand < BaseCommand
   attribute :was_employed, :boolean
   attribute :is_whistleblowing, :boolean
   attribute :whistleblowing_regulator_name, :string
-  validates :pdf_template_reference, inclusion: { in: ['et1-v1-en', 'et1-v1-cy', 'et1-v2-en', 'et1-v2-cy', 'et1-v3-en', 'et1-v3-cy', 'et1-v4-en'] }
+  validates :pdf_template_reference, inclusion: { in: ['et1-v1-en', 'et1-v1-cy', 'et1-v2-en', 'et1-v2-cy', 'et1-v3-en', 'et1-v3-cy', 'et1-v4-en', 'et1-v4-cy'] }
   validates :email_template_reference, inclusion: { in: ['et1-v1-en', 'et1-v1-cy'] }
   validates :time_zone, inclusion: { in: ['London'] }
 
