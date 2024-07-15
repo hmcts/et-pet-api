@@ -61,7 +61,7 @@ FactoryBot.define do
     end
 
     trait :with_welsh_pdf do
-      pdf_template { 'et1-v3-cy' }
+      pdf_template { 'et1-v4-cy' }
     end
 
     trait :with_welsh_email do
