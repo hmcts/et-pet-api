@@ -5,7 +5,9 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
   include PdfBuilder::PreAllocation
   include PdfBuilder::ActiveStorage
 
-  def self.call(source, template_reference: 'et3-v2-en', **)
+  TITLES_WITHOUT_OTHER = ['Mr', 'Mrs', 'Miss', 'Ms', nil].freeze
+
+  def self.call(source, template_reference: 'et3-v3-en', **)
     new(source, template_reference: template_reference).call
   end
 
@@ -53,11 +55,16 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     address = respondent.address
     apply_field result, respondent.name, :respondent, :name
     apply_field result, respondent.contact, :respondent, :contact
-    apply_field result, address.building, :respondent, :address, :building
-    apply_field result, address.street, :respondent, :address, :street
-    apply_field result, address.locality, :respondent, :address, :locality
-    apply_field result, address.county, :respondent, :address, :county
-    apply_field result, address.post_code.tr(' ', ''), :respondent, :address, :post_code
+    if field_definition?(:respondent, :address)
+      apply_field result, [address.building, address.street, address.locality, address.county].join("\n"), :respondent, :address
+      apply_field result, address.post_code.tr(' ', ''), :respondent, :post_code
+    else
+      apply_field result, address.building, :respondent, :address, :building
+      apply_field result, address.street, :respondent, :address, :street
+      apply_field result, address.locality, :respondent, :address, :locality
+      apply_field result, address.county, :respondent, :address, :county
+      apply_field result, address.post_code.tr(' ', ''), :respondent, :address, :post_code
+    end
     apply_field result, respondent.dx_number, :respondent, :address_dx_number
     apply_field result, respondent.address_telephone_number, :respondent, :phone_number
     apply_field result, respondent.alt_phone_number, :respondent, :mobile_number
@@ -65,9 +72,22 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, respondent.email_address, :respondent, :email_address
     apply_field result, respondent.fax_number, :respondent, :fax_number
     apply_field result, respondent.allow_video_attendance, :respondent, :allow_video_attendance
+    if field_definition?(:respondent, :allow_phone_attendance)
+      apply_field result, respondent.allow_phone_attendance, :respondent, :allow_phone_attendance
+    end
     apply_field result, respondent.organisation_employ_gb, :respondent, :employ_gb
     apply_field result, respondent.organisation_more_than_one_site, :respondent, :multi_site_gb
     apply_field result, respondent.employment_at_site_number, :respondent, :employment_at_site_number
+    if field_definition?(:respondent, :title)
+      apply_field result, respondent.title.in?(TITLES_WITHOUT_OTHER) ? respondent.title : 'Other', :respondent, :title
+      apply_field result, respondent.title.in?(TITLES_WITHOUT_OTHER) ? nil : respondent.title, :respondent, :other_specify
+    end
+    if field_definition?(:respondent, :company_number)
+      apply_field result, respondent.company_number, :respondent, :company_number
+    end
+    if field_definition?(:respondent, :type_of_employer)
+      apply_field result, respondent.type_of_employer, :respondent, :type_of_employer
+    end
   end
 
   def apply_acas_pdf_fields(result)
@@ -77,8 +97,17 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
 
   def apply_employment_details_pdf_fields(result)
     apply_field result, source.agree_with_employment_dates, :employment_details, :agree_with_dates
-    apply_field result, source.employment_start.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_start
-    apply_field result, source.employment_end.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_end
+    if field_definition?(:employment_details, :employment_start_day)
+      apply_field result, source.employment_start.try(:strftime, '%d'), :employment_details, :employment_start_day
+      apply_field result, source.employment_start.try(:strftime, '%m'), :employment_details, :employment_start_month
+      apply_field result, source.employment_start.try(:strftime, '%Y'), :employment_details, :employment_start_year
+      apply_field result, source.employment_end.try(:strftime, '%d'), :employment_details, :employment_end_day
+      apply_field result, source.employment_end.try(:strftime, '%m'), :employment_details, :employment_end_month
+      apply_field result, source.employment_end.try(:strftime, '%Y'), :employment_details, :employment_end_year
+    else
+      apply_field result, source.employment_start.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_start
+      apply_field result, source.employment_end.try(:strftime, '%d/%m/%Y'), :employment_details, :employment_end
+    end
     apply_field result, source.disagree_employment, :employment_details, :disagree_with_dates_reason
     apply_field result, source.continued_employment, :employment_details, :continuing
     apply_field result, source.agree_with_claimants_description_of_job_or_title, :employment_details, :agree_with_job_title
@@ -116,11 +145,16 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     address = representative.address
     apply_field result, representative.name, :representative, :name
     apply_field result, representative.organisation_name, :representative, :organisation_name
-    apply_field result, address.try(:building), :representative, :address, :building
-    apply_field result, address.try(:street), :representative, :address, :street
-    apply_field result, address.try(:locality), :representative, :address, :locality
-    apply_field result, address.try(:county), :representative, :address, :county
-    apply_field result, address.try(:post_code).try(:tr, ' ', ''), :representative, :address, :post_code
+    if field_definition?(:representative, :address)
+      apply_field result, [address.try(:building), address.try(:street), address.try(:locality), address.try(:county)].compact.join("\n"), :representative, :address
+      apply_field result, address.try(:post_code).try(:tr, ' ', ''), :representative, :post_code
+    else
+      apply_field result, address.try(:building), :representative, :address, :building
+      apply_field result, address.try(:street), :representative, :address, :street
+      apply_field result, address.try(:locality), :representative, :address, :locality
+      apply_field result, address.try(:county), :representative, :address, :county
+      apply_field result, address.try(:post_code).try(:tr, ' ', ''), :representative, :address, :post_code
+    end
     apply_field result, representative.dx_number, :representative, :dx_number
     apply_field result, representative.address_telephone_number, :representative, :phone_number
     apply_field result, representative.mobile_number, :representative, :mobile_number
@@ -128,16 +162,27 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, representative.contact_preference, :representative, :contact_preference
     apply_field result, representative.email_address, :representative, :email_address
     apply_field result, representative.fax_number, :representative, :fax_number
+    if field_definition?(:representative, :allow_phone_attendance)
+      apply_field result, representative.allow_phone_attendance, :representative, :allow_phone_attendance
+    end
+    if field_definition?(:representative, :allow_video_attendance)
+      apply_field result, representative.allow_video_attendance, :representative, :allow_video_attendance
+    end
   end
 
   def apply_no_representative(result)
     apply_field result, '', :representative, :name
     apply_field result, '', :representative, :organisation_name
-    apply_field result, '', :representative, :address, :building
-    apply_field result, '', :representative, :address, :street
-    apply_field result, '', :representative, :address, :locality
-    apply_field result, '', :representative, :address, :county
-    apply_field result, '', :representative, :address, :post_code
+    if field_definition?(:representative, :address)
+      apply_field result, '', :representative, :address
+      apply_field result, '', :representative, :post_code
+    else
+      apply_field result, '', :representative, :address, :building
+      apply_field result, '', :representative, :address, :street
+      apply_field result, '', :representative, :address, :locality
+      apply_field result, '', :representative, :address, :county
+      apply_field result, '', :representative, :address, :post_code
+    end
     apply_field result, '', :representative, :dx_number
     apply_field result, '', :representative, :phone_number
     apply_field result, '', :representative, :mobile_number
@@ -145,6 +190,13 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, nil, :representative, :contact_preference
     apply_field result, '', :representative, :email_address
     apply_field result, '', :representative, :fax_number
+    if field_definition?(:representative, :allow_phone_attendance)
+      apply_field result, false, :representative, :allow_phone_attendance
+    end
+    if field_definition?(:representative, :allow_video_attendance)
+      apply_field result, false, :representative, :allow_video_attendance
+    end
+
   end
 
   def apply_disability_pdf_fields(result)

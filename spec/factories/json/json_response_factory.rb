@@ -4,7 +4,7 @@ require 'securerandom'
 FactoryBot.define do
   factory :json_build_response_commands, class: '::EtApi::Test::Json::Document' do
     transient do
-      pdf_template { 'et3-v2-en' }
+      pdf_template { 'et3-v3-en' }
       email_template { 'et3-v1-en' }
       response_traits { [:full] }
       response_attrs { {} }
@@ -18,7 +18,7 @@ FactoryBot.define do
     data { [] }
 
     trait :with_welsh_pdf do
-      pdf_template { 'et3-v2-cy' }
+      pdf_template { 'et3-v3-cy' }
     end
 
     trait :with_welsh_email do
@@ -28,7 +28,7 @@ FactoryBot.define do
     trait :with_representative do
       response_traits { [:full] }
       respondent_traits { [:full] }
-      representative_traits { [:private_individual] }
+      representative_traits { [:private_individual, :et3] }
     end
 
     trait :with_representative_minimal do
@@ -92,7 +92,7 @@ FactoryBot.define do
     end
     trait :minimal do
       case_number { '1454321/2017' }
-      agree_with_employment_dates { false }
+      agree_with_employment_dates { 'false' }
       defend_claim { true }
     end
 
@@ -103,27 +103,27 @@ FactoryBot.define do
       disagree_conciliation_reason { "lorem ipsum conciliation" }
       employment_start { "2017-01-01" }
       employment_end { "2017-12-31" }
-      disagree_employment { "lorem ipsum employment" }
-      continued_employment { true }
-      agree_with_claimants_description_of_job_or_title { false }
-      disagree_claimants_job_or_title { "lorem ipsum job title" }
-      agree_with_claimants_hours { false }
+      disagree_employment { 'false' }
+      continued_employment { 'true' }
+      agree_with_claimants_description_of_job_or_title { 'false' }
+      disagree_claimants_job_or_title { 'false' }
+      agree_with_claimants_hours { 'false' }
       queried_hours { 101.01 }
-      agree_with_earnings_details { false }
-      queried_pay_before_tax { 1000.0 }
-      queried_pay_before_tax_period { "Monthly" }
-      queried_take_home_pay { 900.0 }
-      queried_take_home_pay_period { "Monthly" }
-      agree_with_claimant_notice { false }
+      agree_with_earnings_details { 'false' }
+      queried_pay_before_tax { 40000.0 }
+      queried_pay_before_tax_period { "Annually" }
+      queried_take_home_pay { 30000.0 }
+      queried_take_home_pay_period { "Annually" }
+      agree_with_claimant_notice { 'false' }
       disagree_claimant_notice_reason { "lorem ipsum notice reason" }
-      agree_with_claimant_pension_benefits { false }
+      agree_with_claimant_pension_benefits { 'false' }
       disagree_claimant_pension_benefits_reason { "lorem ipsum claimant pension" }
       defend_claim_facts { "lorem ipsum defence" }
 
       make_employer_contract_claim { true }
       claim_information { "lorem ipsum info" }
       email_receipt { "email@recei.pt" }
-      pdf_template_reference { "et3-v2-en" }
+      pdf_template_reference { "et3-v3-en" }
       email_template_reference { "et3-v1-en" }
     end
 

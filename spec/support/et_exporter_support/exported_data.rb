@@ -181,11 +181,11 @@ module EtApi
           if representative.blank?
             expect(data.dig(:resource, :representative)).to be_nil
           else
-            expect(data.dig(:resource, :representative)).to include(representative.to_h.except(:address_attributes).merge(address: representative[:address_attributes]&.to_h))
+            expect(data.dig(:resource, :representative)).to include(representative.to_h.except(:address_attributes, :allow_video_attendance, :allow_phone_attendance).merge(address: representative[:address_attributes]&.to_h))
           end
         end
 
-        def et3_pdf_file(template: 'et3-v2-en')
+        def et3_pdf_file(template: 'et3-v3-en')
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et3_atos_export.pdf" }
 
           EtApi::Test::FileObjects::Et3PdfFile.new download(file_data), template: template, lookup_root: 'response_pdf_fields'

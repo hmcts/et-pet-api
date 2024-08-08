@@ -83,7 +83,7 @@ FactoryBot.define do
                 representative&.attributes&.
                                       to_h&.
                                       with_indifferent_access&.
-                                      slice(:name, :organisation_name, :address_telephone_number, :mobile_number, :email_address, :representative_type, :dx_number, :reference, :contact_preference, :fax_number)&.
+                                      slice(:name, :organisation_name, :address_telephone_number, :mobile_number, :email_address, :representative_type, :dx_number, :reference, :contact_preference, :fax_number, :allow_video_attendance, :allow_phone_attendance)&.
                                       merge(address_attributes: db_source.representative.address.attributes.to_h.with_indifferent_access.slice(:building, :street, :locality, :county, :post_code)),
               representative_traits: db_source.representative.present? ? [] : nil)
 

@@ -38,7 +38,7 @@ FactoryBot.define do
       organisation_more_than_one_site { true }
       employment_at_site_number { 5 }
       disability_information { '' }
-      disability { false }
+      disability { 'false' }
     end
 
     trait :no_acas_joint_claimant do
@@ -64,6 +64,14 @@ FactoryBot.define do
     trait :mr_na_o_malley do
       example_data
       name { "n/a O'Malley" }
+    end
+
+    trait :et3 do
+      title { 'Mr' }
+      allow_video_attendance { true }
+      allow_phone_attendance { true }
+      company_number { '12378101932' }
+      type_of_employer { 'Limited company' }
     end
   end
 end

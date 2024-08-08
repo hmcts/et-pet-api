@@ -69,8 +69,8 @@ et3-v1-en:
       agree_with_dates:
         field_name: '3.1'
         select_values:
-          false: 'no'
-          true: 'yes'
+          'false': 'no'
+          'true': 'yes'
         unselected_value: 'Off'
       employment_start:
         field_name: '3.1 employment started'
@@ -81,14 +81,14 @@ et3-v1-en:
       continuing:
         field_name: '3.2'
         select_values:
-          no: 'no'
-          yes: 'yes'
+          'false': 'no'
+          'true': 'yes'
         unselected_value: 'Off'
       agree_with_job_title:
         field_name: '3.3'
         select_values:
-          false: 'no'
-          true: 'yes'
+          'false': 'no'
+          'true': 'yes'
         unselected_value: 'Off'
       correct_job_title:
         field_name: '3.3 if no'
@@ -96,16 +96,16 @@ et3-v1-en:
       agree_with_hours:
         field_name: '4.1'
         select_values:
-          false: 'no'
-          true: 'yes'
+          'false': 'no'
+          'true': 'yes'
         unselected_value: 'Off'
       correct_hours:
         field_name: '4.1 if no'
       agree_with_earnings:
         field_name: '4.2'
         select_values:
-          false: 'no'
-          true: 'yes'
+          'false': 'no'
+          'true': 'yes'
         unselected_value: 'Off'
       correct_pay_before_tax:
         field_name: '4.2 pay before tax'
@@ -126,16 +126,16 @@ et3-v1-en:
       agree_with_notice_period:
         field_name: '4.3 tick box'
         select_values:
-          no: 'no'
-          yes: 'yes'
+          'false': 'no'
+          'true': 'yes'
         unselected_value: 'Off'
       disagree_notice_period_reason:
         field_name: '4.3 if no'
       agree_with_pension_benefits:
         field_name: '4.4 tick box'
         select_values:
-          no: 'no'
-          yes: 'yes'
+          'false': 'no'
+          'true': 'yes'
         unselected_value: 'Off'
       disagree_pension_benefits_reason:
         field_name: '4.4 if no'
@@ -195,8 +195,8 @@ et3-v1-en:
       has_disability:
         field_name: '8.1 tick box'
         select_values:
-          no: 'no'
-          yes: 'yes'
+          'false': 'no'
+          'true': 'yes'
         unselected_value: 'Off'
       information:
         field_name: '8.1 if yes'

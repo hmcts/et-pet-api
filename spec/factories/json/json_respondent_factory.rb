@@ -19,10 +19,9 @@ FactoryBot.define do
       alt_phone_number { '01234 567891' }
       contact_preference { 'email' }
       email_address { 'john@dodgyco.com' }
-      fax_number { '01234 666123' }
       organisation_employ_gb { 10 }
       employment_at_site_number { 5 }
-      disability { true }
+      disability { 'true' }
       disability_information { 'Lorem ipsum disability' }
       acas_certificate_number { 'R000100/18/68' }
       acas_exemption_code { nil }
@@ -50,6 +49,10 @@ FactoryBot.define do
 
     trait :et3 do
       allow_video_attendance { true }
+      allow_phone_attendance { true }
+      company_number { '12378101932' }
+      type_of_employer { 'Limited company' }
+      title { 'Mr' }
     end
 
     trait :no_work_address do

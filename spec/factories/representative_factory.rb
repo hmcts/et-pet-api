@@ -22,5 +22,10 @@ FactoryBot.define do
       contact_preference { 'email' }
       fax_number { '02222 222222' }
     end
+
+    trait :et3 do
+      allow_video_attendance { true }
+      allow_phone_attendance { true }
+    end
   end
 end

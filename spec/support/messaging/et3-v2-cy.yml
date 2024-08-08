@@ -109,10 +109,10 @@ et3-v2-cy:
           - Check Box13
           - Check Box14
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'Yes'
-          true:
+          'true':
             - 'Yes'
             - 'Off'
         unselected_value:
@@ -129,10 +129,10 @@ et3-v2-cy:
           - Check Box15
           - Check Box16
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'Yes'
-          true:
+          'true':
             - 'Yes'
             - 'Off'
         unselected_value:
@@ -143,10 +143,10 @@ et3-v2-cy:
           - 'Check Box18'
           - 'Check Box17'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'Yes'
-          true:
+          'true':
             - 'Yes'
             - 'Off'
         unselected_value:
@@ -160,10 +160,10 @@ et3-v2-cy:
           - 'Check Box19'
           - 'Check Box20'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'Yes'
-          true:
+          'true':
             - 'Yes'
             - 'Off'
         unselected_value:
@@ -176,10 +176,10 @@ et3-v2-cy:
           - Check Box22
           - Check Box21
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'Yes'
-          true:
+          'true':
             - 'Yes'
             - 'Off'
         unselected_value:
@@ -222,10 +222,10 @@ et3-v2-cy:
           - 'Check Box28'
           - 'Check Box27'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'Yes'
-          true:
+          'true':
             - 'Yes'
             - 'Off'
         unselected_value:
@@ -238,10 +238,10 @@ et3-v2-cy:
           - 'Check Box30'
           - 'Check Box29'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'Yes'
-          true:
+          'true':
             - 'Yes'
             - 'Off'
         unselected_value:
@@ -330,10 +330,10 @@ et3-v2-cy:
           - 'Check Box37'
           - 'Check Box36'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'Yes'
-          true:
+          'true':
             - 'Yes'
             - 'Off'
         unselected_value:

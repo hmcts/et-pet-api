@@ -78,10 +78,10 @@ employment_details:
     - Ydynt
     - Nac ydynt
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'On'
-      true:
+      'true':
       - 'On'
       - 'Off'
     unselected_value:
@@ -112,10 +112,10 @@ employment_details:
     - Ydy_2
     - Nac ydy_2
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'On'
-      true:
+      'true':
       - 'On'
       - 'Off'
     unselected_value:
@@ -129,10 +129,10 @@ earnings:
     - Ydynt_2
     - Nac ydynt_2
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'On'
-      true:
+      'true':
       - 'On'
       - 'Off'
     unselected_value:
@@ -145,10 +145,10 @@ earnings:
     - Ydynt_3
     - Nac ydynt_3
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'On'
-      true:
+      'true':
       - 'On'
       - 'Off'
     unselected_value:
@@ -191,10 +191,10 @@ earnings:
     - Ydy_3
     - Nac ydy_3
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'On'
-      true:
+      'true':
       - 'On'
       - 'Off'
     unselected_value:
@@ -207,10 +207,10 @@ earnings:
     - Ydynt_4
     - Nac ydynt_4
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'On'
-      true:
+      'true':
       - 'On'
       - 'Off'
     unselected_value:
@@ -302,10 +302,10 @@ disability:
     - Oes_2
     - Nac oes_2
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'On'
-      true:
+      'true':
       - 'On'
       - 'Off'
     unselected_value:

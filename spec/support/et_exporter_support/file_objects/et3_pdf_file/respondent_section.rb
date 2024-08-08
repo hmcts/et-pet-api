@@ -8,22 +8,21 @@ module EtApi
             respondent = respondent.to_h
             address = respondent[:address_attributes].to_h
             expected_values = {
+              title: respondent[:title],
+              other_specify: respondent.fetch(:other_specify, ''),
               name: respondent[:name],
+              company_number: respondent.fetch(:company_number, ''),
+              type_of_employer: respondent.fetch(:type_of_employer, ''),
               contact: respondent.fetch(:contact, ''),
-              address: a_hash_including(
-                building: address[:building],
-                street: address[:street],
-                locality: address[:locality],
-                county: address[:county],
-                post_code: address[:post_code].tr(' ', '')
-              ),
+              address: [address[:building], address[:street], address[:locality], address[:county]].join("\n"),
+              post_code: address[:post_code].tr(' ', ''),
               address_dx_number: respondent[:dx_number] || '',
               phone_number: respondent[:address_telephone_number] || '',
               mobile_number: respondent[:alt_phone_number] || '',
               contact_preference: respondent.fetch(:contact_preference, nil),
               email_address: respondent.fetch(:email_address, ''),
-              fax_number: respondent.fetch(:fax_number, ''),
-              allow_video_attendance: respondent[:allow_video_attendance],
+              allow_video_attendance: respondent.fetch(:allow_video_attendance, false),
+              allow_phone_attendance: respondent.fetch(:allow_phone_attendance, false),
               employ_gb: respondent[:organisation_employ_gb].to_s,
               multi_site_gb: respondent[:organisation_more_than_one_site],
               employment_at_site_number: respondent[:employment_at_site_number].to_s

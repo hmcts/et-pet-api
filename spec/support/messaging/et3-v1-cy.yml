@@ -79,10 +79,10 @@ et3-v1-cy:
           - 'Ydynt'
           - 'Nac ydynt'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'On'
-          true:
+          'true':
             - 'On'
             - 'Off'
         unselected_value:
@@ -99,10 +99,10 @@ et3-v1-cy:
           - 'Ydy'
           - 'Nac ydy'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'On'
-          true:
+          'true':
             - 'On'
             - 'Off'
         unselected_value:
@@ -113,10 +113,10 @@ et3-v1-cy:
           - 'Ydy_2'
           - 'Nac ydy_2'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'On'
-          true:
+          'true':
             - 'On'
             - 'Off'
         unselected_value:
@@ -130,10 +130,10 @@ et3-v1-cy:
           - 'Ydynt_2'
           - 'Nac ydynt_2'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'On'
-          true:
+          'true':
             - 'On'
             - 'Off'
         unselected_value:
@@ -146,10 +146,10 @@ et3-v1-cy:
           - 'Ydynt_3'
           - 'Nac ydynt_3'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'On'
-          true:
+          'true':
             - 'On'
             - 'Off'
         unselected_value:
@@ -192,10 +192,10 @@ et3-v1-cy:
           - 'Ydy_3'
           - 'Nac ydy_3'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'On'
-          true:
+          'true':
             - 'On'
             - 'Off'
         unselected_value:
@@ -208,10 +208,10 @@ et3-v1-cy:
           - 'Ydynt_4'
           - 'Nac ydynt_4'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'On'
-          true:
+          'true':
             - 'On'
             - 'Off'
         unselected_value:
@@ -300,10 +300,10 @@ et3-v1-cy:
           - 'Oes_2'
           - 'Nac oes_2'
         select_values:
-          false:
+          'false':
             - 'Off'
             - 'On'
-          true:
+          'true':
             - 'On'
             - 'Off'
         unselected_value:

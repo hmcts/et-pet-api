@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_23_052354) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_06_080900) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -383,6 +383,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_052354) do
     t.string "reference"
     t.string "contact_preference"
     t.string "fax_number"
+    t.boolean "allow_video_attendance"
+    t.boolean "allow_phone_attendance"
     t.index ["address_id"], name: "index_representatives_on_address_id"
   end
 
@@ -404,11 +406,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_052354) do
     t.integer "organisation_employ_gb"
     t.boolean "organisation_more_than_one_site"
     t.integer "employment_at_site_number"
-    t.boolean "disability"
+    t.string "disability"
     t.string "disability_information"
     t.string "acas_certificate_number"
     t.string "acas_exemption_code"
     t.boolean "allow_video_attendance"
+    t.string "title"
+    t.string "company_number"
+    t.string "type_of_employer"
+    t.boolean "allow_phone_attendance"
     t.index ["address_id"], name: "index_respondents_on_address_id"
     t.index ["work_address_id"], name: "index_respondents_on_work_address_id"
   end
@@ -431,23 +437,23 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_23_052354) do
     t.string "claimants_name"
     t.boolean "agree_with_early_conciliation_details"
     t.string "disagree_conciliation_reason"
-    t.boolean "agree_with_employment_dates"
+    t.string "agree_with_employment_dates"
     t.date "employment_start"
     t.date "employment_end"
     t.string "disagree_employment"
-    t.boolean "continued_employment"
-    t.boolean "agree_with_claimants_description_of_job_or_title"
+    t.string "continued_employment"
+    t.string "agree_with_claimants_description_of_job_or_title"
     t.string "disagree_claimants_job_or_title"
-    t.boolean "agree_with_claimants_hours"
+    t.string "agree_with_claimants_hours"
     t.decimal "queried_hours", precision: 5, scale: 2
-    t.boolean "agree_with_earnings_details"
+    t.string "agree_with_earnings_details"
     t.decimal "queried_pay_before_tax", precision: 8, scale: 2
     t.string "queried_pay_before_tax_period"
     t.decimal "queried_take_home_pay", precision: 8, scale: 2
     t.string "queried_take_home_pay_period"
-    t.boolean "agree_with_claimant_notice"
+    t.string "agree_with_claimant_notice"
     t.string "disagree_claimant_notice_reason"
-    t.boolean "agree_with_claimant_pension_benefits"
+    t.string "agree_with_claimant_pension_benefits"
     t.string "disagree_claimant_pension_benefits_reason"
     t.boolean "defend_claim"
     t.string "defend_claim_facts"
