@@ -13,7 +13,7 @@ class BuildPrimaryRespondentCommand < BaseCommand
   attribute :fax_number, :string
   attribute :organisation_employ_gb, :integer
   attribute :employment_at_site_number, :integer
-  attribute :disability, :boolean
+  attribute :disability, :boolean_with_na
   attribute :disability_information, :string
   attribute :acas_certificate_number, :string
   attribute :acas_exemption_code, :string

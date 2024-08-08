@@ -9,10 +9,10 @@ FactoryBot.define do
     claimants_name { 'Joe Strummer' }
     employment_start { Time.zone.parse('1 January 2014') }
     employment_end { Time.zone.parse('31 December 2014') }
-    queried_pay_before_tax { 2000 }
-    queried_pay_before_tax_period { 'Monthly' }
-    queried_take_home_pay { 1500 }
-    queried_take_home_pay_period { 'Monthly' }
+    queried_pay_before_tax { 30000 }
+    queried_pay_before_tax_period { 'Annually' }
+    queried_take_home_pay { 25000 }
+    queried_take_home_pay_period { 'Annually' }
     disagree_conciliation_reason { '' }
     disagree_employment { '' }
     queried_hours { 30 }
@@ -21,23 +21,23 @@ FactoryBot.define do
     defend_claim { false }
     defend_claim_facts { '' }
     claim_information { '' }
-    agree_with_employment_dates { true }
-    agree_with_claimants_description_of_job_or_title { true }
-    agree_with_claimants_hours { true }
-    agree_with_earnings_details { true }
-    agree_with_claimant_notice { true }
-    agree_with_claimant_pension_benefits { true }
-    pdf_template_reference { 'et3-v2-en' }
+    agree_with_employment_dates { 'not_applicable' }
+    agree_with_claimants_description_of_job_or_title { 'not_applicable' }
+    agree_with_claimants_hours { 'not_applicable' }
+    agree_with_earnings_details { 'not_applicable' }
+    agree_with_claimant_notice { 'not_applicable' }
+    agree_with_claimant_pension_benefits { 'not_applicable' }
+    pdf_template_reference { 'et3-v3-en' }
     email_template_reference { 'et3-v1-en' }
 
     sequence :reference do |n|
       "22#{20000000 + n}00"
     end
-    association :respondent
+    association :respondent, :et3
     association :office, code: 22
 
     trait :with_representative do
-      association :representative, :example_data
+      association :representative, :example_data, :et3
     end
 
     trait :without_representative do
@@ -65,7 +65,7 @@ FactoryBot.define do
 
     trait :example_data do
       reference { "222000000300" }
-      association :respondent, :example_data
+      association :respondent, :example_data, :et3
     end
 
     trait :broken_with_files_missing do
@@ -76,6 +76,20 @@ FactoryBot.define do
       after(:build) do |instance, evaluator|
         instance.commands = [build(:build_response_command, :from_db, db_source: instance, additional_information_key: evaluator.additional_information_key)]
       end
+    end
+
+    trait :with_legacy_values do
+      agree_with_employment_dates { 'false' }
+      agree_with_claimants_description_of_job_or_title { 'false' }
+      agree_with_claimants_hours { 'false' }
+      agree_with_earnings_details { 'false' }
+      agree_with_claimant_notice { 'false' }
+      agree_with_claimant_pension_benefits { 'false' }
+      queried_pay_before_tax { 2000 }
+      queried_pay_before_tax_period { 'Monthly' }
+      queried_take_home_pay { 1500 }
+      queried_take_home_pay_period { 'Monthly' }
+
     end
   end
 end

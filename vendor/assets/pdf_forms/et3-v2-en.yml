@@ -107,10 +107,10 @@ employment_details:
       - '4.1 dates correct - yes'
       - '4.1 dates correct - no'
     select_values:
-      false:
+      'false':
         - 'Off'
         - 'no'
-      true:
+      'true':
         - 'yes'
         - 'Off'
     unselected_value:
@@ -141,10 +141,10 @@ employment_details:
       - '4.3 job description correct - yes'
       - '4.3 job description correct - no'
     select_values:
-      false:
+      'false':
         - 'Off'
         - 'no'
-      true:
+      'true':
         - 'yes'
         - 'Off'
     unselected_value:
@@ -158,10 +158,10 @@ earnings:
       - "5.1 claimant's hours of work are correct - yes"
       - "5.1 claimant's hours of work are correct - no"
     select_values:
-      false:
+      'false':
         - 'Off'
         - 'no'
-      true:
+      'true':
         - 'yes'
         - 'Off'
     unselected_value:
@@ -174,10 +174,10 @@ earnings:
       - '5.2 earning details correct - yes'
       - '5.2 earning details correct - no'
     select_values:
-      false:
+      'false':
         - 'Off'
         - 'no'
-      true:
+      'true':
         - 'yes'
         - 'Off'
     unselected_value:
@@ -220,10 +220,10 @@ earnings:
       - '5.3 period of notice information - correct'
       - '5.3 period of notice information - not correct'
     select_values:
-      no:
+      'false':
         - 'Off'
         - 'no'
-      yes:
+      'true':
         - 'yes'
         - 'Off'
     unselected_value:
@@ -236,10 +236,10 @@ earnings:
       - '5.4 pension details - correct'
       - '5.4 pension details - not correct'
     select_values:
-      no:
+      'false':
         - 'Off'
         - 'no'
-      yes:
+      'true':
         - 'yes'
         - 'Off'
     unselected_value:
@@ -328,10 +328,10 @@ disability:
       - '9.1 disability - yes'
       - '9.1 disability - no'
     select_values:
-      no:
+      'false':
         - 'Off'
         - 'no'
-      yes:
+      'true':
         - 'yes'
         - 'Off'
     unselected_value:
