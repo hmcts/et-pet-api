@@ -98,10 +98,10 @@ employment_details:
     - Ydy
     - Nac ydy
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'On'
-      true:
+      'true':
       - 'On'
       - 'Off'
     unselected_value:

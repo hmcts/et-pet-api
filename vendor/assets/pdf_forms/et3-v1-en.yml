@@ -80,8 +80,8 @@ employment_details:
   continuing:
     field_name: '3.2'
     select_values:
-      false: 'no'
-      true: 'yes'
+      'false': 'no'
+      'true': 'yes'
     unselected_value: 'Off'
   agree_with_job_title:
     field_name: '3.3'

@@ -127,10 +127,10 @@ employment_details:
       - '4.2 employment continuing - yes'
       - '4.2 employment continuing - no'
     select_values:
-      false:
+      'false':
         - 'Off'
         - 'no'
-      true:
+      'true':
         - 'yes'
         - 'Off'
     unselected_value:

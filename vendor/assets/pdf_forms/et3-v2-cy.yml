@@ -128,10 +128,10 @@ employment_details:
     - Check Box15
     - Check Box16
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'Yes'
-      true:
+      'true':
       - 'Yes'
       - 'Off'
     unselected_value:
