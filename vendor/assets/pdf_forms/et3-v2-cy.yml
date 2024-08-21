@@ -108,10 +108,10 @@ employment_details:
     - Check Box13
     - Check Box14
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'Yes'
-      true:
+      'true':
       - 'Yes'
       - 'Off'
     unselected_value:
@@ -128,10 +128,10 @@ employment_details:
     - Check Box15
     - Check Box16
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'Yes'
-      true:
+      'true':
       - 'Yes'
       - 'Off'
     unselected_value:
@@ -142,10 +142,10 @@ employment_details:
       - 'Check Box18'
       - 'Check Box17'
     select_values:
-      false:
+      'false':
         - 'Off'
         - 'Yes'
-      true:
+      'true':
         - 'Yes'
         - 'Off'
     unselected_value:
@@ -159,10 +159,10 @@ earnings:
       - 'Check Box19'
       - 'Check Box20'
     select_values:
-      false:
+      'false':
         - 'Off'
         - 'Yes'
-      true:
+      'true':
         - 'Yes'
         - 'Off'
     unselected_value:
@@ -175,10 +175,10 @@ earnings:
     - Check Box22
     - Check Box21
     select_values:
-      false:
+      'false':
       - 'Off'
       - 'Yes'
-      true:
+      'true':
       - 'Yes'
       - 'Off'
     unselected_value:
@@ -221,10 +221,10 @@ earnings:
       - 'Check Box28'
       - 'Check Box27'
     select_values:
-      false:
+      'false':
         - 'Off'
         - 'Yes'
-      true:
+      'true':
         - 'Yes'
         - 'Off'
     unselected_value:
@@ -237,10 +237,10 @@ earnings:
       - 'Check Box30'
       - 'Check Box29'
     select_values:
-      false:
+      'false':
         - 'Off'
         - 'Yes'
-      true:
+      'true':
         - 'Yes'
         - 'Off'
     unselected_value:
@@ -329,10 +329,10 @@ disability:
       - 'Check Box37'
       - 'Check Box36'
     select_values:
-      false:
+      'false':
         - 'Off'
         - 'Yes'
-      true:
+      'true':
         - 'Yes'
         - 'Off'
     unselected_value:

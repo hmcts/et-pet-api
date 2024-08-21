@@ -10,6 +10,8 @@ class BuildRepresentativeCommand < BaseCommand
   attribute :contact_preference, :string
   attribute :email_address, :string
   attribute :fax_number, :string
+  attribute :allow_video_attendance, :boolean, default: false
+  attribute :allow_phone_attendance, :boolean, default: false
 
   validates :address_attributes, presence: true, address: true
 

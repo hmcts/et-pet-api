@@ -21,9 +21,14 @@ FactoryBot.define do
       representative_type { 'Private Individual' }
       dx_number { 'dx address' }
       reference { 'Rep Ref' }
-      contact_preference { 'fax' }
+      contact_preference { 'email' }
       email_address { 'test@email.com' }
       fax_number { '0207 345 6789' }
+    end
+
+    trait :et3 do
+      allow_video_attendance { true }
+      allow_phone_attendance { true }
     end
 
     trait :invalid_address_keys do

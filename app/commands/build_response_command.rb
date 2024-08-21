@@ -1,6 +1,6 @@
 class BuildResponseCommand < BaseCommand
   attribute :case_number, :string
-  attribute :agree_with_employment_dates, :boolean
+  attribute :agree_with_employment_dates, :boolean_with_na
   attribute :defend_claim, :boolean
   attribute :claimants_name, :string
   attribute :agree_with_early_conciliation_details, :boolean
@@ -8,29 +8,29 @@ class BuildResponseCommand < BaseCommand
   attribute :employment_start, :date
   attribute :employment_end, :date
   attribute :disagree_employment, :string
-  attribute :continued_employment, :boolean
-  attribute :agree_with_claimants_description_of_job_or_title, :boolean
+  attribute :continued_employment, :boolean_with_na
+  attribute :agree_with_claimants_description_of_job_or_title, :boolean_with_na
   attribute :disagree_claimants_job_or_title, :string
-  attribute :agree_with_claimants_hours, :boolean
+  attribute :agree_with_claimants_hours, :boolean_with_na
   attribute :queried_hours, :float
-  attribute :agree_with_earnings_details, :boolean
+  attribute :agree_with_earnings_details, :boolean_with_na
   attribute :queried_pay_before_tax, :float
   attribute :queried_pay_before_tax_period, :string
   attribute :queried_take_home_pay, :float
   attribute :queried_take_home_pay_period, :string
-  attribute :agree_with_claimant_notice, :boolean
+  attribute :agree_with_claimant_notice, :boolean_with_na
   attribute :disagree_claimant_notice_reason, :string
-  attribute :agree_with_claimant_pension_benefits, :boolean
+  attribute :agree_with_claimant_pension_benefits, :boolean_with_na
   attribute :disagree_claimant_pension_benefits_reason, :string
   attribute :defend_claim_facts, :string
   attribute :make_employer_contract_claim, :boolean
   attribute :claim_information, :string
   attribute :email_receipt, :string
-  attribute :pdf_template_reference, :string, default: 'et3-v2-en'
+  attribute :pdf_template_reference, :string, default: 'et3-v3-en'
   attribute :email_template_reference, :string, default: 'et3-v1-en'
 
   validate :validate_office_code_in_case_number
-  validates :pdf_template_reference, inclusion: { in: ['et3-v1-en', 'et3-v1-cy', 'et3-v2-en', 'et3-v2-cy'] }
+  validates :pdf_template_reference, inclusion: { in: ['et3-v1-en', 'et3-v1-cy', 'et3-v2-en', 'et3-v2-cy', 'et3-v3-en', 'et3-v3-cy'] }
   validates :email_template_reference, inclusion: { in: ['et3-v1-en', 'et3-v1-cy'] }
   validates :queried_hours, numericality: { less_than_or_equal_to: 168.0, greater_than: 0.0 }, allow_nil: true
 

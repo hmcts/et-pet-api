@@ -33,7 +33,7 @@ RUN cd /home/app/api && \
     gem install bundler:$BUNDLER_VERSION invoker && \
     bundle config set with "test development" && \
     bundle config set without "production" && \
-    bundle config set deployment 'true' && \
+    bundle config set path 'vendor/bundle' && \
     bundle install
 ENV HOME /home/app
 WORKDIR /home/app/api

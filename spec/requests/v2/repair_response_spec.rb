@@ -151,7 +151,6 @@ RSpec.describe 'Repair Response Request', type: :request do
           representative: input_representative_attributes
         )
       end
-
     end
 
     shared_examples 'any bad request error variation' do
@@ -296,7 +295,7 @@ RSpec.describe 'Repair Response Request', type: :request do
                :with_command,
                additional_information_key: nil,
                uploaded_files: uploaded_files,
-               respondent: build(:respondent, :example_data, name: respondent_name))
+               respondent: build(:respondent, :example_data, :et3, name: respondent_name))
       end
 
       include_context 'with transactions off for use with other processes'

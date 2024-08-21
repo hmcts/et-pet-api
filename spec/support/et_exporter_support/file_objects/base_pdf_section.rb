@@ -25,6 +25,10 @@ module EtApi
           raise RSpec::Expectations::ExpectationNotMetError, "Expected whole section to be missing but found these fields :- #{fields_found}"
         end
 
+        def template_version
+          template.split('-')[1].gsub(/\Av/, '').to_i
+        end
+
         private
 
         attr_accessor :field_values, :template, :lookup_root
@@ -77,7 +81,7 @@ module EtApi
             return ret.to_s if ret
             return nil if raw == value[:unselected_value]
 
-            raise "Invalid value - '#{raw}' is not in the selected_values list or the unselected_value for field '#{path.join('.')}.#{key}' ('#{value[:field_name]}') for section #{self.class.name}"
+            raise "Invalid value - '#{raw.inspect}' is not in the selected_values list or the unselected_value for field '#{path.join('.')}.#{key}' ('#{value[:field_name]}') for section #{self.class.name}"
           else
             field_values[value[:field_name]]
           end
