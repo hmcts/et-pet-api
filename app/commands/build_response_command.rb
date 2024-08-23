@@ -30,8 +30,9 @@ class BuildResponseCommand < BaseCommand
   attribute :email_template_reference, :string, default: 'et3-v1-en'
 
   validate :validate_office_code_in_case_number
-  validates :pdf_template_reference, inclusion: { in: ['et3-v1-en', 'et3-v1-cy', 'et3-v2-en', 'et3-v2-cy', 'et3-v3-en', 'et3-v3-cy'] }
-  validates :email_template_reference, inclusion: { in: ['et3-v1-en', 'et3-v1-cy'] }
+  validates :pdf_template_reference,
+            inclusion: { in: %w[et3-v1-en et3-v1-cy et3-v2-en et3-v2-cy et3-v3-en et3-v3-cy] }
+  validates :email_template_reference, inclusion: { in: %w[et3-v1-en et3-v1-cy] }
   validates :queried_hours, numericality: { less_than_or_equal_to: 168.0, greater_than: 0.0 }, allow_nil: true
 
   def initialize(*, **)
@@ -44,9 +45,9 @@ class BuildResponseCommand < BaseCommand
     apply_root_attributes(attributes, to: root_object)
     allocate_pdf_file(root_object)
     meta.merge! submitted_at: root_object.date_of_receipt, reference: root_object.reference,
-                office_address: root_object.office.address,
-                office_phone_number: root_object.office.telephone,
-                office_email: root_object.office.email,
+                office_address: '',
+                office_phone_number: '',
+                office_email: '',
                 pdf_url: allocator_service.allocated_url
   end
 
@@ -61,7 +62,6 @@ class BuildResponseCommand < BaseCommand
   def apply_root_attributes(input_data, to:)
     to.attributes = input_data
     office_code = to.case_number[0..1]
-    to.office = Office.find_by(code: office_code)
     to.reference = "#{office_code}#{reference_service.next_number}00"
     to.date_of_receipt = Time.zone.now
   end
