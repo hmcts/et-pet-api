@@ -36,11 +36,12 @@
       "type": "rdbg",
       "name": "WIP",
       "request": "launch",
-      "script": "/home/coder/.rbenv/versions/3.2.2/lib/ruby/gems/3.2.0/gems/rspec-core-3.12.2/exe/rspec",
+      "script": "./bin/rspec",
       "cwd": "${workspaceFolder}",
       "useBundler": true,
       "args": [
-        "spec/services/claim_claimants_file_importer_service_spec.rb:51"
+        "./spec/requests/v2/create_response_spec.rb[1:1:1:14]",
+        "--backtrace"
       ],
       "askParameters": false
 }

@@ -132,45 +132,6 @@ RSpec.describe 'Create Response Request', type: :request do
       end
     end
 
-    shared_examples 'a response with meta for office 22 bristol' do
-      it 'returns the office address in the metadata for the response', background_jobs: :disable do
-        # Assert - Make sure we get the reference in the metadata
-        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
-          office_address: 'Bristol Civil and Family Justice Centre, 2 Redcliff Street, Bristol, BS1 6GR'
-        )
-      end
-
-      it 'returns the office phone number in the metadata for the response', background_jobs: :disable do
-        # Assert - Make sure we get the reference in the metadata
-        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
-          office_phone_number: '01224 593 137'
-        )
-      end
-
-      it 'returns the office email address in the metadata for the response', background_jobs: :disable do
-        # Assert - Make sure we get the reference in the metadata
-        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
-          office_email: 'bristolet@justice.gov.uk'
-        )
-      end
-    end
-
-    shared_examples 'a response with meta for the default office' do
-      it 'returns the office address in the metadata for the response', background_jobs: :disable do
-        # Assert - Make sure we get the reference in the metadata
-        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
-          office_address: 'Alexandra House, 14-22 The Parsonage, Manchester M3 2JA'
-        )
-      end
-
-      it 'returns the office phone number in the metadata for the response', background_jobs: :disable do
-        # Assert - Make sure we get the reference in the metadata
-        expect(json_response[:meta]).to include 'BuildResponse' => a_hash_including(
-          office_phone_number: '0161 833 5113'
-        )
-      end
-    end
-
     shared_examples 'a response exported to et_exporter' do
       it 'has the claim details in the payload' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
@@ -209,6 +170,30 @@ RSpec.describe 'Create Response Request', type: :request do
       end
     end
 
+    shared_context 'with office assignment from ccd for response email' do
+      before do
+        sidekiq_job_data = {}
+        case_id = '1234567890'
+        case_reference = json_response.dig(:meta, 'BuildResponse', :reference)
+        case_type_id = 'doesntmatter'
+        export = create(:export, :response, external_system: build(:external_system, reference: 'doesntmatter', name: 'doesntmatter'), resource: Response.find_by(reference: case_reference))
+        data = {
+          sidekiq: sidekiq_job_data.except('class', 'args', 'queue'),
+          export_id: export.id,
+          external_data: {
+            case_id: case_id,
+            case_reference: case_reference,
+            case_type_id: case_type_id,
+
+            office: office_for(case_number: case_reference).name
+          },
+          state: :complete,
+          message: 'Response exported'
+        }
+        ResponseExportFeedbackReceivedHandler.new.handle(data.to_json)
+      end
+    end
+
     shared_examples 'email validation using standard template' do
       it 'sends an HTML email to the respondent with the pdf attached using the standard template' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
@@ -244,10 +229,10 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) } # rubocop:disable FactoryBot/SyntaxMethods
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) }
+      include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to et_exporter'
       include_examples 'email validation using standard template'
     end
@@ -257,9 +242,9 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf, :with_welsh_email) } # rubocop:disable FactoryBot/SyntaxMethods
+      include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to et_exporter'
       include_examples 'email validation using welsh template'
     end
@@ -271,7 +256,6 @@ RSpec.describe 'Create Response Request', type: :request do
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to et_exporter'
     end
 
@@ -280,9 +264,9 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) } # rubocop:disable FactoryBot/SyntaxMethods
+      include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to et_exporter'
       include_examples 'email validation using standard template'
     end
@@ -292,9 +276,10 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :for_default_office) } # rubocop:disable FactoryBot/SyntaxMethods
+
+      include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response with meta for the default office'
       include_examples 'email validation using standard template'
       it 'is not exported' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
@@ -309,9 +294,10 @@ RSpec.describe 'Create Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) } # rubocop:disable FactoryBot/SyntaxMethods
+
+      include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
       include_examples 'any response variation'
-      include_examples 'a response with meta for office 22 bristol'
       include_examples 'a response exported to et_exporter'
       include_examples 'email validation using standard template'
     end
