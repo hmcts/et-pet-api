@@ -73,7 +73,7 @@ module EtApi
               contact_preference: nil,
               email_address: '',
               allow_video_attendance: false,
-              allow_phone_attendance: false,
+              allow_phone_attendance: false
             }
             expect(mapped_field_values).to include(expected_values)
           end

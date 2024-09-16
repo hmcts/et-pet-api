@@ -196,7 +196,6 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     if field_definition?(:representative, :allow_video_attendance)
       apply_field result, false, :representative, :allow_video_attendance
     end
-
   end
 
   def apply_disability_pdf_fields(result)

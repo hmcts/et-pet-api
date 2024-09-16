@@ -31,7 +31,7 @@ ccd_manc = ExternalSystem.create name: 'CCD Manchester',
   reference: 'ccd_manchester',
   enabled: true,
   export_claims: true,
-  export_responses: false,
+  export_responses: true,
   export_queue: 'external_system_ccd',
   office_codes: [24]
 
@@ -39,7 +39,7 @@ ccd_glasgow = ExternalSystem.create name: 'CCD Glasgow',
   reference: 'ccd_glasgow',
   enabled: true,
   export_claims: true,
-  export_responses: false,
+  export_responses: true,
   export_queue: 'external_system_ccd',
   office_codes: [41]
 
@@ -84,7 +84,7 @@ ExternalSystem.create! name: 'CCD Test2',
                       reference: 'ccd_test2',
                       enabled: true,
                       export_claims: true,
-                      export_responses: false,
+                      export_responses: true,
                       export_queue: 'external_system_ccd',
                       office_codes: [61],
                       configurations_attributes: [

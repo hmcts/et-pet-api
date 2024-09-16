@@ -33,9 +33,9 @@ FactoryBot.define do
             BuildResponse: {
               submitted_at: 10.days.ago,
               reference: reference,
-              office_address: 'Doesnt matter',
-              office_phone_number: '01234 567890',
-              office_email: 'test@example.com',
+              office_address: '',
+              office_phone_number: '',
+              office_email: '',
               pdf_url: 'https://fairly.irrelevant.as.it.will.be.expired'
             },
             BuildRespondent: {},
@@ -96,9 +96,9 @@ FactoryBot.define do
             BuildResponse: {
               submitted_at: 10.days.ago,
               reference: reference,
-              office_address: 'Doesnt matter',
-              office_phone_number: '01234 567890',
-              office_email: 'test@example.com',
+              office_address: '',
+              office_phone_number: '',
+              office_email: '',
               pdf_url: 'https://fairly.irrelevant.as.it.will.be.expired'
             },
             BuildRespondent: {},
