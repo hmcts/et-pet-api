@@ -5,7 +5,8 @@ class ResponseExportFeedbackReceivedHandler
 
     export = Export.find(event_data['export_id'])
     response = export.resource
-    office = Office.find_by(name: event_data.dig('external_data', 'office'))
+    office = Office.find_by(name: event_data.dig('external_data', 'office')) ||
+      OfficeService.lookup_by_case_number(response.case_number)
     return unless office && response
 
     had_office = response.office.present?
