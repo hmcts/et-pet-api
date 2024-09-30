@@ -135,8 +135,8 @@ GEM
       minitest (>= 5.1)
       mutex_m
       tzinfo (~> 2.0)
-    addressable (2.8.6)
-      public_suffix (>= 2.0.2, < 6.0)
+    addressable (2.8.7)
+      public_suffix (>= 2.0.2, < 7.0)
     afm (0.2.2)
     ast (2.4.2)
     attr_extras (7.1.0)
@@ -245,7 +245,7 @@ GEM
       thor (~> 1.1)
       tilt (~> 2.0, >= 2.0.10)
     gserver (0.0.1)
-    hashdiff (1.1.0)
+    hashdiff (1.1.1)
     hashery (2.1.2)
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
@@ -326,7 +326,7 @@ GEM
     pg (1.5.6)
     psych (5.1.2)
       stringio
-    public_suffix (5.0.4)
+    public_suffix (5.1.1)
     puma (6.4.3)
       nio4r (~> 2.0)
     raabro (1.4.0)
@@ -382,8 +382,7 @@ GEM
     regexp_parser (2.9.0)
     reline (0.5.8)
       io-console (~> 0.5)
-    rexml (3.3.6)
-      strscan
+    rexml (3.3.8)
     roda (3.78.0)
       rack
     rspec-core (3.13.0)
@@ -491,7 +490,6 @@ GEM
       listen (>= 2.7, < 4.0)
       spring (>= 4)
     stringio (3.1.0)
-    strscan (3.1.0)
     super_diff (0.11.0)
       attr_extras (>= 6.2.4)
       diff-lcs
@@ -506,7 +504,7 @@ GEM
     uk_postcode (2.1.8)
     unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
-    webmock (3.23.0)
+    webmock (3.24.0)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
