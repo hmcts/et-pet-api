@@ -107,7 +107,7 @@ RSpec.describe OfficeService do
       result = service.lookup_by_case_number('8012345/2016')
 
       # Assert
-      expect(result).to be_a(Office).and(have_attributes(code: 80, name: 'Scotland (Reform)'))
+      expect(result).to be_a(Office).and(have_attributes(code: 41, name: 'Glasgow'))
     end
 
     it 'finds office 81 which translates to glasgow due to new rules for new reform ET1 cases' do

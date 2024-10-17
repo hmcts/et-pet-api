@@ -21,6 +21,8 @@ module OfficeService
   #
   # @return [Office, Nil] If found, the office instance else nil
   def self.lookup_by_case_number(case_number)
-    Office.where(code: case_number[0..1].to_i).first
+    office_code = case_number[0..1].to_i
+    office_code = 41 if office_code == 80
+    Office.where(code: office_code).first
   end
 end
