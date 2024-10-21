@@ -83,5 +83,7 @@ module EtApi
     config.file_conversions = ActiveSupport::OrderedOptions.new
     config.file_conversions.enabled = ENV.fetch('FILE_CONVERSIONS_ENABLED', 'false') == 'true'
     config.file_conversions.allowed_types = ['application/rtf']
+
+    config.active_storage.variant_processor = nil
   end
 end
