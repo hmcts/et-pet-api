@@ -387,8 +387,7 @@ GEM
     regexp_parser (2.9.0)
     reline (0.5.10)
       io-console (~> 0.5)
-    rexml (3.3.6)
-      strscan
+    rexml (3.3.9)
     roda (3.78.0)
       rack
     rspec-core (3.13.0)
@@ -499,7 +498,6 @@ GEM
       listen (>= 2.7, < 4.0)
       spring (>= 4)
     stringio (3.1.1)
-    strscan (3.1.0)
     super_diff (0.11.0)
       attr_extras (>= 6.2.4)
       diff-lcs
