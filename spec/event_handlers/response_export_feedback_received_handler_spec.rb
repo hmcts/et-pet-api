@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe ResponseExportFeedbackReceivedHandler do
+
+  before do
+    allow(OfficeService).to receive(:lookup_by_case_number).and_return(nil)
+  end
+
   it 'updates the office of the response' do
     export = create(:export, :ccd, :response)
     event_data = {
