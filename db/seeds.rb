@@ -69,17 +69,18 @@ ExternalSystemConfiguration.create external_system_id: ccd_glasgow.id,
   key: 'multiples_case_type_id', value: 'Glasgow_Multiples_Dev'
 
 ExternalSystem.create! name: 'CCD England And Wales (Reform)',
-                      reference: 'ccd_england_and_wales_reform',
-                      enabled: true,
-                      export_claims: true,
-                      export_responses: true,
-                      export_queue: 'external_system_ccd',
-                      office_codes: [60],
-                      configurations_attributes: [
-                              { key: 'case_type_id', value: 'ET_EnglandWales' },
-                              { key: 'multiples_case_type_id',value: 'ET_EnglandWales_Multiples' },
-                              { key: 'send_request_id', value: 'true' }
-                            ]
+                       reference: 'ccd_england_and_wales_reform',
+                       enabled: true,
+                       export_claims: true,
+                       export_responses: true,
+                       response_remote_office: true,
+                       export_queue: 'external_system_ccd',
+                       office_codes: [60],
+                       configurations_attributes: [
+                         { key: 'case_type_id', value: 'ET_EnglandWales' },
+                         { key: 'multiples_case_type_id',value: 'ET_EnglandWales_Multiples' },
+                         { key: 'send_request_id', value: 'true' }
+                       ]
 ExternalSystem.create! name: 'CCD Test2',
                       reference: 'ccd_test2',
                       enabled: true,
@@ -133,14 +134,14 @@ ExternalSystem.create! name: 'CCD Test5',
                               { key: 'send_request_id', value: 'true' }
                             ]
 ExternalSystem.create! name: 'CCD Scotland (Reform)',
-                      reference: 'ccd_scotland_reform',
-                      enabled: true,
-                      export_claims: true,
-                      export_responses: true,
-                      export_queue: 'external_system_ccd',
-                      office_codes: [80],
-                      configurations_attributes: [
-                              { key: 'case_type_id', value: 'ET_Scotland' },
-                              { key: 'multiples_case_type_id',value: 'ET_Scotland_Multiples' },
-                              { key: 'send_request_id', value: 'true' }
-                            ]
+                       reference: 'ccd_scotland_reform',
+                       enabled: true,
+                       export_claims: true,
+                       export_responses: true,
+                       export_queue: 'external_system_ccd',
+                       office_codes: [80],
+                       configurations_attributes: [
+                         { key: 'case_type_id', value: 'ET_Scotland' },
+                         { key: 'multiples_case_type_id',value: 'ET_Scotland_Multiples' },
+                         { key: 'send_request_id', value: 'true' }
+                       ]

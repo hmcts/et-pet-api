@@ -7,7 +7,7 @@ RSpec.describe ResponseExportFeedbackReceivedHandler do
   end
 
   it 'updates the office of the response' do
-    export = create(:export, :ccd, :response)
+    export = create(:export, :response, external_system_reference: 'ccd_england_and_wales_reform')
     event_data = {
       'export_id' => export.id,
       'sidekiq' => { 'some' => 'thing' },

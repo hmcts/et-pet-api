@@ -5,7 +5,6 @@ class ResponseExportHandler
         export = Export.responses.create(resource: response, external_system_id: system.id)
         Rails.application.event_service.publish('ResponseQueuedForExport', export) if system.export_responses?
       end
-
     end
 
     response.save
