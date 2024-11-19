@@ -55,8 +55,6 @@ gem 'azure-storage-blob', '~> 2.0', '>= 2.0.1'
 gem 'dotenv-rails', '~> 3.1'
 gem 'httparty', '~> 0.20'
 
-gem 'rexml', '~> 3.3.0'
-
 # Technically not required but since rails 7.1.4.1 they insist !
 gem 'image_processing', '~> 1.2'
 
