@@ -56,11 +56,11 @@ module EtApi
         end
 
         def assert_reference_element(reference)
-          assert_selector(:css, 'p', text: t('response_email.reference', locale: template_reference, reference: reference), wait: 0)
+          to_capybara_node.assert_selector(:css, 'p', text: t('response_email.reference', locale: template_reference, reference: reference), wait: 0)
         end
 
         def assert_submission_date_element(submission_date)
-          assert_selector(:css, 'p', text: t('response_email.submission_date', locale: template_reference, submission_date: submission_date))
+          to_capybara_node.assert_selector(:css, 'p', text: t('response_email.submission_date', locale: template_reference, submission_date: submission_date))
         end
 
         def has_submission_date_element?(submission_date)
@@ -79,15 +79,15 @@ module EtApi
         end
 
         def assert_office_address_element(office_address)
-          assert_selector(:css, 'p', text: t('response_email.office_address', locale: template_reference, address: office_address), wait: 0)
+          to_capybara_node.assert_selector(:css, 'p', text: t('response_email.office_address', locale: template_reference, address: office_address), wait: 0)
         end
 
         def assert_office_telephone_element(telephone)
-          assert_selector(:css, 'p', text: t('response_email.office_telephone', locale: template_reference, telephone: telephone), wait: 0)
+          to_capybara_node.assert_selector(:css, 'p', text: t('response_email.office_telephone', locale: template_reference, telephone: telephone), wait: 0)
         end
 
         def assert_office_name_element(office_name)
-          assert_selector(:css, 'p', text: t('response_email.office_name', locale: template_reference, office_name: office_name), wait: 0)
+          to_capybara_node.assert_selector(:css, 'p', text: t('response_email.office_name', locale: template_reference, office_name: office_name), wait: 0)
         end
 
         def attached_pdf_for(reference:)

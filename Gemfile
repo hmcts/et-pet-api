@@ -70,7 +70,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 6.0'
   gem 'rspec_junit_formatter', '~> 0.6.0'
   gem 'simplecov', '~> 0.21', require: false
-  gem 'site_prism', '~> 4.0'
+  gem 'site_prism', '~> 5.0'
 end
 
 group :development do

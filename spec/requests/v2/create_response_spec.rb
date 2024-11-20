@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Create Response Request', type: :request do
+RSpec.describe 'Create Response Request', type: :request, js: false do
   describe 'POST /api/v2/respondents/build_response' do
     include_context 'with local storage'
 
