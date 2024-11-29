@@ -105,7 +105,7 @@ module EtApi
         end
 
         def assert_claimant(primary_claimant_data)
-          expect(page).to have_content("#{primary_claimant_data.first_name} #{primary_claimant_data.last_name}")
+          expect(to_capybara_node).to have_content("#{primary_claimant_data.first_name} #{primary_claimant_data.last_name}")
         end
 
         attr_accessor :mail
