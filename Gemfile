@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '7.1.4.1'
+gem 'rails', '7.2.2'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', tag: 'v1.0.1'
@@ -93,6 +93,8 @@ group :test do
   gem 'super_diff', '~> 0.10'
   gem 'webmock', '~> 3.11'
 end
+
+gem 'rackup', '1.0.0', require: false
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]

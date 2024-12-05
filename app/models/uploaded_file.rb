@@ -15,7 +15,7 @@ class UploadedFile < ApplicationRecord
   scope :et1_csv, -> { user_file_scope.where('filename ILIKE ?', '%.csv') }
   scope :et3_pdf, -> { system_file_scope.where('filename LIKE ?', 'et3_atos_export.pdf') }
   scope :et3_input_additional_info, -> { where('filename ILIKE ?', 'additional_information.rtf') }
-  enum file_scope: { user: 'user', system: 'system' }, _suffix: true
+  enum :file_scope, { user: 'user', system: 'system' }, suffix: true
 
   def to_be_imported?
     import_from_key.present? || import_file_url.present?
