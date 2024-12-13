@@ -55,6 +55,8 @@ gem 'azure-storage-blob', '~> 2.0', '>= 2.0.1'
 gem 'dotenv-rails', '~> 3.1'
 gem 'httparty', '~> 0.20'
 
+gem 'rexml', '~> 3.3.0'
+
 # Technically not required but since rails 7.1.4.1 they insist !
 gem 'image_processing', '~> 1.2'
 
@@ -70,7 +72,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 6.0'
   gem 'rspec_junit_formatter', '~> 0.6.0'
   gem 'simplecov', '~> 0.21', require: false
-  gem 'site_prism', '~> 5.0'
+  gem 'site_prism', '~> 4.0'
 end
 
 group :development do
