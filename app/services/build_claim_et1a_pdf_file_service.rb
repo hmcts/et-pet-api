@@ -6,7 +6,7 @@ class BuildClaimEt1aPdfFileService
 
   attr_reader :output_file
 
-  def self.call(source, template_reference: 'et1-v3-en', time_zone: 'London', **)
+  def self.call(source, template_reference: 'et1-v5-en', time_zone: 'London', **)
     new(source, template_reference: template_reference, time_zone: time_zone).call
   end
 

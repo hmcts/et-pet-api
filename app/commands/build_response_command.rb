@@ -26,14 +26,18 @@ class BuildResponseCommand < BaseCommand
   attribute :make_employer_contract_claim, :boolean
   attribute :claim_information, :string
   attribute :email_receipt, :string
-  attribute :pdf_template_reference, :string, default: 'et3-v3-en'
+  attribute :pdf_template_reference, :string, default: 'et3-v4-en'
   attribute :email_template_reference, :string, default: 'et3-v1-en'
+  attribute :case_heard_by_preference, :string
+  attribute :case_heard_by_preference_reason, :string
 
   validate :validate_office_code_in_case_number
   validates :pdf_template_reference,
-            inclusion: { in: ['et3-v1-en', 'et3-v1-cy', 'et3-v2-en', 'et3-v2-cy', 'et3-v3-en', 'et3-v3-cy'] }
+            inclusion: { in: ['et3-v1-en', 'et3-v1-cy', 'et3-v2-en', 'et3-v2-cy', 'et3-v3-en', 'et3-v3-cy', 'et3-v4-en', 'et3-v4-cy'] }
   validates :email_template_reference, inclusion: { in: ['et3-v1-en', 'et3-v1-cy'] }
   validates :queried_hours, numericality: { less_than_or_equal_to: 168.0, greater_than: 0.0 }, allow_nil: true
+  validates :case_heard_by_preference, inclusion: { in: ['judge', 'panel', 'no_preference', nil] }
+  validates :case_heard_by_preference_reason, presence: true, if: -> { case_heard_by_preference.in?(['judge', 'panel']) }
 
   def initialize(*, **)
     super
