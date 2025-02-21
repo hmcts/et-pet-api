@@ -21,7 +21,7 @@ FactoryBot.define do
     jurisdiction { 2 }
     office_code { 22 }
     date_of_receipt { Time.zone.now }
-    pdf_template_reference { "et1-v4-en" }
+    pdf_template_reference { "et1-v5-en" }
     email_template_reference { "et1-v1-en" }
     claim_details { 'claim details field' }
     miscellaneous_information { 'miscellaneous information' }
@@ -107,6 +107,8 @@ FactoryBot.define do
       secondary_claimants { [] }
       number_of_respondents { 1 }
       primary_representative { build(:representative, :example_data) }
+      case_heard_by_preference { 'judge' }
+      case_heard_by_preference_reason { 'I get intimidated by a group of people' }
     end
 
     trait :example_data_multiple_claimants do

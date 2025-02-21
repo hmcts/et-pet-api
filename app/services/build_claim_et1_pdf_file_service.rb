@@ -9,7 +9,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
   PAY_CLAIMS = ['redundancy', 'notice', 'holiday', 'arrears', 'other'].freeze
   TITLES_WITHOUT_OTHER = ['Mr', 'Mrs', 'Miss', 'Ms', nil].freeze
 
-  def self.call(source, template_reference: 'et1-v4-en', time_zone: 'London', **)
+  def self.call(source, template_reference: 'et1-v5-en', time_zone: 'London', **)
     new(source, template_reference: template_reference, time_zone: time_zone).call
   end
 
@@ -74,6 +74,10 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, primary_claimant.allow_phone_attendance, :your_details, :allow_phone_attendance
     apply_field result, primary_claimant.allow_phone_attendance == false && primary_claimant.allow_video_attendance == false, :your_details, :no_phone_or_video_attendance
     apply_field result, primary_claimant.no_phone_or_video_reason, :your_details, :no_phone_or_video_reason
+    if field_definition?(:your_details, :case_heard_by_preference)
+      apply_field result, source.case_heard_by_preference, :your_details, :case_heard_by_preference
+      apply_field result, source.case_heard_by_preference_reason, :your_details, :case_heard_by_preference_reason
+    end
   end
 
   def apply_office_use_only_fields(result)
