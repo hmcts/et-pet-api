@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_15_064151) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_10_065924) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -211,6 +211,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_15_064151) do
     t.boolean "was_employed", default: false
     t.string "whistleblowing_regulator_name"
     t.boolean "is_whistleblowing"
+    t.string "case_heard_by_preference"
+    t.string "case_heard_by_preference_reason"
     t.index ["primary_claimant_id"], name: "index_claims_on_primary_claimant_id"
     t.index ["primary_representative_id"], name: "index_claims_on_primary_representative_id"
     t.index ["primary_respondent_id"], name: "index_claims_on_primary_respondent_id"
@@ -466,6 +468,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_15_064151) do
     t.string "pdf_template_reference", null: false
     t.string "email_template_reference", null: false
     t.integer "office_id"
+    t.string "case_heard_by_preference"
+    t.string "case_heard_by_preference_reason"
     t.index ["office_id"], name: "index_responses_on_office_id"
     t.index ["representative_id"], name: "index_responses_on_representative_id"
     t.index ["respondent_id"], name: "index_responses_on_respondent_id"

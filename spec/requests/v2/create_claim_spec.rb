@@ -179,6 +179,11 @@ RSpec.describe 'Create Claim Request', type: :request do
           assert_missing_et1a: assert_missing_et1a
         )
       end
+
+      it 'has the correct claim data in the payload' do
+        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
+        et_exporter.find_claim_by_submission_reference(submission_reference).assert_claim_details(input_claim_factory)
+      end
     end
 
     shared_examples 'a claim exported to et_exporter with single claimant' do
