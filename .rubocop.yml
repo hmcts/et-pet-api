@@ -614,8 +614,8 @@ Capybara/RedundantWithinFind: # new in 2.20
   Enabled: true
 Capybara/RSpec/HaveSelector: # new in 2.19
   Enabled: true
-Capybara/RSpec/PredicateMatcher: # new in 2.19 - disabled due to bug in rubocop-capybara 2.22.1 (https://github.com/rubocop/rubocop/issues/13982)
-  Enabled: false
+Capybara/RSpec/PredicateMatcher: # new in 2.19
+  Enabled: true
 FactoryBot/ExcessiveCreateList: # new in 2.25
   Enabled: true
 FactoryBot/IdSequence: # new in 2.24
