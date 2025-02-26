@@ -8,7 +8,7 @@ module EtApi
       class Et1PdfFile < BasePdfFile
         def has_correct_contents_for?(claim:, claimants:, respondents:, representative:, assert_missing_et1a: true)
           Et1PdfFileSection::OfficialUseOnlySection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim, respondent: respondents.first)
-          Et1PdfFileSection::YourDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first)
+          Et1PdfFileSection::YourDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(claimant: claimants.first, claim: claim)
           Et1PdfFileSection::RespondentsDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(respondents: respondents)
           Et1PdfFileSection::MultipleCasesSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)
           Et1PdfFileSection::NotYourEmployerSection.new(field_values, lookup_root, template: template).has_contents_for?(claim: claim)

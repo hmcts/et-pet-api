@@ -10,7 +10,7 @@ module EtApi
         def has_correct_contents_for?(response:, respondent:, representative:, errors: [], indent: 1) # rubocop:disable Lint/UnusedMethodArgument
           Et3PdfFileSection::HeaderSection.new(field_values, lookup_root, template: template).has_contents_for?(response: response)
           Et3PdfFileSection::ClaimantSection.new(field_values, lookup_root, template: template).has_contents_for?(response: response)
-          Et3PdfFileSection::RespondentSection.new(field_values, lookup_root, template: template).has_contents_for?(respondent: respondent)
+          Et3PdfFileSection::RespondentSection.new(field_values, lookup_root, template: template).has_contents_for?(respondent: respondent, response: response)
           Et3PdfFileSection::AcasSection.new(field_values, lookup_root, template: template).has_contents_for?(response: response)
           Et3PdfFileSection::EmploymentDetailsSection.new(field_values, lookup_root, template: template).has_contents_for?(response: response)
           Et3PdfFileSection::EarningsSection.new(field_values, lookup_root, template: template).has_contents_for?(response: response)

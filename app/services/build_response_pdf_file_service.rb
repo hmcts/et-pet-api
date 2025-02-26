@@ -7,7 +7,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
 
   TITLES_WITHOUT_OTHER = ['Mr', 'Mrs', 'Miss', 'Ms', nil].freeze
 
-  def self.call(source, template_reference: 'et3-v3-en', **)
+  def self.call(source, template_reference: 'et3-v4-en', **)
     new(source, template_reference: template_reference).call
   end
 
@@ -50,7 +50,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, source.claimants_name, :claimant, :claimants_name
   end
 
-  def apply_respondent_pdf_fields(result)
+  def apply_respondent_pdf_fields(result) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     respondent = source.respondent
     address = respondent.address
     apply_field result, respondent.name, :respondent, :name
@@ -87,6 +87,10 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     end
     if field_definition?(:respondent, :type_of_employer)
       apply_field result, respondent.type_of_employer, :respondent, :type_of_employer
+    end
+    if field_definition?(:respondent, :case_heard_by_preference)
+      apply_field result, source.case_heard_by_preference, :respondent, :case_heard_by_preference
+      apply_field result, source.case_heard_by_preference_reason, :respondent, :case_heard_by_preference_reason
     end
   end
 
