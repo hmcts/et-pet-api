@@ -22,12 +22,6 @@ FactoryBot.define do
       file_to_attach { { content_type: 'application/rtf', filename: Rails.root.join("spec/fixtures/simple_user_with_rtf.rtf") } }
     end
 
-    trait :example_claim_details_pdf do
-      filename { 'et1_attachment_first_last.pdf' }
-      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
-      file_to_attach { { content_type: 'application/pdf', filename: Rails.root.join("spec/fixtures/simple_user_with_rtf.pdf") } }
-    end
-
     trait :example_claim_claimants_text do
       filename { 'et1a_first_last.txt' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
