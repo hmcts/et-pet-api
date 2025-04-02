@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '7.2.2.1'
+gem 'rails', '8.0.2'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', tag: 'v1.0.1'
@@ -60,7 +60,7 @@ gem 'image_processing', '~> 1.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'bullet', '~> 7.0'
+  gem 'bullet', '~> 8.0'
   gem 'bundler-audit', '~> 0.9.1'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'et_full_system_control', git: 'https://github.com/hmcts/et-full-system-control.git'

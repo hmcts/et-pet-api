@@ -4,7 +4,12 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-
+    {
+      "type": "ruby_lsp",
+      "request": "launch",
+      "name": "Debug program",
+      "program": "${workspaceRoot}/bin/rspec ./spec/requests/v2/repair_response_spec.rb[1:1:6:1]",
+    },
     {
       "name": "RSpec - active spec file only",
       "type": "Ruby",
@@ -40,10 +45,10 @@
       "cwd": "${workspaceFolder}",
       "useBundler": true,
       "args": [
-        "./spec/requests/v2/create_response_spec.rb[1:1:1:14]",
+        "./spec/requests/v2/repair_response_spec.rb[1:1:6:1]",
         "--backtrace"
       ],
       "askParameters": false
-}
+    }
   ]
 }
