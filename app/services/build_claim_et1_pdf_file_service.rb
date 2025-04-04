@@ -46,7 +46,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
 
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
-  def apply_your_details_fields(result)
+  def apply_your_details_fields(result) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     primary_claimant = source.primary_claimant
     pca = primary_claimant.address
     apply_field result, primary_claimant.title.in?(TITLES_WITHOUT_OTHER) ? primary_claimant.title : 'Other', :your_details, :title
@@ -81,7 +81,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, source.office&.name, :official_use_only, :tribunal_office
   end
 
-  def apply_respondents_details_fields(result)
+  def apply_respondents_details_fields(result) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     resp1 = source.primary_respondent
     apply_field result, resp1.name, :respondents_details, :name
     apply_field result, resp1.acas_certificate_number, :respondents_details, :acas, :acas_number
@@ -216,7 +216,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, source.whistleblowing_regulator_name, :information_to_regulators, :regulator_name
   end
 
-  def apply_your_representative_section(result)
+  def apply_your_representative_section(result) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     rep = source.primary_representative
     apply_field result, rep&.organisation_name, :your_representative, :name_of_organisation
     apply_field result, rep&.name, :your_representative, :name_of_representative

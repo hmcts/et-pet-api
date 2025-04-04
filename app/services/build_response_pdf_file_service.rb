@@ -50,7 +50,7 @@ class BuildResponsePdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, source.claimants_name, :claimant, :claimants_name
   end
 
-  def apply_respondent_pdf_fields(result)
+  def apply_respondent_pdf_fields(result) # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     respondent = source.respondent
     address = respondent.address
     apply_field result, respondent.name, :respondent, :name
