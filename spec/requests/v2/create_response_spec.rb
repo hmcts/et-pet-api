@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Create Response Request', type: :request, js: false do
+RSpec.describe 'Create Response Request', js: false, type: :request do
   describe 'POST /api/v2/respondents/build_response' do
     include_context 'with local storage'
 
@@ -229,7 +229,7 @@ RSpec.describe 'Create Response Request', type: :request, js: false do
       include_context 'with transactions off for use with other processes'
       include_context 'with fake sidekiq'
       include_context 'with setup for any response',
-                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) }
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
       include_examples 'any response variation'

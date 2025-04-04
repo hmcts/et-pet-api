@@ -7,7 +7,7 @@ class RecreateResponseCommand < SerialSequenceCommand
       extra_commands << { uuid: SecureRandom.uuid, command: 'RebuildResponseAdditionalInformationFile',
                           data: { filename: 'additional_information.rtf', data_from_key: key } }
     end
-    super uuid: uuid, data: data + extra_commands, **args
+    super(uuid: uuid, data: data + extra_commands, **args)
   end
 
   def apply(root_object, meta: {})
