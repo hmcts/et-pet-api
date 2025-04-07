@@ -23,7 +23,7 @@ RSpec.describe SerialSequenceCommand do
     end
 
     after do
-      self.class.send(:remove_const, 'MyCommand') if self.class.const_defined?('MyCommand')
+      self.class.send(:remove_const, 'MyCommand') if self.class.const_defined?('MyCommand') # rubocop:disable RSpec/RemoveConst
     end
 
     # A command response is simply a proxy for the command but also stores the meta
