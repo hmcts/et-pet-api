@@ -60,8 +60,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
   end
 
   def create_direct_upload_service
-    config = Rails.configuration.active_storage
-    ActiveStorage::Service.configure :"#{config.service}_direct_upload", config.service_configurations
+    ActiveStorage::Blob.services.fetch(:"#{Rails.configuration.active_storage.service}_direct_upload")
   end
 
   def measure(&block)
