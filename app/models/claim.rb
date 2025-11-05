@@ -48,7 +48,7 @@ class Claim < ApplicationRecord
   end
 
   def claim_details_input_file
-    uploaded_files.detect { |f| f.filename.downcase.ends_with?('.rtf') }
+    uploaded_files.detect { |f| f.tags&.include?('claim-details') || f.filename.downcase.ends_with?('.rtf') }
   end
 
   private
