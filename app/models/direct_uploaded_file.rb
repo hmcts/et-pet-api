@@ -3,8 +3,6 @@ class DirectUploadedFile < ApplicationRecord
 
   has_one_attached :file, service: :"#{ActiveStorage::Blob.service.name}_direct_upload"
 
-  validates :file, file_content_type: true
-
   scan_content_type_for :file
 
   before_validation :populate_filename

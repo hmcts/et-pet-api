@@ -23,10 +23,13 @@ class ConvertFilesHandler
 
   def copy_claim_details_file
     file = resource.claim_details_input_file
-    filename = claim_details_file_name
-    return if file.nil? || output_file_present?(filename: filename)
+    return if file.nil?
 
-    resource.uploaded_files.system_file_scope.create filename: filename, file: file.file.blob, checksum: file.checksum
+    extension = File.extname(file.filename).gsub(/\A\./, '').downcase
+    filename = claim_details_file_name(extension)
+    return if output_file_present?(filename: filename)
+
+    resource.uploaded_files.system_file_scope.create filename: filename, file: file.file.blob, checksum: file.checksum, tags: file.tags
   end
 
   def output_file_present?(filename:)

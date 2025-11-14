@@ -19,6 +19,7 @@ FactoryBot.define do
     trait :example_claim_rtf do
       filename { 'et1_attachment_first_last.rtf' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      tags { 'claim-details' }
       file_to_attach { { content_type: 'application/rtf', filename: Rails.root.join("spec/fixtures/simple_user_with_rtf.rtf") } }
     end
 
@@ -31,36 +32,42 @@ FactoryBot.define do
     trait :example_claim_claimants_csv do
       filename { 'et1a_first_last.csv' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      tags { 'multiple-claimants' }
       file_to_attach { { content_type: 'text/csv', filename: Rails.root.join("spec/fixtures/simple_user_with_csv_group_claims.csv") } }
     end
 
     trait :example_claim_claimants_csv_with_spaces do
       filename { 'et1a_first_last.csv' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      tags { 'multiple-claimants' }
       file_to_attach { { content_type: 'text/csv', filename: Rails.root.join("spec/fixtures/simple_user_with_csv_group_claims_with_spaces.csv") } }
     end
 
     trait :empty_csv do
       filename { 'et1a_first_last.csv' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      tags { 'multiple-claimants' }
       file_to_attach { { content_type: 'text/csv', filename: Rails.root.join("spec/fixtures/empty.csv") } }
     end
 
     trait :example_claim_claimants_csv_missing_column do
       filename { 'et1a_first_last.csv' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      tags { 'multiple-claimants' }
       file_to_attach { { content_type: 'text/csv', filename: Rails.root.join("spec/fixtures/simple_user_with_csv_group_claims_missing_column.csv") } }
     end
 
     trait :example_claim_claimants_csv_multiple_errors do
       filename { 'et1a_first_last.csv' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      tags { 'multiple-claimants' }
       file_to_attach { { content_type: 'text/csv', filename: Rails.root.join("spec/fixtures/simple_user_with_csv_group_claims_multiple_errors.csv") } }
     end
 
     trait :example_claim_claimants_csv_bad_encoding do
       filename { 'et1a_first_last.csv' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      tags { 'multiple-claimants' }
       file_to_attach { { content_type: 'text/csv', filename: Rails.root.join("spec/fixtures/simple_user_with_csv_group_claims_bad_encoding.csv") } }
     end
 
