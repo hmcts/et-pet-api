@@ -40,7 +40,7 @@ class Claim < ApplicationRecord
   #
   # @return [UploadedFile, nil] The csv file if it exists
   def claimants_csv_file
-    uploaded_files.user_file_scope.detect { |f| f.filename.downcase.ends_with?('.csv') }
+    uploaded_files.et1_csv.first
   end
 
   def multiple_claimants?
