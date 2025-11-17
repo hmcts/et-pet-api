@@ -14,6 +14,7 @@ class BuildClaimDetailsFileCommand < BaseCommand
     input_data = attributes.to_h.symbolize_keys
     input_data.merge import_file_url: input_data.delete(:data_url),
                      import_from_key: input_data.delete(:data_from_key),
-                     file_scope: 'user'
+                     file_scope: 'user',
+                     tags: 'claim-details'
   end
 end

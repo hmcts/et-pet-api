@@ -12,7 +12,7 @@ class UploadedFile < ApplicationRecord
   scope :et1_pdf, -> { where('filename LIKE ? AND filename NOT LIKE ? AND filename NOT LIKE ?', 'et1_%.pdf', 'et1_%_trimmed.pdf', 'et1_attachment%') }
   scope :et1_input_claim_details, -> { user_file_scope.where('filename ILIKE ?', '%.rtf') }
   scope :et1_output_claim_details, -> { system_file_scope.where('filename ILIKE ?', 'et1_attachment_%.pdf') }
-  scope :et1_csv, -> { user_file_scope.where('filename ILIKE ?', '%.csv') }
+  scope :et1_csv, -> { user_file_scope.where('tags LIKE ?', '%multiple-claimants%') }
   scope :et3_pdf, -> { system_file_scope.where('filename LIKE ?', 'et3_atos_export.pdf') }
   scope :et3_input_additional_info, -> { where('filename ILIKE ?', 'additional_information.rtf') }
   enum :file_scope, { user: 'user', system: 'system' }, suffix: true
