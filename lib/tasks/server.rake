@@ -2,10 +2,9 @@ namespace :server do
   desc 'Start the server'
   task start: :db_migrate do
     ENV['PORT'] ||= '8080'
-    Iodine::Rack.run EtApi::Application
-
-    # Start the server
-    Iodine.start
+    require 'puma/cli'
+    cli = Puma::CLI.new(['-p', ENV['PORT']])
+    cli.run
   end
 
   desc 'Migrate the database with locking so only one process can run it at a time'

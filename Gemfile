@@ -13,7 +13,7 @@ gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', 
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 
-gem 'iodine', '~> 0.7.43'
+gem 'puma', '~> 6.5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.10'
 # Use ActiveModel has_secure_password
@@ -82,12 +82,11 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 2.0'
-  gem 'et_fake_acas_server', '~> 2.0'
+  gem 'et_fake_acas_server', '~> 3.0.2'
   gem 'factory_bot', '~> 6.1'
   gem 'faker', '~> 3.1'
-  gem 'gov_fake_notify', '~> 1.2'
+  gem 'gov_fake_notify', '~> 2.1'
   gem "pdf-reader", "~> 2.4"
-  gem "puma", "~> 6.0"
   gem 'rspec-eventually', '~> 0.2.2'
   gem "selenium-webdriver", "~> 4.10"
   gem 'super_diff', '~> 0.10'
