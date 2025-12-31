@@ -39,19 +39,19 @@ RSpec.describe BuildResponsePdfFileService do
     context 'with a representative' do
       let(:response) { build(:response, :example_data, :with_representative) }
 
-      include_examples 'for any response variation'
+      it_behaves_like 'for any response variation'
     end
 
     context 'without a representative' do
       let(:response) { build(:response, :example_data, :without_representative) }
 
-      include_examples 'for any response variation'
+      it_behaves_like 'for any response variation'
     end
 
     context 'with an attached additional_information file' do
       let(:response) { build(:response, :example_data, :with_output_additional_information_file) }
 
-      include_examples 'for any response variation'
+      it_behaves_like 'for any response variation'
     end
 
     context 'with a pre allocated s3 key to allow for providing the url before the file is uploaded' do

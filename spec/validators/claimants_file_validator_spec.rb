@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe ClaimantsFileValidator do
   describe '#valid?' do
-    class self::ExampleClass < ApplicationRecord # rubocop:disable RSpec/LeakyConstantDeclaration, Lint/ConstantDefinitionInBlock, Style/ClassAndModuleChildren
+    class self::ExampleClass < ApplicationRecord # rubocop:disable Lint/ConstantDefinitionInBlock, Style/ClassAndModuleChildren
       establish_connection adapter: :nulldb,
                            schema: 'config/nulldb_schema.rb'
       attribute :data_from_key, :string

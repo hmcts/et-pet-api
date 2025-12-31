@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Export Response Request', type: :request do
+RSpec.describe 'Export Response Request' do
   shared_context 'with fake sidekiq' do
     around do |example|
 

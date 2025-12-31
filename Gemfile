@@ -13,7 +13,7 @@ gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', 
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 
-gem 'iodine', '~> 0.7.43'
+gem 'puma', '~> 6.5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.10'
 # Use ActiveModel has_secure_password
@@ -64,10 +64,13 @@ group :development, :test do
   gem 'bundler-audit', '~> 0.9.1'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'et_full_system_control', git: 'https://github.com/hmcts/et-full-system-control.git'
-  gem 'parallel_tests', '~> 4.1'
+  gem 'parallel_tests', '~> 5.5'
   gem "rubocop-rails", "~> 2.17", require: false
-  gem 'rubocop-rspec', '~> 2.1', require: false
-  gem 'rspec-rails', '~> 6.0'
+  gem 'rubocop-rspec', '~> 3.8', require: false
+  gem 'rubocop-rspec_rails', '~> 2.32', require: false
+  gem 'rubocop-factory_bot', '~> 2.28', require: false
+  gem 'rubocop-capybara', '~> 2.22', require: false
+  gem 'rspec-rails', '~> 8.0'
   gem 'rspec_junit_formatter', '~> 0.6.0'
   gem 'simplecov', '~> 0.21', require: false
   gem 'site_prism', '~> 5.0'
@@ -82,12 +85,11 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 2.0'
-  gem 'et_fake_acas_server', '~> 2.0'
+  gem 'et_fake_acas_server', '~> 3.0.2'
   gem 'factory_bot', '~> 6.1'
   gem 'faker', '~> 3.1'
-  gem 'gov_fake_notify', '~> 1.2'
+  gem 'gov_fake_notify', '~> 2.1'
   gem "pdf-reader", "~> 2.4"
-  gem "puma", "~> 6.0"
   gem 'rspec-eventually', '~> 0.2.2'
   gem "selenium-webdriver", "~> 4.10"
   gem 'super_diff', '~> 0.10'

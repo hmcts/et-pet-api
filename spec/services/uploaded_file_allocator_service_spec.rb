@@ -22,6 +22,7 @@ RSpec.describe UploadedFileAllocatorService do
 
   describe '#allocated_url' do
     include ActionDispatch::Integration::Runner
+
     def app
       ::Rails.application
     end

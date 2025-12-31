@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Office, type: :model do
+RSpec.describe Office do
   subject(:office) { described_class.new }
 
   describe '#post_codes' do

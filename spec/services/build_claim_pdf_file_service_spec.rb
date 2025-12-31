@@ -47,25 +47,25 @@ RSpec.describe BuildClaimPdfFileService do
     context 'with a representative' do
       let(:claim) { build(:claim, :example_data) }
 
-      include_examples 'for any claim variation'
+      it_behaves_like 'for any claim variation'
     end
 
     context 'without a representative' do
       let(:claim) { build(:claim, :example_data, :without_representative) }
 
-      include_examples 'for any claim variation'
+      it_behaves_like 'for any claim variation'
     end
 
     context 'with an attached claim_details file' do
       let(:claim) { build(:claim, :example_data, :with_output_claim_details_file) }
 
-      include_examples 'for any claim variation'
+      it_behaves_like 'for any claim variation'
     end
 
     context 'with 10 secondary claimants' do
       let(:claim) { build(:claim, :example_data_multiple_claimants, uploaded_files: []) }
 
-      include_examples 'for any claim variation'
+      it_behaves_like 'for any claim variation'
 
       it 'does not fail if flatten is on' do
         builder.call(claim, flatten: true)
@@ -76,31 +76,31 @@ RSpec.describe BuildClaimPdfFileService do
     context 'with a respondent with no acas (joint claimant has acas number)' do
       let(:claim) { build(:claim, :example_data, primary_respondent_traits: [:example_data, :no_acas_joint_claimant]) }
 
-      include_examples 'for any claim variation'
+      it_behaves_like 'for any claim variation'
     end
 
     context 'with a respondent with no acas (no jurisdiction)' do
       let(:claim) { build(:claim, :example_data, primary_respondent_traits: [:example_data, :no_acas_no_jurisdiction]) }
 
-      include_examples 'for any claim variation'
+      it_behaves_like 'for any claim variation'
     end
 
     context 'with a respondent with no acas (employer contacted acas)' do
       let(:claim) { build(:claim, :example_data, primary_respondent_traits: [:example_data, :no_acas_employer_contacted]) }
 
-      include_examples 'for any claim variation'
+      it_behaves_like 'for any claim variation'
     end
 
     context 'with a respondent with no acas (interim_relief)' do
       let(:claim) { build(:claim, :example_data, primary_respondent_traits: [:example_data, :no_acas_interim_relief]) }
 
-      include_examples 'for any claim variation'
+      it_behaves_like 'for any claim variation'
     end
 
     context 'with a primary respondent with acas number and 4 secondary respondents with no acas (joint claimant has acas number)' do
       let(:claim) { build(:claim, :example_data, number_of_respondents: 5, secondary_respondent_traits: [:example_data, :unique_name, :no_acas_joint_claimant]) }
 
-      include_examples 'for any claim variation'
+      it_behaves_like 'for any claim variation'
     end
 
     context 'with a pre allocated s3 key to allow for providing the url before the file is uploaded' do
@@ -148,7 +148,7 @@ RSpec.describe BuildClaimPdfFileService do
     context 'when submitted between 00:00 and 00:59 during BST' do
       let(:claim) { build(:claim, :example_data, date_of_receipt: ActiveSupport::TimeZone['London'].parse('1 July 2020')) }
 
-      include_examples 'for any claim variation'
+      it_behaves_like 'for any claim variation'
     end
   end
 end

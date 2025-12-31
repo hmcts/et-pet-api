@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Validate Claimants File Request', type: :request do
+RSpec.describe 'Validate Claimants File Request' do
   include_context 'with local storage'
   describe 'POST /api/v2/validate' do
     let(:default_headers) do

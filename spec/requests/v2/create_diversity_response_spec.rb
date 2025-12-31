@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Create Diversity Request', type: :request do
+RSpec.describe 'Create Diversity Request' do
   describe 'POST /api/v2/diversity/build_diversity_response' do
     let(:default_headers) do
       {
