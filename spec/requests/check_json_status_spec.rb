@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Check JSON Status", type: :request do
+RSpec.describe "Check JSON Status" do
   describe "/health" do
     it "responds with status" do
       get '/health'

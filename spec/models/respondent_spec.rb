@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Respondent, type: :model do
+RSpec.describe Respondent do
   subject(:respondent) { described_class.new }
 
   let(:example_address_attrs) { attributes_for(:address) }

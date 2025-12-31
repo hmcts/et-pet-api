@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe UniqueReference, type: :model do
+RSpec.describe UniqueReference do
   subject(:reference) { described_class.new }
 
   it 'always has an id of > 20000000' do

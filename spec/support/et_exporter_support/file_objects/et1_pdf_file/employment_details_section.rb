@@ -14,7 +14,7 @@ module EtApi
             expected_values = {
               job_title: employment['job_title'] || '',
               start_date: formatted_date(employment['start_date'], optional: true),
-              employment_continuing: employment['current_situation'] == 'still_employed' || employment['current_situation'] == 'notice_period',
+              employment_continuing: ['still_employed', 'notice_period'].include?(employment['current_situation']),
               ended_date: date_in_past(employment['end_date'], optional: true) || '',
               ending_date: date_in_future(employment['end_date'], optional: true) || ''
             }

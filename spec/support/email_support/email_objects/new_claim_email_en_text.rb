@@ -20,16 +20,14 @@ module EtApi
         end
 
         def initialize(*args)
-          super(*args)
+          super
           multipart = mail.parts.detect { |p| p.content_type =~ %r{multipart/alternative} }
           part = multipart.parts.detect { |p| p.content_type =~ %r{text/plain} }
           self.body = part.nil? ? '' : part.body.to_s
           self.lines = body.lines.map { |l| l.to_s.strip }
         end
 
-        def template_reference
-          self.class.template_reference
-        end
+        delegate :template_reference, to: :class
 
         def has_reference?(reference)
           lines.any? { |l| l.strip == "#{t('claim_email.reference', locale: template_reference)}: #{reference}" }
@@ -114,7 +112,7 @@ module EtApi
           now = Time.zone.now
           return if lines.any? do |l|
             l.strip =~ /#{t('claim_email.submission_info', locale: template_reference)}\s*#{t('claim_email.submission_date', date: l(now, format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference)}/ ||
-            l.strip =~ /#{t('claim_email.submission_info', locale: template_reference)}\s*#{t('claim_email.submission_date', date: l((now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference)}/
+            l.strip =~ /#{t('claim_email.submission_info', locale: template_reference)}\s*#{t('claim_email.submission_date', date: l(now - 1.minute, format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference)}/
           end
 
           raise Capybara::ElementNotFound, "The submission date line was not found"

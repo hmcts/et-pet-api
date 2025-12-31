@@ -29,9 +29,7 @@ module EtApi
           super()
         end
 
-        def template_reference
-          self.class.template_reference
-        end
+        delegate :template_reference, to: :class
 
         def has_reference_element?(reference)
           claim_number.value?(text: reference)
@@ -87,6 +85,7 @@ module EtApi
             section(:what_happens_next, :xpath, XPath.generate { |x| x.child(:td)[1] }) do
               include RSpec::Matchers
               include EtApi::Test::I18n
+
               def assert_valid(template_reference:) # rubocop:disable Lint/NestedMethodDefinition
                 expect(root_element).to have_content(t('claim_email.next_steps.well_contact_you', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.next_steps.once_sent_claim', locale: template_reference))
@@ -103,7 +102,7 @@ module EtApi
                 expect(root_element).to have_content(t('claim_email.see_attached_pdf', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.claim_submitted', locale: template_reference))
                 now = Time.zone.now
-                expect(root_element).to have_content(t('claim_email.submitted_at', date: l(now, format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference)).or have_content(t('claim_email.submitted_at', date: l((now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference))
+                expect(root_element).to have_content(t('claim_email.submitted_at', date: l(now, format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference)).or have_content(t('claim_email.submitted_at', date: l(now - 1.minute, format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference))
                 if claimants_file.present?
                   expect(root_element).to have_content "et1a_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.csv"
                 else
@@ -152,7 +151,7 @@ module EtApi
 
           return if has_submission_date_element?(l(now, format: '%d %B %Y', locale: template_reference.split('-').last))
 
-          assert_submission_date_element(l((now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last))
+          assert_submission_date_element(l(now - 1.minute, format: '%d %B %Y', locale: template_reference.split('-').last))
         end
 
         def assert_office_information(office)
