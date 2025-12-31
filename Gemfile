@@ -20,7 +20,7 @@ gem 'jbuilder', '~> 2.10'
 # gem 'bcrypt', '~> 3.1.7'
 # Wisper is used as an in process pub/sub to decouple events / commands
 gem 'uk_postcode', '~> 2.1'
-gem 'wisper', git: 'https://github.com/krisleech/wisper.git', ref: '5587c1ad341a39f8d35d0a00ac78ba911e919b16'
+gem 'wisper', git: 'https://github.com/krisleech/wisper.git', ref: '4569343e353e8f070bd8219527f6eb9703bce653'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
