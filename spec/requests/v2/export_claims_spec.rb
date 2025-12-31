@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Export Claims Request', type: :request do
+RSpec.describe 'Export Claims Request' do
   include_context 'with local storage'
   include_context 'with gov uk notify emails sent monitor'
 

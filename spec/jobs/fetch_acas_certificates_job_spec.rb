@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe FetchAcasCertificatesJob do
   include ActiveJob::TestHelper
+
   describe 'perform' do
     let(:claim) { create(:claim) }
     let!(:fake_service) { class_double(FetchClaimAcasCertificatesService, call: fake_service_response).as_stubbed_const }

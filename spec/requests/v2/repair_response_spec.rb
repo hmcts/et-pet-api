@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Repair Response Request', type: :request do
+RSpec.describe 'Repair Response Request' do
   describe 'POST /api/v2/respondents/repair_response' do
     include_context 'with local storage'
     let(:default_headers) do
@@ -172,8 +172,8 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter'
+      it_behaves_like 'any response variation'
+      it_behaves_like 'a response exported to et_exporter'
     end
 
     context 'with json for a response with a respondent and a representative' do
@@ -183,8 +183,8 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter'
+      it_behaves_like 'any response variation'
+      it_behaves_like 'a response exported to et_exporter'
     end
 
     context 'with json for a response with an additional_information file upload that has not yet been processed' do
@@ -195,7 +195,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
+      it_behaves_like 'any response variation'
 
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
@@ -217,7 +217,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
+      it_behaves_like 'any response variation'
 
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
@@ -239,7 +239,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
+      it_behaves_like 'any response variation'
 
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
@@ -271,7 +271,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
+      it_behaves_like 'any response variation'
 
       it 'includes the additional information file in the exported data' do
         reference = response_to_repair.reference
@@ -302,8 +302,8 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter'
+      it_behaves_like 'any response variation'
+      it_behaves_like 'a response exported to et_exporter'
     end
 
     context 'with json for a response that had been processed but its output txt file lost' do
@@ -328,8 +328,8 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter', exclude_contents: true
+      it_behaves_like 'any response variation'
+      it_behaves_like 'a response exported to et_exporter', exclude_contents: true
     end
 
     context 'with json for a response that had been processed but its output pdf file lost' do
@@ -359,7 +359,7 @@ RSpec.describe 'Repair Response Request', type: :request do
       include_context 'with fake sidekiq'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
+      it_behaves_like 'any response variation'
 
       it 'includes the additional_information file in the exported data' do
         reference = response_to_repair.reference

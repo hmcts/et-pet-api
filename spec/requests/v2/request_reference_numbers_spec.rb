@@ -1,6 +1,6 @@
 require 'rails_helper'
 require 'securerandom'
-RSpec.describe "V2 RequestReferenceNumbers", type: :request do
+RSpec.describe "V2 RequestReferenceNumbers" do
   describe "POST /api/v2/references/create_reference" do
     let(:default_headers) do
       {

@@ -1,5 +1,5 @@
 require 'rails_helper'
-RSpec.describe 'Import Claim Request', type: :request do
+RSpec.describe 'Import Claim Request' do
   include_context 'with local storage'
   describe 'POST /api/v2/claims/repair_claim' do
     let(:default_headers) do
@@ -114,8 +114,8 @@ RSpec.describe 'Import Claim Request', type: :request do
     context 'with multiple claim' do
       let(:claim_to_repair) { create(:claim, :example_data_multiple_claimants) }
 
-      include_examples 'any claim variation'
-      include_examples 'a claim exported to et_exporter'
+      it_behaves_like 'any claim variation'
+      it_behaves_like 'a claim exported to et_exporter'
     end
   end
 end

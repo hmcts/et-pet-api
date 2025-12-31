@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Representative, type: :model do
+RSpec.describe Representative do
   subject(:rep) { described_class.new }
 
   let(:example_address_attrs) { attributes_for(:address) }

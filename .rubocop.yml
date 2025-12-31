@@ -1,6 +1,7 @@
 inherit_from:
   - .rubocop_todo.yml
 AllCops:
+  NewCops: enable
   TargetRubyVersion: 2.7
   # Exclude anything that isn't really part of our code.
   # rails_helper is excluded because it's full of solecisms, but it's mostly
@@ -229,11 +230,11 @@ Style/NumericPredicate:
 Rails/OutputSafety:
   Exclude:
     - 'app/helpers/yaml_helper.rb'
-RSpec/Capybara:
+Capybara:
   Exclude:
     - 'spec/features/**/*'
 
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Exclude:
     - 'spec/support/**/*'
 
@@ -485,15 +486,15 @@ RSpec/SubjectDeclaration: # new in 2.5
   Enabled: true
 RSpec/VerifiedDoubleReference: # new in 2.10.0
   Enabled: false
-RSpec/Rails/AvoidSetupHook: # new in 2.4
+RSpecRails/AvoidSetupHook: # new in 2.4
   Enabled: true
-RSpec/Rails/HaveHttpStatus: # new in 2.12
+RSpecRails/HaveHttpStatus: # new in 2.12
   Enabled: true
-RSpec/Rails/InferredSpecType: # new in 2.14
+RSpecRails/InferredSpecType: # new in 2.14
   Enabled: false
-RSpec/Rails/MinitestAssertions: # new in 2.17
+RSpecRails/MinitestAssertions: # new in 2.17
   Enabled: true
-RSpec/Rails/TravelAround: # new in 2.19
+RSpecRails/TravelAround: # new in 2.19
   Enabled: true
 Rails/ActionControllerFlashBeforeRender: # new in 2.16
   Enabled: true
@@ -613,8 +614,8 @@ Capybara/RedundantWithinFind: # new in 2.20
   Enabled: true
 Capybara/RSpec/HaveSelector: # new in 2.19
   Enabled: true
-Capybara/RSpec/PredicateMatcher: # new in 2.19
-  Enabled: true
+Capybara/RSpec/PredicateMatcher: # new in 2.19 - disabled due to bug in rubocop-capybara 2.22.1 (https://github.com/rubocop/rubocop/issues/13982)
+  Enabled: false
 FactoryBot/ExcessiveCreateList: # new in 2.25
   Enabled: true
 FactoryBot/IdSequence: # new in 2.24
@@ -639,7 +640,7 @@ RSpec/SpecFilePathFormat: # new in 2.24
   Enabled: true
 RSpec/SpecFilePathSuffix: # new in 2.24
   Enabled: true
-RSpec/Rails/NegationBeValid: # new in 2.23
+RSpecRails/NegationBeValid: # new in 2.23
   Enabled: true
 Rails/DangerousColumnNames: # new in 2.21
   Enabled: true
@@ -653,6 +654,9 @@ Rails/UnusedRenderContent: # new in 2.21
   Enabled: true
 require:
   - rubocop-rspec
+  - rubocop-rspec_rails
+plugins:
   - rubocop-rails
   - rubocop-factory_bot
+  - rubocop-capybara
 

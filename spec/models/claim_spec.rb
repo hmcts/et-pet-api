@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Claim, type: :model do
+RSpec.describe Claim do
   subject(:example_address_attrs) { attributes_for(:address) }
 
   let(:claim) { described_class.new attributes_for(:claim) }
