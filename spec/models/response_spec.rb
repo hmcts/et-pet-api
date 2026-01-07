@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Response, type: :model do
+RSpec.describe Response do
   subject(:response) { described_class.new }
 
   describe '#additional_information_file?' do

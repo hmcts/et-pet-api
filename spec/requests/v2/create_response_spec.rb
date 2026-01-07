@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-RSpec.describe 'Create Response Request', js: false, type: :request do
+RSpec.describe 'Create Response Request', js: false do
   describe 'POST /api/v2/respondents/build_response' do
     include_context 'with local storage'
 
@@ -232,9 +232,9 @@ RSpec.describe 'Create Response Request', js: false, type: :request do
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter'
-      include_examples 'email validation using standard template'
+      it_behaves_like 'any response variation'
+      it_behaves_like 'a response exported to et_exporter'
+      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json for a response using welsh pdf and email templates with representative to a non existent claim' do
@@ -244,9 +244,9 @@ RSpec.describe 'Create Response Request', js: false, type: :request do
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf, :with_welsh_email) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter'
-      include_examples 'email validation using welsh template'
+      it_behaves_like 'any response variation'
+      it_behaves_like 'a response exported to et_exporter'
+      it_behaves_like 'email validation using welsh template'
     end
 
     context 'with json for a response (minimum data) with representative (minimum data) to a non existent claim' do
@@ -255,8 +255,8 @@ RSpec.describe 'Create Response Request', js: false, type: :request do
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter'
+      it_behaves_like 'any response variation'
+      it_behaves_like 'a response exported to et_exporter'
     end
 
     context 'with json for a response without representative to a non existent claim' do
@@ -266,9 +266,9 @@ RSpec.describe 'Create Response Request', js: false, type: :request do
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter'
-      include_examples 'email validation using standard template'
+      it_behaves_like 'any response variation'
+      it_behaves_like 'a response exported to et_exporter'
+      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json for a response with representative to a non existent claim to be not exported as it is for the default office' do
@@ -279,8 +279,8 @@ RSpec.describe 'Create Response Request', js: false, type: :request do
 
       include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'email validation using standard template'
+      it_behaves_like 'any response variation'
+      it_behaves_like 'email validation using standard template'
       it 'is not exported' do
         reference = json_response.dig(:meta, 'BuildResponse', :reference)
         et_exporter.assert_response_not_exported_by_reference(reference)
@@ -297,9 +297,9 @@ RSpec.describe 'Create Response Request', js: false, type: :request do
 
       include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
-      include_examples 'any response variation'
-      include_examples 'a response exported to et_exporter'
-      include_examples 'email validation using standard template'
+      it_behaves_like 'any response variation'
+      it_behaves_like 'a response exported to et_exporter'
+      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json for a response with an invalid office code in the case number' do
@@ -308,7 +308,7 @@ RSpec.describe 'Create Response Request', js: false, type: :request do
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :invalid_case_number) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
-      include_examples 'any bad request error variation'
+      it_behaves_like 'any bad request error variation'
       it 'has the correct error in the case_number field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildResponse' }.uuid
         expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
@@ -327,7 +327,7 @@ RSpec.describe 'Create Response Request', js: false, type: :request do
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, representative_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
-      include_examples 'any bad request error variation'
+      it_behaves_like 'any bad request error variation'
       it 'has the correct error in the address_attributes field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildRepresentative' }.uuid
         expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
@@ -346,7 +346,7 @@ RSpec.describe 'Create Response Request', js: false, type: :request do
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, respondent_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
-      include_examples 'any bad request error variation'
+      it_behaves_like 'any bad request error variation'
       it 'has the correct error in the address_attributes field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildRespondent' }.uuid
         expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
@@ -365,7 +365,7 @@ RSpec.describe 'Create Response Request', js: false, type: :request do
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, response_traits: [:full, :invalid_queried_hours]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
-      include_examples 'any bad request error variation'
+      it_behaves_like 'any bad request error variation'
       it 'has the correct error in the queried_hours field' do
         expected_uuid = input_factory.data.detect { |d| d.command == 'BuildResponse' }.uuid
         expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,

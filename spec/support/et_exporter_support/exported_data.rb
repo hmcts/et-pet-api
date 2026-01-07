@@ -192,7 +192,7 @@ module EtApi
         end
 
         def additional_information_file
-          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] =~ /additional_information\.(?:pdf|rtf)/ }
+          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] =~ /\Aadditional_information\.(?:pdf|rtf)\z/ }
           EtApi::Test::FileObjects::Et3AdditionalInformationFile.new download(file_data)
         end
 

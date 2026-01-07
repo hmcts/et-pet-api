@@ -31,9 +31,7 @@ module EtApi
           super()
         end
 
-        def template_reference
-          self.class.template_reference
-        end
+        delegate :template_reference, to: :class
 
         def has_reference_element?(reference)
           claim_number.value == reference
@@ -95,7 +93,7 @@ module EtApi
 
           return if has_submission_date_element?(l(now, format: '%d %B %Y', locale: template_reference.split('-').last))
 
-          assert_submission_date_element(l((now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last))
+          assert_submission_date_element(l(now - 1.minute, format: '%d %B %Y', locale: template_reference.split('-').last))
         end
 
         def assert_office_information(office)
@@ -117,6 +115,7 @@ module EtApi
         def self.define_site_prism_elements(template_reference)
           section(:claim_number, :xpath, XPath.generate { |x| x.descendant(:p)[x.string.n.starts_with(t('claim_email.reference', locale: template_reference))] }) do
             include EtApi::Test::I18n
+
             define_method :value do
               root_element.text.gsub(/#{t('claim_email.reference', locale: template_reference)}/, '').strip
             end
@@ -124,6 +123,7 @@ module EtApi
 
           section(:submission_date, :xpath, XPath.generate { |x| x.descendant(:p)[x.string.n.starts_with(t('claim_email.submission_info', locale: template_reference))] }) do
             include EtApi::Test::I18n
+
             define_method :value do
               root_element.text.gsub(/#{t('claim_email.submission_info', locale: template_reference)}/, '').strip
             end
@@ -131,6 +131,7 @@ module EtApi
 
           section(:tribunal_office, :xpath, XPath.generate { |x| x.descendant(:p)[x.string.n.starts_with(t('claim_email.tribunal_office', locale: template_reference))] }) do
             include EtApi::Test::I18n
+
             define_method :value do
               root_element.text.gsub(/#{t('claim_email.tribunal_office', locale: template_reference)}/, '').strip
             end
@@ -138,6 +139,7 @@ module EtApi
 
           section(:tribunal_office_contact, :xpath, XPath.generate { |x| x.descendant(:p)[x.string.n.starts_with(t('claim_email.tribunal_office_contact', locale: template_reference))] }) do
             include EtApi::Test::I18n
+
             define_method :value do
               root_element.text.gsub(/#{t('claim_email.tribunal_office_contact', locale: template_reference)}/, '').strip
             end
@@ -174,6 +176,7 @@ module EtApi
             section(:what_happens_next, :xpath, XPath.generate { |x| x.child(:td)[1] }) do
               include RSpec::Matchers
               include EtApi::Test::I18n
+
               def assert_valid(template_reference:) # rubocop:disable Lint/NestedMethodDefinition
                 expect(root_element).to have_content(t('claim_email.next_steps.well_contact_you', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.next_steps.once_sent_claim', locale: template_reference))
@@ -190,7 +193,7 @@ module EtApi
                 expect(root_element).to have_content(t('claim_email.see_attached_pdf', locale: template_reference))
                 expect(root_element).to have_content(t('claim_email.claim_submitted', locale: template_reference))
                 now = Time.zone.now
-                expect(root_element).to have_content(t('claim_email.submitted_at', date: l(now, format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference)).or have_content(t('claim_email.submitted_at', date: l((now - 1.minute), format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference))
+                expect(root_element).to have_content(t('claim_email.submitted_at', date: l(now, format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference)).or have_content(t('claim_email.submitted_at', date: l(now - 1.minute, format: '%d %B %Y', locale: template_reference.split('-').last), locale: template_reference))
                 if claimants_file.present?
                   expect(root_element).to have_content "et1a_#{scrubber primary_claimant_data.first_name}_#{scrubber primary_claimant_data.last_name}.csv"
                 else

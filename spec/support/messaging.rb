@@ -21,6 +21,7 @@ module EtApi
     # @TODO Maybe think of a better name for this
     class Messaging
       include Singleton
+
       # Translates using the specified locale
       # @param [Symbol] key The key to use to lookup the text from the language file(s)
       # @param [Symbol] locale - The locale to use

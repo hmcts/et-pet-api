@@ -82,7 +82,7 @@ FactoryBot.define do
             new_file.puts line
           end
         end
-        new_file.close
+        new_file.rewind
         { content_type: 'text/plain', file: new_file, filename: original_filename }
       end
     end
@@ -138,7 +138,14 @@ FactoryBot.define do
       next if evaluator.file_to_attach.nil?
 
       begin
-        file = evaluator.file_to_attach[:file]&.open || File.open(evaluator.file_to_attach[:filename], 'rb')
+        temp_file = evaluator.file_to_attach[:file]
+        file = if temp_file
+                 temp_file.open if temp_file.closed?
+                 temp_file.rewind
+                 temp_file
+               else
+                 File.open(evaluator.file_to_attach[:filename], 'rb')
+               end
         uploaded_file.file.attach(io: file, filename: File.basename(evaluator.file_to_attach[:filename]), content_type: evaluator.file_to_attach[:content_type])
       end
     end

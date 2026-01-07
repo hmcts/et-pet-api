@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe DirectUploadedFile, type: :model do
+RSpec.describe DirectUploadedFile do
   describe 'validation' do
     it 'uploads to the direct upload store on save' do
       example_file_path = Rails.root.join('spec/fixtures/simple_user_with_rtf.rtf')

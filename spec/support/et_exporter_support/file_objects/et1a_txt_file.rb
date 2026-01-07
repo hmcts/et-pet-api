@@ -140,7 +140,7 @@ module EtApi
           return nil if end_idx.nil?
           return nil if my_contents[end_idx + 1] != ''
 
-          (start_idx..start_idx + end_idx + additional_lines_after_end)
+          (start_idx..(start_idx + end_idx + additional_lines_after_end))
         end
 
         def header_section

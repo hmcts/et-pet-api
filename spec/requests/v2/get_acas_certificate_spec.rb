@@ -5,7 +5,7 @@ require 'rails_helper'
 # This spec uses the 'Et Fake Acas Server' which provides a different response based on the
 # certificate number requested.  The last 3 digits of the first part of the number identifies the
 # acas response wanted.  (100, 200, 201 or 500)
-RSpec.describe 'GetAcasCertificate Request', type: :request do
+RSpec.describe 'GetAcasCertificate Request' do
   describe '/et_acas_api/certificates/<id>' do
     let(:default_headers) do
       {
