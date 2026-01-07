@@ -470,14 +470,14 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
-    sentry-rails (5.17.1)
+    sentry-rails (5.28.1)
       railties (>= 5.0)
-      sentry-ruby (~> 5.17.1)
-    sentry-ruby (5.17.1)
+      sentry-ruby (~> 5.28.1)
+    sentry-ruby (5.28.1)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sentry-sidekiq (5.17.1)
-      sentry-ruby (~> 5.17.1)
+    sentry-sidekiq (5.28.1)
+      sentry-ruby (~> 5.28.1)
       sidekiq (>= 3.0)
     sidekiq (6.5.12)
       connection_pool (>= 2.2.5, < 3)
@@ -523,7 +523,7 @@ GEM
       attr_extras (>= 6.2.4)
       diff-lcs
       patience_diff
-    thor (1.4.0)
+    thor (1.5.0)
     tilt (2.6.1)
     timeout (0.6.0)
     tsort (0.2.0)
