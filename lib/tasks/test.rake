@@ -1,16 +1,18 @@
 require 'English'
+
+# Override Rails default test task to use RSpec
+Rake::Task["test"].clear if Rake::Task.task_defined?("test")
+
 task test: :environment do
-  unless system("rspec -t ~smoke --format RspecJunitFormatter --out tmp/test/rspec.xml")
+  unless system("rspec -t ~smoke --format progress --format RspecJunitFormatter --out tmp/test/rspec.xml")
     raise "Rspec testing failed #{$CHILD_STATUS}"
   end
 end
 
-namespace :test do
-  task smoke: :environment do
+  task 'test:smoke' => :environment do
     puts "No smoke tests yet"
   end
 
-  task functional: :environment do
+  task 'test:functional' => :environment do
     puts "No functional tests yet"
   end
-end

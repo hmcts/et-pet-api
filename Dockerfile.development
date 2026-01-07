@@ -38,4 +38,4 @@ RUN cd /home/app/api && \
 ENV HOME /home/app
 WORKDIR /home/app/api
 ENV RAILS_ENV=development
-CMD ["bundle", "exec", "iodine", "-port", "8080"]
+CMD ["bundle", "exec", "puma", "-p", "8080"]
