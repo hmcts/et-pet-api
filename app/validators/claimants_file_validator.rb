@@ -64,7 +64,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
   end
 
   def measure(&block)
-    Benchmark.ms(&block).round(1)
+    Benchmark.realtime(&block).round(0.001) * 1000
   end
 
   def validate_file(file, record, attribute)
