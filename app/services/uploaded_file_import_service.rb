@@ -52,7 +52,7 @@ module UploadedFileImportService
     end
 
     def measure(&block)
-      Benchmark.ms(&block).round(1)
+      Benchmark.realtime(&block).round(0.001) * 1000
     end
 
     def delete_source_blob(key)
