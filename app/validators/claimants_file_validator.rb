@@ -78,6 +78,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
     if options[:save_line_count]
       record.send(options[:save_line_count], @validation_line_count)
     end
+    record.errors.add(:base, :empty_file) if @validation_line_count.zero?
   end
 
   def validate_row(row, record, attribute, claimants_file, row_index)
@@ -107,7 +108,7 @@ class ClaimantsFileValidator < ActiveModel::EachValidator
 
   def generate_errors(attribute, claimants_file, record, row_index)
     claimants_file.errors.each do |error|
-      record.errors.add(:"#{attribute}[#{row_index}].#{error.attribute}", error.message, **error.details.merge(extra_error_details(record)))
+      record.errors.add(:"#{attribute}[#{row_index}].#{error.attribute}", error.message, **error.details, **extra_error_details(record))
     end
   end
 

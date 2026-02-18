@@ -92,5 +92,34 @@ RSpec.describe ClaimantsFileValidator do
         expect(model.errors.where(:'data_from_key[4].post_code')).to be_empty
       end
     end
+
+    context 'when the file has only header row' do
+      let(:example_file) do
+        build(:claimants_file).generate!
+      end
+
+      before do
+        model.validate
+      end
+
+      it 'has a base error for empty file' do
+        expect(model.errors.where(:base, :empty_file)).to be_present
+      end
+
+    end
+
+    context 'when the file has no rows' do
+      let(:example_file) do
+        Rack::Test::UploadedFile.new(Tempfile.new, 'text/csv', false, original_filename: 'example-file.csv')
+      end
+
+      before do
+        model.validate
+      end
+
+      it 'has a base error for empty file' do
+        expect(model.errors.where(:base, :empty_file)).to be_present
+      end
+    end
   end
 end
