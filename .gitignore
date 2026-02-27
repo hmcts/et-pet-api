@@ -30,3 +30,4 @@ awslogs.conf
 /.env
 /.env.local
 /coverage
+.devbox/
