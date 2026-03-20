@@ -2,7 +2,7 @@
 module Api
   module V2
     class ValidationController < ::Api::V2::BaseController
-      VALID_COMMANDS = ["ValidateClaimantsFile"].freeze
+      VALID_COMMANDS = ["ValidateClaimantsFile", "ValidateAdditionalInformationFile"].freeze
       def validate
         root_object = {}
         command = CommandService.command_for(**validate_params.to_h.symbolize_keys)

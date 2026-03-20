@@ -4,19 +4,19 @@ require 'pdf-reader'
 require 'shellwords'
 
 class FileNotPasswordProtectedValidator < ActiveModel::EachValidator
-  PASSWORD_PROTECTABLE_EXTENSIONS = %w[pdf doc docx xls xlsx ppt pptx].freeze
-  LEGACY_OFFICE_EXTENSIONS = %w[doc xls ppt].freeze
-  OOXML_EXTENSIONS = %w[docx xlsx pptx].freeze
+  PASSWORD_PROTECTABLE_EXTENSIONS = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'].freeze
+  LEGACY_OFFICE_EXTENSIONS = ['doc', 'xls', 'ppt'].freeze
+  OOXML_EXTENSIONS = ['docx', 'xlsx', 'pptx'].freeze
 
   def validate_each(record, attribute, value)
-    direct_uploaded_file = DirectUploadedFile.find_by_key(value)
+    direct_uploaded_file = DirectUploadedFile.with_blob_key(value).first
     return if direct_uploaded_file.nil?
 
     extension = File.extname(direct_uploaded_file.filename.to_s).delete('.').downcase
     return unless PASSWORD_PROTECTABLE_EXTENSIONS.include?(extension)
 
     direct_uploaded_file.file.blob.open do |downloaded_file|
-      return unless password_protected?(downloaded_file.path, extension)
+      next unless password_protected?(downloaded_file.path, extension)
 
       record.errors.add(attribute, :password_protected, **extra_error_details(record))
     end
@@ -60,7 +60,7 @@ class FileNotPasswordProtectedValidator < ActiveModel::EachValidator
   end
 
   def powerpoint_password_protected?(path)
-    !`strings -a #{Shellwords.escape(path)}`.include?('[Content_Types].xmlPK')
+    `strings -a #{Shellwords.escape(path)}`.exclude?('[Content_Types].xmlPK')
   end
 
   def mime_type(path)
