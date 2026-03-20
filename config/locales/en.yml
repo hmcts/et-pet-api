@@ -32,6 +32,8 @@
 en:
   activemodel:
     errors:
+      messages:
+        password_protected: This file is password protected. Upload a file that isn’t password protected.
       models:
         build_response_command:
           attributes:
@@ -81,6 +83,8 @@ en:
           claim_not_found: A claim with an id of %{claim_id} was not found
   activerecord:
     errors:
+      messages:
+        password_protected: This file is password protected. Upload a file that isn’t password protected.
       models:
         direct_uploaded_file:
           attributes:
@@ -91,7 +95,3 @@ en:
     csv_not_submitted: no additional file
     claim_details_file_submitted: You successfully uploaded an additional document named %{name} with your claim. The file size is %{size}.
     csv_submitted: You successfully uploaded a group claim csv file named %{name} with your claim. The file size is %{size}.
-
-
-
-
