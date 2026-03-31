@@ -65,6 +65,18 @@ FactoryBot.define do
       uploaded_file_traits { [:example_claim_rtf] }
     end
 
+    trait :plain_additional_information_pdf do
+      filename { 'plain.pdf' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      uploaded_file_traits { [:plain_pdf] }
+    end
+
+    trait :password_protected_additional_information_pdf do
+      filename { 'password_protected.pdf' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      uploaded_file_traits { [:password_protected_pdf] }
+    end
+
     after(:build) do |obj, evaluator|
       next unless evaluator.upload_method == :direct_upload
 

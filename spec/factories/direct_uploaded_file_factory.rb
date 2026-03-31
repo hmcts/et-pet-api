@@ -9,6 +9,126 @@ FactoryBot.define do
       file_to_attach { { content_type: 'application/pdf', filename: Rails.root.join("spec/fixtures/et1_first_last.pdf") } }
     end
 
+    trait :plain_pdf do
+      filename { 'plain.pdf' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'application/pdf', filename: Rails.root.join("spec/fixtures/plain.pdf") } }
+    end
+
+    trait :password_protected_pdf do
+      filename { 'password_protected.pdf' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'application/pdf', filename: Rails.root.join("spec/fixtures/password_protected.pdf") } }
+    end
+
+    trait :plain_doc do
+      filename { 'plain.doc' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'application/msword', filename: Rails.root.join("spec/fixtures/plain.doc") } }
+    end
+
+    trait :password_protected_doc do
+      filename { 'password_protected.doc' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'application/msword', filename: Rails.root.join("spec/fixtures/password_protected.doc") } }
+    end
+
+    trait :plain_docx do
+      filename { 'plain.docx' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach do
+        {
+          content_type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          filename: Rails.root.join("spec/fixtures/plain.docx")
+        }
+      end
+    end
+
+    trait :password_protected_docx do
+      filename { 'password_protected.docx' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach do
+        {
+          content_type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          filename: Rails.root.join("spec/fixtures/password_protected.docx")
+        }
+      end
+    end
+
+    trait :plain_xls do
+      filename { 'plain.xls' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'application/vnd.ms-excel', filename: Rails.root.join("spec/fixtures/plain.xls") } }
+    end
+
+    trait :password_protected_xls do
+      filename { 'password_protected.xls' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'application/vnd.ms-excel', filename: Rails.root.join("spec/fixtures/password_protected.xls") } }
+    end
+
+    trait :plain_xlsx do
+      filename { 'plain.xlsx' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach do
+        {
+          content_type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          filename: Rails.root.join("spec/fixtures/plain.xlsx")
+        }
+      end
+    end
+
+    trait :password_protected_xlsx do
+      filename { 'password_protected.xlsx' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach do
+        {
+          content_type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          filename: Rails.root.join("spec/fixtures/password_protected.xlsx")
+        }
+      end
+    end
+
+    trait :plain_ppt do
+      filename { 'plain.ppt' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'application/vnd.ms-powerpoint', filename: Rails.root.join("spec/fixtures/plain.ppt") } }
+    end
+
+    trait :password_protected_ppt do
+      filename { 'password_protected.ppt' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'application/vnd.ms-powerpoint', filename: Rails.root.join("spec/fixtures/password_protected.ppt") } }
+    end
+
+    trait :plain_pptx do
+      filename { 'plain.pptx' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach do
+        {
+          content_type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+          filename: Rails.root.join("spec/fixtures/plain.pptx")
+        }
+      end
+    end
+
+    trait :password_protected_pptx do
+      filename { 'password_protected.pptx' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach do
+        {
+          content_type: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+          filename: Rails.root.join("spec/fixtures/password_protected.pptx")
+        }
+      end
+    end
+
+    trait :plain_jpg do
+      filename { 'plain.jpg' }
+      checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }
+      file_to_attach { { content_type: 'image/jpeg', filename: Rails.root.join("spec/fixtures/plain.jpg") } }
+    end
+
     trait :example_claim_text do
       filename { 'et1_first_last.txt' }
       checksum { 'ee2714b8b731a8c1e95dffaa33f89728' }

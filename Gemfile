@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '8.0.4'
+gem 'rails', '8.0.4.1'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', tag: 'v1.0.1'
@@ -44,6 +44,7 @@ gem 'rubyzip', '~> 2.0'
 
 # Pdf forms to test pdf content and also to produce them
 gem 'pdf-forms', '~> 1.3'
+gem "pdf-reader", "~> 2.4"
 
 # Libreconv to convert various file formats.  Used to convert rtf / docx etc.. to pdf
 gem 'libreconv', '~> 0.7'
@@ -89,7 +90,6 @@ group :test do
   gem 'factory_bot', '~> 6.1'
   gem 'faker', '~> 3.1'
   gem 'gov_fake_notify', '~> 2.1'
-  gem "pdf-reader", "~> 2.4"
   gem 'rspec-eventually', '~> 0.2.2'
   gem "selenium-webdriver", "~> 4.10"
   gem 'super_diff', '~> 0.10'
