@@ -105,7 +105,7 @@ rails s
 
 which will run the web server.  The url is
 
-http://api.et.127.0.0.1.nip.io:3100
+http://api.localhost:3100
 
 ### Running support services only
 
@@ -338,5 +338,3 @@ to point to the same DB as this application and go for it.
 If you want to run an entire system including the admin but are not interested in using ruby - i.e. you are testing or just viewing this application, you may want to consider it's "umbrella" project (https://github.com/ministryofjustice/et-full-system)
 
 which used docker-compose to bring all of the components together and allows you to run them much easier
-
-
