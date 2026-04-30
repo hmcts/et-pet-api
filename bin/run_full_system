@@ -27,7 +27,7 @@ FileUtils.chdir APP_ROOT do
   system! 'bin/rails db:create db:migrate db:seed'
 
   puts "\n== Setting up Azure storage =="
-  system! 'bin/rails configure_azure_storage_containers configure_azure_storage_cors'
+  system! 'bin/rails configure_azure_storage_containers'
 
   puts "\n== Starting app and sidekiq =="
   system! "cd #{APP_ROOT} && invoker start"
