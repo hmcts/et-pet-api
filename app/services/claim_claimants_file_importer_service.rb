@@ -1,4 +1,5 @@
 require 'csv'
+require 'ostruct'
 class ClaimClaimantsFileImporterService # rubocop:disable Metrics/ClassLength
   ADDRESS_COLUMNS = ['building', 'street', 'locality', 'county', 'post_code'].freeze
   CLAIMANT_COLUMNS = ['title', 'first_name', 'last_name', 'date_of_birth'].freeze
