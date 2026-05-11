@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'ostruct'
 
 RSpec.describe CreateClaimCommand do
   subject(:command) { described_class.new(**data) }

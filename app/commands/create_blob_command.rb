@@ -21,7 +21,7 @@ class CreateBlobCommand < BaseCommand
 
   def current_storage
     case ActiveStorage::Blob.service.class.name.demodulize # AzureStorageService, DiskService or S3Service
-    when 'AzureStorageService' then 'azure'
+    when 'AzureBlobService' then 'azure'
     when 'DiskService' then 'local'
     else raise "Unknown storage service in use - #{ActiveStorage::Blob.service.class.name.demodulize}"
     end

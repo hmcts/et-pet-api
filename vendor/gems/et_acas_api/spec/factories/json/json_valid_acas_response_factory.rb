@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module EtAcasApi
   module Test
     class JsonResponse < OpenStruct

@@ -1,3 +1,5 @@
+require 'ostruct'
+
 module EtApi
   module Test
     module Json

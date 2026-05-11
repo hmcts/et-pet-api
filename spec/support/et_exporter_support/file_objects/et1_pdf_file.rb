@@ -1,5 +1,6 @@
 require 'rspec/matchers'
 require_relative 'base_pdf_file'
+require 'ostruct'
 
 module EtApi
   module Test

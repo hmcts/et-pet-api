@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '8.0.4.1'
+gem 'rails', '8.1.3'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', tag: 'v1.0.1'
@@ -50,7 +50,7 @@ gem "pdf-reader", "~> 2.4"
 gem 'libreconv', '~> 0.7'
 
 # Azure
-gem 'azure-storage-blob', '~> 2.0', '>= 2.0.1'
+gem 'azure-blob', '~> 0.8'
 
 # For general easy http access - mainly for test but used in app too
 gem 'dotenv-rails', '~> 3.1'
