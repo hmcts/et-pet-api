@@ -36,7 +36,7 @@ gem "sentry-ruby", "~> 5.7"
 gem "sentry-sidekiq", "~> 5.7"
 gem 'sidekiq', '< 7'
 gem 'sidekiq_alive', '~> 2.0'
-gem 'sidekiq-cron', '~> 1.1'
+gem 'sidekiq-cron', '~> 2.0'
 gem 'sidekiq-failures', '~> 1.0'
 
 # Rubyzip used to produce and test zip files
