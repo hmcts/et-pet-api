@@ -13,7 +13,7 @@ gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', 
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 
-gem 'puma', '~> 6.5'
+gem 'puma', '~> 7.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.10'
 # Use ActiveModel has_secure_password
