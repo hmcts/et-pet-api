@@ -4,3 +4,5 @@ ignore:
   - CVE-2023-26141
   - CVE-2024-21510
   - CVE-2025-61921
+  # Webrick cannot be removed - its part of rails - but its not used in production
+  - CVE-2026-38969
