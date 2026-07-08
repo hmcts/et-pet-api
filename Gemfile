@@ -66,13 +66,13 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'et_full_system_control', git: 'https://github.com/hmcts/et-full-system-control.git'
   gem 'parallel_tests', '~> 5.5'
+  gem 'rspec_junit_formatter', '~> 0.6.0'
+  gem 'rspec-rails', '~> 8.0'
+  gem 'rubocop-capybara', '~> 2.22', require: false
+  gem 'rubocop-factory_bot', '~> 2.28', require: false
   gem "rubocop-rails", "~> 2.17", require: false
   gem 'rubocop-rspec', '~> 3.8', require: false
   gem 'rubocop-rspec_rails', '~> 2.32', require: false
-  gem 'rubocop-factory_bot', '~> 2.28', require: false
-  gem 'rubocop-capybara', '~> 2.22', require: false
-  gem 'rspec-rails', '~> 8.0'
-  gem 'rspec_junit_formatter', '~> 0.6.0'
   gem 'simplecov', '~> 0.21', require: false
   gem 'site_prism', '~> 5.0'
 end
@@ -95,8 +95,6 @@ group :test do
   gem 'super_diff', '~> 0.10'
   gem 'webmock', '~> 3.11'
 end
-
-gem 'rackup', '1.0.0', require: false
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
