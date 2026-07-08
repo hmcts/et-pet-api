@@ -13,7 +13,7 @@ gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', 
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 
-gem 'puma', '~> 6.5'
+gem 'puma', '~> 8.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.10'
 # Use ActiveModel has_secure_password
@@ -36,7 +36,7 @@ gem "sentry-ruby", "~> 5.7"
 gem "sentry-sidekiq", "~> 5.7"
 gem 'sidekiq', '< 7'
 gem 'sidekiq_alive', '~> 2.0'
-gem 'sidekiq-cron', '~> 1.1'
+gem 'sidekiq-cron', '~> 2.4'
 gem 'sidekiq-failures', '~> 1.0'
 
 # Rubyzip used to produce and test zip files
@@ -86,7 +86,7 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 2.0'
-  gem 'et_fake_acas_server', '~> 3.0.2'
+  gem 'et_fake_acas_server', '~> 3.0.3'
   gem 'factory_bot', '~> 6.1'
   gem 'faker', '~> 3.1'
   gem 'gov_fake_notify', '~> 2.1'
