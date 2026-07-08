@@ -13,7 +13,7 @@ gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', 
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 
-gem 'puma', '~> 6.5'
+gem 'puma', '~> 8.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.10'
 # Use ActiveModel has_secure_password
@@ -36,7 +36,7 @@ gem "sentry-ruby", "~> 5.7"
 gem "sentry-sidekiq", "~> 5.7"
 gem 'sidekiq', '< 7'
 gem 'sidekiq_alive', '~> 2.0'
-gem 'sidekiq-cron', '~> 1.1'
+gem 'sidekiq-cron', '~> 2.4'
 gem 'sidekiq-failures', '~> 1.0'
 
 # Rubyzip used to produce and test zip files
@@ -66,13 +66,13 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'et_full_system_control', git: 'https://github.com/hmcts/et-full-system-control.git'
   gem 'parallel_tests', '~> 5.5'
+  gem 'rspec_junit_formatter', '~> 0.6.0'
+  gem 'rspec-rails', '~> 8.0'
+  gem 'rubocop-capybara', '~> 2.22', require: false
+  gem 'rubocop-factory_bot', '~> 2.28', require: false
   gem "rubocop-rails", "~> 2.17", require: false
   gem 'rubocop-rspec', '~> 3.8', require: false
   gem 'rubocop-rspec_rails', '~> 2.32', require: false
-  gem 'rubocop-factory_bot', '~> 2.28', require: false
-  gem 'rubocop-capybara', '~> 2.22', require: false
-  gem 'rspec-rails', '~> 8.0'
-  gem 'rspec_junit_formatter', '~> 0.6.0'
   gem 'simplecov', '~> 0.21', require: false
   gem 'site_prism', '~> 5.0'
 end
@@ -86,7 +86,7 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 2.0'
-  gem 'et_fake_acas_server', '~> 3.0.2'
+  gem 'et_fake_acas_server', '~> 3.0.3'
   gem 'factory_bot', '~> 6.1'
   gem 'faker', '~> 3.1'
   gem 'gov_fake_notify', '~> 2.1'
@@ -95,8 +95,6 @@ group :test do
   gem 'super_diff', '~> 0.10'
   gem 'webmock', '~> 3.11'
 end
-
-gem 'rackup', '1.0.0', require: false
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
