@@ -18,6 +18,21 @@ def installRuby = {
     """, label: 'Ruby version install'
 }
 
+def useBundlePathOutsideWorkspace = {
+    def bundlePath = "${pwd(tmp: true)}/bundle"
+
+    sh script:"""#!/bin/bash -l
+        set +x
+        source /usr/local/rvm/scripts/rvm
+        rvm use
+        set -x
+
+        bundle config set path "${bundlePath}"
+        bundle install --jobs=4 --retry=3
+        rm -rf vendor/bundle
+    """, label: 'Use bundle path outside workspace'
+}
+
 withPipeline(type, product, component) {
     env.RAILS_ENV = 'test'
     env.DB_HOST = 'localhost'
@@ -28,6 +43,9 @@ withPipeline(type, product, component) {
     before('build') {
         installRuby()
     }
+    afterSuccess('build') {
+        useBundlePathOutsideWorkspace()
+    }
     before('test') {
         sh script:"""
             rm -rf ~/.gov_fake_notify && docker stop pet-et-api-test-postgres && docker rm pet-et-api-test-postgres || echo 'Ignoring failure in stopping old postgres'
@@ -36,15 +54,15 @@ withPipeline(type, product, component) {
 
         rubyBuilder.bundle("exec rails db:create db:migrate")
     }
-    before('test:functional') {
+    before('functionalTest:preview') {
         installRuby()
 
-        rubyBuilder.bundle("install")
+        useBundlePathOutsideWorkspace()
     }
     before('smoketest:preview') {
         installRuby()
 
-        rubyBuilder.bundle("install")
+        useBundlePathOutsideWorkspace()
     }
 
     afterAlways('test') {
