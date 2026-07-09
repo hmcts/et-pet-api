@@ -9,6 +9,30 @@ def component = "api"
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def rubyBuilder = new uk.gov.hmcts.contino.RubyBuilder(this)
 
+def installRuby = {
+    sh script:"""#!/bin/bash -l
+        set +x
+        source /usr/local/rvm/scripts/rvm
+        rvm install ruby-3.3.5
+        rvm use ruby-3.3.5 --default
+    """, label: 'Ruby version install'
+}
+
+def useBundlePathOutsideWorkspace = {
+    def bundlePath = "${pwd(tmp: true)}/bundle"
+
+    sh script:"""#!/bin/bash -l
+        set +x
+        source /usr/local/rvm/scripts/rvm
+        rvm use
+        set -x
+
+        bundle config set path "${bundlePath}"
+        bundle install --jobs=4 --retry=3
+        rm -rf vendor/bundle
+    """, label: 'Use bundle path outside workspace'
+}
+
 withPipeline(type, product, component) {
     env.RAILS_ENV = 'test'
     env.DB_HOST = 'localhost'
@@ -17,12 +41,10 @@ withPipeline(type, product, component) {
     env.DB_PASSWORD = 'postgres'
     env.ENABLE_COVERAGE='true'
     before('build') {
-        sh script:"""#!/bin/bash -l
-            set +x
-            source /usr/local/rvm/scripts/rvm
-            rvm install ruby-3.3.5
-            rvm use ruby-3.3.5 --default
-        """, label: 'Ruby version install'
+        installRuby()
+    }
+    afterSuccess('build') {
+        useBundlePathOutsideWorkspace()
     }
     before('test') {
         sh script:"""
@@ -32,15 +54,15 @@ withPipeline(type, product, component) {
 
         rubyBuilder.bundle("exec rails db:create db:migrate")
     }
-    before('smoketest:preview') {
-        sh script:"""#!/bin/bash -l
-            set +x
-            source /usr/local/rvm/scripts/rvm
-            rvm install ruby-3.3.5
-            rvm use ruby-3.3.5 --default
-        """, label: 'Ruby version install'
+    before('functionalTest:preview') {
+        installRuby()
 
-        rubyBuilder.bundle("install")
+        useBundlePathOutsideWorkspace()
+    }
+    before('smoketest:preview') {
+        installRuby()
+
+        useBundlePathOutsideWorkspace()
     }
 
     afterAlways('test') {
