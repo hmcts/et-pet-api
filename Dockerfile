@@ -24,7 +24,7 @@ COPY --from=pdftk/pdftk /usr/share/java/bcprov.jar /usr/share/java/bcprov.jar
 COPY --from=pdftk/pdftk /usr/share/java/commons-lang3.jar /usr/share/java/commons-lang3.jar
 COPY --from=pdftk/pdftk /usr/share/java/pdftk.jar /usr/share/java/pdftk.jar
 RUN chown -R app:app /usr/local/bundle
-RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext shared-mime-info libc6-compat bash file msttcorefonts-installer openjdk8-jre \
+RUN apk add --no-cache runit unzip zip libmcrypt-dev libpq-dev tzdata gettext shared-mime-info libc6-compat bash file msttcorefonts-installer openjdk8-jre yaml-dev libffi-dev \
     ttf-freefont ttf-opensans ttf-inconsolata \
     ttf-liberation ttf-dejavu && \
     apk add --no-cache postgresql-client~=11.12 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.10/main && \
