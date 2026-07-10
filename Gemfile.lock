@@ -144,6 +144,7 @@ GEM
       cgi
       rexml
     base64 (0.3.0)
+    benchmark (0.5.0)
     bigdecimal (3.3.1)
     builder (3.3.0)
     bullet (8.1.0)
@@ -549,6 +550,7 @@ DEPENDENCIES
   application_insights!
   azure-blob (~> 0.8)
   azure_env_secrets!
+  benchmark
   bullet (~> 8.0)
   bundler-audit (~> 0.9.1)
   byebug
