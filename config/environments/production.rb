@@ -52,8 +52,8 @@ Rails.application.configure do
   config.service_now_inbox_email = ENV.fetch('SERVICE_NOW_EMAIL', nil)
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  # config.active_job.queue_adapter = :resque
   config.active_job.queue_adapter = :sidekiq
+  config.solid_queue.connects_to = { database: { writing: :queue } }
 
   config.action_mailer.perform_caching = false
   config.action_mailer.default_options = { from: ENV.fetch('SMTP_FROM', 'no-reply@employmenttribunals.service.gov.uk') }
