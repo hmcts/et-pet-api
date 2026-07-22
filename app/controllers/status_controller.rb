@@ -20,8 +20,6 @@ class StatusController < ApplicationController
   end
 
   def solid_queue_healthy?
-    return true if Rails.env.test?
-
     SolidQueue::Process.
       exists?(hostname: Socket.gethostname,
               kind: "Supervisor",
