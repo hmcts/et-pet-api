@@ -7,6 +7,12 @@ RSpec.describe "Check JSON Status" do
 
       expect(JSON.parse(response.body, symbolize_names: true)).to eq(status: "ok")
     end
+
+    it "responds with status when solid_queue param is present" do
+      get '/health?solid_queue=true
+'
+      expect(JSON.parse(response.body, symbolize_names: true)).to eq(status: "ok", worker: "solid_queue")
+    end
   end
 
   describe "/health/readiness" do

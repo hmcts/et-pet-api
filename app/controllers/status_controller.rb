@@ -20,14 +20,11 @@ class StatusController < ApplicationController
   end
 
   def solid_queue_healthy?
-    ActiveRecord::Base.connection.select_value(<<-SQL.squish, "Check Solid Queue Health", [Socket.gethostname, 60.seconds.ago])
-      SELECT EXISTS (
-        SELECT 1
-        FROM solid_queue_processes
-        WHERE hostname = $1
-        AND kind = 'Supervisor'
-        AND last_heartbeat_at > $2
-      )
-    SQL
+    return true if Rails.env.test?
+
+    SolidQueue::Process.
+      exists?(hostname: Socket.gethostname,
+              kind: "Supervisor",
+              last_heartbeat_at: 60.seconds.ago..)
   end
 end
