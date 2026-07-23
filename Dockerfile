@@ -8,6 +8,7 @@ ARG APPVERSION=unknown
 ARG APP_BUILD_DATE=unknown
 ARG APP_GIT_COMMIT=unknown
 ARG APP_BUILD_TAG=unknown
+ARG DUMMY=whocares
 
 # Setting up ping.json variables
 ENV APPVERSION ${APPVERSION}
