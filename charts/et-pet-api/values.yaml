@@ -161,7 +161,7 @@ sidekiq:
           alias: AZURE_APP_INSIGHTS_KEY
 solid-queue:
   applicationPort: 8080
-  image: "hmctsprod.azurecr.io/et-pet/api:pr-761-f85ba2b-20260723160405"
+  image: "hmctsprod.azurecr.io/et-pet/api:latest"
   ingressHost: et-pet-api-queue.{{ .Values.global.environment }}.platform.hmcts.net
   aadIdentityName: et-pet
   args: ["./run_solid_queue.sh"]
