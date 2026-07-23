@@ -83,7 +83,6 @@ sidekiq:
   livenessPath: /health
   startupPath: /health
   image: "hmctsprod.azurecr.io/et-pet/api:latest"
-  ingressHost: et-pet-api-sidekiq.{{ .Values.global.environment }}.platform.hmcts.net
   aadIdentityName: et-pet
   args: ["./run_sidekiq.sh"]
   environment:
@@ -162,9 +161,7 @@ sidekiq:
 solid-queue:
   applicationPort: 8080
   image: "hmctsprod.azurecr.io/et-pet/api:latest"
-  ingressHost: et-pet-api-queue.{{ .Values.global.environment }}.platform.hmcts.net
   aadIdentityName: et-pet
-  args: ["./run_solid_queue.sh"]
   readinessPath: /health?solid_queue=true
   livenessPath: /health?solid_queue=true
   startupPath: /health?solid_queue=true
@@ -176,10 +173,10 @@ solid-queue:
     SMTP_HOSTNAME: "smtp.sendgrid.net"
     SMTP_PORT: 587
     RAILS_ENV: "production"
-    RAILS_MAX_THREADS: 10
+    RAILS_MAX_THREADS: 5
     RAILS_LOG_LEVEL: "info"
     RACK_ENV: "production"
-    WEB_CONCURRENCY: 2
+    WEB_CONCURRENCY: 1
     DOCKER_STATE: "migrate"
     RAILS_LOG_TO_STDOUT: true
     FLATTEN_PDF: true
@@ -192,6 +189,7 @@ solid-queue:
     AZURE_STORAGE_DIRECT_UPLOAD_ACCOUNT: etpetsa{{ .Values.global.environment }}
     AZURE_STORAGE_CONTAINER: private
     AZURE_STORAGE_DIRECT_UPLOAD_CONTAINER: public
+    SOLID_QUEUE_IN_PUMA: true
   keyVaults:
     et-pet:
       secrets:
