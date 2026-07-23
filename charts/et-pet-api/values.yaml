@@ -162,6 +162,7 @@ solid-queue:
   applicationPort: 8080
   image: "hmctsprod.azurecr.io/et-pet/api:latest"
   aadIdentityName: et-pet
+  args: ["./run_solid_queue.sh"]
   readinessPath: /health?solid_queue=true
   livenessPath: /health?solid_queue=true
   startupPath: /health?solid_queue=true

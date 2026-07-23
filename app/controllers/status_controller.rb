@@ -23,6 +23,6 @@ class StatusController < ApplicationController
     SolidQueue::Process.
       exists?(hostname: Socket.gethostname,
               kind: "Supervisor",
-              last_heartbeat_at: 60.seconds.ago..)
+              last_heartbeat_at: SolidQueue.process_alive_threshold.ago..)
   end
 end
