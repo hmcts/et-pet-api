@@ -9,7 +9,7 @@ RSpec.describe "Check JSON Status" do
     end
 
     it "responds with status ok when solid_queue param is present and process record exists" do
-      SolidQueue::Process.create!(name: 'Test Supervisor', pid: 12345, hostname: Socket.gethostname, kind: 'Supervisor', last_heartbeat_at: 1.second.ago)
+      SolidQueue::Process.create!(name: 'Test Supervisor', pid: 12345, hostname: Socket.gethostname, kind: 'Supervisor(fork)', last_heartbeat_at: 1.second.ago)
       get '/health?solid_queue=true
 '
       expect(JSON.parse(response.body, symbolize_names: true)).to eq(status: "ok", worker: "solid_queue")

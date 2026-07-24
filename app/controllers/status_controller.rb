@@ -22,7 +22,7 @@ class StatusController < ApplicationController
   def solid_queue_healthy?
     SolidQueue::Process.
       exists?(hostname: Socket.gethostname,
-              kind: "Supervisor",
+              kind: %w[Supervisor(fork) Supervisor(async)],
               last_heartbeat_at: SolidQueue.process_alive_threshold.ago..)
   end
 end
