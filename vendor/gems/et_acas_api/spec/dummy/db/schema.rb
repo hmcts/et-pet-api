@@ -11,10 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2018_07_18_151913) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "et_acas_api_download_logs", force: :cascade do |t|
     t.string "user_id"
     t.string "certificate_number"

@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require "rbconfig"
+
+if RbConfig::CONFIG["host_os"].include?("darwin")
+  ENV["SOLID_QUEUE_SUPERVISOR_MODE"] ||= "async"
+end
+
+require_relative "../config/environment"
+require "solid_queue/cli"
+
+SolidQueue::Cli.start(ARGV)

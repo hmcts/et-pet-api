@@ -38,6 +38,7 @@ gem 'sidekiq', '< 7'
 gem 'sidekiq_alive', '~> 2.0'
 gem 'sidekiq-cron', '~> 2.4'
 gem 'sidekiq-failures', '~> 1.0'
+gem 'solid_queue', '~> 1.4.0'
 
 # Rubyzip used to produce and test zip files
 gem 'rubyzip', '~> 2.0'
