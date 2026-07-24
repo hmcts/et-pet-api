@@ -60,6 +60,15 @@ gem 'httparty', '~> 0.20'
 # Technically not required but since rails 7.1.4.1 they insist !
 gem 'image_processing', '~> 1.2'
 
+# Benchmark was removed in ruby 4
+gem 'benchmark'
+
+# csv was removed in ruby 4
+gem 'csv'
+
+# ostruct was removed in ruby 4
+gem 'ostruct'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet', '~> 8.0'

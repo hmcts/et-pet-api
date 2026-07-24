@@ -144,6 +144,7 @@ GEM
       cgi
       rexml
     base64 (0.3.0)
+    benchmark (0.5.0)
     bigdecimal (3.3.1)
     builder (3.3.0)
     bullet (8.1.0)
@@ -549,9 +550,11 @@ DEPENDENCIES
   application_insights!
   azure-blob (~> 0.8)
   azure_env_secrets!
+  benchmark
   bullet (~> 8.0)
   bundler-audit (~> 0.9.1)
   byebug
+  csv
   database_cleaner (~> 2.0)
   dotenv-rails (~> 3.1)
   et_acas_api!
@@ -568,6 +571,7 @@ DEPENDENCIES
   libreconv (~> 0.7)
   listen (~> 3.4)
   notifications-ruby-client (~> 6.0)
+  ostruct
   parallel_tests (~> 5.5)
   pdf-forms (~> 1.3)
   pdf-reader (~> 2.4)
