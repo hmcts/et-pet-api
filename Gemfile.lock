@@ -14,6 +14,32 @@ GIT
       application_insights (~> 0.5.7)
 
 GIT
+  remote: https://github.com/hmcts/et-ccd-client-ruby.git
+  revision: 9efa74c88115c25d1c94a6635a91a548e4a7a3c7
+  tag: v0.6.2
+  specs:
+    et_ccd_client (0.6.2)
+      addressable (~> 2.6)
+      connection_pool (~> 2.2, >= 2.2.2)
+      rest-client (~> 2.0, >= 2.0.2)
+      rotp (~> 6.2)
+      webmock (~> 3.6)
+
+GIT
+  remote: https://github.com/hmcts/et-fake-ccd.git
+  revision: cc79ceac98fd001bc3fe664819564d8c772a5e6a
+  tag: v3.1.8
+  specs:
+    et_fake_ccd (3.1.8)
+      activemodel (>= 7.0)
+      json-schema (~> 4.1.1)
+      puma (>= 6.4)
+      roda (~> 3.21)
+      rotp (~> 6.2)
+      thor (~> 1.5)
+      tilt (~> 2.0, >= 2.0.9)
+
+GIT
   remote: https://github.com/hmcts/et-full-system-control.git
   revision: 4a3991b399d8dae1ed55a6965a2e7587f8fda71d
   specs:
@@ -22,11 +48,18 @@ GIT
       rails (>= 7.0.0)
 
 GIT
-  remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: eb238aff5583d133fd2bdabe35d90d3559bedec8
+  remote: https://github.com/hmcts/et-pet-ccd-export.git
+  revision: 48cb9607fb54e77371bd7b8ca53263554a1c60d2
   tag: v1.0.0
   specs:
-    et_exporter (1.0.0)
+    et_ccd_export (1.0.0)
+
+GIT
+  remote: https://github.com/hmcts/et_exporter_gem.git
+  revision: b3ea8156fa103a2bd25d0f6507ea61838f290196
+  tag: v3.0.0
+  specs:
+    et_exporter (3.0.0)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (>= 5.2.3)
@@ -187,6 +220,7 @@ GEM
     docker-api (2.2.0)
       excon (>= 0.47.0)
       multi_json
+    domain_name (0.6.20240107)
     dotenv (3.1.0)
     dotenv-rails (3.1.0)
       dotenv (= 3.1.0)
@@ -229,6 +263,9 @@ GEM
     gserver (0.0.1)
     hashdiff (1.2.1)
     hashery (2.1.2)
+    http-accept (1.7.0)
+    http-cookie (1.1.6)
+      domain_name (~> 0.5)
     httparty (0.24.0)
       csv
       mini_mime (>= 1.0.0)
@@ -248,6 +285,8 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     json (2.21.2)
+    json-schema (4.1.1)
+      addressable (>= 2.8)
     jwt (3.2.0)
       base64
     language_server-protocol (3.17.0.5)
@@ -268,6 +307,10 @@ GEM
       net-smtp
     marcel (1.2.1)
     matrix (0.4.3)
+    mime-types (3.7.0)
+      logger
+      mime-types-data (~> 3.2025, >= 3.2025.0507)
+    mime-types-data (3.2026.0701)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
@@ -287,6 +330,7 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
+    netrc (0.11.0)
     nio4r (2.7.5)
     nokogiri (1.19.4)
       mini_portile2 (~> 2.8.2)
@@ -383,9 +427,15 @@ GEM
     regexp_parser (2.11.3)
     reline (0.6.3)
       io-console (~> 0.5)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rexml (3.4.4)
     roda (3.105.0)
       rack
+    rotp (6.3.0)
     rspec-core (3.13.6)
       rspec-support (~> 3.13.0)
     rspec-eventually (0.2.2)
@@ -560,8 +610,11 @@ DEPENDENCIES
   dotenv-rails (~> 3.1)
   et_acas_api!
   et_azure_insights (= 0.3.2)!
+  et_ccd_client!
+  et_ccd_export!
   et_exporter!
   et_fake_acas_server (~> 3.0.3)
+  et_fake_ccd!
   et_full_system_control!
   factory_bot (~> 6.1)
   faker (~> 3.1)

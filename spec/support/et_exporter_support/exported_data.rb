@@ -3,8 +3,8 @@ module EtApi
   module Test
     class EtExporter
       def self.find_claim_by_reference(reference)
-        job = Sidekiq::Worker.jobs.find do |j|
-          j['class'] =~ /EtExporter::ExportClaimWorker/ && JSON.parse(j['args'].first).dig('resource', 'reference') == reference
+        job = find_claim_job do |j|
+          j.dig('resource', 'reference') == reference
         end
         raise "A claim with reference #{reference} was not exported" if job.nil?
 
@@ -12,15 +12,15 @@ module EtApi
       end
 
       def self.assert_claim_not_exported_by_submission_reference(submission_reference)
-        Sidekiq::Worker.jobs.none? do |j|
-          j['class'] =~ /EtExporter::ExportClaimWorker/ && JSON.parse(j['args'].first).dig('resource', 'reference') == submission_reference
+        job = find_claim_job do |j|
+          j.dig('resource', 'reference') == submission_reference
         end
+
+        raise "A claim with submission reference #{submission_reference} was not expected to be exported, but it was" unless job.nil?
       end
 
       def self.find_claim_by_submission_reference(reference)
-        job = Sidekiq::Worker.jobs.find do |j|
-          j['class'] =~ /EtExporter::ExportClaimWorker/ && JSON.parse(j['args'].first).dig('resource', 'submission_reference') == reference
-        end
+        job = find_claim_job { |job| job.dig('resource', 'submission_reference') == reference }
         raise "A claim with reference #{reference} was not exported" if job.nil?
 
         Claim.new(job)
@@ -30,8 +30,8 @@ module EtApi
       # @return [void]
       # @raise [RuntimeError] If the claim has not been exported
       def self.find_response_by_reference(reference)
-        job = Sidekiq::Worker.jobs.find do |j|
-          j['class'] =~ /EtExporter::ExportResponseWorker/ && JSON.parse(j['args'].first).dig('resource', 'reference') == reference
+        job = find_response_job do |j|
+          j.dig('resource', 'reference') == reference
         end
         raise "A response with reference #{reference} was not exported" if job.nil?
 
@@ -39,17 +39,45 @@ module EtApi
       end
 
       def self.assert_response_not_exported_by_reference(reference)
-        Sidekiq::Worker.jobs.none? do |j|
-          j['class'] =~ /EtExporter::ExportResponseWorker/ && JSON.parse(j['args'].first).dig('resource', 'reference') == reference
+        job = find_response_job do |j|
+          j.dig('resource', 'reference') == reference
+        end
+
+        raise "A response with reference #{reference} was not expected to be exported, but it was" unless job.nil?
+      end
+
+      def self.find_claim_job(use_active_job: Rails.application.config.try(:use_active_job))
+        jobs = use_active_job ? ActiveJob::Base.queue_adapter.enqueued_jobs : Sidekiq::Worker.jobs
+        jobs.find do |j|
+          if use_active_job
+            j['job_class'] =~ /EtExporter::ExportClaimJob/ && yield(JSON.parse(j['arguments'].first))
+          else
+            j['class'] =~ /EtExporter::ExportClaimWorker/ && yield(JSON.parse(j['args'].first))
+          end
+        end
+      end
+
+      def self.find_response_job(use_active_job: Rails.application.config.try(:use_active_job))
+        jobs = use_active_job ? ActiveJob::Base.queue_adapter.enqueued_jobs : Sidekiq::Worker.jobs
+        jobs.find do |j|
+          if use_active_job
+            j['job_class'] =~ /EtExporter::ExportResponseJob/ && yield(JSON.parse(j['arguments'].first))
+          else
+            j['class'] =~ /EtExporter::ExportResponseWorker/ && yield(JSON.parse(j['args'].first))
+          end
         end
       end
 
       class Claim
         include RSpec::Matchers
 
-        def initialize(job)
+        def initialize(job, use_active_job: Rails.application.config.try(:use_active_job))
           self.job = job
-          self.data = JSON.parse(job['args'].first, symbolize_names: true)
+          self.data = if use_active_job
+                        JSON.parse(job['arguments'].first, symbolize_names: true)
+                      else
+                        JSON.parse(job['args'].first, symbolize_names: true)
+                      end
         end
 
         def assert_has_file(filename)
@@ -164,9 +192,13 @@ module EtApi
       class Response
         include RSpec::Matchers
 
-        def initialize(job)
+        def initialize(job, use_active_job: Rails.application.config.try(:use_active_job))
           self.job = job
-          self.data = JSON.parse(job['args'].first, symbolize_names: true)
+          self.data = if use_active_job
+                        JSON.parse(job['arguments'].first, symbolize_names: true)
+                      else
+                        JSON.parse(job['args'].first, symbolize_names: true)
+                      end
         end
 
         def assert_response_details(response)
@@ -210,6 +242,7 @@ module EtApi
           file
         end
       end
+
     end
   end
 end

@@ -15,30 +15,6 @@ RSpec.describe 'Create Claim Request' do
     let(:errors) { [] }
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
 
-    shared_context 'with fake sidekiq' do
-      around do |example|
-
-        original_adapter = ActiveJob::Base.queue_adapter
-        ActiveJob::Base.queue_adapter = :test
-        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-        ActiveJob::Base.queue_adapter.performed_jobs.clear
-        example.run
-      ensure
-        ActiveJob::Base.queue_adapter = original_adapter
-
-      end
-
-      def run_background_jobs
-        previous_value = ActiveJob::Base.queue_adapter.perform_enqueued_jobs
-        ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-        ActiveJob::Base.queue_adapter.enqueued_jobs.select { |j| j[:job] == EventJob }.each do |job|
-          job[:job].perform_now(*ActiveJob::Arguments.deserialize(job[:args]))
-        end
-      ensure
-        ActiveJob::Base.queue_adapter.perform_enqueued_jobs = previous_value
-      end
-    end
-
     shared_context 'with background jobs running' do
       before do |example|
         next if example.metadata[:background_jobs] == :disable
@@ -54,7 +30,7 @@ RSpec.describe 'Create Claim Request' do
       let(:et_exporter) { EtApi::Test::EtExporter }
 
       # A private scrubber to set expectations for the filename - replaces white space with underscores and any non word chars are removed
-      scrubber = ->(text) { text.gsub(/\s/, '_').gsub(/\W/, '') }
+      let(:scrubber) { ->(text) { text.gsub(/\s/, '_').gsub(/\W/, '') } }
 
       let(:input_primary_claimant_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildPrimaryClaimant' }.data }
       let(:input_secondary_claimants_factory) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildSecondaryClaimants' }.data }
@@ -291,7 +267,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant and respondent, no representatives and no acas number' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, reference: nil, primary_respondent_traits: [:full, :no_acas_no_jurisdiction]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -301,10 +277,15 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'a claim exported to et_exporter with single respondent'
       it_behaves_like 'a claim exported to et_exporter with no representatives'
       it_behaves_like 'email validation using standard template'
+
+      it 'does something cool' do
+        input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
+      end
+
     end
 
     context 'with json for single claimant and respondent (with no work address), no representatives' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, reference: nil, primary_respondent_traits: [:full, :no_work_address]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -318,7 +299,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant and respondent but no representatives' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -331,7 +312,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for multiple claimants, 1 respondent and no representatives' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -345,7 +326,7 @@ RSpec.describe 'Create Claim Request' do
 
     context 'with json involving external files' do
       context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload' do
-        include_context 'with fake sidekiq'
+        include_context 'with fake job processor'
         include_context 'with setup for claims',
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
@@ -359,7 +340,7 @@ RSpec.describe 'Create Claim Request' do
       end
 
       context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload but uppercased filename' do
-        include_context 'with fake sidekiq'
+        include_context 'with fake job processor'
         include_context 'with setup for claims',
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
@@ -373,7 +354,7 @@ RSpec.describe 'Create Claim Request' do
       end
 
       context 'with json for multiple claimants, single respondent and representative - with csv file uploaded using direct upload' do
-        include_context 'with fake sidekiq'
+        include_context 'with fake job processor'
         include_context 'with setup for claims',
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
@@ -387,7 +368,7 @@ RSpec.describe 'Create Claim Request' do
       end
 
       context 'with json for multiple claimants, multiple respondents but no representatives - with csv file uploaded using direct upload' do
-        include_context 'with fake sidekiq'
+        include_context 'with fake job processor'
         include_context 'with setup for claims',
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
@@ -402,7 +383,7 @@ RSpec.describe 'Create Claim Request' do
       end
 
       context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using direct upload' do
-        include_context 'with fake sidekiq'
+        include_context 'with fake job processor'
         include_context 'with setup for claims',
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
@@ -416,7 +397,7 @@ RSpec.describe 'Create Claim Request' do
       end
 
       context 'with json for single claimant, single respondent and representative - with claim details file uploaded using direct upload' do
-        include_context 'with fake sidekiq'
+        include_context 'with fake job processor'
         include_context 'with setup for claims',
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
@@ -430,7 +411,7 @@ RSpec.describe 'Create Claim Request' do
       end
 
       context 'with json for single claimant, single respondent and representative - with claim details file uploaded using direct upload with uppercased extension' do
-        include_context 'with fake sidekiq'
+        include_context 'with fake job processor'
         include_context 'with setup for claims',
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
@@ -445,7 +426,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant, respondent and representative' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -458,7 +439,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant, respondent and representative with worked notice period or paid in lieu' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, claim_traits: [:full, :worked_notice_period]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -470,7 +451,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant, respondent and representative using welsh template' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_welsh_pdf, :with_welsh_email, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -484,7 +465,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant, respondent and representative with non alphanumerics in names' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: lambda {
                         FactoryBot.build(:json_build_claim_commands, # rubocop:disable FactoryBot/SyntaxMethods
@@ -504,7 +485,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant, respondent and representative with unicode chars in phone number' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: lambda {
                         FactoryBot.build(:json_build_claim_commands, # rubocop:disable FactoryBot/SyntaxMethods
@@ -519,7 +500,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant with N/K gender, 1 respondent and a representative' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_claimant_traits: [:no_gender_first_last]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -532,7 +513,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for multiple claimants, 1 respondent and a representative' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -545,7 +526,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant and multiple respondents but no representatives' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 4, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -558,7 +539,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for multiple claimant, multiple respondents but no representatives' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -571,7 +552,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant, multiple respondents and a representative' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -584,7 +565,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for multiple claimants, multiple respondents and a representative' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -598,7 +579,7 @@ RSpec.describe 'Create Claim Request' do
 
     context 'with json for single claimant, single respondent with postcode that routes to default office' do
       # Uses respondent address with post code 'FF1 1AA'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:default_office], reference: nil) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -612,7 +593,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json creating an error for single claimant (with no address) and respondent, no representatives' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full], primary_claimant_traits: [:mr_first_last, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -631,7 +612,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json creating an error for single claimant and respondent (with no address), no representatives' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -650,7 +631,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json creating an error for single claimant, respondent and representative (invalid address)' do
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_representative_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'

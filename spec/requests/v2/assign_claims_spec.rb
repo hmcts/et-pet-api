@@ -5,34 +5,6 @@ RSpec.describe 'Assign Claim Request' do
   include_context 'with local storage'
   include_context 'with gov uk notify emails sent monitor'
 
-  shared_context 'with fake sidekiq' do
-    around do |example|
-
-      original_adapter = ActiveJob::Base.queue_adapter
-      ActiveJob::Base.queue_adapter = :test
-      ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-      ActiveJob::Base.queue_adapter.performed_jobs.clear
-      example.run
-    ensure
-      ActiveJob::Base.queue_adapter = original_adapter
-
-    end
-
-    def run_background_jobs
-      prepare_local_active_storage
-      previous_value = ActiveJob::Base.queue_adapter.perform_enqueued_jobs
-      ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      ActiveJob::Base.queue_adapter.enqueued_jobs.delete_if do |job|
-        return false unless job[:job] == EventJob
-
-        job[:job].perform_now(*ActiveJob::Arguments.deserialize(job[:args]))
-        true
-      end
-    ensure
-      ActiveJob::Base.queue_adapter.perform_enqueued_jobs = previous_value
-    end
-  end
-
   describe 'POST /api/v2/claims/assign_claim' do
     let(:default_headers) do
       {
@@ -55,7 +27,7 @@ RSpec.describe 'Assign Claim Request' do
     let(:new_office) { Office.find_by(code: 24) }
     let(:example_user_id) { 123 }
 
-    include_context 'with fake sidekiq'
+    include_context 'with fake job processor'
 
     it 'returns 202 accepted' do
       # Arrange - Setup the claim record and provide the ids

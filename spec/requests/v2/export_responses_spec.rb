@@ -2,30 +2,6 @@
 
 require 'rails_helper'
 RSpec.describe 'Export Response Request' do
-  shared_context 'with fake sidekiq' do
-    around do |example|
-
-      original_adapter = ActiveJob::Base.queue_adapter
-      ActiveJob::Base.queue_adapter = :test
-      ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-      ActiveJob::Base.queue_adapter.performed_jobs.clear
-      example.run
-    ensure
-      ActiveJob::Base.queue_adapter = original_adapter
-
-    end
-
-    def run_background_jobs
-      previous_value = ActiveJob::Base.queue_adapter.perform_enqueued_jobs
-      ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-      ActiveJob::Base.queue_adapter.enqueued_jobs.select { |j| j[:job] == EventJob }.each do |job|
-        prepare_local_active_storage
-        job[:job].perform_now(*ActiveJob::Arguments.deserialize(job[:args]))
-      end
-    ensure
-      ActiveJob::Base.queue_adapter.perform_enqueued_jobs = previous_value
-    end
-  end
 
   describe 'POST /api/v2/exports/export_responses' do
     include_context 'with local storage'
@@ -46,7 +22,8 @@ RSpec.describe 'Export Response Request' do
     let(:example_external_system) { ExternalSystem.find_by reference: example_external_system_reference }
     let(:example_response) { Response.find_by reference: example_response_reference }
 
-    include_context 'with fake sidekiq'
+    include_context 'with fake job processor'
+    include_context 'with stubbed ccd'
 
     it 'returns 202 accepted' do
       # Arrange - Setup the response record and provide the ids

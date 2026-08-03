@@ -45,30 +45,6 @@ RSpec.describe 'Create Response Request', js: false do
       end
     end
 
-    shared_context 'with fake sidekiq' do
-      around do |example|
-
-        original_adapter = ActiveJob::Base.queue_adapter
-        ActiveJob::Base.queue_adapter = :test
-        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-        ActiveJob::Base.queue_adapter.performed_jobs.clear
-        example.run
-      ensure
-        ActiveJob::Base.queue_adapter = original_adapter
-
-      end
-
-      def run_background_jobs
-        previous_value = ActiveJob::Base.queue_adapter.perform_enqueued_jobs
-        ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-        ActiveJob::Base.queue_adapter.enqueued_jobs.select { |j| j[:job] == EventJob }.each do |job|
-          job[:job].perform_now(*ActiveJob::Arguments.deserialize(job[:args]))
-        end
-      ensure
-        ActiveJob::Base.queue_adapter.perform_enqueued_jobs = previous_value
-      end
-    end
-
     shared_context 'with background jobs running' do
       before do |example|
         next if example.metadata[:background_jobs] == :disable
@@ -227,7 +203,7 @@ RSpec.describe 'Create Response Request', js: false do
     # no knowledge of ET1 data from ET3 side of things - but will be questioned.
     context 'with json for a response with representative to a non existent claim' do
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with office assignment from ccd for response email'
@@ -239,7 +215,7 @@ RSpec.describe 'Create Response Request', js: false do
 
     context 'with json for a response using welsh pdf and email templates with representative to a non existent claim' do
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative, :with_welsh_pdf, :with_welsh_email) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with office assignment from ccd for response email'
@@ -251,7 +227,7 @@ RSpec.describe 'Create Response Request', js: false do
 
     context 'with json for a response (minimum data) with representative (minimum data) to a non existent claim' do
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_representative_minimal) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -261,7 +237,7 @@ RSpec.describe 'Create Response Request', js: false do
 
     context 'with json for a response without representative to a non existent claim' do
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :without_representative) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with office assignment from ccd for response email'
@@ -273,7 +249,7 @@ RSpec.describe 'Create Response Request', js: false do
 
     context 'with json for a response with representative to a non existent claim to be not exported as it is for the default office' do
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :for_default_office) } # rubocop:disable FactoryBot/SyntaxMethods
 
@@ -288,12 +264,11 @@ RSpec.describe 'Create Response Request', js: false do
     end
 
     context 'with json for a response with an additional_information file upload in local mode' do
-      rtf_file_path = Rails.root.join("spec/fixtures/example.rtf").to_s
       include_context 'with local storage'
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response',
-                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: rtf_file_path) } # rubocop:disable FactoryBot/SyntaxMethods
+                      json_factory: -> { FactoryBot.build(:json_build_response_commands, :with_rtf, rtf_file_path: Rails.root.join("spec/fixtures/example.rtf").to_s) } # rubocop:disable FactoryBot/SyntaxMethods
 
       include_context 'with office assignment from ccd for response email'
       include_context 'with background jobs running'
@@ -304,7 +279,7 @@ RSpec.describe 'Create Response Request', js: false do
 
     context 'with json for a response with an invalid office code in the case number' do
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, :invalid_case_number) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -323,7 +298,7 @@ RSpec.describe 'Create Response Request', js: false do
 
     context 'with json for a response with an invalid address in the representative data' do
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, representative_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -342,7 +317,7 @@ RSpec.describe 'Create Response Request', js: false do
 
     context 'with json for a response with an invalid address in the respondent data' do
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, respondent_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
@@ -361,7 +336,7 @@ RSpec.describe 'Create Response Request', js: false do
 
     context 'with json for a response with an invalid queried_hours attribute in the response data' do
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response',
                       json_factory: -> { FactoryBot.build(:json_build_response_commands, response_traits: [:full, :invalid_queried_hours]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
