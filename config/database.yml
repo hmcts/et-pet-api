@@ -80,4 +80,5 @@ production:
     <<: *default
     database: '<%= ENV.fetch('QUEUE_DB_NAME', 'et_api_queue_production') %>'
     migrations_paths: db/queue_migrate
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5).to_i + 2 %>
 
