@@ -13,7 +13,7 @@ def installRuby = {
     sh script:"""#!/bin/bash -l
         set +x
         source /usr/local/rvm/scripts/rvm
-        rvm install ruby-4.0.5
+        rvm install ruby-4.0.5 --autolibs=read-only
         rvm use ruby-4.0.5 --default
     """, label: 'Ruby version install'
 }
