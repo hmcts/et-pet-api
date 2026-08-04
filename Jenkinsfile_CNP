@@ -40,6 +40,12 @@ withPipeline(type, product, component) {
     env.DB_PORT = '5421'
     env.DB_PASSWORD = 'postgres'
     env.ENABLE_COVERAGE='true'
+    afterCheckout {
+        installRuby()
+
+        useBundlePathOutsideWorkspace()
+    }
+
     before('build') {
         installRuby()
     }
