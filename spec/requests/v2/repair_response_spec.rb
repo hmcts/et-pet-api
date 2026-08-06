@@ -62,31 +62,6 @@ RSpec.describe 'Repair Response Request' do
       end
     end
 
-    shared_context 'with fake sidekiq' do
-      around do |example|
-
-        original_adapter = ActiveJob::Base.queue_adapter
-        ActiveJob::Base.queue_adapter = :test
-        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-        ActiveJob::Base.queue_adapter.performed_jobs.clear
-        example.run
-      ensure
-        ActiveJob::Base.queue_adapter = original_adapter
-
-      end
-
-      def run_background_jobs
-        previous_value = ActiveJob::Base.queue_adapter.perform_enqueued_jobs
-        ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-        ActiveJob::Base.queue_adapter.enqueued_jobs.select { |j| j[:job] == EventJob }.each do |job|
-          prepare_local_active_storage
-          job[:job].perform_now(*ActiveJob::Arguments.deserialize(job[:args]))
-        end
-      ensure
-        ActiveJob::Base.queue_adapter.perform_enqueued_jobs = previous_value
-      end
-    end
-
     shared_context 'with background jobs running' do
       before do |example|
         next if example.metadata[:background_jobs] == :disable
@@ -169,7 +144,7 @@ RSpec.describe 'Repair Response Request' do
       let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command) }
 
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       it_behaves_like 'any response variation'
@@ -180,7 +155,7 @@ RSpec.describe 'Repair Response Request' do
       let(:response_to_repair) { create(:response, :broken_with_files_missing, :with_command, :with_representative) }
 
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       it_behaves_like 'any response variation'
@@ -192,7 +167,7 @@ RSpec.describe 'Repair Response Request' do
       let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key) }
 
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       it_behaves_like 'any response variation'
@@ -214,7 +189,7 @@ RSpec.describe 'Repair Response Request' do
       let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key, uploaded_files: [uploaded_file]) }
 
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       it_behaves_like 'any response variation'
@@ -236,7 +211,7 @@ RSpec.describe 'Repair Response Request' do
       let(:response_to_repair) { create(:response, :with_command, additional_information_key: additional_information_key, uploaded_files: [uploaded_file]) }
 
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       it_behaves_like 'any response variation'
@@ -268,7 +243,7 @@ RSpec.describe 'Repair Response Request' do
       end
 
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       it_behaves_like 'any response variation'
@@ -299,7 +274,7 @@ RSpec.describe 'Repair Response Request' do
       end
 
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       it_behaves_like 'any response variation'
@@ -325,7 +300,7 @@ RSpec.describe 'Repair Response Request' do
       end
 
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       it_behaves_like 'any response variation'
@@ -356,7 +331,7 @@ RSpec.describe 'Repair Response Request' do
       end
 
       include_context 'with transactions off for use with other processes'
-      include_context 'with fake sidekiq'
+      include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
       it_behaves_like 'any response variation'

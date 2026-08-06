@@ -78,6 +78,7 @@ RSpec/DescribeClass:
   Exclude:
     - spec/support/**/*
     - spec/views/**/*
+    - spec/requests/**/*
 
 Rails/FilePath:
   Exclude:

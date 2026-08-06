@@ -11,30 +11,6 @@ RSpec.describe 'Import Claim Request' do
     let(:errors) { [] }
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
 
-    shared_context 'with fake sidekiq' do
-      around do |example|
-
-        original_adapter = ActiveJob::Base.queue_adapter
-        ActiveJob::Base.queue_adapter = :test
-        ActiveJob::Base.queue_adapter.enqueued_jobs.clear
-        ActiveJob::Base.queue_adapter.performed_jobs.clear
-        example.run
-      ensure
-        ActiveJob::Base.queue_adapter = original_adapter
-
-      end
-
-      def run_background_jobs
-        previous_value = ActiveJob::Base.queue_adapter.perform_enqueued_jobs
-        ActiveJob::Base.queue_adapter.perform_enqueued_jobs = true
-        ActiveJob::Base.queue_adapter.enqueued_jobs.select { |j| j[:job] == EventJob }.each do |job|
-          job[:job].perform_now(*ActiveJob::Arguments.deserialize(job[:args]))
-        end
-      ensure
-        ActiveJob::Base.queue_adapter.perform_enqueued_jobs = previous_value
-      end
-    end
-
     shared_context 'with background jobs running' do
       before do |example|
         next if example.metadata[:background_jobs] == :disable
@@ -107,7 +83,7 @@ RSpec.describe 'Import Claim Request' do
 
     end
 
-    include_context 'with fake sidekiq'
+    include_context 'with fake job processor'
     include_context 'with setup for claims'
     include_context 'with background jobs running'
 
