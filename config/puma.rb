@@ -47,12 +47,6 @@ preload_app!
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
 
-# Run the Solid Queue supervisor inside of Puma for single-server deployments.
-if ENV["SOLID_QUEUE_IN_PUMA"]
-  plugin :solid_queue
-  solid_queue_mode :async if RUBY_PLATFORM.include?("darwin")
-end
-
 # Specify the PID file. Defaults to tmp/pids/server.pid in development.
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
