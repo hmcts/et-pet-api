@@ -162,7 +162,7 @@ queue-worker:
   applicationPort: 8080
   image: "hmctsprod.azurecr.io/et-pet/api:latest"
   aadIdentityName: et-pet
-  args: ["./run_good_job.sh"]
+  args: ["./run_queue_worker.sh"]
   readinessPath: /status/connected
   livenessPath: /status/connected
   startupPath: /status/started
