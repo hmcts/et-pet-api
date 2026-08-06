@@ -6,7 +6,7 @@
 
 [![Build Status](https://dev.azure.com/HMCTS-PET/pet-azure-infrastructure/_apis/build/status/et-api?branchName=develop)](https://dev.azure.com/HMCTS-PET/pet-azure-infrastructure/_build/latest?definitionId=17&branchName=develop)
 
-The API server for the ET service including ET1 and ET3
+The API server for the ET service including ET1 and ET3.
 
 ## Introduction
 
