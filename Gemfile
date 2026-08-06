@@ -38,7 +38,7 @@ gem 'sidekiq', '< 7'
 gem 'sidekiq_alive', '~> 2.0'
 gem 'sidekiq-cron', '~> 2.4'
 gem 'sidekiq-failures', '~> 1.0'
-gem 'solid_queue', '~> 1.4.0'
+gem 'good_job', '~> 4.19.0'
 
 # Rubyzip used to produce and test zip files
 gem 'rubyzip', '~> 2.0'
@@ -115,7 +115,7 @@ gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v3
 
 gem "activerecord-nulldb-adapter", "~> 1.0", group: :test
 
-gem "et_ccd_export", git: 'https://github.com/hmcts/et-pet-ccd-export.git', tag: 'v1.0.0'
+gem "et_ccd_export", git: 'https://github.com/hmcts/et-pet-ccd-export.git', branch: 'rst-8377'
 
 # The following gems are for et_ccd_export which is in an interim state - it is to be bought into this code base
 

@@ -44,9 +44,11 @@ module EtApi
 
     config.mailer_time_zone = "London"
 
-    config.use_active_job = false
+    config.use_active_job = true
 
     config.ccd_time_zone = 'London'
+
+    config.good_job.max_threads = [ENV.fetch("RAILS_MAX_THREADS", 5).to_i - 2, 1].max
 
     def event_service
       EventService.instance

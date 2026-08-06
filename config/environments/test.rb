@@ -23,7 +23,6 @@ Rails.application.configure do
 
   config.active_job.queue_adapter = :test
 
-  config.solid_queue.connects_to = { database: { writing: :queue } }
   # Show full error reports.
   config.consider_all_requests_local = true
   config.action_controller.perform_caching = false
