@@ -48,6 +48,8 @@ module EtApi
 
     config.ccd_time_zone = 'London'
 
+    config.good_job.max_threads = [ENV.fetch("RAILS_MAX_THREADS", 5).to_i - 2, 1].max
+
     def event_service
       EventService.instance
     end
