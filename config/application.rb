@@ -56,7 +56,9 @@ module EtApi
 
     role_suffix = Sidekiq.server? ? '-SIDEKIQ' : ''
     insights_key = ENV.fetch('AZURE_APP_INSIGHTS_KEY', false)
-    if insights_key
+    disable_insights = ENV.fetch('DISABLE_AZURE_APP_INSIGHTS', 'true') == 'true'
+
+    if insights_key && !disable_insights
       config.azure_insights.enable = true
       config.azure_insights.key = insights_key
       config.azure_insights.role_name = ENV.fetch('AZURE_APP_INSIGHTS_ROLE_NAME', 'et-api') + role_suffix
