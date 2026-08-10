@@ -49,17 +49,17 @@ GIT
 
 GIT
   remote: https://github.com/hmcts/et-pet-ccd-export.git
-  revision: 48cb9607fb54e77371bd7b8ca53263554a1c60d2
-  tag: v1.0.0
+  revision: a6f511ba69756d5705613f983dd77f1bb47b24b1
+  tag: v1.0.1
   specs:
-    et_ccd_export (1.0.0)
+    et_ccd_export (1.0.1)
 
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: b3ea8156fa103a2bd25d0f6507ea61838f290196
-  tag: v3.0.0
+  revision: b9c3d8b5cf31b2b040d58ad0c14b7525bc802342
+  tag: v3.0.1
   specs:
-    et_exporter (3.0.0)
+    et_exporter (3.0.1)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (>= 5.2.3)
