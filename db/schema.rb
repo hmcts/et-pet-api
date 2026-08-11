@@ -178,8 +178,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
 
   create_table "claims", force: :cascade do |t|
     t.boolean "administrator"
-    t.string "case_heard_by_preference"
-    t.string "case_heard_by_preference_reason"
     t.string "case_type"
     t.text "claim_details"
     t.integer "claimant_count", default: 0, null: false
@@ -455,8 +453,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
     t.boolean "agree_with_early_conciliation_details"
     t.string "agree_with_earnings_details"
     t.string "agree_with_employment_dates"
-    t.string "case_heard_by_preference"
-    t.string "case_heard_by_preference_reason"
     t.string "case_number"
     t.string "claim_information"
     t.string "claimants_name"
