@@ -191,6 +191,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_061014) do
     t.boolean "is_unfair_dismissal"
     t.boolean "is_whistleblowing"
     t.integer "jurisdiction"
+    t.date "last_event_date"
     t.boolean "manually_actioned", default: false, null: false
     t.text "miscellaneous_information"
     t.integer "office_code"
