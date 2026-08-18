@@ -18,7 +18,7 @@ class BuildClaimCommand < BaseCommand
   attribute :miscellaneous_information, :string
   attribute :employment_details
   attribute :is_unfair_dismissal, :boolean
-  attribute :pdf_template_reference, :string, default: 'et1-v5-en'
+  attribute :pdf_template_reference, :string, default: 'et1-v6-en'
   attribute :email_template_reference, :string, default: 'et1-v1-en'
   attribute :confirmation_email_recipients, default: []
   attribute :time_zone, :string, default: 'London'
@@ -27,8 +27,10 @@ class BuildClaimCommand < BaseCommand
   attribute :whistleblowing_regulator_name, :string
   attribute :case_heard_by_preference, :string
   attribute :case_heard_by_preference_reason, :string
+  attribute :last_event_date, :string
   validates :pdf_template_reference,
-            inclusion: { in: ['et1-v1-en', 'et1-v1-cy', 'et1-v2-en', 'et1-v2-cy', 'et1-v3-en', 'et1-v3-cy', 'et1-v4-en', 'et1-v4-cy', 'et1-v5-en', 'et1-v5-cy'] }
+            inclusion: { in: ['et1-v1-en', 'et1-v1-cy', 'et1-v2-en', 'et1-v2-cy', 'et1-v3-en', 'et1-v3-cy', 'et1-v4-en', 'et1-v4-cy', 'et1-v5-en', 'et1-v5-cy', 'et1-v6-en',
+                              'et1-v6-cy'] }
   validates :email_template_reference, inclusion: { in: ['et1-v1-en', 'et1-v1-cy'] }
   validates :time_zone, inclusion: { in: ['London'] }
   validates :case_heard_by_preference, inclusion: { in: ['judge', 'panel', 'no_preference', nil] }
