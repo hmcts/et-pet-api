@@ -9,7 +9,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
   PAY_CLAIMS = ['redundancy', 'notice', 'holiday', 'arrears', 'other'].freeze
   TITLES_WITHOUT_OTHER = ['Mr', 'Mrs', 'Miss', 'Ms', nil].freeze
 
-  def self.call(source, template_reference: 'et1-v5-en', time_zone: 'London', **)
+  def self.call(source, template_reference: 'et1-v6-en', time_zone: 'London', **)
     new(source, template_reference: template_reference, time_zone: time_zone).call
   end
 
@@ -154,7 +154,7 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     return if source.employment_details.empty?
 
     ed = source.employment_details.symbolize_keys
-    apply_field result, ed[:current_situation] == 'still_employed' || ed[:current_situation] == 'notice_period', :employment_details, :employment_continuing
+    apply_field result, ['still_employed', 'notice_period'].include?(ed[:current_situation]), :employment_details, :employment_continuing
     apply_field result, ed[:job_title], :employment_details, :job_title
     apply_field result, format_date(ed[:start_date], optional: true), :employment_details, :start_date
     apply_field result, format_date(ed[:end_date], optional: true), :employment_details, :ended_date
@@ -205,6 +205,9 @@ class BuildClaimEt1PdfFileService # rubocop:disable Metrics/ClassLength
     apply_field result, source.pay_claims.include?('other'), :type_and_details, :owed_other_payments
     apply_field result, source.is_unfair_dismissal, :type_and_details, :unfairly_dismissed
     apply_field result, source.claim_details, :type_and_details, :claim_description
+    if field_definition?(:type_and_details, :last_event_date)
+      apply_field result, format_date(source.last_event_date), :type_and_details, :last_event_date
+    end
   end
 
   def apply_what_do_you_want_section(result)

@@ -30,7 +30,8 @@ module EtApi
               owed_other_payments: claim.pay_claims.include?('other'),
               other_type_of_claim: claim.other_claim_details.present?,
               other_type_of_claim_details: claim.other_claim_details || '',
-              claim_description: claim.claim_details
+              claim_description: claim.claim_details,
+              last_event_date: formatted_date(claim.last_event_date)
             }
             expect(mapped_field_values).to include expected_values
           end

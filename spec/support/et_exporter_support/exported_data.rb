@@ -119,7 +119,7 @@ module EtApi
           EtApi::Test::FileObjects::Et1aTxtFile.new download(uploaded_file)
         end
 
-        def et1_pdf_file(template: 'et1-v5-en')
+        def et1_pdf_file(template: 'et1-v6-en')
           claimant = data.dig(:resource, :primary_claimant)
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1_#{scrubber(claimant[:first_name]).downcase}_#{scrubber(claimant[:last_name]).downcase}.pdf" }
           EtApi::Test::FileObjects::Et1PdfFile.new download(file_data), template: template, lookup_root: 'claim_pdf_fields'
@@ -171,7 +171,8 @@ module EtApi
 
         def assert_claim_details(claim)
           expect(data[:resource]).to include case_heard_by_preference: claim[:case_heard_by_preference],
-                                             case_heard_by_preference_reason: claim[:case_heard_by_preference_reason]
+                                             case_heard_by_preference_reason: claim[:case_heard_by_preference_reason],
+                                             last_event_date: claim[:last_event_date]
         end
 
         private

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_18_074143) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -191,6 +191,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
     t.boolean "is_unfair_dismissal"
     t.boolean "is_whistleblowing"
     t.integer "jurisdiction"
+    t.date "last_event_date"
     t.boolean "manually_actioned", default: false, null: false
     t.text "miscellaneous_information"
     t.integer "office_code"
