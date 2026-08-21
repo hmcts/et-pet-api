@@ -1,0 +1,182 @@
+---
+multiple_claim_form:
+  represented_by:
+    field_name: represented by
+  main_claim_name:
+    field_name: main claim of
+  additional_claimant_1:
+    title:
+      field_name: 1 title tick box
+      select_values:
+        Miss: Miss
+        Mr: Mr
+        Mrs: Mrs
+        Ms: Ms
+      unselected_value: 'Off'
+    first_name:
+      field_name: 1 first names
+    last_name:
+      field_name: 1 surname
+    dob_day:
+      field_name: 1 dob day
+    dob_month:
+      field_name: 1 dob month
+    dob_year:
+      field_name: 1 dob year
+    building:
+      field_name: 1 number
+    street:
+      field_name: 1 street
+    locality:
+      field_name: 1 town city
+    county:
+      field_name: 1 county
+    post_code:
+      field_name: 1 postcode
+  additional_claimant_2:
+    title:
+      field_name: 2 title
+      select_values:
+        Miss: Miss
+        Mr: Mr
+        Mrs: Mrs
+        Ms: Ms
+      unselected_value: 'Off'
+    first_name:
+      field_name: 2 first name
+    last_name:
+      field_name: 2 surname
+    dob_day:
+      field_name: 2 dob day
+    dob_month:
+      field_name: 2 dob month
+    dob_year:
+      field_name: 2 dob year
+    building:
+      field_name: 2 number
+    street:
+      field_name: 2 street
+    locality:
+      field_name: 2 town city
+    county:
+      field_name: 2 county
+    post_code:
+      field_name: 2 postcode
+  additional_claimant_3:
+    title:
+      field_name: 3 title
+      select_values:
+        Miss: Miss
+        Mr: Mr
+        Mrs: Mrs
+        Ms: Ms
+      unselected_value: 'Off'
+    first_name:
+      field_name: 3 first name
+    last_name:
+      field_name: 3 surname
+    dob_day:
+      field_name: 3 dob day
+    dob_month:
+      field_name: 3 dob month
+    dob_year:
+      field_name: 3 dob year
+    building:
+      field_name: 3 number
+    street:
+      field_name: 3 street
+    locality:
+      field_name: 3 town city
+    county:
+      field_name: 3 county
+    post_code:
+      field_name: 3 postcode
+  additional_claimant_4:
+    title:
+      field_name: 4 title
+      select_values:
+        Miss: Miss
+        Mr: Mr
+        Mrs: Mrs
+        Ms: Ms
+      unselected_value: 'Off'
+    first_name:
+      field_name: 4 first name
+    last_name:
+      field_name: 4 surname
+    dob_day:
+      field_name: 4 dob day
+    dob_month:
+      field_name: 4 dob month
+    dob_year:
+      field_name: 4 dob year
+    building:
+      field_name: 4 number
+    street:
+      field_name: 4 street
+    locality:
+      field_name: 4 town city
+    county:
+      field_name: 4 county
+    post_code:
+      field_name: 4 postcode
+  additional_claimant_5:
+    title:
+      field_name: 5 title
+      select_values:
+        Miss: Miss
+        Mr: Mr
+        Mrs: Mrs
+        Ms: Ms
+      unselected_value: 'Off'
+    first_name:
+      field_name: 5 first name
+    last_name:
+      field_name: 5 surname
+    dob_day:
+      field_name: 5 dob day
+    dob_month:
+      field_name: 5 dob month
+    dob_year:
+      field_name: 5 dob year
+    building:
+      field_name: 5 number
+    street:
+      field_name: 5 street
+    locality:
+      field_name: 5 town city
+    county:
+      field_name: 5 county
+    post_code:
+      field_name: 5 postcode
+  additional_claimant_6:
+    title:
+      field_name: 6 title
+      select_values:
+        Miss: Miss
+        Mr: Mr
+        Mrs: Mrs
+        Ms: Ms
+      unselected_value: 'Off'
+    first_name:
+      field_name: 6 first name
+    last_name:
+      field_name: 6 surname
+    dob_day:
+      field_name: 6 dob day
+    dob_month:
+      field_name: 6 dob month
+    dob_year:
+      field_name: 6 dob year
+    building:
+      field_name: 6 number
+    street:
+      field_name: 6 street
+    locality:
+      field_name: 6 town city
+    county:
+      field_name: 6 county
+    post_code:
+      field_name: 6 postcode
+    
+    

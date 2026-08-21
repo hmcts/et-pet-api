@@ -15,9 +15,10 @@ RSpec.describe BuildClaimCommand do
       command.apply(root_object)
 
       # Assert
-      expect(root_object).to have_attributes(data.except(:date_of_receipt, :jurisdiction, :office_code)).
+      expect(root_object).to have_attributes(data.except(:date_of_receipt, :jurisdiction, :office_code, :last_event_date)).
         and(have_attributes(jurisdiction: data[:jurisdiction].to_i, office_code: data[:office_code].to_i)).
-        and(have_attributes(date_of_receipt: an_instance_of(ActiveSupport::TimeWithZone)))
+        and(have_attributes(date_of_receipt: an_instance_of(ActiveSupport::TimeWithZone))).
+        and(have_attributes(last_event_date: an_instance_of(Date)))
     end
 
     it 'adds a reference to the meta' do

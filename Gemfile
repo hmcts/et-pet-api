@@ -111,7 +111,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
-gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v3.0.1'
+gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v3.0.2'
 
 gem "activerecord-nulldb-adapter", "~> 1.0", group: :test
 
