@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require "fileutils"
+require "tempfile"
 
 # path to your application root.
 APP_ROOT = File.expand_path('..', __dir__)
@@ -24,7 +25,8 @@ FileUtils.chdir APP_ROOT do
   end
 
   puts "\n== Preparing database =="
-  system! 'bin/rails db:create db:migrate db:seed'
+  tempfile = Tempfile.new('schema.rb')
+  system!({'SCHEMA' => tempfile.path}, 'bin/rails db:create db:migrate db:seed')
 
   puts "\n== Setting up Azure storage =="
   system! 'bin/rails configure_azure_storage_containers'
