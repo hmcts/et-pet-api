@@ -18,7 +18,7 @@ RSpec.describe BuildResponsePdfFileService do
 
       end
 
-      it 'stores an ET3 pdf file from the english v3 template with the correct contents' do
+      it 'stores an ET3 pdf file from the english v4 template with the correct contents' do
         # Act
         builder.call(response)
         response.save!
@@ -29,7 +29,7 @@ RSpec.describe BuildResponsePdfFileService do
           full_path = File.join(dir, 'et3_atos_export.pdf')
           uploaded_file.download_blob_to(full_path)
           File.open full_path do |file|
-            et3_file = EtApi::Test::FileObjects::Et3PdfFile.new(file, template: 'et3-v3-en', lookup_root: 'response_pdf_fields')
+            et3_file = EtApi::Test::FileObjects::Et3PdfFile.new(file, template: 'et3-v4-en', lookup_root: 'response_pdf_fields')
             expect(et3_file).to have_correct_contents_from_db_for(errors: errors, response: response), -> { errors.join("\n") }
           end
         end
@@ -77,9 +77,9 @@ RSpec.describe BuildResponsePdfFileService do
     context 'with an alternative pdf template' do
       let(:response) { build(:response, :example_data, :with_representative) }
 
-      it 'stores an ET3 pdf file from the welsh v3 template with the correct contents' do
+      it 'stores an ET3 pdf file from the welsh v4 template with the correct contents' do
         # Act
-        builder.call(response, template_reference: 'et3-v3-cy')
+        builder.call(response, template_reference: 'et3-v4-cy')
         response.save!
 
         # Assert
@@ -88,7 +88,7 @@ RSpec.describe BuildResponsePdfFileService do
           full_path = File.join(dir, 'et3_atos_export.pdf')
           uploaded_file.download_blob_to(full_path)
           File.open full_path do |file|
-            et3_file = EtApi::Test::FileObjects::Et3PdfFile.new(file, template: 'et3-v3-cy', lookup_root: 'response_pdf_fields')
+            et3_file = EtApi::Test::FileObjects::Et3PdfFile.new(file, template: 'et3-v4-cy', lookup_root: 'response_pdf_fields')
             expect(et3_file).to have_correct_contents_from_db_for(errors: errors, response: response), -> { errors.join("\n") }
           end
         end

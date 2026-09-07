@@ -119,7 +119,7 @@ module EtApi
           EtApi::Test::FileObjects::Et1aTxtFile.new download(uploaded_file)
         end
 
-        def et1_pdf_file(template: 'et1-v4-en')
+        def et1_pdf_file(template: 'et1-v6-en')
           claimant = data.dig(:resource, :primary_claimant)
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1_#{scrubber(claimant[:first_name]).downcase}_#{scrubber(claimant[:last_name]).downcase}.pdf" }
           EtApi::Test::FileObjects::Et1PdfFile.new download(file_data), template: template, lookup_root: 'claim_pdf_fields'
@@ -167,6 +167,12 @@ module EtApi
           claimant = data.dig(:resource, :primary_claimant)
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1_attachment_#{claimant[:first_name]}_#{claimant[:last_name]}.rtf" }
           download(file_data)
+        end
+
+        def assert_claim_details(claim)
+          expect(data[:resource]).to include case_heard_by_preference: claim[:case_heard_by_preference],
+                                             case_heard_by_preference_reason: claim[:case_heard_by_preference_reason],
+                                             last_event_date: claim[:last_event_date]
         end
 
         private
@@ -217,7 +223,7 @@ module EtApi
           end
         end
 
-        def et3_pdf_file(template: 'et3-v3-en')
+        def et3_pdf_file(template: 'et3-v4-en')
           file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et3_atos_export.pdf" }
 
           EtApi::Test::FileObjects::Et3PdfFile.new download(file_data), template: template, lookup_root: 'response_pdf_fields'

@@ -4,7 +4,7 @@ require 'securerandom'
 FactoryBot.define do
   factory :json_build_response_commands, class: '::EtApi::Test::Json::Document' do
     transient do
-      pdf_template { 'et3-v3-en' }
+      pdf_template { 'et3-v4-en' }
       email_template { 'et3-v1-en' }
       response_traits { [:full] }
       response_attrs { {} }
@@ -18,7 +18,7 @@ FactoryBot.define do
     data { [] }
 
     trait :with_welsh_pdf do
-      pdf_template { 'et3-v3-cy' }
+      pdf_template { 'et3-v4-cy' }
     end
 
     trait :with_welsh_email do
@@ -123,8 +123,10 @@ FactoryBot.define do
       make_employer_contract_claim { true }
       claim_information { "lorem ipsum info" }
       email_receipt { "email@recei.pt" }
-      pdf_template_reference { "et3-v3-en" }
+      pdf_template_reference { "et3-v4-en" }
       email_template_reference { "et3-v1-en" }
+      case_heard_by_preference { 'judge' }
+      case_heard_by_preference_reason { 'I get intimidated by a group of people' }
     end
 
     trait :invalid_case_number do

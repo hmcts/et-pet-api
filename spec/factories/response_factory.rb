@@ -27,7 +27,9 @@ FactoryBot.define do
     agree_with_earnings_details { 'not_applicable' }
     agree_with_claimant_notice { 'not_applicable' }
     agree_with_claimant_pension_benefits { 'not_applicable' }
-    pdf_template_reference { 'et3-v3-en' }
+    case_heard_by_preference { 'judge' }
+    case_heard_by_preference_reason { 'I get intimidated by a group of people' }
+    pdf_template_reference { 'et3-v4-en' }
     email_template_reference { 'et3-v1-en' }
 
     sequence :reference do |n|
