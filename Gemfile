@@ -40,9 +40,6 @@ gem 'sidekiq-cron', '~> 2.4'
 gem 'sidekiq-failures', '~> 1.0'
 gem 'good_job', '~> 4.19.0'
 
-# Rubyzip used to produce and test zip files
-gem 'rubyzip', '~> 2.0'
-
 # Pdf forms to test pdf content and also to produce them
 gem 'pdf-forms', '~> 1.3'
 gem "pdf-reader", "~> 2.4"

@@ -641,7 +641,6 @@ DEPENDENCIES
   rubocop-rails (~> 2.17)
   rubocop-rspec (~> 3.8)
   rubocop-rspec_rails (~> 2.32)
-  rubyzip (~> 2.0)
   selenium-webdriver (~> 4.10)
   sentry-rails (~> 5.7)
   sentry-ruby (~> 5.7)
