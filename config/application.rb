@@ -44,7 +44,7 @@ module EtApi
 
     config.mailer_time_zone = "London"
 
-    config.use_active_job = true
+    config.use_active_job = true # Needed for et exporter only - will be removed once fully switched over
 
     config.ccd_time_zone = 'London'
 
@@ -54,7 +54,7 @@ module EtApi
       EventService.instance
     end
 
-    role_suffix = Sidekiq.server? ? '-SIDEKIQ' : ''
+    role_suffix = GoodJob::CLI.within_exe ? '-QUEUE' : ''
     insights_key = ENV.fetch('AZURE_APP_INSIGHTS_KEY', false)
     disable_insights = ENV.fetch('DISABLE_AZURE_APP_INSIGHTS', 'true') == 'true'
 

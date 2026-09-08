@@ -49,21 +49,20 @@ GIT
 
 GIT
   remote: https://github.com/hmcts/et-pet-ccd-export.git
-  revision: 4a8d52c6f9059ef26c8c3822114d376ef76dd9b1
+  revision: 00326a8d7b92da9225037abb7eeb6dd12aa586cf
   branch: rst-8551
   specs:
     et_ccd_export (1.0.8)
 
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: b9c3d8b5cf31b2b040d58ad0c14b7525bc802342
-  tag: v3.0.1
+  revision: 502c59bc0790a329e71af2cd4145034b9904e2b9
+  tag: v3.0.4
   specs:
-    et_exporter (3.0.1)
+    et_exporter (3.0.4)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (>= 5.2.3)
-      sidekiq (>= 5.2.7)
 
 GIT
   remote: https://github.com/krisleech/wisper.git
@@ -204,9 +203,6 @@ GEM
       bigdecimal
       rexml
     crass (1.0.7)
-    cronex (0.15.0)
-      tzinfo
-      unicode (>= 0.4.4.5)
     csv (3.3.5)
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
@@ -267,7 +263,6 @@ GEM
       roda (~> 3.48)
       thor (~> 1.1)
       tilt (~> 2.0, >= 2.0.10)
-    gserver (0.0.1)
     hashdiff (1.2.1)
     hashery (2.1.2)
     http-accept (1.7.0)
@@ -430,7 +425,6 @@ GEM
       prism (>= 1.6.0)
       rbs (>= 4.0.0)
       tsort
-    redis (4.8.1)
     regexp_parser (2.11.3)
     reline (0.6.3)
       io-console (~> 0.5)
@@ -516,23 +510,6 @@ GEM
     sentry-ruby (5.17.1)
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
-    sentry-sidekiq (5.17.1)
-      sentry-ruby (~> 5.17.1)
-      sidekiq (>= 3.0)
-    sidekiq (6.5.12)
-      connection_pool (>= 2.2.5, < 3)
-      rack (~> 2.0)
-      redis (>= 4.5.0, < 5)
-    sidekiq-cron (2.4.0)
-      cronex (>= 0.13.0)
-      fugit (~> 1.8, >= 1.11.1)
-      globalid (>= 1.0.1)
-      sidekiq (>= 6.5.0)
-    sidekiq-failures (1.0.4)
-      sidekiq (>= 4.0.0)
-    sidekiq_alive (2.4.0)
-      gserver (~> 0.0.1)
-      sidekiq (>= 5, < 8)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -572,7 +549,6 @@ GEM
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     uk_postcode (2.1.8)
-    unicode (0.4.4.5)
     unicode-display_width (3.2.0)
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
@@ -644,11 +620,6 @@ DEPENDENCIES
   selenium-webdriver (~> 4.10)
   sentry-rails (~> 5.7)
   sentry-ruby (~> 5.7)
-  sentry-sidekiq (~> 5.7)
-  sidekiq (< 7)
-  sidekiq-cron (~> 2.4)
-  sidekiq-failures (~> 1.0)
-  sidekiq_alive (~> 2.0)
   simplecov (~> 0.21)
   site_prism (~> 5.0)
   spring (~> 4.1)
