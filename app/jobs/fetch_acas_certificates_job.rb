@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class FetchAcasCertificatesJob < ApplicationJob
+  sidekiq_options(retry: false)
   class RetriableError < RuntimeError
     attr_reader :claim
 

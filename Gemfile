@@ -33,6 +33,11 @@ gem 'et_azure_insights', '0.3.2', git: 'https://github.com/hmcts/et-azure-insigh
 gem 'notifications-ruby-client', '~> 6.0'
 gem "sentry-rails", "~> 5.7"
 gem "sentry-ruby", "~> 5.7"
+gem "sentry-sidekiq", "~> 5.7"
+gem 'sidekiq', '< 7'
+gem 'sidekiq_alive', '~> 2.0'
+gem 'sidekiq-cron', '~> 2.4'
+gem 'sidekiq-failures', '~> 1.0'
 gem 'good_job', '~> 4.19.0'
 
 # Pdf forms to test pdf content and also to produce them
@@ -103,7 +108,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
-gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v3.0.4'
+gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v3.0.1'
 
 gem "activerecord-nulldb-adapter", "~> 1.0", group: :test
 
