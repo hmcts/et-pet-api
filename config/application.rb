@@ -81,10 +81,11 @@ module EtApi
       config.govuk_notify.enabled = false
     end
 
-    config.redis_host = "invalid"
-    config.redis_port = 1234
-    config.redis_database = 0
-    config.redis_url = "redis://#{config.redis_host}:#{config.redis_port}/#{config.redis_database}"
+    config.redis_host = ENV.fetch('REDIS_HOST', 'localhost')
+    config.redis_port = ENV.fetch('REDIS_PORT', '6379')
+    config.redis_database = ENV.fetch('REDIS_DATABASE', '2')
+    default_redis_url = "redis://#{config.redis_host}:#{config.redis_port}"
+    config.redis_url = ENV.fetch('REDIS_URL', default_redis_url) + "/#{config.redis_database}"
     config.flatten_pdf = ENV.fetch('FLATTEN_PDF', "false") == 'true'
 
     config.file_conversions = ActiveSupport::OrderedOptions.new

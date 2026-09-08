@@ -46,8 +46,8 @@ Rails.application.configure do
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
-  # Use in-process memory cache store for now as caching is not heavily used
-  config.cache_store = :memory_store
+  # Replace the default in-process memory cache store with a durable alternative.
+  config.cache_store = :redis_cache_store, { url: config.redis_url }
 
   config.service_now_inbox_email = ENV.fetch('SERVICE_NOW_EMAIL', nil)
 

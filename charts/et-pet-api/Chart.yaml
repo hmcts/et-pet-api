@@ -9,6 +9,10 @@ dependencies:
     version: 1.4.1
     repository: "oci://hmctsprod.azurecr.io/helm"
   - name: base
+    alias: sidekiq
+    version: 1.4.1
+    repository: "oci://hmctsprod.azurecr.io/helm"
+  - name: base
     alias: queue-worker
     version: 1.4.1
     repository: "oci://hmctsprod.azurecr.io/helm"
