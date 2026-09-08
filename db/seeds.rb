@@ -38,19 +38,21 @@ ccd_glasgow.update! enabled: true,
   export_queue: 'external_system_ccd',
   office_codes: [41]
 
-ccd_london_central = ExternalSystem.find_or_initialize_by name: 'CCD London Central', reference: 'ccd_london_central'
+ccd_london_central = ExternalSystem.find_or_initialize_by reference: 'ccd_london_central'
 ccd_london_central.update! enabled: true,
-  export_claims: true,
-  export_responses: true,
-  export_queue: 'external_system_ccd',
-  office_codes: [22]
+                           name: 'CCD London Central',
+                           export_claims: true,
+                           export_responses: true,
+                           export_queue: 'external_system_ccd',
+                           office_codes: [22]
 
-ccd_bristol = ExternalSystem.find_or_create_by name: 'CCD Bristol', reference: 'ccd_bristol'
+ccd_bristol = ExternalSystem.find_or_initialize_by reference: 'ccd_bristol'
 ccd_bristol.update! enabled: true,
-  export_claims: true,
-  export_responses: true,
-  export_queue: 'external_system_ccd',
-  office_codes: [14]
+                    name: 'CCD Bristol',
+                    export_claims: true,
+                    export_responses: true,
+                    export_queue: 'external_system_ccd',
+                    office_codes: [14]
 
 ExternalSystemConfiguration.find_or_create_by external_system_id: ccd_manc.id,
   key: 'case_type_id', value: 'Manchester_Dev'
@@ -61,80 +63,86 @@ ExternalSystemConfiguration.find_or_create_by external_system_id: ccd_glasgow.id
 ExternalSystemConfiguration.find_or_create_by external_system_id: ccd_glasgow.id,
   key: 'multiples_case_type_id', value: 'Glasgow_Multiples_Dev'
 
-ExternalSystem.find_or_create_by! name: 'CCD England And Wales (Reform)', reference: 'ccd_england_and_wales_reform' do |external_system|
+ExternalSystem.find_or_create_by! reference: 'ccd_england_and_wales_reform' do |external_system|
   external_system.assign_attributes enabled: true,
-                       export_claims: true,
-                       export_responses: true,
-                       response_remote_office: true,
-                       export_queue: 'external_system_ccd',
-                       office_codes: [60],
-                       configurations_attributes: [
-                         { key: 'case_type_id', value: 'ET_EnglandWales' },
-                         { key: 'multiples_case_type_id',value: 'ET_EnglandWales_Multiples' },
-                         { key: 'send_request_id', value: 'true' }
-                       ]
+                                    name: 'CCD England And Wales (Reform)',
+                                    export_claims: true,
+                                    export_responses: true,
+                                    response_remote_office: true,
+                                    export_queue: 'external_system_ccd',
+                                    office_codes: [60],
+                                    configurations_attributes: [
+                                      { key: 'case_type_id', value: 'ET_EnglandWales' },
+                                      { key: 'multiples_case_type_id',value: 'ET_EnglandWales_Multiples' },
+                                      { key: 'send_request_id', value: 'true' }
+                                    ]
   end
-ExternalSystem.find_or_create_by! name: 'CCD Test2', reference: 'ccd_test2' do |external_system|
+ExternalSystem.find_or_create_by! reference: 'ccd_test2' do |external_system|
   external_system.assign_attributes enabled: true,
-                      export_claims: true,
-                      export_responses: true,
-                      export_queue: 'external_system_ccd',
-                      office_codes: [61],
-                      configurations_attributes: [
-                              { key: 'case_type_id', value: 'Test2' },
-                              { key: 'multiples_case_type_id',value: 'Test2_Multiples' },
-                              { key: 'extra_headers', value: { force_failures: { token_stage: [401, 401, 401] } }.to_json},
-                              { key: 'send_request_id', value: 'true' }
-                            ]
+                                    name: 'CCD Test2',
+                                    export_claims: true,
+                                    export_responses: true,
+                                    export_queue: 'external_system_ccd',
+                                    office_codes: [61],
+                                    configurations_attributes: [
+                                            { key: 'case_type_id', value: 'Test2' },
+                                            { key: 'multiples_case_type_id',value: 'Test2_Multiples' },
+                                            { key: 'extra_headers', value: { force_failures: { token_stage: [401, 401, 401] } }.to_json},
+                                            { key: 'send_request_id', value: 'true' }
+                                          ]
   end
-ExternalSystem.find_or_create_by! name: 'CCD Test3', reference: 'ccd_test3' do |external_system|
+ExternalSystem.find_or_create_by! reference: 'ccd_test3' do |external_system|
   external_system.assign_attributes enabled: true,
-                      export_claims: true,
-                      export_responses: false,
-                      export_queue: 'external_system_ccd',
-                      office_codes: [62],
-                      configurations_attributes: [
-                              { key: 'case_type_id', value: 'Test3' },
-                              { key: 'multiples_case_type_id',value: 'Test3_Multiples' },
-                              { key: 'extra_headers', value: { force_failures: { token_stage: [401, 401, 401, 401, 401, 504, 401] } }.to_json},
-                              { key: 'send_request_id', value: 'true' }
-                            ]
+                                    name: 'CCD Test3',
+                                    export_claims: true,
+                                    export_responses: false,
+                                    export_queue: 'external_system_ccd',
+                                    office_codes: [62],
+                                    configurations_attributes: [
+                                            { key: 'case_type_id', value: 'Test3' },
+                                            { key: 'multiples_case_type_id',value: 'Test3_Multiples' },
+                                            { key: 'extra_headers', value: { force_failures: { token_stage: [401, 401, 401, 401, 401, 504, 401] } }.to_json},
+                                            { key: 'send_request_id', value: 'true' }
+                                          ]
   end
-ExternalSystem.find_or_create_by! name: 'CCD Test4', reference: 'ccd_test4' do |external_system|
+ExternalSystem.find_or_create_by! reference: 'ccd_test4' do |external_system|
   external_system.assign_attributes enabled: true,
-                      export_claims: true,
-                      export_responses: false,
-                      export_queue: 'external_system_ccd',
-                      office_codes: [63],
-                      configurations_attributes: [
-                              { key: 'case_type_id', value: 'Test4' },
-                              { key: 'multiples_case_type_id',value: 'Test4_Multiples' },
-                              { key: 'extra_headers', value: { force_failures: { token_stage: [401] } }.to_json},
-                              { key: 'send_request_id', value: 'true' }
-                            ]
+                                    name: 'CCD Test4',
+                                    export_claims: true,
+                                    export_responses: false,
+                                    export_queue: 'external_system_ccd',
+                                    office_codes: [63],
+                                    configurations_attributes: [
+                                            { key: 'case_type_id', value: 'Test4' },
+                                            { key: 'multiples_case_type_id',value: 'Test4_Multiples' },
+                                            { key: 'extra_headers', value: { force_failures: { token_stage: [401] } }.to_json},
+                                            { key: 'send_request_id', value: 'true' }
+                                          ]
   end
-ExternalSystem.find_or_create_by! name: 'CCD Test5', reference: 'ccd_test5' do |external_system|
+ExternalSystem.find_or_create_by! reference: 'ccd_test5' do |external_system|
   external_system.assign_attributes enabled: true,
-                      export_claims: true,
-                      export_responses: false,
-                      export_queue: 'external_system_ccd',
-                      office_codes: [64],
-                      configurations_attributes: [
-                              { key: 'case_type_id', value: 'Test5' },
-                              { key: 'multiples_case_type_id',value: 'Test5_Multiples' },
-                              { key: 'extra_headers', value: { force_failures: { token_stage: [401, 401, 401] } }.to_json},
-                              { key: 'send_request_id', value: 'true' }
-                            ]
+                                    name: 'CCD Test5',
+                                    export_claims: true,
+                                    export_responses: false,
+                                    export_queue: 'external_system_ccd',
+                                    office_codes: [64],
+                                    configurations_attributes: [
+                                            { key: 'case_type_id', value: 'Test5' },
+                                            { key: 'multiples_case_type_id',value: 'Test5_Multiples' },
+                                            { key: 'extra_headers', value: { force_failures: { token_stage: [401, 401, 401] } }.to_json},
+                                            { key: 'send_request_id', value: 'true' }
+                                          ]
   end
-ExternalSystem.find_or_create_by! name: 'CCD Scotland (Reform)', reference: 'ccd_scotland_reform' do |external_system|
+ExternalSystem.find_or_create_by! reference: 'ccd_scotland_reform' do |external_system|
   external_system.assign_attributes enabled: true,
-                       export_claims: true,
-                       export_responses: true,
-                       export_queue: 'external_system_ccd',
-                       office_codes: [80],
-                       configurations_attributes: [
-                         { key: 'case_type_id', value: 'ET_Scotland' },
-                         { key: 'multiples_case_type_id',value: 'ET_Scotland_Multiples' },
-                         { key: 'send_request_id', value: 'true' }
-                       ]
+                                    name: 'CCD Scotland (Reform)',
+                                    export_claims: true,
+                                    export_responses: true,
+                                    export_queue: 'external_system_ccd',
+                                    office_codes: [80],
+                                    configurations_attributes: [
+                                      { key: 'case_type_id', value: 'ET_Scotland' },
+                                      { key: 'multiples_case_type_id',value: 'ET_Scotland_Multiples' },
+                                      { key: 'send_request_id', value: 'true' }
+                                    ]
   end
