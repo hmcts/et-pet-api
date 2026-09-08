@@ -49,10 +49,10 @@ GIT
 
 GIT
   remote: https://github.com/hmcts/et-pet-ccd-export.git
-  revision: 4d111a37d1d77bb98209365c8c68b723e0379650
-  tag: v2.0.0
+  revision: 48058a36e1241eb047e39388da371ef697377de9
+  branch: rst-8551
   specs:
-    et_ccd_export (1.0.8)
+    et_ccd_export (1.0.9)
 
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git

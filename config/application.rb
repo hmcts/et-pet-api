@@ -44,7 +44,7 @@ module EtApi
 
     config.mailer_time_zone = "London"
 
-    config.use_active_job = true
+    config.use_active_job = !::Sidekiq.server?
 
     config.ccd_time_zone = 'London'
 
