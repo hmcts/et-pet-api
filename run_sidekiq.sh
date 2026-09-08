@@ -1,3 +1,3 @@
 #!/bin/bash
 
-bundle exec sidekiq -C config/sidekiq.yml
+while true; do sleep 86400; done
