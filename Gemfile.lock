@@ -49,21 +49,20 @@ GIT
 
 GIT
   remote: https://github.com/hmcts/et-pet-ccd-export.git
-  revision: a6f511ba69756d5705613f983dd77f1bb47b24b1
-  tag: v1.0.1
+  revision: 405e0a3e13c15b4b307060b6dc6c7625ab276015
+  tag: v2.0.1
   specs:
-    et_ccd_export (1.0.1)
+    et_ccd_export (1.0.9)
 
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: b9c3d8b5cf31b2b040d58ad0c14b7525bc802342
-  tag: v3.0.1
+  revision: 502c59bc0790a329e71af2cd4145034b9904e2b9
+  tag: v3.0.4
   specs:
-    et_exporter (3.0.1)
+    et_exporter (3.0.4)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (>= 5.2.3)
-      sidekiq (>= 5.2.7)
 
 GIT
   remote: https://github.com/krisleech/wisper.git
@@ -501,7 +500,7 @@ GEM
     ruby-vips (2.2.2)
       ffi (~> 1.12)
       logger
-    rubyzip (2.4.1)
+    rubyzip (3.6.0)
     safe_shell (1.1.0)
     securerandom (0.4.1)
     selenium-webdriver (4.39.0)
@@ -641,7 +640,6 @@ DEPENDENCIES
   rubocop-rails (~> 2.17)
   rubocop-rspec (~> 3.8)
   rubocop-rspec_rails (~> 2.32)
-  rubyzip (~> 2.0)
   selenium-webdriver (~> 4.10)
   sentry-rails (~> 5.7)
   sentry-ruby (~> 5.7)

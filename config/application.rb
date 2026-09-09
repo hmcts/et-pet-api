@@ -44,7 +44,7 @@ module EtApi
 
     config.mailer_time_zone = "London"
 
-    config.use_active_job = false
+    config.use_active_job = !::Sidekiq.server?
 
     config.ccd_time_zone = 'London'
 
@@ -93,5 +93,7 @@ module EtApi
     config.file_conversions.allowed_types = ['application/rtf']
 
     config.active_storage.variant_processor = nil
+
+    config.et_ccd_export.retry_wait_strategy = ENV.fetch('CCD_EXPORT_RETRY_WAIT_STRATEGY', 'polynomially_longer')
   end
 end
