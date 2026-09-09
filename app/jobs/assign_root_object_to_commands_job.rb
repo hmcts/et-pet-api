@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# A sidekiq job to assign root object to commands (as there was a period of about
+# A job to assign root object to commands (as there was a period of about
 #  6 months when they were not assigned)
 class AssignRootObjectToCommandsJob < ApplicationJob
   queue_as :default

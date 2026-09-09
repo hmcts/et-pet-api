@@ -44,7 +44,7 @@ module EtApi
 
     config.mailer_time_zone = "London"
 
-    config.use_active_job = !::Sidekiq.server?
+    config.use_active_job = true
 
     config.ccd_time_zone = 'London'
 
@@ -54,7 +54,7 @@ module EtApi
       EventService.instance
     end
 
-    role_suffix = Sidekiq.server? ? '-SIDEKIQ' : ''
+    role_suffix = GoodJob::CLI.within_exe? ? '-QUEUE' : ''
     insights_key = ENV.fetch('AZURE_APP_INSIGHTS_KEY', false)
     disable_insights = ENV.fetch('DISABLE_AZURE_APP_INSIGHTS', 'true') == 'true'
 
@@ -81,11 +81,6 @@ module EtApi
       config.govuk_notify.enabled = false
     end
 
-    config.redis_host = ENV.fetch('REDIS_HOST', 'localhost')
-    config.redis_port = ENV.fetch('REDIS_PORT', '6379')
-    config.redis_database = ENV.fetch('REDIS_DATABASE', '2')
-    default_redis_url = "redis://#{config.redis_host}:#{config.redis_port}"
-    config.redis_url = ENV.fetch('REDIS_URL', default_redis_url) + "/#{config.redis_database}"
     config.flatten_pdf = ENV.fetch('FLATTEN_PDF', "false") == 'true'
 
     config.file_conversions = ActiveSupport::OrderedOptions.new
