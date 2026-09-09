@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# A sidekiq job which queues async events to sidekiq
+# A job which queues async events to active job
 class EventJob < ApplicationJob
   queue_as :events
 

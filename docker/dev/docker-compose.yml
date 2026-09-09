@@ -8,12 +8,6 @@ services:
       - api
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
-  redis:
-    image: redis
-    ports:
-      - ${REDIS_PORT:-0}:6379
-    networks:
-      - api
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite:3.10.0
     ports:
