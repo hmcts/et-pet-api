@@ -19,6 +19,7 @@ API documentation is provided semi automatically using a rake task.  This comes 
 allows us to define special documentation specs which provide the example data and the
 response is recorded and documented for us.
 
+
 At the moment, we can just use this as it comes out but in the future, it may well be used
 as an input to the documentation process if we need more control.
 
