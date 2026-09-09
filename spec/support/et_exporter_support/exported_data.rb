@@ -47,24 +47,16 @@ module EtApi
       end
 
       def self.find_claim_job(use_active_job: Rails.application.config.try(:use_active_job))
-        jobs = use_active_job ? ActiveJob::Base.queue_adapter.enqueued_jobs : Sidekiq::Worker.jobs
+        jobs = ActiveJob::Base.queue_adapter.enqueued_jobs
         jobs.find do |j|
-          if use_active_job
-            j['job_class'] =~ /EtExporter::ExportClaimJob/ && yield(JSON.parse(j['arguments'].first))
-          else
-            j['class'] =~ /EtExporter::ExportClaimWorker/ && yield(JSON.parse(j['args'].first))
-          end
+          j['job_class'] =~ /EtExporter::ExportClaimJob/ && yield(JSON.parse(j['arguments'].first))
         end
       end
 
       def self.find_response_job(use_active_job: Rails.application.config.try(:use_active_job))
-        jobs = use_active_job ? ActiveJob::Base.queue_adapter.enqueued_jobs : Sidekiq::Worker.jobs
+        jobs = ActiveJob::Base.queue_adapter.enqueued_jobs
         jobs.find do |j|
-          if use_active_job
-            j['job_class'] =~ /EtExporter::ExportResponseJob/ && yield(JSON.parse(j['arguments'].first))
-          else
-            j['class'] =~ /EtExporter::ExportResponseWorker/ && yield(JSON.parse(j['args'].first))
-          end
+          j['job_class'] =~ /EtExporter::ExportResponseJob/ && yield(JSON.parse(j['arguments'].first))
         end
       end
 

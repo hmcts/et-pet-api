@@ -6,7 +6,7 @@
 
 [![Build Status](https://dev.azure.com/HMCTS-PET/pet-azure-infrastructure/_apis/build/status/et-api?branchName=develop)](https://dev.azure.com/HMCTS-PET/pet-azure-infrastructure/_build/latest?definitionId=17&branchName=develop)
 
-The API server for the ET service including ET1 and ET3
+The API server for the ET service including ET1 and ET3.
 
 ## Introduction
 
@@ -68,10 +68,6 @@ https://www.pdflabs.com/tools/pdftk-the-pdf-toolkit/pdftk_server-2.02-mac_osx-10
 
 Both server, client and nescessary headers for development
 
-### redis
-
-Used for background jobs - not entirely nescessary depending on what you are working on
-
 ### Developing And Testing Using The et_full_system gem
 
 Please refer to https://github.com/hmcts/et_full_system_gem for instructions on general use and starting an environment.
@@ -79,7 +75,7 @@ Once you have an environment running, read on below ...
 
 #### Developing Locally In Full System
 
-The easiest way to develop is to use the full system to provide everything that you need (database, redis, azurite etc..)
+The easiest way to develop is to use the full system to provide everything that you need (database, azurite etc..)
 and use a special command to redirect the full system API URL to your local machine.
 The command to redirect to your local machine on port 3000 is (note you can use any free port) :-
 
@@ -120,7 +116,7 @@ Simply do :-
 
 ```
 
-which will bring up the database on a random port and a redis server on a random port unless changed by the environment vars.
+which will bring up the database on a random port unless changed by the environment vars.
 
 to kill them (assuming CTRL-C didn't do it)
 
@@ -158,30 +154,6 @@ DB_PORT=5450 bundle exec rails s
 
 ```
 
-similar with the redis port - but change REDIS_PORT instead - for example
-
-```
-
-REDIS_PORT=6380 ./bin/dev/docker-support-services
-
-```
-
-and use the same port when running the rails server or sidekiq as follows
-
-```
-
-REDIS_PORT=6380 bundle exec rails s
-
-```
-
-and
-
-```
-
-REDIS_PORT=6380 bundle exec sidekiq
-
-```
-
 and the database.yml is configured to read this, therefore the app will use this port instead of the default which is 5432
 
 
@@ -200,27 +172,6 @@ setup your own database etc.. Just go about things in the normal way, but rememb
    DB_PORT
    DB_NAME
 
-2. The redis config can be configured using the following to be consistent with
-   the database config and also to allow just the port to be overriden (useful for local development)
-   REDIS_HOST (defaults to localhost)
-   REDIS_PORT (defaults to 6379)
-   REDIS_DATABASE (defaults to 1)
-
-   You can change any of these individually or you can ignore these by setting the full
-   REDIS_URL in the traditional way - such as :-
-
-   ```
-
-   REDIS_URL=redis://localhost:6379/12
-
-   ```
-
-   If your redis server needs a password, it must be specified using
-
-   ```
-   REDIS_PASSWORD=<your password>
-
-   ```
 
 ## With Foreman
 
@@ -234,7 +185,7 @@ foreman start
 
 ```
 
-If you are doing things manually, remember you may need sidekiq running depending
+If you are doing things manually, remember you may need good job running depending
 on what area of the system you are using.
 
 # Other Environment Variables

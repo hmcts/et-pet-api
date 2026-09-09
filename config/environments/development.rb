@@ -66,9 +66,6 @@ Rails.application.configure do
     config.active_job.queue_adapter = ENV['ACTIVE_JOB_ADAPTER'].to_sym
   end
 
-  config.redis_database = ENV.fetch('REDIS_DATABASE', '1')
-  default_redis_url = "redis://#{config.redis_host}:#{config.redis_port}/#{config.redis_database}"
-  config.redis_url = ENV.fetch('REDIS_URL', default_redis_url)
   # Highlight code that triggered redirect in logs.
   config.action_dispatch.verbose_redirect_logs = true
 

@@ -46,13 +46,13 @@ Rails.application.configure do
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
-  # Replace the default in-process memory cache store with a durable alternative.
-  config.cache_store = :redis_cache_store, { url: config.redis_url }
+  # Use memory store for cache.
+  config.cache_store = :memory_store
 
   config.service_now_inbox_email = ENV.fetch('SERVICE_NOW_EMAIL', nil)
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  config.active_job.queue_adapter = :sidekiq
+  config.active_job.queue_adapter = :good_job
 
   config.action_mailer.perform_caching = false
   config.action_mailer.default_options = { from: ENV.fetch('SMTP_FROM', 'no-reply@employmenttribunals.service.gov.uk') }
