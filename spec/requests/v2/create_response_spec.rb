@@ -153,19 +153,17 @@ RSpec.describe 'Create Response Request', js: false do
         case_reference = json_response.dig(:meta, 'BuildResponse', :reference)
         case_type_id = 'doesntmatter'
         export = create(:export, :response, external_system: build(:external_system, reference: 'doesntmatter', name: 'doesntmatter'), resource: Response.find_by(reference: case_reference))
-        data = {
-          sidekiq: sidekiq_job_data.except('class', 'args', 'queue'),
-          export_id: export.id,
-          external_data: {
-            case_id: case_id,
-            case_reference: case_reference,
-            case_type_id: case_type_id,
+        data = { sidekiq: sidekiq_job_data.except('class', 'args', 'queue'),
+                 export_id: export.id,
+                 external_data: {
+                   case_id: case_id,
+                   case_reference: case_reference,
+                   case_type_id: case_type_id,
 
-            office: office_for(case_number: case_reference).name
-          },
-          state: :complete,
-          message: 'Response exported'
-        }
+                   office: office_for(case_number: case_reference).name
+                 },
+                 state: :complete,
+                 message: 'Response exported' }
         ResponseExportFeedbackReceivedHandler.new.handle(data.to_json)
       end
     end

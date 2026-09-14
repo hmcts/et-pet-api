@@ -115,7 +115,7 @@ module EtAcasApi
 
       def log_errors(ids:)
         if status == :acas_server_error
-          logger.warn "An error occured in the ACAS server when trying to find certificates '#{ids.join(',')}' - the error reported was '#{response_data.dig('error', 'message')}'"
+          logger.warn "An error occured in the ACAS server when trying to find certificates '#{ids.join(',')}' - the error reported was '#{response_data.body}'"
         end
       end
 

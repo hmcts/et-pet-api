@@ -88,7 +88,7 @@ end
 
 group :test do
   gem 'database_cleaner', '~> 2.0'
-  gem 'et_fake_acas_server', '~> 3.0.3'
+  gem 'et_fake_acas_server', '~> 4.0.0'
   gem 'factory_bot', '~> 6.1'
   gem 'faker', '~> 3.1'
   gem 'gov_fake_notify', '~> 3.0'
