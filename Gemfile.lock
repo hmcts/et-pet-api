@@ -49,8 +49,8 @@ GIT
 
 GIT
   remote: https://github.com/hmcts/et-pet-ccd-export.git
-  revision: a6214b2b6faf4a66541147d80d417d771c86b83e
-  tag: v2.0.2-rc1
+  revision: 4dc8e310a6dca291b2e0297ad2bcdc979a0f08c1
+  tag: v2.0.2
   specs:
     et_ccd_export (2.0.2)
 
