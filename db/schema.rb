@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_17_061014) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -354,6 +354,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
     t.boolean "response_remote_office", default: false, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["reference"], name: "index_external_systems_on_reference", unique: true
+  end
+
+  create_table "feature_flag_values", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "flag_key", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "valid_from"
+    t.datetime "valid_to"
+    t.boolean "value"
+    t.index ["flag_key"], name: "index_feature_flag_values_on_flag_key"
+  end
+
+  create_table "feature_flags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "default_value", default: false
+    t.string "key"
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_feature_flags_on_key", unique: true
+    t.index ["name"], name: "index_feature_flags_on_name", unique: true
   end
 
   create_table "office_post_codes", force: :cascade do |t|
