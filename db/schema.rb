@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_061014) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_071848) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -431,7 +431,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_061014) do
   create_table "respondents", force: :cascade do |t|
     t.string "acas_certificate_number"
     t.string "acas_exemption_code"
+    t.date "acas_issue_date"
     t.string "acas_number"
+    t.date "acas_receipt_date"
     t.bigint "address_id"
     t.string "address_telephone_number"
     t.boolean "allow_phone_attendance"

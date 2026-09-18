@@ -253,6 +253,11 @@ RSpec.describe 'Create Claim Request' do
         ref = output_reference
         et_exporter.find_claim_by_reference(ref).assert_acas_file_contents
       end
+
+      it 'saves the acas metadata in the respondent' do
+        ref = output_reference
+        et_exporter.find_claim_by_reference(ref).assert_acas_data_in_respondents
+      end
     end
 
     shared_examples 'email validation using standard template' do
