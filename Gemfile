@@ -103,15 +103,15 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 
-gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v3.0.4'
+gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v3.0.5'
 
 gem "activerecord-nulldb-adapter", "~> 1.0", group: :test
 
-gem "et_ccd_export", git: 'https://github.com/hmcts/et-pet-ccd-export.git', tag: 'v2.0.2'
+gem "et_ccd_export", git: 'https://github.com/hmcts/et-pet-ccd-export.git', branch: 'rst-8482'
 
 # The following gems are for et_ccd_export which is in an interim state - it is to be bought into this code base
 
 gem 'et_ccd_client', git: 'https://github.com/hmcts/et-ccd-client-ruby.git', tag: 'v0.6.2'
 group :test do
-  gem 'et_fake_ccd', git: 'https://github.com/hmcts/et-fake-ccd.git', tag: 'v3.1.8'
+  gem 'et_fake_ccd', git: 'https://github.com/hmcts/et-fake-ccd.git', tag: 'v3.2.4'
 end
