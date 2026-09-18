@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_071848) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -178,6 +178,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
 
   create_table "claims", force: :cascade do |t|
     t.boolean "administrator"
+    t.string "case_heard_by_preference"
+    t.string "case_heard_by_preference_reason"
     t.string "case_type"
     t.text "claim_details"
     t.integer "claimant_count", default: 0, null: false
@@ -191,6 +193,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
     t.boolean "is_unfair_dismissal"
     t.boolean "is_whistleblowing"
     t.integer "jurisdiction"
+    t.date "last_event_date"
     t.boolean "manually_actioned", default: false, null: false
     t.text "miscellaneous_information"
     t.integer "office_code"
@@ -356,6 +359,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
     t.index ["reference"], name: "index_external_systems_on_reference", unique: true
   end
 
+  create_table "feature_flag_values", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "flag_key", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "valid_from"
+    t.datetime "valid_to"
+    t.boolean "value"
+    t.index ["flag_key"], name: "index_feature_flag_values_on_flag_key"
+  end
+
+  create_table "feature_flags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.boolean "default_value", default: false
+    t.string "key"
+    t.string "name"
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_feature_flags_on_key", unique: true
+    t.index ["name"], name: "index_feature_flags_on_name", unique: true
+  end
+
   create_table "office_post_codes", force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.bigint "office_id"
@@ -408,7 +431,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
   create_table "respondents", force: :cascade do |t|
     t.string "acas_certificate_number"
     t.string "acas_exemption_code"
+    t.date "acas_issue_date"
     t.string "acas_number"
+    t.date "acas_receipt_date"
     t.bigint "address_id"
     t.string "address_telephone_number"
     t.boolean "allow_phone_attendance"
@@ -453,6 +478,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_03_094111) do
     t.boolean "agree_with_early_conciliation_details"
     t.string "agree_with_earnings_details"
     t.string "agree_with_employment_dates"
+    t.string "case_heard_by_preference"
+    t.string "case_heard_by_preference_reason"
     t.string "case_number"
     t.string "claim_information"
     t.string "claimants_name"

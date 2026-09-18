@@ -4,7 +4,7 @@ module EtApi
     module FileObjects
       module Et1PdfFileSection
         class YourDetailsSection < EtApi::Test::FileObjects::Et1PdfFileSection::Base
-          def has_contents_for?(claimant:)
+          def has_contents_for?(claimant:, claim:)
             date_of_birth = formatted_date(claimant.date_of_birth, optional: true)&.split('/') || ['', '', '']
             expected_values = {
               title: claimant.title,
@@ -19,7 +19,9 @@ module EtApi
               alternative_telephone_number: claimant.mobile_number,
               email_address: claimant.email_address,
               correspondence: claimant.contact_preference,
-              allow_video_attendance: claimant.allow_video_attendance
+              allow_video_attendance: claimant.allow_video_attendance,
+              case_heard_by_preference: claim.case_heard_by_preference,
+              case_heard_by_preference_reason: claim.case_heard_by_preference_reason
             }
             if template_has_combined_address_fields?
               expected_values[:address] = [claimant.address_attributes.building, claimant.address_attributes.street, claimant.address_attributes.locality, claimant.address_attributes.county].join("\n")
