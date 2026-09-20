@@ -204,6 +204,9 @@ GEM
       rexml
     crass (1.0.7)
     csv (3.3.5)
+    data_migrate (11.3.1)
+      activerecord (>= 6.1)
+      railties (>= 6.1)
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.2.2)
@@ -584,6 +587,7 @@ DEPENDENCIES
   bundler-audit (~> 0.9.1)
   byebug
   csv
+  data_migrate (>= 11.3.1)
   database_cleaner (~> 2.0)
   dotenv-rails (~> 3.1)
   et_acas_api!

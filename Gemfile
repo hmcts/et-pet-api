@@ -61,6 +61,9 @@ gem 'csv'
 # ostruct was removed in ruby 4
 gem 'ostruct'
 
+# For data migrations
+gem 'data_migrate', '>= 11.3.1'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet', '~> 8.0'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddInitialFeatureFlags < ActiveRecord::Migration[8.1]
   class FeatureFlag < ActiveRecord::Base
     self.table_name = :feature_flags

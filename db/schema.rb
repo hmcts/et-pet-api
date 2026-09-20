@@ -233,6 +233,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_18_071848) do
     t.index ["root_object_type", "root_object_id"], name: "index_commands_on_root_object_type_and_root_object_id"
   end
 
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
   create_table "direct_uploaded_files", force: :cascade do |t|
     t.string "checksum"
     t.datetime "created_at", null: false
