@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_17_061014) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_18_071848) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -178,6 +178,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_061014) do
 
   create_table "claims", force: :cascade do |t|
     t.boolean "administrator"
+    t.string "case_heard_by_preference"
+    t.string "case_heard_by_preference_reason"
     t.string "case_type"
     t.text "claim_details"
     t.integer "claimant_count", default: 0, null: false
@@ -191,6 +193,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_061014) do
     t.boolean "is_unfair_dismissal"
     t.boolean "is_whistleblowing"
     t.integer "jurisdiction"
+    t.date "last_event_date"
     t.boolean "manually_actioned", default: false, null: false
     t.text "miscellaneous_information"
     t.integer "office_code"
@@ -228,6 +231,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_061014) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["id"], name: "index_commands_on_id", unique: true
     t.index ["root_object_type", "root_object_id"], name: "index_commands_on_root_object_type_and_root_object_id"
+  end
+
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
   create_table "direct_uploaded_files", force: :cascade do |t|
@@ -428,7 +434,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_061014) do
   create_table "respondents", force: :cascade do |t|
     t.string "acas_certificate_number"
     t.string "acas_exemption_code"
+    t.date "acas_issue_date"
     t.string "acas_number"
+    t.date "acas_receipt_date"
     t.bigint "address_id"
     t.string "address_telephone_number"
     t.boolean "allow_phone_attendance"
@@ -473,6 +481,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_17_061014) do
     t.boolean "agree_with_early_conciliation_details"
     t.string "agree_with_earnings_details"
     t.string "agree_with_employment_dates"
+    t.string "case_heard_by_preference"
+    t.string "case_heard_by_preference_reason"
     t.string "case_number"
     t.string "claim_information"
     t.string "claimants_name"

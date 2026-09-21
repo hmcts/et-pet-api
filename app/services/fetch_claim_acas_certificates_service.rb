@@ -18,7 +18,7 @@ class FetchClaimAcasCertificatesService
       if cert.is_a?(::EtAcasApi::Certificate)
         build_file(cert, claim)
         claim.touch # rubocop:disable Rails/SkipsModelValidations
-        claim.events.claim_acas_requested.create data: { status: 'found' }
+        claim.events.claim_acas_requested.create data: { status: 'found' }.merge(cert.attributes.as_json(only: ['certificate_number', 'date_of_issue', 'date_of_receipt']))
       elsif cert.is_a?(::EtAcasApi::CertificateNotFound)
         claim.events.claim_acas_requested.create data: { status: 'not_found' }
       else
@@ -73,6 +73,8 @@ class FetchClaimAcasCertificatesService
     if result.status == :found
       certificates.each_with_index do |c, idx|
         c.respondent_name = respondents[idx].name
+        respondents[idx].acas_issue_date ||= c.date_of_issue
+        respondents[idx].acas_receipt_date ||= c.date_of_receipt
       end
     else
       claim.events.claim_acas_attempt_failed.create data: { errors: result.errors }
