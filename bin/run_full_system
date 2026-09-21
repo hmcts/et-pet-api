@@ -26,7 +26,7 @@ FileUtils.chdir APP_ROOT do
 
   puts "\n== Preparing database =="
   tempfile = Tempfile.new('schema.rb')
-  system!({'SCHEMA' => tempfile.path}, 'bin/rails db:create db:migrate db:seed')
+  system!({'SCHEMA' => tempfile.path}, 'bin/rails db:migrate:reset db:seed')
 
   puts "\n== Setting up Azure storage =="
   system! 'bin/rails configure_azure_storage_containers'
