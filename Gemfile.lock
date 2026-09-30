@@ -27,10 +27,10 @@ GIT
 
 GIT
   remote: https://github.com/hmcts/et-fake-ccd.git
-  revision: cc79ceac98fd001bc3fe664819564d8c772a5e6a
-  tag: v3.1.8
+  revision: 75711926b6097940c37067ea024dba84063a494a
+  tag: v3.2.4
   specs:
-    et_fake_ccd (3.1.8)
+    et_fake_ccd (3.2.4)
       activemodel (>= 7.0)
       json-schema (~> 4.1.1)
       puma (>= 6.4)
@@ -49,17 +49,17 @@ GIT
 
 GIT
   remote: https://github.com/hmcts/et-pet-ccd-export.git
-  revision: 4dc8e310a6dca291b2e0297ad2bcdc979a0f08c1
-  tag: v2.0.2
+  revision: de6ef78d8321fd9d05f07b5dda16024c1ceaffa1
+  tag: v2.0.3
   specs:
-    et_ccd_export (2.0.2)
+    et_ccd_export (2.0.3)
 
 GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
-  revision: 502c59bc0790a329e71af2cd4145034b9904e2b9
-  tag: v3.0.4
+  revision: 13b728e9504791f932437f708b83bb39d859a2a4
+  tag: v3.0.5
   specs:
-    et_exporter (3.0.4)
+    et_exporter (3.0.5)
       jbuilder (~> 2.9, >= 2.9.1)
       pg
       rails (>= 5.2.3)
@@ -204,6 +204,9 @@ GEM
       rexml
     crass (1.0.7)
     csv (3.3.5)
+    data_migrate (11.3.1)
+      activerecord (>= 6.1)
+      railties (>= 6.1)
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
     database_cleaner-active_record (2.2.2)
@@ -226,7 +229,7 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
-    et_fake_acas_server (4.0.1)
+    et_fake_acas_server (4.0.2)
       activesupport (>= 6.1)
       nokogiri (~> 1.8, >= 1.8.2)
       ostruct
@@ -499,7 +502,7 @@ GEM
     rubyzip (3.6.0)
     safe_shell (1.1.0)
     securerandom (0.4.1)
-    selenium-webdriver (4.39.0)
+    selenium-webdriver (4.48.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -584,6 +587,7 @@ DEPENDENCIES
   bundler-audit (~> 0.9.1)
   byebug
   csv
+  data_migrate (>= 11.3.1)
   database_cleaner (~> 2.0)
   dotenv-rails (~> 3.1)
   et_acas_api!

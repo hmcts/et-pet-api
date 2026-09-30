@@ -11,9 +11,10 @@ class Claim < ApplicationRecord
 
   has_many :secondary_claimants, dependent: :destroy, class_name: 'Claimant',
                                  through: :claim_claimants, source: :claimant
-  belongs_to :primary_respondent, class_name: 'Respondent', inverse_of: false, optional: true
+  belongs_to :primary_respondent, class_name: 'Respondent', inverse_of: false, optional: true, autosave: true
   has_many :secondary_respondents, dependent: :destroy, class_name: 'Respondent',
-                                   through: :claim_respondents, source: :respondent
+                                   through: :claim_respondents, source: :respondent,
+                                   autosave: true
   belongs_to :primary_representative, class_name: 'Representative', inverse_of: false, optional: true
   has_many :secondary_representatives, class_name: 'Representative',
                                        through: :claim_representatives, source: :representative

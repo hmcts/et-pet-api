@@ -136,7 +136,9 @@ module EtAcasApi
       def mapped_data(certificate_data)
         {
           certificate_number: certificate_data['CertificateNumber'],
-          certificate_base64: certificate_data['CertificateDocument']
+          certificate_base64: certificate_data['CertificateDocument'],
+          date_of_issue: certificate_data['DateCertificateIssued'],
+          date_of_receipt: certificate_data['DateOfNotification'],
         }
       end
 

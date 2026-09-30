@@ -16,6 +16,12 @@ describe FetchClaimAcasCertificatesService do
         expect(claim.events.claim_acas_requested.count).to be 1
       end
 
+      it 'updates the respondent with the acas issue and receipt dates' do
+        service
+        # NOTE: the dates below are hard coded into the fake acas server
+        expect(claim.primary_respondent).to have_attributes(acas_issue_date: Date.parse('2026-01-08'), acas_receipt_date: Date.parse('2025-09-29'))
+      end
+
       it 'returns object with acas_server_error? returning true when service times out' do
         stub_request(:any, /fakeservice\.com/).to_timeout
         expect(service.acas_server_error?).to be true
