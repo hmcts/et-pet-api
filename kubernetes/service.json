@@ -1,0 +1,20 @@
+{
+  "chart": "charts/et-pet-api",
+  "image": "et-full-system-servers-api:latest",
+  "imageValues": [
+    "base.image",
+    "queue-worker.image"
+  ],
+  "release": "et-local-api",
+  "workload": "api",
+  "workloads": [
+    "api",
+    "api-queue-worker"
+  ],
+  "hostPrefix": "api",
+  "domain": "k8s.orb.local",
+  "ingressValues": [
+    "base"
+  ],
+  "waitForRollout": true
+}
