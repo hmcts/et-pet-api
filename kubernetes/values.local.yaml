@@ -30,15 +30,7 @@ base: &application
     enabled: false
   terminationGracePeriodSeconds: 30
   environment: &environment
-    RAILS_ENV: production
-    RACK_ENV: production
-    RAILS_LOG_TO_STDOUT: "true"
-    RAILS_LOG_LEVEL: info
-    RAILS_MAX_THREADS: "5"
-    WEB_CONCURRENCY: "0"
-    PORT: "8080"
     DOCKER_STATE: create
-    GOOD_JOB_EXECUTION_MODE: external
     SECRET_KEY_BASE: local-kubernetes-only-not-a-real-secret-0123456789abcdef0123456789abcdef
     DEVISE_SECRET_KEY: local-kubernetes-only-not-a-real-secret-0123456789abcdef0123456789abcdef
     DB_HOST: postgres.et-full-system-infra.svc.cluster.local
@@ -58,7 +50,6 @@ base: &application
     AZURE_STORAGE_BLOB_FORCE_PATH_STYLE: "true"
     SERVICE_FQDN: https://api.k8s.orb.local
     SECRETS_PATH: ""
-    CLOUD_PROVIDER: null
     DISABLE_AZURE_APP_INSIGHTS: "true"
     # Shared local fake services; no production endpoints.
     ACAS_JSON_SERVICE_URL: http://fake-services.et-full-system-infra.svc.cluster.local:9000/ECCLJson
@@ -88,11 +79,7 @@ base: &application
 queue-worker:
   <<: *application
   releaseNameOverride: api-queue-worker
-  command: ["./run_queue_worker.sh"]
-  args: []
   ingressHost: null
-  startupPath: /status/started
-  readinessPath: /status/connected
   environment:
     <<: *environment
     DOCKER_STATE: ""
