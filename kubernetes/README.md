@@ -33,8 +33,8 @@ and cache an incomplete schema. This occurred during initial setup. Once web
 startup has completed, restarting the worker cleared the error:
 
 ```sh
-kubectl --context orbstack -n et-full-system rollout restart deployment/api-queue-worker
-kubectl --context orbstack -n et-full-system rollout status deployment/api-queue-worker
+kubectl --context orbstack -n et-full-system rollout restart deployment/et-local-api-queue-worker
+kubectl --context orbstack -n et-full-system rollout status deployment/et-local-api-queue-worker
 ```
 
 A permanent startup coordination approach remains to be agreed; a healthy probe
@@ -54,7 +54,7 @@ email delivery.
 Worker logs:
 
 ```sh
-kubectl --context orbstack -n et-full-system logs deployment/api-queue-worker --follow
+kubectl --context orbstack -n et-full-system logs deployment/et-local-api-queue-worker --follow
 ```
 
 Fake CCD document uploads use its public ingress at

@@ -3,16 +3,10 @@ global:
   environment: local
   enableKeyVaults: false
 base: &application
-  releaseNameOverride: api
   image: et-full-system-servers-api:latest
   imagePullPolicy: Never
-  replicas: 1
-  command: ["./run.sh"]
-  args: []
-  applicationPort: 8080
   ingressHost: api.k8s.orb.local
   ingressClass: et-local
-  disableTraefikTls: false
   ingressAnnotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
   aadIdentityName: ""
@@ -21,14 +15,10 @@ base: &application
   disableKeyVaults: true
   affinity:
     podAntiAffinity: {}
-  startupPath: /health
-  readinessPath: /health
-  livenessPath: ""
   autoscaling:
     enabled: false
   pdb:
     enabled: false
-  terminationGracePeriodSeconds: 30
   environment: &environment
     DOCKER_STATE: create
     SECRET_KEY_BASE: local-kubernetes-only-not-a-real-secret-0123456789abcdef0123456789abcdef
@@ -78,7 +68,6 @@ base: &application
     FLATTEN_PDF: "false"
 queue-worker:
   <<: *application
-  releaseNameOverride: api-queue-worker
   ingressHost: null
   environment:
     <<: *environment

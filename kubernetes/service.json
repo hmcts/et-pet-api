@@ -6,10 +6,10 @@
     "queue-worker.image"
   ],
   "release": "et-local-api",
-  "workload": "api",
+  "workload": "et-local-api-base",
   "workloads": [
-    "api",
-    "api-queue-worker"
+    "et-local-api-base",
+    "et-local-api-queue-worker"
   ],
   "hostPrefix": "api",
   "domain": "k8s.orb.local",
