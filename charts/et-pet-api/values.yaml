@@ -85,8 +85,8 @@ base:
 queue-worker:
   memoryLimits: "2048Mi"
   memoryRequests: "512Mi"
-  cpuLimits: "500m"
-  cpuRequests: "250m"
+  cpuLimits: "1500m"
+  cpuRequests: "600m"
   applicationPort: 8080
   image: "hmctsprod.azurecr.io/et-pet/api:latest"
   aadIdentityName: et-pet
