@@ -44,7 +44,7 @@ base: &application
     # Shared local fake services; no production endpoints.
     ACAS_JSON_SERVICE_URL: http://fake-services.et-full-system-infra.svc.cluster.local:9000/ECCLJson
     ACAS_SUBSCRIPTION_KEY: fakesubscriptionkeyfortesting
-    SMTP_HOSTNAME: mailhog.et-full-system-infra.svc.cluster.local
+    SMTP_HOSTNAME: mailpit.et-full-system-infra.svc.cluster.local
     SMTP_PORT: "1025"
     SMTP_USERNAME: local-only
     SMTP_PASSWORD: local-only

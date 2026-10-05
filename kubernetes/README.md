@@ -45,7 +45,7 @@ was verified against both configured containers. The parent initializes the
 containers; the API does not run its Compose storage setup task.
 
 Fake ACAS, CCD and Notify use the shared `fake-services` Service in the
-infrastructure namespace. SMTP uses shared MailHog; view mail at
+infrastructure namespace. SMTP uses shared Mailpit; view mail at
 <https://mail.k8s.orb.local/>. The local credentials match the bundled fake-service
 defaults. ET1 uses the internal API Service URL. A captured single-claim replay
 verified certificate retrieval, file storage, fake CCD export and confirmation
