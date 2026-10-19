@@ -71,7 +71,7 @@ FactoryBot.define do
       allow_video_attendance { true }
       allow_phone_attendance { true }
       company_number { '12378101932' }
-      type_of_employer { 'Limited company' }
+      type_of_employer { 'limited_company' }
     end
   end
 end
