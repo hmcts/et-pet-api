@@ -38,6 +38,12 @@ class BuildResponseCommand < BaseCommand
   validates :queried_hours, numericality: { less_than_or_equal_to: 168.0, greater_than: 0.0 }, allow_nil: true
   validates :case_heard_by_preference, inclusion: { in: ['judge', 'panel', 'no_preference', nil] }
   validates :case_heard_by_preference_reason, presence: true, if: -> { case_heard_by_preference.in?(['judge', 'panel']) }
+  validates :case_number, presence: true, format: { with: %r{\A(13|14|16|18|22|23|24|25|26|32|33|41|99|6\d|8\d)\d{5}\/\d{4}\z}, message: "invalid format"}
+  validates :defend_claim, inclusion: { in: [true, false] }
+  validates :defend_claim_facts, length: { maximum: 2500 }, if: :defend_claim
+  validates :agree_with_employment_dates, inclusion: { in: ['true', 'false', 'not_applicable', '', nil] }
+  validates :continued_employment, inclusion: { in: ['true', 'false', 'not_applicable', '', nil] }
+  validates :agree_with_claimants_description_of_job_or_title, inclusion: { in: ['true', 'false', 'not_applicable', '', nil] }
 
   def initialize(*, **)
     super
@@ -65,8 +71,10 @@ class BuildResponseCommand < BaseCommand
 
   def apply_root_attributes(input_data, to:)
     to.attributes = input_data
-    office_code = to.case_number[0..1]
-    to.reference = "#{office_code}#{reference_service.next_number}00"
+    if to.case_number.present?
+      office_code = to.case_number[0..1]
+      to.reference = "#{office_code}#{reference_service.next_number}00"
+    end
     to.date_of_receipt = Time.zone.now
   end
 

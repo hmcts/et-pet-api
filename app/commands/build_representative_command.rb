@@ -14,8 +14,32 @@ class BuildRepresentativeCommand < BaseCommand
   attribute :allow_phone_attendance, :boolean, default: false
 
   validates :address_attributes, presence: true, address: true
+  validates :representative_type,
+            inclusion: {
+              in: [
+                "Citizens Advice Bureau",
+                "CAB",
+                "FRU",
+                "Free Representation Unit",
+                "Law Centre",
+                "Union",
+                "Solicitor",
+                "Private Individual",
+                "Trade Association",
+                "Other",
+                "",
+                nil
+              ]
+            }
+
+  validates :contact_preference, inclusion: { in: ['email', 'post', '', nil] }
+  validates :email_address, presence: true, if: :email_contact_preference
 
   def apply(root_object, **_args)
     root_object.build_representative(attributes)
+  end
+
+  def email_contact_preference
+    contact_preference == 'email'
   end
 end

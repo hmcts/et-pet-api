@@ -26,7 +26,30 @@ class BuildRespondentCommand < BaseCommand
   validates :address_attributes, presence: true, address: true
   validates :work_address_attributes, address: { allow_empty: true }
 
+
+  validates :disability_information, length: { maximum: 350 }, presence: true, if: :disabled?
+  validates :disability, inclusion: { in: ['true', 'false', 'not_applicable', '', nil] }
+
+  validates :name, presence: true
+  validates :contact, presence: true, allow_blank: true
+  validates :email_address, presence: true, if: :prefer_email?
+  validates :organisation_employ_gb, numericality: true, allow_blank: true
+  validates :organisation_more_than_one_site, inclusion: { in: [true, false, '', nil] }
+  validates :employment_at_site_number, numericality: true, if: :organisation_more_than_one_site
+  validates :type_of_employer, inclusion: { in: ['Individual', 'Limited company', 'Partnership', 'Unincorporated association (such as a sports club)', 'Other', '', nil]}
+  validates :contact_preference, inclusion: { in: ['email', 'post', '', nil] }
+
   def apply(root_object, **_args)
     root_object.build_respondent(attributes)
+  end
+
+  private
+
+  def disabled?
+    disability == 'true'
+  end
+
+  def prefer_email?
+    contact_preference == "email"
   end
 end
