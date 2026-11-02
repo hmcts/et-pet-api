@@ -229,7 +229,7 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
-    et_fake_acas_server (4.0.2)
+    et_fake_acas_server (4.0.3)
       activesupport (>= 6.1)
       nokogiri (~> 1.8, >= 1.8.2)
       ostruct
@@ -337,7 +337,7 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.5)
-    nokogiri (1.19.4)
+    nokogiri (1.19.6)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     notifications-ruby-client (6.4.0)
@@ -559,7 +559,7 @@ GEM
       unicode-emoji (~> 4.1)
     unicode-emoji (4.2.0)
     uniform_notifier (1.18.0)
-    uri (1.1.1)
+    uri (1.1.2)
     useragent (0.16.11)
     webmock (3.34.0)
       addressable (>= 2.8.0)
