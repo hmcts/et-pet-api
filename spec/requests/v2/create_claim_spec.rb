@@ -122,10 +122,10 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    shared_examples 'a claim exported to ccd' do |claimants:, respondents:, representative:, attachment: nil, acas: false, assert_missing_et1a: true|
+    shared_examples 'a claim exported to ccd' do |claimants:, respondents:, representative:, attachment: nil, acas: false, email_template: 'et1-v1-en', assert_missing_et1a: true|
       let(:test_ccd_client) { EtCcdClient::UiClient.new.tap(&:login) }
 
-      it 'exports the claim parties, completed PDF and claim details to CCD' do
+      it 'exports the claim to CCD and sends the confirmation email' do
         exported_claim = ccd_exporter.find_claim_by_submission_reference(output_reference)
 
         aggregate_failures 'validating CCD export' do
@@ -178,6 +178,12 @@ RSpec.describe 'Create Claim Request' do
             exported_claim.assert_claim_details(input_claim_factory)
           end
 
+          aggregate_failures 'confirmation email' do
+            reference = json_response.dig(:meta, 'BuildClaim', :reference)
+            email_sent = emails_sent.new_claim_email_for(reference: reference, template_reference: email_template)
+            expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory, reference: reference)
+          end
+
           if acas
             aggregate_failures 'ACAS certificate attachment' do
               exported_claim.assert_has_acas_file
@@ -217,14 +223,6 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    shared_examples 'email validation using welsh template' do
-      it 'sends a govuk notify email to the respondent with the pdf attached using the welsh template' do
-        reference = json_response.dig(:meta, 'BuildClaim', :reference)
-        email_sent = emails_sent.new_claim_email_for(reference: reference, template_reference: 'et1-v1-cy')
-        expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory, reference: reference)
-      end
-    end
-
     context 'with json for single claimant and respondent, no representatives and no acas number' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
@@ -232,7 +230,6 @@ RSpec.describe 'Create Claim Request' do
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
       it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :single, representative: false
-      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json for single claimant and respondent (with no work address), no representatives' do
@@ -242,7 +239,6 @@ RSpec.describe 'Create Claim Request' do
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
       it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :single, representative: false, acas: true
-      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json involving external files' do
@@ -253,7 +249,6 @@ RSpec.describe 'Create Claim Request' do
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
         it_behaves_like 'a claim exported to ccd', claimants: :csv, respondents: :single, representative: false, attachment: :csv
-        it_behaves_like 'email validation using standard template'
       end
 
       context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using direct upload' do
@@ -263,7 +258,6 @@ RSpec.describe 'Create Claim Request' do
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
         it_behaves_like 'a claim exported to ccd', claimants: :csv, respondents: :multiple, representative: true, attachment: :csv, acas: true
-        it_behaves_like 'email validation using standard template'
       end
 
       context 'with json for single claimant with N/K gender, single respondent and representative - with claim details file uploaded using direct upload with uppercased extension' do
@@ -273,7 +267,6 @@ RSpec.describe 'Create Claim Request' do
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
         it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :single, representative: true, attachment: :rtf
-        it_behaves_like 'email validation using standard template'
       end
     end
 
@@ -292,7 +285,6 @@ RSpec.describe 'Create Claim Request' do
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
       it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :single, representative: true, attachment: :rtf
-      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json for single claimant, respondent and representative using welsh template' do
@@ -301,9 +293,8 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_welsh_pdf, :with_welsh_email, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to ccd', assert_missing_et1a: false, claimants: :single, respondents: :single, representative: true
+      it_behaves_like 'a claim exported to ccd', assert_missing_et1a: false, claimants: :single, respondents: :single, representative: true, email_template: 'et1-v1-cy'
       # We cannot verify an et1a correctly as there are clashing field names between the et1 and et1a forms
-      it_behaves_like 'email validation using welsh template'
     end
 
     context 'with json for single claimant, multiple respondents and a representative' do
@@ -313,7 +304,6 @@ RSpec.describe 'Create Claim Request' do
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
       it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :multiple, representative: true
-      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json for multiple claimants, multiple respondents and a representative with non alphanumerics in names' do
@@ -330,7 +320,6 @@ RSpec.describe 'Create Claim Request' do
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
       it_behaves_like 'a claim exported to ccd', claimants: :json, respondents: :multiple, representative: true
-      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json for single claimant, single respondent with postcode that routes to default office' do
