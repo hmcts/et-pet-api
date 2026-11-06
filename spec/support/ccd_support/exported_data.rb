@@ -172,6 +172,7 @@ module EtApi
             claim.dig('case_fields', 'leadClaimant') == 'No'
           end
           expected_claimants = claimants.map do |claimant|
+            address = claimant[:address_attributes] || claimant[:address]
             title = claimant[:title]
             other_title = title.present? && !['Mr', 'Mrs', 'Miss', 'Ms'].include?(title)
             a_hash_including(
@@ -185,11 +186,11 @@ module EtApi
               ),
               'claimantType' => a_hash_including(
                 'claimant_addressUK' => a_hash_including(
-                  'AddressLine1' => claimant.dig(:address_attributes, :building),
-                  'AddressLine2' => claimant.dig(:address_attributes, :street),
-                  'PostTown' => claimant.dig(:address_attributes, :locality),
-                  'County' => claimant.dig(:address_attributes, :county),
-                  'PostCode' => claimant.dig(:address_attributes, :post_code),
+                  'AddressLine1' => address&.dig(:building),
+                  'AddressLine2' => address&.dig(:street),
+                  'PostTown' => address&.dig(:locality),
+                  'County' => address&.dig(:county),
+                  'PostCode' => address&.dig(:post_code),
                   'Country' => nil
                 ),
                 'claimant_phone_number' => nil,
@@ -225,10 +226,14 @@ module EtApi
         end
 
         def csv_file
-          raise "Not yet converted to ccd"
-          claimant = data.dig(:resource, :primary_claimant)
-          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1a_#{claimant[:first_name]}_#{claimant[:last_name]}.csv" }
-          download(file_data)
+          claimant = ccd_case.dig('case_fields', 'claimantIndType')
+          filename = "et1a_#{claimant['claimant_first_names']}_#{claimant['claimant_last_name']}.csv"
+          uploaded_file = ccd_case.dig('case_fields', 'documentCollection').map do |document|
+            document.dig('value', 'uploadedDocument')
+          end.detect { |document| document['document_filename'] == filename }
+          raise "No uploaded file named #{filename} was exported" if uploaded_file.nil?
+
+          download(url: uploaded_file.fetch('document_binary_url'))
         end
 
         def claim_details_file
