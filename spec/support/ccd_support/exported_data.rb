@@ -126,7 +126,7 @@ module EtApi
         def assert_primary_respondent(respondent)
           ccd_respondent = ccd_case.dig('case_fields', 'respondentCollection').first.fetch('value')
           expect(ccd_respondent).to include "respondent_name" => respondent[:name],
-                                             "respondent_phone1" => respondent[:address_telephone_number]
+                                            "respondent_phone1" => respondent[:address_telephone_number]
           work_phone_number = if respondent[:work_address_attributes].to_h.present?
                                 respondent[:work_address_telephone_number]
                               else

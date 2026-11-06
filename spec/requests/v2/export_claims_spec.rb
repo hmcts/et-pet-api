@@ -25,9 +25,9 @@ RSpec.describe 'Export Claims Request' do
     let(:export_job_filter) do
       lambda do |job|
         job[:job] == EventJob && job['arguments'].first.in?([
-          'ClaimExportedHandler',
-          'EtExporter::ClaimExportFeedbackReceivedHandler'
-        ])
+                                                              'ClaimExportedHandler',
+                                                              'EtExporter::ClaimExportFeedbackReceivedHandler'
+                                                            ])
       end
     end
 
