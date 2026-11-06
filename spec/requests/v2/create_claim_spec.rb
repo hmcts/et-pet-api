@@ -122,7 +122,7 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    shared_examples 'a claim exported to ccd' do |claimants:, respondents:, representative:, attachment: nil, assert_missing_et1a: true|
+    shared_examples 'a claim exported to ccd' do |claimants:, respondents:, representative:, attachment: nil, acas: false, assert_missing_et1a: true|
       let(:test_ccd_client) { EtCcdClient::UiClient.new.tap(&:login) }
 
       it 'exports the claim parties, completed PDF and claim details to CCD' do
@@ -178,6 +178,20 @@ RSpec.describe 'Create Claim Request' do
             exported_claim.assert_claim_details(input_claim_factory)
           end
 
+          if acas
+            aggregate_failures 'ACAS certificate attachment' do
+              exported_claim.assert_has_acas_file
+            end
+
+            aggregate_failures 'ACAS certificate contents' do
+              exported_claim.assert_acas_file_contents
+            end
+
+            aggregate_failures 'ACAS respondent metadata' do
+              exported_claim.assert_acas_data_in_respondents
+            end
+          end
+
           if attachment == :csv
             aggregate_failures 'CSV attachment contents' do
               input_csv_file = input_claimants_file_factory.filename
@@ -190,26 +204,6 @@ RSpec.describe 'Create Claim Request' do
               input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file.downcase), __FILE__)
               expect(exported_claim.claim_details_file.path).to be_a_file_copy_of(input_rtf_file_full_path)
             end
-          end
-        end
-      end
-    end
-
-    shared_examples 'a claim exported with an attached acas certificate' do
-      it 'exports the ACAS certificate with correct contents and respondent metadata' do
-        exported_claim = ccd_exporter.find_claim_by_reference(output_reference)
-
-        aggregate_failures 'validating ACAS export' do
-          aggregate_failures 'certificate attachment' do
-            exported_claim.assert_has_acas_file
-          end
-
-          aggregate_failures 'certificate contents' do
-            exported_claim.assert_acas_file_contents
-          end
-
-          aggregate_failures 'respondent metadata' do
-            exported_claim.assert_acas_data_in_respondents
           end
         end
       end
@@ -247,8 +241,7 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, reference: nil, primary_respondent_traits: [:full, :no_work_address]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported with an attached acas certificate'
-      it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :single, representative: false
+      it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :single, representative: false, acas: true
       it_behaves_like 'email validation using standard template'
     end
 
@@ -269,8 +262,7 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to ccd', claimants: :csv, respondents: :multiple, representative: true, attachment: :csv
-        it_behaves_like 'a claim exported with an attached acas certificate'
+        it_behaves_like 'a claim exported to ccd', claimants: :csv, respondents: :multiple, representative: true, attachment: :csv, acas: true
         it_behaves_like 'email validation using standard template'
       end
 
