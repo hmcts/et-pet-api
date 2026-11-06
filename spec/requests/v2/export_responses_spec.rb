@@ -21,6 +21,11 @@ RSpec.describe 'Export Response Request' do
     let(:example_external_system_reference) { 'ccd_manchester' }
     let(:example_external_system) { ExternalSystem.find_by reference: example_external_system_reference }
     let(:example_response) { Response.find_by reference: example_response_reference }
+    let(:export_response_job_filter) do
+      lambda do |job|
+        job[:job] == EventJob && job['arguments'].first == 'ResponseExportedHandler'
+      end
+    end
 
     include_context 'with fake job processor'
     include_context 'with stubbed ccd'
@@ -40,9 +45,9 @@ RSpec.describe 'Export Response Request' do
       # Arrange - Setup the response record and provide the ids
       command = build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
 
-      # Act - Run the command and all background jobs
+      # Act - Run the command and export-record event, leaving CCD transport queued.
       post '/api/v2/exports/export_responses', params: command.to_json, headers: default_headers
-      run_background_jobs
+      run_background_jobs(only: export_response_job_filter)
 
       # Assert - Check the example response now has an export record
       response = Response.find_by(reference: example_response_reference)
@@ -69,7 +74,7 @@ RSpec.describe 'Export Response Request' do
       command = build(:json_export_responses_command, response_ids: [example_response.id], external_system_id: example_external_system.id)
       perform_action = lambda {
         post '/api/v2/exports/export_responses', params: command.to_json, headers: default_headers
-        run_background_jobs
+        run_background_jobs(only: export_response_job_filter)
       }
       perform_action.call
       reset!
