@@ -308,35 +308,6 @@ RSpec.describe 'Create Claim Request' do
         it_behaves_like 'email validation using standard template'
       end
 
-      context 'with json for multiple claimants, single respondent and representative - with csv file uploaded using direct upload' do
-        include_context 'with fake job processor'
-        include_context 'with setup for claims',
-                        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
-        include_context 'with background jobs running'
-        it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to ccd'
-        it_behaves_like 'a claim exported to ccd with multiple claimants from csv'
-        it_behaves_like 'a claim exported to ccd with single respondent'
-        it_behaves_like 'a claim exported to ccd with a representative'
-        it_behaves_like 'a claim exported to ccd with a csv file'
-        it_behaves_like 'email validation using standard template'
-      end
-
-      context 'with json for multiple claimants, multiple respondents but no representatives - with csv file uploaded using direct upload' do
-        include_context 'with fake job processor'
-        include_context 'with setup for claims',
-                        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
-        include_context 'with background jobs running'
-        it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to ccd'
-        it_behaves_like 'a claim exported with an attached acas certificate'
-        it_behaves_like 'a claim exported to ccd with multiple claimants from csv'
-        it_behaves_like 'a claim exported to ccd with multiple respondents'
-        it_behaves_like 'a claim exported to ccd with no representatives'
-        it_behaves_like 'a claim exported to ccd with a csv file'
-        it_behaves_like 'email validation using standard template'
-      end
-
       context 'with json for multiple claimants, multiple respondents and a representative - with csv file uploaded using direct upload' do
         include_context 'with fake job processor'
         include_context 'with setup for claims',
@@ -344,6 +315,7 @@ RSpec.describe 'Create Claim Request' do
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
         it_behaves_like 'a claim exported to ccd'
+        it_behaves_like 'a claim exported with an attached acas certificate'
         it_behaves_like 'a claim exported to ccd with multiple claimants from csv'
         it_behaves_like 'a claim exported to ccd with multiple respondents'
         it_behaves_like 'a claim exported to ccd with a representative'
