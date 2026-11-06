@@ -122,7 +122,7 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    shared_examples 'a claim exported to ccd' do |claimants:, respondents:, representative:, assert_missing_et1a: true|
+    shared_examples 'a claim exported to ccd' do |claimants:, respondents:, representative:, attachment: nil, assert_missing_et1a: true|
       let(:test_ccd_client) { EtCcdClient::UiClient.new.tap(&:login) }
 
       it 'exports the claim parties, completed PDF and claim details to CCD' do
@@ -177,23 +177,21 @@ RSpec.describe 'Create Claim Request' do
           aggregate_failures 'claim details' do
             exported_claim.assert_claim_details(input_claim_factory)
           end
+
+          if attachment == :csv
+            aggregate_failures 'CSV attachment contents' do
+              input_csv_file = input_claimants_file_factory.filename
+              input_csv_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_csv_file.downcase), __FILE__)
+              expect(exported_claim.csv_file.path).to be_a_file_copy_of(input_csv_file_full_path)
+            end
+          elsif attachment == :rtf
+            aggregate_failures 'claim details attachment contents' do
+              input_rtf_file = input_claim_details_file_factory.filename
+              input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file.downcase), __FILE__)
+              expect(exported_claim.claim_details_file.path).to be_a_file_copy_of(input_rtf_file_full_path)
+            end
+          end
         end
-      end
-    end
-
-    shared_examples 'a claim exported to ccd with a csv file' do
-      it 'has a csv file' do
-        input_csv_file = input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimantsFile' }.data.filename
-        input_csv_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_csv_file.downcase), __FILE__)
-        expect(ccd_exporter.find_claim_by_submission_reference(output_reference).csv_file.path).to be_a_file_copy_of(input_csv_file_full_path)
-      end
-    end
-
-    shared_examples 'a claim exported to ccd with a claim details file' do
-      let(:input_rtf_file) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimDetailsFile' }.data.filename }
-      it 'has a claim details file' do
-        input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file.downcase), __FILE__)
-        expect(ccd_exporter.find_claim_by_submission_reference(output_reference).claim_details_file.path).to be_a_file_copy_of(input_rtf_file_full_path)
       end
     end
 
@@ -261,8 +259,7 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to ccd', claimants: :csv, respondents: :single, representative: false
-        it_behaves_like 'a claim exported to ccd with a csv file'
+        it_behaves_like 'a claim exported to ccd', claimants: :csv, respondents: :single, representative: false, attachment: :csv
         it_behaves_like 'email validation using standard template'
       end
 
@@ -272,9 +269,8 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to ccd', claimants: :csv, respondents: :multiple, representative: true
+        it_behaves_like 'a claim exported to ccd', claimants: :csv, respondents: :multiple, representative: true, attachment: :csv
         it_behaves_like 'a claim exported with an attached acas certificate'
-        it_behaves_like 'a claim exported to ccd with a csv file'
         it_behaves_like 'email validation using standard template'
       end
 
@@ -284,8 +280,7 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_claimant_traits: [:no_gender_first_last]) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :single, representative: true
-        it_behaves_like 'a claim exported to ccd with a claim details file'
+        it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :single, representative: true, attachment: :rtf
         it_behaves_like 'email validation using standard template'
       end
     end
@@ -304,8 +299,7 @@ RSpec.describe 'Create Claim Request' do
                       }
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :single, representative: true
-      it_behaves_like 'a claim exported to ccd with a claim details file'
+      it_behaves_like 'a claim exported to ccd', claimants: :single, respondents: :single, representative: true, attachment: :rtf
       it_behaves_like 'email validation using standard template'
     end
 
