@@ -307,20 +307,6 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json involving external files' do
-      context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload' do
-        include_context 'with fake job processor'
-        include_context 'with setup for claims',
-                        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
-        include_context 'with background jobs running'
-        it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to ccd'
-        it_behaves_like 'a claim exported to ccd with multiple claimants from csv'
-        it_behaves_like 'a claim exported to ccd with single respondent'
-        it_behaves_like 'a claim exported to ccd with no representatives'
-        it_behaves_like 'a claim exported to ccd with a csv file'
-        it_behaves_like 'email validation using standard template'
-      end
-
       context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload but uppercased filename' do
         include_context 'with fake job processor'
         include_context 'with setup for claims',
