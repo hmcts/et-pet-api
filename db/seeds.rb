@@ -29,7 +29,10 @@ ccd_manc.update! enabled: true,
   export_claims: true,
   export_responses: true,
   export_queue: 'external_system_ccd',
-  office_codes: [24]
+  office_codes: [24], configurations: [
+     FactoryBot.build(:external_system_configuration, key: "case_type_id", value: 'Manchester'),
+     FactoryBot.build(:external_system_configuration, key: 'multiples_case_type_id', value: 'Manchester_Multiples')
+   ]
 
 ccd_glasgow = ExternalSystem.find_or_initialize_by name: 'CCD Glasgow', reference: 'ccd_glasgow'
 ccd_glasgow.update! enabled: true,
