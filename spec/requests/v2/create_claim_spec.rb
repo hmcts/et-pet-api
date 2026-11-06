@@ -338,10 +338,18 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    context 'with json for single claimant, respondent and representative with worked notice period or paid in lieu and a lowercase RTF attachment' do
+    context 'with json for single claimant, respondent and representative with worked notice period or paid in lieu and a lowercase RTF attachment with unicode phone characters' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, claim_traits: [:full, :worked_notice_period]) } # rubocop:disable FactoryBot/SyntaxMethods
+                      json_factory: lambda {
+                        FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, # rubocop:disable FactoryBot/SyntaxMethods
+                                         number_of_secondary_claimants: 0,
+                                         number_of_secondary_respondents: 0,
+                                         number_of_representatives: 1,
+                                         claim_traits: [:full, :worked_notice_period],
+                                         primary_respondent_traits: [:mr_na_unicode],
+                                         primary_claimant_traits: [:mr_na_unicode])
+                      }
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
       it_behaves_like 'a claim exported to ccd'
@@ -364,21 +372,6 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'a claim exported to ccd with single respondent'
       it_behaves_like 'a claim exported to ccd with a representative'
       it_behaves_like 'email validation using welsh template'
-    end
-
-    context 'with json for single claimant, respondent and representative with unicode chars in phone number' do
-      include_context 'with fake job processor'
-      include_context 'with setup for claims',
-                      json_factory: lambda {
-                        FactoryBot.build(:json_build_claim_commands, # rubocop:disable FactoryBot/SyntaxMethods
-                                         number_of_secondary_claimants: 0,
-                                         number_of_secondary_respondents: 0,
-                                         number_of_representatives: 1,
-                                         primary_respondent_traits: [:mr_na_unicode],
-                                         primary_claimant_traits: [:mr_na_unicode])
-                      }
-      include_context 'with background jobs running'
-      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json for single claimant, multiple respondents and a representative' do
