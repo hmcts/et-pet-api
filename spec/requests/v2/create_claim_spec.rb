@@ -236,42 +236,37 @@ RSpec.describe 'Create Claim Request' do
 
     shared_examples 'a claim exported to et_exporter with multiple claimants from csv' do
       it 'has multiple claimants' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
         claimants = normalize_claimants_from_file(dates: :string)
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_secondary_claimants(claimants)
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_claimants(claimants)
       end
     end
 
     shared_examples 'a claim exported to et_exporter with a csv file' do
       it 'has a csv file' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
         input_csv_file = input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimantsFile' }.data.filename
         input_csv_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_csv_file.downcase), __FILE__)
-        expect(et_exporter.find_claim_by_submission_reference(submission_reference).csv_file.path).to be_a_file_copy_of(input_csv_file_full_path)
+        expect(et_exporter.find_claim_by_submission_reference(output_reference).csv_file.path).to be_a_file_copy_of(input_csv_file_full_path)
       end
     end
 
     shared_examples 'a claim exported to et_exporter with a representative' do
       it 'has a representative' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_representative(input_primary_representative_factory.to_h)
+        et_exporter.find_claim_by_submission_reference(output_reference).assert_representative(input_primary_representative_factory.to_h)
       end
     end
 
     shared_examples 'a claim exported to et_exporter with multiple respondents' do
       it 'has multiple respondents' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
         secondary_respondents = input_factory.data.find { |n| n.command == 'BuildSecondaryRespondents' }.data.map(&:to_h)
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_secondary_respondents(secondary_respondents)
+        et_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_respondents(secondary_respondents)
       end
     end
 
     shared_examples 'a claim exported to et_exporter with a claim details file' do
       let(:input_rtf_file) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimDetailsFile' }.data.filename }
       it 'has a claim details file' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
         input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file.downcase), __FILE__)
-        expect(et_exporter.find_claim_by_submission_reference(submission_reference).claim_details_file.path).to be_a_file_copy_of(input_rtf_file_full_path)
+        expect(et_exporter.find_claim_by_submission_reference(output_reference).claim_details_file.path).to be_a_file_copy_of(input_rtf_file_full_path)
       end
     end
 
@@ -370,7 +365,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json involving external files' do
+    context 'with json involving external files', db_clean: true do
+      include_context "with stubbed ccd"
       context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload' do
         include_context 'with fake job processor'
         include_context 'with setup for claims',
