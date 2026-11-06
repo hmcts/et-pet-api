@@ -7,13 +7,7 @@ module EtApi
       end
 
       def self.find_claim_by_reference(reference)
-        raise "Not yet converted to ccd"
-        job = find_claim_job do |j|
-          j.dig('resource', 'reference') == reference
-        end
-        raise "A claim with reference #{reference} was not exported" if job.nil?
-
-        Claim.new(job)
+        find_claim_by_submission_reference(reference)
       end
 
       def self.assert_claim_not_exported_by_submission_reference(submission_reference)
@@ -79,29 +73,33 @@ module EtApi
         end
 
         def assert_has_file(filename)
-          raise "Not yet converted to ccd"
-          expect(data.dig(:resource, :uploaded_files)).to include(a_hash_including(filename: match(filename)))
+          expect(ccd_case.dig('case_fields', 'documentCollection')).to include(
+            a_hash_including('value' => a_hash_including(
+              'uploadedDocument' => a_hash_including('document_filename' => match(filename))
+            ))
+          )
         end
 
         def assert_has_acas_file
-          raise "Not yet converted to ccd"
           assert_has_file(/\Aacas.*\.pdf\z/)
         end
 
         def assert_acas_file_contents
-          raise "Not yet converted to ccd"
-          uploaded_file = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] =~ /\Aacas.*\.pdf\z/ }
+          uploaded_file = ccd_case.dig('case_fields', 'documentCollection').map do |document|
+            document.dig('value', 'uploadedDocument')
+          end.detect { |document| document['document_filename'] =~ /\Aacas.*\.pdf\z/ }
           raise "No uploaded file starting with 'acas' and ending in '.pdf' has been exported" if uploaded_file.nil?
 
-          file = download(uploaded_file)
+          file = download(url: uploaded_file.fetch('document_binary_url'))
           gem_file_path = File.join(Bundler::CLI::Common.select_spec('et_fake_acas_server').full_gem_path, 'lib', 'pdfs', '76 EC (C) Certificate R000080.pdf')
           expect(file.path).to be_a_file_copy_of(gem_file_path)
         end
 
         def assert_acas_data_in_respondents
-          raise "Not yet converted to ccd"
-          respondents = ([data.dig(:resource, :primary_respondent)] + data.dig(:resource, :secondary_respondents)).select { |respondent| respondent[:acas_certificate_number].present? }
-          expect(respondents).to all(include(acas_issue_date: "2026-01-08", acas_receipt_date: "2025-09-29"))
+          respondents = ccd_case.dig('case_fields', 'respondentCollection').map do |respondent|
+            respondent.fetch('value')
+          end.select { |respondent| respondent['respondent_ACAS'].present? }
+          expect(respondents).to all(include('acasCertificateIssueDate' => "2026-01-08", 'acasCertificateReceiptDate' => "2025-09-29"))
         end
 
         def assert_primary_claimant(claimant)
@@ -130,7 +128,7 @@ module EtApi
           ccd_respondent = ccd_case.dig('case_fields', 'respondentCollection').first.fetch('value')
           expect(ccd_respondent).to include "respondent_name" => respondent[:name],
                                              "respondent_phone1" => respondent[:address_telephone_number]
-          work_phone_number = if respondent[:work_address_attributes].present?
+          work_phone_number = if respondent[:work_address_attributes].to_h.present?
                                 respondent[:work_address_telephone_number]
                               else
                                 respondent[:address_telephone_number]

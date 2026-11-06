@@ -71,7 +71,13 @@ RSpec.describe 'Create Claim Request' do
       let(:output_filename_additional_claimants_txt) { "#{output_reference}_ET1a_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.txt" }
       let(:output_filename_additional_claimants_csv) { "#{output_reference}_ET1a_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.csv" }
       before do
-        create(:external_system, :ccd, :for_all_offices, configurations: [build(:external_system_configuration, key: "case_type_id", value: 'Manchester')])
+        create :external_system,
+               :ccd,
+               :for_all_offices,
+               configurations: [
+                 build(:external_system_configuration, key: "case_type_id", value: 'Manchester'),
+                 build(:external_system_configuration, key: 'multiples_case_type_id', value: 'Manchester_Multiples')
+               ]
         perform_action
       end
 
@@ -138,18 +144,15 @@ RSpec.describe 'Create Claim Request' do
 
     shared_examples 'a claim exported to et_exporter' do |assert_missing_et1a: true|
       it 'has the primary claimaint in the payload' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_primary_claimant(input_primary_claimant_factory.to_h)
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_primary_claimant(input_primary_claimant_factory.to_h)
       end
 
       it 'has the primary respondent in the payload' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_primary_respondent(input_primary_respondent_factory.to_h)
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_primary_respondent(input_primary_respondent_factory.to_h)
       end
 
       it 'creates a valid pdf file with the data filled in correctly' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
-        et_exporter.find_claim_by_submission_reference(submission_reference).et1_pdf_file(template: input_claim_factory.pdf_template_reference).assert_correct_contents_for(
+        ccd_exporter.find_claim_by_submission_reference(output_reference).et1_pdf_file(template: input_claim_factory.pdf_template_reference).assert_correct_contents_for(
           claim: input_claim_factory,
           claimants: [input_primary_claimant_factory] + input_secondary_claimants_factory + csv_claimants_emulated_as_json,
           respondents: [input_primary_respondent_factory] + input_secondary_respondents_factory,
@@ -159,8 +162,7 @@ RSpec.describe 'Create Claim Request' do
       end
 
       it 'has the correct claim data in the payload' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_claim_details(input_claim_factory)
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_claim_details(input_claim_factory)
       end
     end
     shared_examples 'a claim exported to ccd' do |assert_missing_et1a: true|
@@ -197,8 +199,7 @@ RSpec.describe 'Create Claim Request' do
 
     shared_examples 'a claim exported to et_exporter with single claimant' do
       it 'has no secondary claimants' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_no_secondary_claimants
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_no_secondary_claimants
       end
     end
 
@@ -210,8 +211,7 @@ RSpec.describe 'Create Claim Request' do
 
     shared_examples 'a claim exported to et_exporter with single respondent' do
       it 'has no secondary respondents' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_no_secondary_respondents
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_no_secondary_respondents
       end
     end
 
@@ -223,27 +223,23 @@ RSpec.describe 'Create Claim Request' do
 
     shared_examples 'a claim exported to et_exporter with no representatives' do
       it 'has no representatives' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_no_representatives
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_no_representatives
       end
     end
 
     shared_examples 'a claim exported to et_exporter with multiple claimants' do
       it 'has multiple claimants' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
         secondary_claimants = input_factory.data.find { |n| n.command == 'BuildSecondaryClaimants' }.data.map(&:to_h)
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_secondary_claimants(secondary_claimants)
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_claimants(secondary_claimants)
       end
 
       it 'has the et1a text file attached' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_et1a_text_file
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_et1a_text_file
       end
 
       it 'stores an ET1a txt file with all of the claimants in the correct format' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
         claimants = normalize_json_claimants(input_secondary_claimants_factory.map(&:to_h))
-        expect(et_exporter.find_claim_by_submission_reference(submission_reference).et1a_text_file).to have_claimants_for(claimants, errors: errors), -> { errors.join("\n") }
+        expect(ccd_exporter.find_claim_by_submission_reference(output_reference).et1a_text_file).to have_claimants_for(claimants, errors: errors), -> { errors.join("\n") }
       end
     end
 
@@ -289,19 +285,19 @@ RSpec.describe 'Create Claim Request' do
     end
 
     shared_examples 'a claim exported with an attached acas certificate' do
-      it 'exports the acas certificate ready for external systems to pick up' do
+      it 'exports the acas certificate ready for external systems to pick up', db_clean: true do
         ref = output_reference
-        et_exporter.find_claim_by_reference(ref).assert_has_acas_file
+        ccd_exporter.find_claim_by_reference(ref).assert_has_acas_file
       end
 
-      it 'saves the acas file correctly' do
+      it 'saves the acas file correctly', db_clean: true do
         ref = output_reference
-        et_exporter.find_claim_by_reference(ref).assert_acas_file_contents
+        ccd_exporter.find_claim_by_reference(ref).assert_acas_file_contents
       end
 
-      it 'saves the acas metadata in the respondent' do
+      it 'saves the acas metadata in the respondent', db_clean: true do
         ref = output_reference
-        et_exporter.find_claim_by_reference(ref).assert_acas_data_in_respondents
+        ccd_exporter.find_claim_by_reference(ref).assert_acas_data_in_respondents
       end
     end
 
@@ -341,6 +337,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant and respondent (with no work address), no representatives', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, reference: nil, primary_respondent_traits: [:full, :no_work_address]) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -354,7 +351,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant and respondent but no representatives' do
+    context 'with json for single claimant and respondent but no representatives', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -367,7 +365,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for multiple claimants, 1 respondent and no representatives' do
+    context 'with json for multiple claimants, 1 respondent and no representatives', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
