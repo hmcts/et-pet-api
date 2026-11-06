@@ -323,10 +323,10 @@ RSpec.describe 'Create Claim Request' do
         it_behaves_like 'email validation using standard template'
       end
 
-      context 'with json for single claimant, single respondent and representative - with claim details file uploaded using direct upload with uppercased extension' do
+      context 'with json for single claimant with N/K gender, single respondent and representative - with claim details file uploaded using direct upload with uppercased extension' do
         include_context 'with fake job processor'
         include_context 'with setup for claims',
-                        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
+                        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_claimant_traits: [:no_gender_first_last]) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
         it_behaves_like 'a claim exported to ccd'
@@ -398,19 +398,6 @@ RSpec.describe 'Create Claim Request' do
                                          primary_claimant_traits: [:mr_na_unicode])
                       }
       include_context 'with background jobs running'
-      it_behaves_like 'email validation using standard template'
-    end
-
-    context 'with json for single claimant with N/K gender, 1 respondent and a representative' do
-      include_context 'with fake job processor'
-      include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_claimant_traits: [:no_gender_first_last]) } # rubocop:disable FactoryBot/SyntaxMethods
-      include_context 'with background jobs running'
-      it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to ccd'
-      it_behaves_like 'a claim exported to ccd with single claimant'
-      it_behaves_like 'a claim exported to ccd with single respondent'
-      it_behaves_like 'a claim exported to ccd with a representative'
       it_behaves_like 'email validation using standard template'
     end
 
