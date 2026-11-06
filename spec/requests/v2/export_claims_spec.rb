@@ -22,6 +22,14 @@ RSpec.describe 'Export Claims Request' do
     let(:example_external_system_reference) { 'ccd_manchester' }
     let(:example_external_system) { ExternalSystem.find_by reference: example_external_system_reference }
     let(:example_claim) { Claim.find_by reference: example_claim_reference }
+    let(:export_job_filter) do
+      lambda do |job|
+        job[:job] == EventJob && job['arguments'].first.in?([
+          'ClaimExportedHandler',
+          'EtExporter::ClaimExportFeedbackReceivedHandler'
+        ])
+      end
+    end
 
     include_context 'with fake job processor'
 
@@ -40,9 +48,9 @@ RSpec.describe 'Export Claims Request' do
       # Arrange - Setup the response record and provide the ids
       command = build(:json_export_claims_command, claim_ids: [example_claim.id], external_system_id: example_external_system.id)
 
-      # Act - Run the command and all background jobs
+      # Act - Run the command and export-record events, leaving CCD transport queued.
       post '/api/v2/exports/export_claims', params: command.to_json, headers: default_headers
-      run_background_jobs
+      run_background_jobs(only: export_job_filter)
 
       # Assert - Check the example claim now has an export record and will be marked as queued
       claim = Claim.find_by(reference: example_claim_reference)
@@ -69,7 +77,7 @@ RSpec.describe 'Export Claims Request' do
       command = build(:json_export_claims_command, claim_ids: [example_claim.id], external_system_id: example_external_system.id)
       perform_action = lambda {
         post '/api/v2/exports/export_claims', params: command.to_json, headers: default_headers
-        run_background_jobs
+        run_background_jobs(only: export_job_filter)
       }
       perform_action.call
       reset!
