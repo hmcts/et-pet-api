@@ -2,6 +2,8 @@
 
 require 'rails_helper'
 RSpec.describe 'Create Response Request', js: false do
+  include_context 'with stubbed ccd'
+
   describe 'POST /api/v2/respondents/build_response' do
     include_context 'with local storage'
 
