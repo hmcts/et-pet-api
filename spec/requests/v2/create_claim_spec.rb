@@ -81,8 +81,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     shared_examples 'any claim variation' do
-      it 'returns status of ok', background_jobs: :disable do
-        # Assert - make sure we get status of accepted
+      it 'returns an accepted response with a persisted claim reference', background_jobs: :disable do
         aggregate_failures 'validating response' do
           expect(response).to have_http_status(:accepted)
           expect(json_response).to include status: 'accepted'
@@ -93,33 +92,21 @@ RSpec.describe 'Create Claim Request' do
                                     telephone: instance_of(String),
                                     address: instance_of(String),
                                     email: instance_of(String)
+          result = Claim.where(reference: json_response.dig('meta', 'BuildClaim', 'reference')).first
+          expect(result).to be_an_instance_of Claim
         end
       end
 
-      it 'returns a valid reference number that is persisted in the database', background_jobs: :disable do
-        result = Claim.where(reference: json_response.dig('meta', 'BuildClaim', 'reference')).first
-
-        # Assert - make sure it is a claim
-        expect(result).to be_an_instance_of Claim
-      end
-
-      it 'returns exactly the same data if called twice with the same uuid', background_jobs: :disable do
+      it 'returns the same response without creating another claim when called twice with the same uuid', background_jobs: :disable do
         # Arrange - get the response from the first call and reset the session ready for the second
         response1 = JSON.parse(response.body).with_indifferent_access
         reset!
 
-        # Act - Make the call a second time
-        perform_action
-        response2 = JSON.parse(response.body).with_indifferent_access
-
-        # Assert - Make sure its identical
-        expect(response1).to eq response2
-      end
-
-      it 'does not create another claim if called for a second time with same uuid', background_jobs: :disable do
-
-        # Assert
-        expect { perform_action }.not_to change(Claim, :count)
+        aggregate_failures 'validating repeat submission' do
+          expect { perform_action }.not_to change(Claim, :count)
+          response2 = JSON.parse(response.body).with_indifferent_access
+          expect(response1).to eq response2
+        end
       end
     end
 
