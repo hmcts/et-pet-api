@@ -10,13 +10,10 @@ module EtApi
         find_claim_by_submission_reference(reference)
       end
 
-      def self.assert_claim_not_exported_by_submission_reference(submission_reference)
-        raise "Not yet converted to ccd"
-        job = find_claim_job do |j|
-          j.dig('resource', 'reference') == submission_reference
-        end
+      def self.assert_claim_not_exported_by_submission_reference(reference)
+        ccd_cases = test_ccd_client.caseworker_search_by_reference(reference, case_type_id: 'Manchester')
 
-        raise "A claim with submission reference #{submission_reference} was not expected to be exported, but it was" unless job.nil?
+        raise "A claim with reference #{reference} was not expected to be exported, but it was" unless ccd_cases.empty?
       end
 
       def self.find_claim_by_submission_reference(reference)

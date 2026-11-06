@@ -4,6 +4,7 @@ require 'rails_helper'
 RSpec.describe 'Create Claim Request' do
   include_context 'with local storage'
   include_context 'with gov uk notify emails sent monitor'
+  include_context "with stubbed ccd"
 
   describe 'POST /api/v2/claims/build_claim' do
     let(:default_headers) do
@@ -26,8 +27,7 @@ RSpec.describe 'Create Claim Request' do
     shared_context 'with setup for claims' do |json_factory:|
       let(:input_factory) { json_factory.call }
 
-      # @return [EtApi::Test::EtExporter] The exporter class to use for testing
-      let(:et_exporter) { EtApi::Test::EtExporter }
+      # @return [EtApi::Test::CcdExporter] The exporter class to use for testing
       let(:ccd_exporter) { EtApi::Test::CcdExporter }
 
       # A private scrubber to set expectations for the filename - replaces white space with underscores and any non word chars are removed
@@ -71,13 +71,6 @@ RSpec.describe 'Create Claim Request' do
       let(:output_filename_additional_claimants_txt) { "#{output_reference}_ET1a_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.txt" }
       let(:output_filename_additional_claimants_csv) { "#{output_reference}_ET1a_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.csv" }
       before do
-        create :external_system,
-               :ccd,
-               :for_all_offices,
-               configurations: [
-                 build(:external_system_configuration, key: "case_type_id", value: 'Manchester'),
-                 build(:external_system_configuration, key: 'multiples_case_type_id', value: 'Manchester_Multiples')
-               ]
         perform_action
       end
 
@@ -165,18 +158,19 @@ RSpec.describe 'Create Claim Request' do
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_claim_details(input_claim_factory)
       end
     end
+
     shared_examples 'a claim exported to ccd' do |assert_missing_et1a: true|
       let(:test_ccd_client) { EtCcdClient::UiClient.new.tap(&:login) }
 
-      it 'has the primary claimaint in the payload', db_clean: true do
+      it 'has the primary claimaint in the payload' do
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_primary_claimant(input_primary_claimant_factory.to_h)
       end
 
-      it 'has the primary respondent in the payload', db_clean: true do
+      it 'has the primary respondent in the payload' do
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_primary_respondent(input_primary_respondent_factory.to_h)
       end
 
-      it 'creates a valid pdf file with the data filled in correctly', db_clean: true do
+      it 'creates a valid pdf file with the data filled in correctly' do
         ccd_exporter.find_claim_by_submission_reference(output_reference).et1_pdf_file(template: input_claim_factory.pdf_template_reference).assert_correct_contents_for(
           claim: input_claim_factory,
           claimants: [input_primary_claimant_factory] + input_secondary_claimants_factory + csv_claimants_emulated_as_json,
@@ -186,13 +180,13 @@ RSpec.describe 'Create Claim Request' do
         )
       end
 
-      it 'has the correct claim data in the payload', db_clean: true do
+      it 'has the correct claim data in the payload' do
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_claim_details(input_claim_factory)
       end
     end
 
     shared_examples 'a claim exported to ccd with single claimant' do
-      it 'has no secondary claimants', db_clean: true do
+      it 'has no secondary claimants' do
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_no_secondary_claimants
       end
     end
@@ -204,7 +198,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     shared_examples 'a claim exported to ccd with single respondent' do
-      it 'has no secondary respondents', db_clean: true do
+      it 'has no secondary respondents' do
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_no_secondary_respondents
       end
     end
@@ -216,7 +210,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     shared_examples 'a claim exported to ccd with no representatives' do
-      it 'has no representatives', db_clean: true do
+      it 'has no representatives' do
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_no_representatives
       end
     end
@@ -228,14 +222,14 @@ RSpec.describe 'Create Claim Request' do
     end
 
     shared_examples 'a claim exported to et_exporter with multiple claimants' do
-      it 'has multiple claimants', db_clean: true do
+      it 'has multiple claimants' do
         secondary_claimants = input_factory.data.find { |n| n.command == 'BuildSecondaryClaimants' }.data.map(&:to_h)
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_claimants(secondary_claimants)
       end
     end
 
     shared_examples 'a claim exported to et_exporter with multiple claimants from csv' do
-      it 'has multiple claimants', db_clean: true do
+      it 'has multiple claimants' do
         claimants = normalize_claimants_from_file(dates: :string)
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_claimants(claimants)
       end
@@ -271,17 +265,17 @@ RSpec.describe 'Create Claim Request' do
     end
 
     shared_examples 'a claim exported with an attached acas certificate' do
-      it 'exports the acas certificate ready for external systems to pick up', db_clean: true do
+      it 'exports the acas certificate ready for external systems to pick up' do
         ref = output_reference
         ccd_exporter.find_claim_by_reference(ref).assert_has_acas_file
       end
 
-      it 'saves the acas file correctly', db_clean: true do
+      it 'saves the acas file correctly' do
         ref = output_reference
         ccd_exporter.find_claim_by_reference(ref).assert_acas_file_contents
       end
 
-      it 'saves the acas metadata in the respondent', db_clean: true do
+      it 'saves the acas metadata in the respondent' do
         ref = output_reference
         ccd_exporter.find_claim_by_reference(ref).assert_acas_data_in_respondents
       end
@@ -303,8 +297,7 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    context 'with json for single claimant and respondent, no representatives and no acas number', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant and respondent, no representatives and no acas number' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, reference: nil, primary_respondent_traits: [:full, :no_acas_no_jurisdiction]) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -322,8 +315,7 @@ RSpec.describe 'Create Claim Request' do
 
     end
 
-    context 'with json for single claimant and respondent (with no work address), no representatives', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant and respondent (with no work address), no representatives' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, reference: nil, primary_respondent_traits: [:full, :no_work_address]) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -337,8 +329,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant and respondent but no representatives', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant and respondent but no representatives' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -351,8 +342,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for multiple claimants, 1 respondent and no representatives', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for multiple claimants, 1 respondent and no representatives' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -365,8 +355,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json involving external files', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json involving external files' do
       context 'with json for multiple claimants, single respondent and no representative - with csv file uploaded using direct upload' do
         include_context 'with fake job processor'
         include_context 'with setup for claims',
@@ -467,8 +456,7 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    context 'with json for single claimant, respondent and representative', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant, respondent and representative' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -481,8 +469,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant, respondent and representative with worked notice period or paid in lieu', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant, respondent and representative with worked notice period or paid in lieu' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, claim_traits: [:full, :worked_notice_period]) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -494,8 +481,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'a claim exported to et_exporter with a representative'
     end
 
-    context 'with json for single claimant, respondent and representative using welsh template', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant, respondent and representative using welsh template' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_welsh_pdf, :with_welsh_email, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -509,8 +495,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using welsh template'
     end
 
-    context 'with json for single claimant, respondent and representative with non alphanumerics in names', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant, respondent and representative with non alphanumerics in names' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: lambda {
@@ -530,8 +515,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant, respondent and representative with unicode chars in phone number', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant, respondent and representative with unicode chars in phone number' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: lambda {
@@ -546,8 +530,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant with N/K gender, 1 respondent and a representative', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant with N/K gender, 1 respondent and a representative' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_claimant_traits: [:no_gender_first_last]) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -560,8 +543,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for multiple claimants, 1 respondent and a representative', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for multiple claimants, 1 respondent and a representative' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -574,8 +556,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant and multiple respondents but no representatives', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant and multiple respondents but no representatives' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 4, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -588,8 +569,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for multiple claimant, multiple respondents but no representatives', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for multiple claimant, multiple respondents but no representatives' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -602,8 +582,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant, multiple respondents and a representative', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant, multiple respondents and a representative' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -616,8 +595,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for multiple claimants, multiple respondents and a representative', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for multiple claimants, multiple respondents and a representative' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -630,8 +608,7 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant, single respondent with postcode that routes to default office', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json for single claimant, single respondent with postcode that routes to default office' do
       # Uses respondent address with post code 'FF1 1AA'
       include_context 'with fake job processor'
       include_context 'with setup for claims',
@@ -641,13 +618,11 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
 
       it 'is not exported' do
-        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
-        et_exporter.assert_claim_not_exported_by_submission_reference(submission_reference)
+        ccd_exporter.assert_claim_not_exported_by_submission_reference(output_reference)
       end
     end
 
-    context 'with json creating an error for single claimant (with no address) and respondent, no representatives', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json creating an error for single claimant (with no address) and respondent, no representatives' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full], primary_claimant_traits: [:mr_first_last, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -666,8 +641,7 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    context 'with json creating an error for single claimant and respondent (with no address), no representatives', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json creating an error for single claimant and respondent (with no address), no representatives' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -686,8 +660,7 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    context 'with json creating an error for single claimant, respondent and representative (invalid address)', db_clean: true do
-      include_context "with stubbed ccd"
+    context 'with json creating an error for single claimant, respondent and representative (invalid address)' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_representative_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
