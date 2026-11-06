@@ -220,14 +220,6 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    shared_examples 'email validation using standard template' do
-      it 'sends a govuk notify email to the respondent with the pdf attached using the standard template' do
-        reference = json_response.dig(:meta, 'BuildClaim', :reference)
-        email_sent = emails_sent.new_claim_email_for(reference: reference, template_reference: 'et1-v1-en')
-        expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory, reference: reference)
-      end
-    end
-
     context 'with json for single claimant and respondent, no representatives and no acas number' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
@@ -334,10 +326,18 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:default_office], reference: nil) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'email validation using standard template'
+      it 'sends the confirmation email without exporting the claim to CCD' do
+        aggregate_failures 'validating default-office routing' do
+          aggregate_failures 'confirmation email' do
+            reference = json_response.dig(:meta, 'BuildClaim', :reference)
+            email_sent = emails_sent.new_claim_email_for(reference: reference, template_reference: 'et1-v1-en')
+            expect(email_sent).to have_correct_content_for(input_claim_factory, input_primary_claimant_factory, input_claimants_file_factory, input_claim_details_file_factory, reference: reference)
+          end
 
-      it 'is not exported' do
-        ccd_exporter.assert_claim_not_exported_by_submission_reference(output_reference)
+          aggregate_failures 'claim not exported' do
+            ccd_exporter.assert_claim_not_exported_by_submission_reference(output_reference)
+          end
+        end
       end
     end
 
