@@ -108,7 +108,7 @@ module EtApi
           expect(ccd_case.dig('case_fields', 'claimantIndType')).to include "claimant_first_names" => claimant[:first_name],
                                                                             "claimant_last_name" => claimant[:last_name],
                                                                             "claimant_date_of_birth" => claimant[:date_of_birth],
-                                                                            "claimant_gender" => claimant[:gender],
+                                                                            "claimant_gender" => { 'Male' => 'Male', 'Female' => 'Female', 'N/K' => 'Not Known' }[claimant[:gender]],
                                                                             "claimant_title1" => claimant[:title]
 
           expect(ccd_case.dig('case_fields', 'claimantType')).to include "claimant_phone_number" => claimant[:address_telephone_number],

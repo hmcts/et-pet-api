@@ -467,7 +467,8 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    context 'with json for single claimant, respondent and representative' do
+    context 'with json for single claimant, respondent and representative', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -480,7 +481,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant, respondent and representative with worked notice period or paid in lieu' do
+    context 'with json for single claimant, respondent and representative with worked notice period or paid in lieu', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, claim_traits: [:full, :worked_notice_period]) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -492,7 +494,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'a claim exported to et_exporter with a representative'
     end
 
-    context 'with json for single claimant, respondent and representative using welsh template' do
+    context 'with json for single claimant, respondent and representative using welsh template', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_welsh_pdf, :with_welsh_email, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -506,7 +509,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using welsh template'
     end
 
-    context 'with json for single claimant, respondent and representative with non alphanumerics in names' do
+    context 'with json for single claimant, respondent and representative with non alphanumerics in names', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: lambda {
@@ -526,7 +530,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant, respondent and representative with unicode chars in phone number' do
+    context 'with json for single claimant, respondent and representative with unicode chars in phone number', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: lambda {
@@ -541,7 +546,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant with N/K gender, 1 respondent and a representative' do
+    context 'with json for single claimant with N/K gender, 1 respondent and a representative', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_claimant_traits: [:no_gender_first_last]) } # rubocop:disable FactoryBot/SyntaxMethods
