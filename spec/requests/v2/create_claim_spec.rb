@@ -407,10 +407,17 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    context 'with json for single claimant, respondent and representative' do
+    context 'with json for single claimant, respondent and representative with non alphanumerics in names' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
+                      json_factory: lambda {
+                        FactoryBot.build(:json_build_claim_commands, # rubocop:disable FactoryBot/SyntaxMethods
+                                         number_of_secondary_claimants: 0,
+                                         number_of_secondary_respondents: 0,
+                                         number_of_representatives: 1,
+                                         primary_respondent_traits: [:mr_na_o_leary],
+                                         primary_claimant_traits: [:mr_na_o_malley])
+                      }
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
       it_behaves_like 'a claim exported to ccd'
@@ -444,26 +451,6 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'a claim exported to ccd with single respondent'
       it_behaves_like 'a claim exported to ccd with a representative'
       it_behaves_like 'email validation using welsh template'
-    end
-
-    context 'with json for single claimant, respondent and representative with non alphanumerics in names' do
-      include_context 'with fake job processor'
-      include_context 'with setup for claims',
-                      json_factory: lambda {
-                        FactoryBot.build(:json_build_claim_commands, # rubocop:disable FactoryBot/SyntaxMethods
-                                         number_of_secondary_claimants: 0,
-                                         number_of_secondary_respondents: 0,
-                                         number_of_representatives: 1,
-                                         primary_respondent_traits: [:mr_na_o_leary],
-                                         primary_claimant_traits: [:mr_na_o_malley])
-                      }
-      include_context 'with background jobs running'
-      it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to ccd'
-      it_behaves_like 'a claim exported to ccd with single claimant'
-      it_behaves_like 'a claim exported to ccd with single respondent'
-      it_behaves_like 'a claim exported to ccd with a representative'
-      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json for single claimant, respondent and representative with unicode chars in phone number' do
