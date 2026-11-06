@@ -1,6 +1,6 @@
 class ImportClaimCommand < SerialSequenceCommand
   def initialize(uuid:, data:, **args)
-    super(uuid: uuid, data: data, **args)
+    super
   end
 
   def apply(root_object, meta: {})

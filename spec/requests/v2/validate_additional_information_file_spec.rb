@@ -38,7 +38,7 @@ RSpec.describe 'Validate Additional Information File Request', type: :request do
       end
 
       it 'returns 422 bad request' do
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
 
       it 'returns the status as not accepted' do

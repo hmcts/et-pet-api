@@ -9,10 +9,10 @@ task test: :environment do
   end
 end
 
-  task 'test:smoke' => :environment do
-    puts "No smoke tests yet"
-  end
+task 'test:smoke' => :environment do
+  puts "No smoke tests yet"
+end
 
-  task 'test:functional' => :environment do
-    puts "No functional tests yet"
-  end
+task 'test:functional' => :environment do
+  puts "No functional tests yet"
+end

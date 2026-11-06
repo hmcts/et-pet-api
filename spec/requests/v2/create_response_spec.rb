@@ -20,7 +20,7 @@ RSpec.describe 'Create Response Request', js: false do
     end
     let(:non_ccd_background_jobs_filter) do
       lambda do |job|
-        %w[events default].include?(job['queue_name']) && job[:job] != EtExporter::ExportResponseJob
+        ['events', 'default'].include?(job['queue_name']) && job[:job] != EtExporter::ExportResponseJob
       end
     end
 
