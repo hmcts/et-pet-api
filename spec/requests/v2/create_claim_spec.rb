@@ -125,26 +125,32 @@ RSpec.describe 'Create Claim Request' do
     shared_examples 'a claim exported to ccd' do |assert_missing_et1a: true|
       let(:test_ccd_client) { EtCcdClient::UiClient.new.tap(&:login) }
 
-      it 'has the primary claimaint in the payload' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_primary_claimant(input_primary_claimant_factory.to_h)
-      end
+      it 'exports the primary claimant, primary respondent, completed PDF and claim details to CCD' do
+        exported_claim = ccd_exporter.find_claim_by_submission_reference(output_reference)
 
-      it 'has the primary respondent in the payload' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_primary_respondent(input_primary_respondent_factory.to_h)
-      end
+        aggregate_failures 'validating CCD export' do
+          aggregate_failures 'primary claimant' do
+            exported_claim.assert_primary_claimant(input_primary_claimant_factory.to_h)
+          end
 
-      it 'creates a valid pdf file with the data filled in correctly' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).et1_pdf_file(template: input_claim_factory.pdf_template_reference).assert_correct_contents_for(
-          claim: input_claim_factory,
-          claimants: [input_primary_claimant_factory] + input_secondary_claimants_factory + csv_claimants_emulated_as_json,
-          respondents: [input_primary_respondent_factory] + input_secondary_respondents_factory,
-          representative: input_primary_representative_factory,
-          assert_missing_et1a: assert_missing_et1a
-        )
-      end
+          aggregate_failures 'primary respondent' do
+            exported_claim.assert_primary_respondent(input_primary_respondent_factory.to_h)
+          end
 
-      it 'has the correct claim data in the payload' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_claim_details(input_claim_factory)
+          aggregate_failures 'completed PDF' do
+            exported_claim.et1_pdf_file(template: input_claim_factory.pdf_template_reference).assert_correct_contents_for(
+              claim: input_claim_factory,
+              claimants: [input_primary_claimant_factory] + input_secondary_claimants_factory + csv_claimants_emulated_as_json,
+              respondents: [input_primary_respondent_factory] + input_secondary_respondents_factory,
+              representative: input_primary_representative_factory,
+              assert_missing_et1a: assert_missing_et1a
+            )
+          end
+
+          aggregate_failures 'claim details' do
+            exported_claim.assert_claim_details(input_claim_factory)
+          end
+        end
       end
     end
 
