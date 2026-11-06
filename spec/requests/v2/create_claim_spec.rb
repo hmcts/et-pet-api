@@ -135,30 +135,6 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    shared_examples 'a claim exported to et_exporter' do |assert_missing_et1a: true|
-      it 'has the primary claimaint in the payload' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_primary_claimant(input_primary_claimant_factory.to_h)
-      end
-
-      it 'has the primary respondent in the payload' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_primary_respondent(input_primary_respondent_factory.to_h)
-      end
-
-      it 'creates a valid pdf file with the data filled in correctly' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).et1_pdf_file(template: input_claim_factory.pdf_template_reference).assert_correct_contents_for(
-          claim: input_claim_factory,
-          claimants: [input_primary_claimant_factory] + input_secondary_claimants_factory + csv_claimants_emulated_as_json,
-          respondents: [input_primary_respondent_factory] + input_secondary_respondents_factory,
-          representative: input_primary_representative_factory,
-          assert_missing_et1a: assert_missing_et1a
-        )
-      end
-
-      it 'has the correct claim data in the payload' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_claim_details(input_claim_factory)
-      end
-    end
-
     shared_examples 'a claim exported to ccd' do |assert_missing_et1a: true|
       let(:test_ccd_client) { EtCcdClient::UiClient.new.tap(&:login) }
 
@@ -191,19 +167,7 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    shared_examples 'a claim exported to et_exporter with single claimant' do
-      it 'has no secondary claimants' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_no_secondary_claimants
-      end
-    end
-
     shared_examples 'a claim exported to ccd with single respondent' do
-      it 'has no secondary respondents' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_no_secondary_respondents
-      end
-    end
-
-    shared_examples 'a claim exported to et_exporter with single respondent' do
       it 'has no secondary respondents' do
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_no_secondary_respondents
       end
@@ -215,27 +179,21 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    shared_examples 'a claim exported to et_exporter with no representatives' do
-      it 'has no representatives' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_no_representatives
-      end
-    end
-
-    shared_examples 'a claim exported to et_exporter with multiple claimants' do
+    shared_examples 'a claim exported to ccd with multiple claimants' do
       it 'has multiple claimants' do
         secondary_claimants = input_factory.data.find { |n| n.command == 'BuildSecondaryClaimants' }.data.map(&:to_h)
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_claimants(secondary_claimants)
       end
     end
 
-    shared_examples 'a claim exported to et_exporter with multiple claimants from csv' do
+    shared_examples 'a claim exported to ccd with multiple claimants from csv' do
       it 'has multiple claimants' do
         claimants = normalize_claimants_from_file(dates: :string)
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_claimants(claimants)
       end
     end
 
-    shared_examples 'a claim exported to et_exporter with a csv file' do
+    shared_examples 'a claim exported to ccd with a csv file' do
       it 'has a csv file' do
         input_csv_file = input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimantsFile' }.data.filename
         input_csv_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_csv_file.downcase), __FILE__)
@@ -243,20 +201,20 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    shared_examples 'a claim exported to et_exporter with a representative' do
+    shared_examples 'a claim exported to ccd with a representative' do
       it 'has a representative' do
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_representative(input_primary_representative_factory.to_h)
       end
     end
 
-    shared_examples 'a claim exported to et_exporter with multiple respondents' do
+    shared_examples 'a claim exported to ccd with multiple respondents' do
       it 'has multiple respondents' do
         secondary_respondents = input_factory.data.find { |n| n.command == 'BuildSecondaryRespondents' }.data.map(&:to_h)
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_respondents(secondary_respondents)
       end
     end
 
-    shared_examples 'a claim exported to et_exporter with a claim details file' do
+    shared_examples 'a claim exported to ccd with a claim details file' do
       let(:input_rtf_file) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimDetailsFile' }.data.filename }
       it 'has a claim details file' do
         input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file.downcase), __FILE__)
@@ -322,10 +280,10 @@ RSpec.describe 'Create Claim Request' do
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
       it_behaves_like 'a claim exported with an attached acas certificate'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with single claimant'
-      it_behaves_like 'a claim exported to et_exporter with single respondent'
-      it_behaves_like 'a claim exported to et_exporter with no representatives'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with single claimant'
+      it_behaves_like 'a claim exported to ccd with single respondent'
+      it_behaves_like 'a claim exported to ccd with no representatives'
       it_behaves_like 'email validation using standard template'
     end
 
@@ -335,10 +293,10 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with single claimant'
-      it_behaves_like 'a claim exported to et_exporter with single respondent'
-      it_behaves_like 'a claim exported to et_exporter with no representatives'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with single claimant'
+      it_behaves_like 'a claim exported to ccd with single respondent'
+      it_behaves_like 'a claim exported to ccd with no representatives'
       it_behaves_like 'email validation using standard template'
     end
 
@@ -348,10 +306,10 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with multiple claimants'
-      it_behaves_like 'a claim exported to et_exporter with single respondent'
-      it_behaves_like 'a claim exported to et_exporter with no representatives'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with multiple claimants'
+      it_behaves_like 'a claim exported to ccd with single respondent'
+      it_behaves_like 'a claim exported to ccd with no representatives'
       it_behaves_like 'email validation using standard template'
     end
 
@@ -362,11 +320,11 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to et_exporter'
-        it_behaves_like 'a claim exported to et_exporter with multiple claimants from csv'
-        it_behaves_like 'a claim exported to et_exporter with single respondent'
-        it_behaves_like 'a claim exported to et_exporter with no representatives'
-        it_behaves_like 'a claim exported to et_exporter with a csv file'
+        it_behaves_like 'a claim exported to ccd'
+        it_behaves_like 'a claim exported to ccd with multiple claimants from csv'
+        it_behaves_like 'a claim exported to ccd with single respondent'
+        it_behaves_like 'a claim exported to ccd with no representatives'
+        it_behaves_like 'a claim exported to ccd with a csv file'
         it_behaves_like 'email validation using standard template'
       end
 
@@ -376,11 +334,11 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload_uppercased, number_of_secondary_respondents: 0, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to et_exporter'
-        it_behaves_like 'a claim exported to et_exporter with multiple claimants from csv'
-        it_behaves_like 'a claim exported to et_exporter with single respondent'
-        it_behaves_like 'a claim exported to et_exporter with no representatives'
-        it_behaves_like 'a claim exported to et_exporter with a csv file'
+        it_behaves_like 'a claim exported to ccd'
+        it_behaves_like 'a claim exported to ccd with multiple claimants from csv'
+        it_behaves_like 'a claim exported to ccd with single respondent'
+        it_behaves_like 'a claim exported to ccd with no representatives'
+        it_behaves_like 'a claim exported to ccd with a csv file'
         it_behaves_like 'email validation using standard template'
       end
 
@@ -390,11 +348,11 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to et_exporter'
-        it_behaves_like 'a claim exported to et_exporter with multiple claimants from csv'
-        it_behaves_like 'a claim exported to et_exporter with single respondent'
-        it_behaves_like 'a claim exported to et_exporter with a representative'
-        it_behaves_like 'a claim exported to et_exporter with a csv file'
+        it_behaves_like 'a claim exported to ccd'
+        it_behaves_like 'a claim exported to ccd with multiple claimants from csv'
+        it_behaves_like 'a claim exported to ccd with single respondent'
+        it_behaves_like 'a claim exported to ccd with a representative'
+        it_behaves_like 'a claim exported to ccd with a csv file'
         it_behaves_like 'email validation using standard template'
       end
 
@@ -404,12 +362,12 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to et_exporter'
+        it_behaves_like 'a claim exported to ccd'
         it_behaves_like 'a claim exported with an attached acas certificate'
-        it_behaves_like 'a claim exported to et_exporter with multiple claimants from csv'
-        it_behaves_like 'a claim exported to et_exporter with multiple respondents'
-        it_behaves_like 'a claim exported to et_exporter with no representatives'
-        it_behaves_like 'a claim exported to et_exporter with a csv file'
+        it_behaves_like 'a claim exported to ccd with multiple claimants from csv'
+        it_behaves_like 'a claim exported to ccd with multiple respondents'
+        it_behaves_like 'a claim exported to ccd with no representatives'
+        it_behaves_like 'a claim exported to ccd with a csv file'
         it_behaves_like 'email validation using standard template'
       end
 
@@ -419,11 +377,11 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_csv_direct_upload, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to et_exporter'
-        it_behaves_like 'a claim exported to et_exporter with multiple claimants from csv'
-        it_behaves_like 'a claim exported to et_exporter with multiple respondents'
-        it_behaves_like 'a claim exported to et_exporter with a representative'
-        it_behaves_like 'a claim exported to et_exporter with a csv file'
+        it_behaves_like 'a claim exported to ccd'
+        it_behaves_like 'a claim exported to ccd with multiple claimants from csv'
+        it_behaves_like 'a claim exported to ccd with multiple respondents'
+        it_behaves_like 'a claim exported to ccd with a representative'
+        it_behaves_like 'a claim exported to ccd with a csv file'
         it_behaves_like 'email validation using standard template'
       end
 
@@ -433,11 +391,11 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to et_exporter'
-        it_behaves_like 'a claim exported to et_exporter with single claimant'
-        it_behaves_like 'a claim exported to et_exporter with single respondent'
-        it_behaves_like 'a claim exported to et_exporter with a representative'
-        it_behaves_like 'a claim exported to et_exporter with a claim details file'
+        it_behaves_like 'a claim exported to ccd'
+        it_behaves_like 'a claim exported to ccd with single claimant'
+        it_behaves_like 'a claim exported to ccd with single respondent'
+        it_behaves_like 'a claim exported to ccd with a representative'
+        it_behaves_like 'a claim exported to ccd with a claim details file'
         it_behaves_like 'email validation using standard template'
       end
 
@@ -447,11 +405,11 @@ RSpec.describe 'Create Claim Request' do
                         json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload_uppercased, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
         include_context 'with background jobs running'
         it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to et_exporter'
-        it_behaves_like 'a claim exported to et_exporter with single claimant'
-        it_behaves_like 'a claim exported to et_exporter with single respondent'
-        it_behaves_like 'a claim exported to et_exporter with a representative'
-        it_behaves_like 'a claim exported to et_exporter with a claim details file'
+        it_behaves_like 'a claim exported to ccd'
+        it_behaves_like 'a claim exported to ccd with single claimant'
+        it_behaves_like 'a claim exported to ccd with single respondent'
+        it_behaves_like 'a claim exported to ccd with a representative'
+        it_behaves_like 'a claim exported to ccd with a claim details file'
         it_behaves_like 'email validation using standard template'
       end
     end
@@ -462,10 +420,10 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with single claimant'
-      it_behaves_like 'a claim exported to et_exporter with single respondent'
-      it_behaves_like 'a claim exported to et_exporter with a representative'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with single claimant'
+      it_behaves_like 'a claim exported to ccd with single respondent'
+      it_behaves_like 'a claim exported to ccd with a representative'
       it_behaves_like 'email validation using standard template'
     end
 
@@ -475,10 +433,10 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, claim_traits: [:full, :worked_notice_period]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with single claimant'
-      it_behaves_like 'a claim exported to et_exporter with single respondent'
-      it_behaves_like 'a claim exported to et_exporter with a representative'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with single claimant'
+      it_behaves_like 'a claim exported to ccd with single respondent'
+      it_behaves_like 'a claim exported to ccd with a representative'
     end
 
     context 'with json for single claimant, respondent and representative using welsh template' do
@@ -487,11 +445,11 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_welsh_pdf, :with_welsh_email, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter', assert_missing_et1a: false
+      it_behaves_like 'a claim exported to ccd', assert_missing_et1a: false
       # We cannot verify an et1a correctly as there are clashing field names between the et1 and et1a forms
-      it_behaves_like 'a claim exported to et_exporter with single claimant'
-      it_behaves_like 'a claim exported to et_exporter with single respondent'
-      it_behaves_like 'a claim exported to et_exporter with a representative'
+      it_behaves_like 'a claim exported to ccd with single claimant'
+      it_behaves_like 'a claim exported to ccd with single respondent'
+      it_behaves_like 'a claim exported to ccd with a representative'
       it_behaves_like 'email validation using welsh template'
     end
 
@@ -508,10 +466,10 @@ RSpec.describe 'Create Claim Request' do
                       }
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with single claimant'
-      it_behaves_like 'a claim exported to et_exporter with single respondent'
-      it_behaves_like 'a claim exported to et_exporter with a representative'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with single claimant'
+      it_behaves_like 'a claim exported to ccd with single respondent'
+      it_behaves_like 'a claim exported to ccd with a representative'
       it_behaves_like 'email validation using standard template'
     end
 
@@ -536,10 +494,10 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_claimant_traits: [:no_gender_first_last]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with single claimant'
-      it_behaves_like 'a claim exported to et_exporter with single respondent'
-      it_behaves_like 'a claim exported to et_exporter with a representative'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with single claimant'
+      it_behaves_like 'a claim exported to ccd with single respondent'
+      it_behaves_like 'a claim exported to ccd with a representative'
       it_behaves_like 'email validation using standard template'
     end
 
@@ -549,10 +507,10 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with multiple claimants'
-      it_behaves_like 'a claim exported to et_exporter with single respondent'
-      it_behaves_like 'a claim exported to et_exporter with a representative'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with multiple claimants'
+      it_behaves_like 'a claim exported to ccd with single respondent'
+      it_behaves_like 'a claim exported to ccd with a representative'
       it_behaves_like 'email validation using standard template'
     end
 
@@ -562,10 +520,10 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 4, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with single claimant'
-      it_behaves_like 'a claim exported to et_exporter with multiple respondents'
-      it_behaves_like 'a claim exported to et_exporter with no representatives'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with single claimant'
+      it_behaves_like 'a claim exported to ccd with multiple respondents'
+      it_behaves_like 'a claim exported to ccd with no representatives'
       it_behaves_like 'email validation using standard template'
     end
 
@@ -575,10 +533,10 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with multiple claimants'
-      it_behaves_like 'a claim exported to et_exporter with multiple respondents'
-      it_behaves_like 'a claim exported to et_exporter with no representatives'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with multiple claimants'
+      it_behaves_like 'a claim exported to ccd with multiple respondents'
+      it_behaves_like 'a claim exported to ccd with no representatives'
       it_behaves_like 'email validation using standard template'
     end
 
@@ -588,10 +546,10 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with single claimant'
-      it_behaves_like 'a claim exported to et_exporter with multiple respondents'
-      it_behaves_like 'a claim exported to et_exporter with a representative'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with single claimant'
+      it_behaves_like 'a claim exported to ccd with multiple respondents'
+      it_behaves_like 'a claim exported to ccd with a representative'
       it_behaves_like 'email validation using standard template'
     end
 
@@ -601,10 +559,10 @@ RSpec.describe 'Create Claim Request' do
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
-      it_behaves_like 'a claim exported to et_exporter with multiple claimants'
-      it_behaves_like 'a claim exported to et_exporter with multiple respondents'
-      it_behaves_like 'a claim exported to et_exporter with a representative'
+      it_behaves_like 'a claim exported to ccd'
+      it_behaves_like 'a claim exported to ccd with multiple claimants'
+      it_behaves_like 'a claim exported to ccd with multiple respondents'
+      it_behaves_like 'a claim exported to ccd with a representative'
       it_behaves_like 'email validation using standard template'
     end
 
