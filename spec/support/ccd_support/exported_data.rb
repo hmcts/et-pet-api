@@ -208,12 +208,28 @@ module EtApi
         end
 
         def assert_secondary_respondents(respondents)
-          raise "Not yet converted to ccd"
           expected_respondents = respondents.map do |respondent|
-            include(respondent.except(:address_attributes, :work_address_attributes).
-              merge(address: a_hash_including(respondent[:address_attributes].to_h), work_address: a_hash_including(respondent[:work_address_attributes].to_h)))
+            expected = {
+              'respondent_name' => respondent[:name],
+              'respondent_phone1' => respondent[:address_telephone_number],
+              'respondent_ACAS' => respondent[:acas_certificate_number]
+            }
+            unless respondent[:acas_certificate_number].present?
+              expected['respondent_ACAS_no'] = acas_exemption_reason(respondent[:acas_exemption_code])
+            end
+            expected['respondent_address'] = a_hash_including(
+              'AddressLine1' => respondent.dig(:address_attributes, :building),
+              'AddressLine2' => respondent.dig(:address_attributes, :street),
+              'PostTown' => respondent.dig(:address_attributes, :locality),
+              'County' => respondent.dig(:address_attributes, :county),
+              'PostCode' => respondent.dig(:address_attributes, :post_code),
+              'Country' => nil
+            )
+            expected['respondent_ACAS_question'] = respondent[:acas_certificate_number].present? ? 'Yes' : 'No'
+            a_hash_including(expected)
           end
-          expect(data.dig(:resource, :secondary_respondents)).to match_array(expected_respondents)
+          secondary_respondents = ccd_case.dig('case_fields', 'respondentCollection').drop(1).map { |respondent| respondent.fetch('value') }
+          expect(secondary_respondents).to match_array(expected_respondents)
         end
 
         def assert_no_representatives
@@ -221,8 +237,23 @@ module EtApi
         end
 
         def assert_representative(representative)
-          raise "Not yet converted to ccd"
-          expect(data.dig(:resource, :primary_representative)).to include representative.except(:address_attributes).merge(address: a_hash_including(representative[:address_attributes].to_h))
+          expect(ccd_case.dig('case_fields', 'representativeClaimantType')).to include(
+            'name_of_representative' => representative[:name],
+            'name_of_organisation' => representative[:organisation_name],
+            'representative_phone_number' => representative[:address_telephone_number],
+            'representative_mobile_number' => representative[:mobile_number],
+            'representative_occupation' => representative[:representative_type],
+            'representative_email_address' => representative[:email_address],
+            'representative_address' => a_hash_including(
+              'AddressLine1' => representative.dig(:address_attributes, :building),
+              'AddressLine2' => representative.dig(:address_attributes, :street),
+              'PostTown' => representative.dig(:address_attributes, :locality),
+              'County' => representative.dig(:address_attributes, :county),
+              'PostCode' => representative.dig(:address_attributes, :post_code),
+              'Country' => nil
+            )
+          )
+          expect(ccd_case.dig('case_fields', 'claimantRepresentedQuestion')).to eq('Yes')
         end
 
         def csv_file
@@ -237,10 +268,14 @@ module EtApi
         end
 
         def claim_details_file
-          raise "Not yet converted to ccd"
-          claimant = data.dig(:resource, :primary_claimant)
-          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1_attachment_#{claimant[:first_name]}_#{claimant[:last_name]}.rtf" }
-          download(file_data)
+          claimant = ccd_case.dig('case_fields', 'claimantIndType')
+          filename = "et1_attachment_#{claimant['claimant_first_names']}_#{claimant['claimant_last_name']}.rtf"
+          uploaded_file = ccd_case.dig('case_fields', 'documentCollection').map do |document|
+            document.dig('value', 'uploadedDocument')
+          end.detect { |document| document['document_filename'] == filename }
+          raise "No uploaded file named #{filename} was exported" if uploaded_file.nil?
+
+          download(url: uploaded_file.fetch('document_binary_url'))
         end
 
         def assert_claim_details(claim)
