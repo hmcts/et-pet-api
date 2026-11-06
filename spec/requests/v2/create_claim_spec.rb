@@ -560,7 +560,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for multiple claimants, 1 respondent and a representative' do
+    context 'with json for multiple claimants, 1 respondent and a representative', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -573,7 +574,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant and multiple respondents but no representatives' do
+    context 'with json for single claimant and multiple respondents but no representatives', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 4, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -586,7 +588,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for multiple claimant, multiple respondents but no representatives' do
+    context 'with json for multiple claimant, multiple respondents but no representatives', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 0) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -599,7 +602,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant, multiple respondents and a representative' do
+    context 'with json for single claimant, multiple respondents and a representative', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -612,7 +616,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for multiple claimants, multiple respondents and a representative' do
+    context 'with json for multiple claimants, multiple respondents and a representative', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 4, number_of_secondary_respondents: 2, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -625,7 +630,8 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant, single respondent with postcode that routes to default office' do
+    context 'with json for single claimant, single respondent with postcode that routes to default office', db_clean: true do
+      include_context "with stubbed ccd"
       # Uses respondent address with post code 'FF1 1AA'
       include_context 'with fake job processor'
       include_context 'with setup for claims',
@@ -640,7 +646,8 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    context 'with json creating an error for single claimant (with no address) and respondent, no representatives' do
+    context 'with json creating an error for single claimant (with no address) and respondent, no representatives', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full], primary_claimant_traits: [:mr_first_last, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -659,7 +666,8 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    context 'with json creating an error for single claimant and respondent (with no address), no representatives' do
+    context 'with json creating an error for single claimant and respondent (with no address), no representatives', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
@@ -678,7 +686,8 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    context 'with json creating an error for single claimant, respondent and representative (invalid address)' do
+    context 'with json creating an error for single claimant, respondent and representative (invalid address)', db_clean: true do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_representative_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
