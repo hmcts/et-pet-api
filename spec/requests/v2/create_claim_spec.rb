@@ -216,19 +216,22 @@ RSpec.describe 'Create Claim Request' do
     end
 
     shared_examples 'a claim exported with an attached acas certificate' do
-      it 'exports the acas certificate ready for external systems to pick up' do
-        ref = output_reference
-        ccd_exporter.find_claim_by_reference(ref).assert_has_acas_file
-      end
+      it 'exports the ACAS certificate with correct contents and respondent metadata' do
+        exported_claim = ccd_exporter.find_claim_by_reference(output_reference)
 
-      it 'saves the acas file correctly' do
-        ref = output_reference
-        ccd_exporter.find_claim_by_reference(ref).assert_acas_file_contents
-      end
+        aggregate_failures 'validating ACAS export' do
+          aggregate_failures 'certificate attachment' do
+            exported_claim.assert_has_acas_file
+          end
 
-      it 'saves the acas metadata in the respondent' do
-        ref = output_reference
-        ccd_exporter.find_claim_by_reference(ref).assert_acas_data_in_respondents
+          aggregate_failures 'certificate contents' do
+            exported_claim.assert_acas_file_contents
+          end
+
+          aggregate_failures 'respondent metadata' do
+            exported_claim.assert_acas_data_in_respondents
+          end
+        end
       end
     end
 
