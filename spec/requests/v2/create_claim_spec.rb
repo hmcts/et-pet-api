@@ -28,6 +28,7 @@ RSpec.describe 'Create Claim Request' do
 
       # @return [EtApi::Test::EtExporter] The exporter class to use for testing
       let(:et_exporter) { EtApi::Test::EtExporter }
+      let(:ccd_exporter) { EtApi::Test::CcdExporter }
 
       # A private scrubber to set expectations for the filename - replaces white space with underscores and any non word chars are removed
       let(:scrubber) { ->(text) { text.gsub(/\s/, '_').gsub(/\W/, '') } }
@@ -70,6 +71,7 @@ RSpec.describe 'Create Claim Request' do
       let(:output_filename_additional_claimants_txt) { "#{output_reference}_ET1a_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.txt" }
       let(:output_filename_additional_claimants_csv) { "#{output_reference}_ET1a_#{scrubber.call input_primary_claimant_factory.first_name}_#{scrubber.call input_primary_claimant_factory.last_name}.csv" }
       before do
+        create(:external_system, :ccd, :for_all_offices, configurations: [build(:external_system_configuration, key: "case_type_id", value: 'Manchester')])
         perform_action
       end
 
@@ -138,6 +140,34 @@ RSpec.describe 'Create Claim Request' do
       it 'has the primary claimaint in the payload' do
         submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
         et_exporter.find_claim_by_submission_reference(submission_reference).assert_primary_claimant(input_primary_claimant_factory.to_h)
+      end
+
+      it 'has the primary respondent in the payload' do
+        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
+        et_exporter.find_claim_by_submission_reference(submission_reference).assert_primary_respondent(input_primary_respondent_factory.to_h)
+      end
+
+      it 'creates a valid pdf file with the data filled in correctly' do
+        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
+        et_exporter.find_claim_by_submission_reference(submission_reference).et1_pdf_file(template: input_claim_factory.pdf_template_reference).assert_correct_contents_for(
+          claim: input_claim_factory,
+          claimants: [input_primary_claimant_factory] + input_secondary_claimants_factory + csv_claimants_emulated_as_json,
+          respondents: [input_primary_respondent_factory] + input_secondary_respondents_factory,
+          representative: input_primary_representative_factory,
+          assert_missing_et1a: assert_missing_et1a
+        )
+      end
+
+      it 'has the correct claim data in the payload' do
+        submission_reference = input_factory.data.find { |node| node.command == 'BuildClaim' }.data.submission_reference
+        et_exporter.find_claim_by_submission_reference(submission_reference).assert_claim_details(input_claim_factory)
+      end
+    end
+    shared_examples 'a claim exported to ccd' do |assert_missing_et1a: true|
+      let(:test_ccd_client) { EtCcdClient::UiClient.new.tap(&:login) }
+
+      it 'has the primary claimaint in the payload', db_clean: true do
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_primary_claimant(input_primary_claimant_factory.to_h)
       end
 
       it 'has the primary respondent in the payload' do
@@ -277,12 +307,13 @@ RSpec.describe 'Create Claim Request' do
     end
 
     context 'with json for single claimant and respondent, no representatives and no acas number' do
+      include_context "with stubbed ccd"
       include_context 'with fake job processor'
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, reference: nil, primary_respondent_traits: [:full, :no_acas_no_jurisdiction]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
+      it_behaves_like 'a claim exported to ccd'
       it_behaves_like 'a claim exported to et_exporter with single claimant'
       it_behaves_like 'a claim exported to et_exporter with single respondent'
       it_behaves_like 'a claim exported to et_exporter with no representatives'
