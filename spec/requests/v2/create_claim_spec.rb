@@ -364,20 +364,6 @@ RSpec.describe 'Create Claim Request' do
         it_behaves_like 'email validation using standard template'
       end
 
-      context 'with json for single claimant, single respondent and representative - with claim details file uploaded using direct upload' do
-        include_context 'with fake job processor'
-        include_context 'with setup for claims',
-                        json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1) } # rubocop:disable FactoryBot/SyntaxMethods
-        include_context 'with background jobs running'
-        it_behaves_like 'any claim variation'
-        it_behaves_like 'a claim exported to ccd'
-        it_behaves_like 'a claim exported to ccd with single claimant'
-        it_behaves_like 'a claim exported to ccd with single respondent'
-        it_behaves_like 'a claim exported to ccd with a representative'
-        it_behaves_like 'a claim exported to ccd with a claim details file'
-        it_behaves_like 'email validation using standard template'
-      end
-
       context 'with json for single claimant, single respondent and representative - with claim details file uploaded using direct upload with uppercased extension' do
         include_context 'with fake job processor'
         include_context 'with setup for claims',
@@ -413,16 +399,18 @@ RSpec.describe 'Create Claim Request' do
       it_behaves_like 'email validation using standard template'
     end
 
-    context 'with json for single claimant, respondent and representative with worked notice period or paid in lieu' do
+    context 'with json for single claimant, respondent and representative with worked notice period or paid in lieu and a lowercase RTF attachment' do
       include_context 'with fake job processor'
       include_context 'with setup for claims',
-                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, claim_traits: [:full, :worked_notice_period]) } # rubocop:disable FactoryBot/SyntaxMethods
+                      json_factory: -> { FactoryBot.build(:json_build_claim_commands, :with_rtf_direct_upload, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, claim_traits: [:full, :worked_notice_period]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
       it_behaves_like 'any claim variation'
       it_behaves_like 'a claim exported to ccd'
       it_behaves_like 'a claim exported to ccd with single claimant'
       it_behaves_like 'a claim exported to ccd with single respondent'
       it_behaves_like 'a claim exported to ccd with a representative'
+      it_behaves_like 'a claim exported to ccd with a claim details file'
+      it_behaves_like 'email validation using standard template'
     end
 
     context 'with json for single claimant, respondent and representative using welsh template' do
