@@ -77,61 +77,50 @@ RSpec.describe 'Repair Response Request' do
       end
     end
 
-    shared_examples 'any response variation' do
-      it 'responds with a 201 status', background_jobs: :disable do
-        # Assert - Make sure we get a 201 - to say the commands have been accepted
+    shared_examples 'a response repair request' do
+      it 'returns the same accepted response without creating another response for the same uuid', background_jobs: :disable do
+        response1 = json_response
         expect(response).to have_http_status(:accepted)
-      end
-
-      it 'returns status of accepted', background_jobs: :disable do
-        expect(json_response).to include status: 'accepted'
-      end
-
-      it 'returns identical data if called twice with the same uuid', background_jobs: :disable do
-        # Arrange - get the response from the first call and reset the session ready for the second
-        response1 = JSON.parse(response.body).with_indifferent_access
+        expect(response1).to include status: 'accepted'
         reset!
 
-        # Act - Call the endpoint for the second time
-        perform_action
-        response2 = JSON.parse(response.body).with_indifferent_access
-
-        # Arrange - check they are identical
-        expect(response1).to eq response2
-      end
-
-      it 'creates no more records if called a second time with same uuid', background_jobs: :disable do
-
-        # Assert
-        expect { perform_action }.not_to change(Response, :count)
+        aggregate_failures 'validating repeat submission' do
+          expect { perform_action }.not_to change(Response, :count)
+          expect(json_response).to eq response1
+        end
       end
     end
 
     shared_examples 'a response exported to et_exporter' do |exclude_contents: false|
-      it 'has the claim details in the payload' do
-        reference = response_to_repair.reference
-        et_exporter.find_response_by_reference(reference).assert_response_details(input_response_attributes.as_json.deep_symbolize_keys.slice(:reference))
-      end
+      it 'exports the repaired response details and generated PDF' do
+        exported_response = et_exporter.find_response_by_reference(response_to_repair.reference)
 
-      it 'has the respondent in the payload' do
-        reference = response_to_repair.reference
-        et_exporter.find_response_by_reference(reference).assert_respondent(input_respondent_attributes.as_json.deep_symbolize_keys.slice(:name, :address_attributes, :work_address_attributes))
-      end
+        aggregate_failures 'validating repaired response export' do
+          expect(response).to have_http_status(:accepted)
+          expect(json_response).to include status: 'accepted'
 
-      it 'has the representative in the payload' do
-        reference = response_to_repair.reference
-        et_exporter.find_response_by_reference(reference).assert_representative(input_representative_attributes.as_json.deep_symbolize_keys.slice(:name, :address_attributes))
-      end
+          aggregate_failures 'response details' do
+            exported_response.assert_response_details(input_response_attributes.as_json.deep_symbolize_keys.slice(:reference))
+          end
 
-      it 'creates a valid pdf file with the data filled in correctly' do
-        next if exclude_contents
+          aggregate_failures 'respondent' do
+            exported_response.assert_respondent(input_respondent_attributes.as_json.deep_symbolize_keys.slice(:name, :address_attributes, :work_address_attributes))
+          end
 
-        reference = response_to_repair.reference
-        et_exporter.find_response_by_reference(reference).et3_pdf_file(template: response_to_repair.pdf_template_reference).assert_correct_contents_for(
-          response: input_response_attributes,
-          respondent: input_respondent_attributes,
-          representative: input_representative_attributes
-        )
+          aggregate_failures 'representative' do
+            exported_response.assert_representative(input_representative_attributes.as_json.deep_symbolize_keys.slice(:name, :address_attributes))
+          end
+
+          unless exclude_contents
+            aggregate_failures 'completed PDF' do
+              exported_response.et3_pdf_file(template: response_to_repair.pdf_template_reference).assert_correct_contents_for(
+                response: input_response_attributes,
+                respondent: input_respondent_attributes,
+                representative: input_representative_attributes
+              )
+            end
+          end
+        end
       end
     end
 
@@ -154,7 +143,7 @@ RSpec.describe 'Repair Response Request' do
       include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      it_behaves_like 'any response variation'
+      it_behaves_like 'a response repair request'
       it_behaves_like 'a response exported to et_exporter'
     end
 
@@ -165,7 +154,6 @@ RSpec.describe 'Repair Response Request' do
       include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      it_behaves_like 'any response variation'
       it_behaves_like 'a response exported to et_exporter'
     end
 
@@ -177,9 +165,10 @@ RSpec.describe 'Repair Response Request' do
       include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      it_behaves_like 'any response variation'
 
       it 'includes the additional information file in the exported data' do
+        expect(response).to have_http_status(:accepted)
+        expect(json_response).to include status: 'accepted'
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
         expect(full_path).to be_a_file_copy_of(Rails.root.join("spec/fixtures/example.rtf"))
@@ -199,9 +188,10 @@ RSpec.describe 'Repair Response Request' do
       include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      it_behaves_like 'any response variation'
 
       it 'includes the additional information file in the exported data' do
+        expect(response).to have_http_status(:accepted)
+        expect(json_response).to include status: 'accepted'
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
         expect(full_path).to be_a_file_copy_of(Rails.root.join("spec/fixtures/example.rtf"))
@@ -221,9 +211,10 @@ RSpec.describe 'Repair Response Request' do
       include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      it_behaves_like 'any response variation'
 
       it 'includes the additional information file in the exported data' do
+        expect(response).to have_http_status(:accepted)
+        expect(json_response).to include status: 'accepted'
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
         expect(full_path).to be_a_file_copy_of(Rails.root.join("spec/fixtures/example.rtf"))
@@ -253,9 +244,10 @@ RSpec.describe 'Repair Response Request' do
       include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      it_behaves_like 'any response variation'
 
       it 'includes the additional information file in the exported data' do
+        expect(response).to have_http_status(:accepted)
+        expect(json_response).to include status: 'accepted'
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
         expect(full_path).to be_a_file_copy_of(Rails.root.join("spec/fixtures/example.rtf"))
@@ -284,7 +276,6 @@ RSpec.describe 'Repair Response Request' do
       include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      it_behaves_like 'any response variation'
       it_behaves_like 'a response exported to et_exporter'
     end
 
@@ -310,7 +301,6 @@ RSpec.describe 'Repair Response Request' do
       include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      it_behaves_like 'any response variation'
       it_behaves_like 'a response exported to et_exporter', exclude_contents: true
     end
 
@@ -341,9 +331,10 @@ RSpec.describe 'Repair Response Request' do
       include_context 'with fake job processor'
       include_context 'with setup for any response'
       include_context 'with background jobs running'
-      it_behaves_like 'any response variation'
 
       it 'includes the additional_information file in the exported data' do
+        expect(response).to have_http_status(:accepted)
+        expect(json_response).to include status: 'accepted'
         reference = response_to_repair.reference
         full_path = et_exporter.find_response_by_reference(reference).additional_information_file.path
         expect(full_path).to be_a_file_copy_of(Rails.root.join("spec/fixtures/example.rtf"))
