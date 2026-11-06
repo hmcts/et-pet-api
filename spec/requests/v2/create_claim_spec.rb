@@ -235,7 +235,7 @@ RSpec.describe 'Create Claim Request' do
     end
 
     shared_examples 'a claim exported to et_exporter with multiple claimants from csv' do
-      it 'has multiple claimants' do
+      it 'has multiple claimants', db_clean: true do
         claimants = normalize_claimants_from_file(dates: :string)
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_claimants(claimants)
       end
@@ -245,20 +245,20 @@ RSpec.describe 'Create Claim Request' do
       it 'has a csv file' do
         input_csv_file = input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimantsFile' }.data.filename
         input_csv_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_csv_file.downcase), __FILE__)
-        expect(et_exporter.find_claim_by_submission_reference(output_reference).csv_file.path).to be_a_file_copy_of(input_csv_file_full_path)
+        expect(ccd_exporter.find_claim_by_submission_reference(output_reference).csv_file.path).to be_a_file_copy_of(input_csv_file_full_path)
       end
     end
 
     shared_examples 'a claim exported to et_exporter with a representative' do
       it 'has a representative' do
-        et_exporter.find_claim_by_submission_reference(output_reference).assert_representative(input_primary_representative_factory.to_h)
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_representative(input_primary_representative_factory.to_h)
       end
     end
 
     shared_examples 'a claim exported to et_exporter with multiple respondents' do
       it 'has multiple respondents' do
         secondary_respondents = input_factory.data.find { |n| n.command == 'BuildSecondaryRespondents' }.data.map(&:to_h)
-        et_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_respondents(secondary_respondents)
+        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_respondents(secondary_respondents)
       end
     end
 
@@ -266,7 +266,7 @@ RSpec.describe 'Create Claim Request' do
       let(:input_rtf_file) { input_factory.data.detect { |command_factory| command_factory.command == 'BuildClaimDetailsFile' }.data.filename }
       it 'has a claim details file' do
         input_rtf_file_full_path = File.absolute_path(File.join('..', '..', '..', 'fixtures', input_rtf_file.downcase), __FILE__)
-        expect(et_exporter.find_claim_by_submission_reference(output_reference).claim_details_file.path).to be_a_file_copy_of(input_rtf_file_full_path)
+        expect(ccd_exporter.find_claim_by_submission_reference(output_reference).claim_details_file.path).to be_a_file_copy_of(input_rtf_file_full_path)
       end
     end
 
