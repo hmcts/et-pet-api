@@ -1,6 +1,7 @@
 require 'rails_helper'
-RSpec.describe 'Import Claim Request' do
+RSpec.describe 'Repair Claim Request' do
   include_context 'with local storage'
+  include_context 'with stubbed ccd'
   describe 'POST /api/v2/claims/repair_claim' do
     let(:default_headers) do
       {
@@ -20,8 +21,8 @@ RSpec.describe 'Import Claim Request' do
     end
 
     shared_context 'with setup for claims' do
-      # @return [EtApi::Test::EtExporter] The exporter class to use for testing
-      let(:et_exporter) { EtApi::Test::EtExporter }
+      # @return [EtApi::Test::CcdExporter] The exporter class to use for testing
+      let(:ccd_exporter) { EtApi::Test::CcdExporter }
 
       let(:emails_sent) do
         EtApi::Test::EmailsSent.new
@@ -63,24 +64,31 @@ RSpec.describe 'Import Claim Request' do
       end
     end
 
-    shared_examples 'a claim exported to et_exporter' do
-      it 'has the primary claimaint in the payload' do
-        submission_reference = claim_to_repair.submission_reference
-        claimant = claim_to_repair.primary_claimant.attributes.as_json.merge(address: claim_to_repair.primary_claimant.address.attributes.as_json).deep_symbolize_keys
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_primary_claimant(claimant)
-      end
+    shared_examples 'a claim exported to ccd' do
+      it 'exports the repaired claimant, respondent and PDF to CCD' do
+        exported_claim = ccd_exporter.find_claim_by_submission_reference(claim_to_repair.reference)
 
-      it 'has the primary respondent in the payload' do
-        submission_reference = claim_to_repair.submission_reference
-        respondent = claim_to_repair.primary_respondent.attributes.to_h.merge(address: claim_to_repair.primary_respondent.address.attributes.to_h, work_address: claim_to_repair.primary_respondent.work_address.attributes.to_h).deep_symbolize_keys
-        et_exporter.find_claim_by_submission_reference(submission_reference).assert_primary_respondent(respondent)
-      end
+        aggregate_failures 'validating repaired CCD export' do
+          aggregate_failures 'primary claimant' do
+            claimant = claim_to_repair.primary_claimant.attributes.as_json.merge(
+              address_attributes: claim_to_repair.primary_claimant.address.attributes.as_json
+            ).deep_symbolize_keys
+            exported_claim.assert_primary_claimant(claimant)
+          end
 
-      it 'creates a valid pdf file with the data filled in correctly' do
-        submission_reference = claim_to_repair.submission_reference
-        expect(et_exporter.find_claim_by_submission_reference(submission_reference).et1_pdf_file(template: claim_to_repair.pdf_template_reference)).to be_present
-      end
+          aggregate_failures 'primary respondent' do
+            respondent = claim_to_repair.primary_respondent.attributes.as_json.merge(
+              address_attributes: claim_to_repair.primary_respondent.address.attributes.as_json,
+              work_address_attributes: claim_to_repair.primary_respondent.work_address.attributes.as_json
+            ).deep_symbolize_keys
+            exported_claim.assert_primary_respondent(respondent)
+          end
 
+          aggregate_failures 'completed PDF' do
+            expect(exported_claim.et1_pdf_file(template: claim_to_repair.pdf_template_reference)).to be_present
+          end
+        end
+      end
     end
 
     include_context 'with fake job processor'
@@ -88,10 +96,14 @@ RSpec.describe 'Import Claim Request' do
     include_context 'with background jobs running'
 
     context 'with multiple claim' do
-      let(:claim_to_repair) { create(:claim, :example_data_multiple_claimants) }
+      let(:claim_to_repair) do
+        create(:claim, :example_data_multiple_claimants, office_code: 24).tap do |claim|
+          claim.uploaded_files << build(:uploaded_file, :example_pdf, :system_file_scope, filename: 'et1_first_last_trimmed.pdf')
+        end
+      end
 
       it_behaves_like 'any claim variation'
-      it_behaves_like 'a claim exported to et_exporter'
+      it_behaves_like 'a claim exported to ccd'
     end
   end
 end
