@@ -2,6 +2,8 @@
 
 require 'rails_helper'
 RSpec.describe 'Repair Response Request' do
+  include_context 'with stubbed ccd'
+
   describe 'POST /api/v2/respondents/repair_response' do
     include_context 'with local storage'
     let(:default_headers) do
@@ -14,6 +16,11 @@ RSpec.describe 'Repair Response Request' do
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
     let(:emails_sent) do
       EtApi::Test::EmailsSent.new
+    end
+    let(:non_ccd_background_jobs_filter) do
+      lambda do |job|
+        %w[events default].include?(job['queue_name']) && job[:job] != EtExporter::ExportResponseJob
+      end
     end
 
     shared_context 'with setup for any response' do
@@ -66,7 +73,7 @@ RSpec.describe 'Repair Response Request' do
       before do |example|
         next if example.metadata[:background_jobs] == :disable
 
-        run_background_jobs
+        run_background_jobs(only: non_ccd_background_jobs_filter)
       end
     end
 
