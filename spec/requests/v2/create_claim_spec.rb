@@ -110,15 +110,20 @@ RSpec.describe 'Create Claim Request' do
       end
     end
 
-    shared_examples 'any bad request error variation' do
-      it 'responds with a 400 status', background_jobs: :disable do
-        # Assert - Make sure we get a 400 - to say the commands have not been accepted
-        expect(response).to have_http_status(:bad_request)
-      end
-
-      it 'returns the status as not accepted', background_jobs: :disable do
-        # Assert - Make sure we get the uuid in the response
-        expect(json_response).to include status: 'not_accepted', uuid: input_factory.uuid
+    shared_examples 'any bad request error variation' do |command:, source:|
+      it 'rejects the request with the correct address error', background_jobs: :disable do
+        aggregate_failures 'validating invalid address response' do
+          expect(response).to have_http_status(:bad_request)
+          expect(json_response).to include status: 'not_accepted', uuid: input_factory.uuid
+          expected_uuid = input_factory.data.detect { |d| d.command == command }.uuid
+          expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
+                                                                                         code: "invalid_address",
+                                                                                         title: "Invalid address",
+                                                                                         detail: "Invalid address",
+                                                                                         source: source,
+                                                                                         command: command,
+                                                                                         uuid: expected_uuid
+        end
       end
     end
 
@@ -341,18 +346,7 @@ RSpec.describe 'Create Claim Request' do
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full], primary_claimant_traits: [:mr_first_last, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
-      it_behaves_like 'any bad request error variation'
-
-      it 'has the correct error in the address_attributes field', background_jobs: :disable do
-        expected_uuid = input_factory.data.detect { |d| d.command == 'BuildPrimaryClaimant' }.uuid
-        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                       code: "invalid_address",
-                                                                                       title: "Invalid address",
-                                                                                       detail: "Invalid address",
-                                                                                       source: "/data/2/address_attributes",
-                                                                                       command: "BuildPrimaryClaimant",
-                                                                                       uuid: expected_uuid
-      end
+      it_behaves_like 'any bad request error variation', command: 'BuildPrimaryClaimant', source: '/data/2/address_attributes'
     end
 
     context 'with json creating an error for single claimant and respondent (with no address), no representatives' do
@@ -360,18 +354,7 @@ RSpec.describe 'Create Claim Request' do
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 0, primary_respondent_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
-      it_behaves_like 'any bad request error variation'
-
-      it 'has the correct error in the address_attributes field', background_jobs: :disable do
-        expected_uuid = input_factory.data.detect { |d| d.command == 'BuildPrimaryRespondent' }.uuid
-        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                       code: "invalid_address",
-                                                                                       title: "Invalid address",
-                                                                                       detail: "Invalid address",
-                                                                                       source: "/data/1/address_attributes",
-                                                                                       command: "BuildPrimaryRespondent",
-                                                                                       uuid: expected_uuid
-      end
+      it_behaves_like 'any bad request error variation', command: 'BuildPrimaryRespondent', source: '/data/1/address_attributes'
     end
 
     context 'with json creating an error for single claimant, respondent and representative (invalid address)' do
@@ -379,18 +362,7 @@ RSpec.describe 'Create Claim Request' do
       include_context 'with setup for claims',
                       json_factory: -> { FactoryBot.build(:json_build_claim_commands, number_of_secondary_claimants: 0, number_of_secondary_respondents: 0, number_of_representatives: 1, primary_representative_traits: [:full, :invalid_address_keys]) } # rubocop:disable FactoryBot/SyntaxMethods
       include_context 'with background jobs running'
-      it_behaves_like 'any bad request error variation'
-
-      it 'has the correct error in the address_attributes field', background_jobs: :disable do
-        expected_uuid = input_factory.data.detect { |d| d.command == 'BuildPrimaryRepresentative' }.uuid
-        expect(json_response[:errors].map(&:symbolize_keys)).to include hash_including status: 422,
-                                                                                       code: "invalid_address",
-                                                                                       title: "Invalid address",
-                                                                                       detail: "Invalid address",
-                                                                                       source: "/data/5/address_attributes",
-                                                                                       command: "BuildPrimaryRepresentative",
-                                                                                       uuid: expected_uuid
-      end
+      it_behaves_like 'any bad request error variation', command: 'BuildPrimaryRepresentative', source: '/data/5/address_attributes'
     end
   end
 end
