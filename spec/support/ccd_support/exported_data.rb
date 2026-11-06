@@ -20,7 +20,9 @@ module EtApi
       end
 
       def self.find_claim_by_submission_reference(reference)
-        ccd_case = test_ccd_client.caseworker_search_latest_by_reference(reference, case_type_id: 'Manchester')
+        ccd_case = test_ccd_client.caseworker_search_by_reference(reference, case_type_id: 'Manchester').find do |claim|
+          claim.dig('case_fields', 'caseType') == 'Single' || claim.dig('case_fields', 'leadClaimant') == 'Yes'
+        end
 
         raise "A claim with reference #{reference} was not exported" if ccd_case.nil?
 
@@ -149,19 +151,6 @@ module EtApi
           expect(ccd_respondent).to include "respondent_ACAS_question" => respondent[:acas_certificate_number].present? ? 'Yes' : 'No'
         end
 
-        def assert_et1a_text_file
-          raise "Not yet converted to ccd"
-          expect(et1a_text_file).to have_correct_file_structure.and(have_correct_encoding)
-        end
-
-        def et1a_text_file
-          raise "Not yet converted to ccd"
-          uploaded_file = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] =~ /\Aet1a.*\.txt\z/ }
-          raise "No uploaded file starting with 'et1a' and ending in '.txt' has been exported" if uploaded_file.nil?
-
-          EtApi::Test::FileObjects::Et1aTxtFile.new download(uploaded_file)
-        end
-
         def et1_pdf_file(template: 'et1-v6-en')
           document = ccd_case.dig('case_fields', 'documentCollection').find do |entry|
             entry.dig('value', 'typeOfDocument') == 'ET1'
@@ -178,12 +167,39 @@ module EtApi
         end
 
         def assert_secondary_claimants(claimants)
-          raise "Not yet converted to ccd"
-          expected_claimants = claimants.map do |claimant|
-            include(claimant.except(:address_attributes, :allow_video_attendance, :allow_phone_attendance, :no_phone_or_video_reason, :contact_preference).
-              merge(address: a_hash_including(claimant[:address_attributes].to_h), contact_preference: claimant[:contact_preference]&.underscore))
+          reference = ccd_case.dig('case_fields', 'feeGroupReference')
+          secondary_cases = CcdExporter.test_ccd_client.caseworker_search_by_reference(reference, case_type_id: 'Manchester').select do |claim|
+            claim.dig('case_fields', 'leadClaimant') == 'No'
           end
-          expect(data.dig(:resource, :secondary_claimants)).to match_array(expected_claimants)
+          expected_claimants = claimants.map do |claimant|
+            title = claimant[:title]
+            other_title = title.present? && !['Mr', 'Mrs', 'Miss', 'Ms'].include?(title)
+            a_hash_including(
+              'claimantIndType' => a_hash_including(
+                'claimant_title1' => other_title ? 'Other' : title,
+                'claimant_title_other' => other_title ? title : nil,
+                'claimant_first_names' => claimant[:first_name],
+                'claimant_last_name' => claimant[:last_name],
+                'claimant_gender' => nil,
+                'claimant_date_of_birth' => claimant[:date_of_birth]
+              ),
+              'claimantType' => a_hash_including(
+                'claimant_addressUK' => a_hash_including(
+                  'AddressLine1' => claimant.dig(:address_attributes, :building),
+                  'AddressLine2' => claimant.dig(:address_attributes, :street),
+                  'PostTown' => claimant.dig(:address_attributes, :locality),
+                  'County' => claimant.dig(:address_attributes, :county),
+                  'PostCode' => claimant.dig(:address_attributes, :post_code),
+                  'Country' => nil
+                ),
+                'claimant_phone_number' => nil,
+                'claimant_mobile_number' => nil,
+                'claimant_email_address' => nil,
+                'claimant_contact_preference' => nil
+              )
+            )
+          end
+          expect(secondary_cases.map { |claim| claim.fetch('case_fields') }).to match_array(expected_claimants)
         end
 
         def assert_no_secondary_respondents

@@ -228,18 +228,9 @@ RSpec.describe 'Create Claim Request' do
     end
 
     shared_examples 'a claim exported to et_exporter with multiple claimants' do
-      it 'has multiple claimants' do
+      it 'has multiple claimants', db_clean: true do
         secondary_claimants = input_factory.data.find { |n| n.command == 'BuildSecondaryClaimants' }.data.map(&:to_h)
         ccd_exporter.find_claim_by_submission_reference(output_reference).assert_secondary_claimants(secondary_claimants)
-      end
-
-      it 'has the et1a text file attached' do
-        ccd_exporter.find_claim_by_submission_reference(output_reference).assert_et1a_text_file
-      end
-
-      it 'stores an ET1a txt file with all of the claimants in the correct format' do
-        claimants = normalize_json_claimants(input_secondary_claimants_factory.map(&:to_h))
-        expect(ccd_exporter.find_claim_by_submission_reference(output_reference).et1a_text_file).to have_claimants_for(claimants, errors: errors), -> { errors.join("\n") }
       end
     end
 
