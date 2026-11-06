@@ -127,9 +127,28 @@ module EtApi
         end
 
         def assert_primary_respondent(respondent)
-          raise "Not yet converted to ccd"
-          expect(data.dig(:resource, :primary_respondent)).to include respondent.slice(:name, :organisation_more_than_one_site, :contact, :dx_number, :address_telephone_number, :work_address_telephone_number, :alt_phone_number, :contact_preference, :fax_number, :organisation_employ_gb, :employment_at_site_number, :disability, :disability_information, :acas_certificate_number, :acas_exemption_code)
-          expect(data.dig(:resource, :primary_respondent, :address)).to include respondent[:address_attributes].to_h.slice(:building, :street, :locality, :county, :postcode, :country)
+          ccd_respondent = ccd_case.dig('case_fields', 'respondentCollection').first.fetch('value')
+          expect(ccd_respondent).to include "respondent_name" => respondent[:name],
+                                             "respondent_phone1" => respondent[:address_telephone_number]
+          work_phone_number = if respondent[:work_address_attributes].present?
+                                respondent[:work_address_telephone_number]
+                              else
+                                respondent[:address_telephone_number]
+                              end
+          expect(ccd_case.dig('case_fields', 'claimantWorkAddress')).to include "claimant_work_phone_number" => work_phone_number
+          expect(ccd_respondent).to include "respondent_ACAS" => respondent[:acas_certificate_number]
+          unless respondent[:acas_certificate_number].present?
+            expect(ccd_respondent).to include "respondent_ACAS_no" => acas_exemption_reason(respondent[:acas_exemption_code])
+          end
+          expect(ccd_respondent.fetch('respondent_address')).to include(
+            "AddressLine1" => respondent.dig(:address_attributes, :building),
+            "AddressLine2" => respondent.dig(:address_attributes, :street),
+            "PostTown" => respondent.dig(:address_attributes, :locality),
+            "County" => respondent.dig(:address_attributes, :county),
+            "PostCode" => respondent.dig(:address_attributes, :post_code),
+            "Country" => nil
+          )
+          expect(ccd_respondent).to include "respondent_ACAS_question" => respondent[:acas_certificate_number].present? ? 'Yes' : 'No'
         end
 
         def assert_et1a_text_file
@@ -146,15 +165,18 @@ module EtApi
         end
 
         def et1_pdf_file(template: 'et1-v6-en')
-          raise "Not yet converted to ccd"
-          claimant = data.dig(:resource, :primary_claimant)
-          file_data = data.dig(:resource, :uploaded_files).detect { |u| u[:filename] == "et1_#{scrubber(claimant[:first_name]).downcase}_#{scrubber(claimant[:last_name]).downcase}.pdf" }
-          EtApi::Test::FileObjects::Et1PdfFile.new download(file_data), template: template, lookup_root: 'claim_pdf_fields'
+          document = ccd_case.dig('case_fields', 'documentCollection').find do |entry|
+            entry.dig('value', 'typeOfDocument') == 'ET1'
+          end
+          raise "No ET1 document was exported" if document.nil?
+
+          uploaded_document = document.dig('value', 'uploadedDocument')
+          file = download(url: uploaded_document.fetch('document_binary_url'))
+          EtApi::Test::FileObjects::Et1PdfFile.new file, template: template, lookup_root: 'claim_pdf_fields'
         end
 
         def assert_no_secondary_claimants
-          raise "Not yet converted to ccd"
-          expect(data.dig(:resource, :secondary_claimants)).to be_empty
+          expect(ccd_case.dig('case_fields', 'caseType')).to eq('Single')
         end
 
         def assert_secondary_claimants(claimants)
@@ -167,8 +189,7 @@ module EtApi
         end
 
         def assert_no_secondary_respondents
-          raise "Not yet converted to ccd"
-          expect(data.dig(:resource, :secondary_respondents)).to be_empty
+          expect(ccd_case.dig('case_fields', 'respondentCollection').size).to eq(1)
         end
 
         def assert_secondary_respondents(respondents)
@@ -181,8 +202,7 @@ module EtApi
         end
 
         def assert_no_representatives
-          raise "Not yet converted to ccd"
-          expect(data.dig(:resource, :primary_representative)).to be_nil
+          expect(ccd_case.dig('case_fields', 'claimantRepresentedQuestion')).to eq('No')
         end
 
         def assert_representative(representative)
@@ -205,15 +225,27 @@ module EtApi
         end
 
         def assert_claim_details(claim)
-          raise "Not yet converted to ccd"
-          expect(data[:resource]).to include case_heard_by_preference: claim[:case_heard_by_preference],
-                                             case_heard_by_preference_reason: claim[:case_heard_by_preference_reason],
-                                             last_event_date: claim[:last_event_date]
+          expect(ccd_case.dig('case_fields', 'claimantHearingPreference')).to include(
+            "claimant_hearing_panel_preference" => claim[:case_heard_by_preference]&.humanize,
+            "claimant_hearing_panel_preference_why" => claim[:case_heard_by_preference_reason]
+          )
+          expect(ccd_case.dig('case_fields', 'claimantOtherType')).to include(
+            "dateOfLastEvent" => claim[:last_event_date]
+          )
         end
 
         private
 
         attr_accessor :ccd_case
+
+        def acas_exemption_reason(code)
+          {
+            'joint_claimant_has_acas_number' => 'Another person',
+            'acas_has_no_jurisdiction' => 'No Power',
+            'employer_contacted_acas' => 'Employer already in touch',
+            'interim_relief' => 'Unfair Dismissal'
+          }[code]
+        end
 
         def download(uploaded_file)
           file = Tempfile.new
