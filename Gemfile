@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '8.1.3.1'
+gem 'rails', '8.1.4.1'
 
 # Azure deployment so we need this
 gem 'azure_env_secrets', git: 'https://github.com/hmcts/azure_env_secrets.git', tag: 'v1.0.1'
@@ -48,9 +48,6 @@ gem 'azure-blob', '~> 0.8'
 # For general easy http access - mainly for test but used in app too
 gem 'dotenv-rails', '~> 3.1'
 gem 'httparty', '~> 0.20'
-
-# Technically not required but since rails 7.1.4.1 they insist !
-gem 'image_processing', '~> 1.2'
 
 # Benchmark was removed in ruby 4
 gem 'benchmark'
