@@ -37,6 +37,8 @@ module EtApi
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    config.active_storage.variant_processor = :disabled
+
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
@@ -47,6 +49,10 @@ module EtApi
     config.use_active_job = true
 
     config.ccd_time_zone = 'London'
+
+    config.et_ccd_export = ActiveSupport::OrderedOptions.new
+    config.et_ccd_export.retry_wait_strategy = ENV.fetch('CCD_EXPORT_RETRY_WAIT_STRATEGY', 'polynomially_longer')
+
 
     config.good_job.max_threads = [ENV.fetch("RAILS_MAX_THREADS", 5).to_i - 2, 1].max
 

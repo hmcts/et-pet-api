@@ -18,7 +18,7 @@ RSpec.describe 'Assign Claim Request' do
       command = build(:json_build_claim_commands)
       post '/api/v2/claims/build_claim', params: command.to_json, headers: default_headers
       response.parsed_body.dig('meta', 'BuildClaim', 'reference').tap do
-        run_background_jobs # So the claim is exported to the right place before the test changes the office
+        run_background_jobs(only: background_job_classes) # Prepare the original export before changing the office, leaving CCD transport queued.
         reset!
       end
 
@@ -26,6 +26,7 @@ RSpec.describe 'Assign Claim Request' do
     let(:example_claim) { Claim.find_by reference: example_claim_reference }
     let(:new_office) { Office.find_by(code: 24) }
     let(:example_user_id) { 123 }
+    let(:background_job_classes) { [EventJob, FetchAcasCertificatesJob] }
 
     include_context 'with fake job processor'
 
@@ -41,16 +42,15 @@ RSpec.describe 'Assign Claim Request' do
     end
 
     it 'creates a new export record with the correct status' do
-      # Arrange - Setup the response record and provide the ids
+      # Arrange - Setup the claim record and provide the ids
       command = build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id, user_id: example_user_id)
+      external_system = ExternalSystem.containing_office_code(new_office.code).exporting_claims.first
 
-      # Act - Run the command and all background jobs
-      post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
-      run_background_jobs
-
-      # Assert - Check the example claim now has an export record and will be marked as queued
-      claim = Claim.find_by(reference: example_claim_reference)
-      expect(Export.where(external_system_id: ExternalSystem.containing_office_code(new_office.code).exporting_claims.first.id, resource: claim, state: 'queued').count).to be 1
+      # Assert - Assignment adds a queued export without performing CCD transport.
+      expect do
+        post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
+        run_background_jobs(only: background_job_classes)
+      end.to change { Export.where(external_system_id: external_system.id, resource: example_claim, state: 'queued').count }.by(1)
     end
 
     it 'returns identical data if called twice with the same uuid', background_jobs: :disable do
@@ -73,7 +73,7 @@ RSpec.describe 'Assign Claim Request' do
       command = build(:json_assign_claim_command, claim_id: example_claim.id, office_id: new_office.id, user_id: example_user_id)
       perform_action = lambda {
         post '/api/v2/claims/assign_claim', params: command.to_json, headers: default_headers
-        run_background_jobs
+        run_background_jobs(only: background_job_classes)
       }
       perform_action.call
       reset!

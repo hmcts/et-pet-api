@@ -108,4 +108,7 @@ Rails.application.configure do
   config.et_acas_api.api_version = ENV.fetch('ACAS_SERVICE_API_VERSION', '2').to_i
   config.et_acas_api.json_subscription_key = ENV.fetch('ACAS_SUBSCRIPTION_KEY', 'fakesubscriptionkeyfortesting')
   config.et_acas_api.json_service_url = ENV.fetch('ACAS_JSON_SERVICE_URL', 'http://localhost:3001/ECCLJson')
+
+  config.ccd_disallowed_file_extensions = ENV.fetch('CCD_DOCUMENT_STORE_DISALLOW_FILE_EXTENSIONS', '').split(',')
+
 end

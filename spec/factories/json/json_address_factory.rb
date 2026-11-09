@@ -16,7 +16,7 @@ FactoryBot.define do
       street { "downing_street" }
       locality { "westminster" }
       county { "" }
-      post_code { "wc1 1aa" }
+      post_code { "M1 2AA" }
     end
 
     trait :the_shard do
@@ -24,7 +24,7 @@ FactoryBot.define do
       street { "downing_street" }
       locality { "westminster" }
       county { "" }
-      post_code { "wc1 1aa" }
+      post_code { "M1 2AA" }
     end
 
     trait :rep_address do

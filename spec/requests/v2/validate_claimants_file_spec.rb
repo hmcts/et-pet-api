@@ -55,7 +55,7 @@ RSpec.describe 'Validate Claimants File Request' do
 
       it 'returns 422 bad request' do
         # Assert - Make sure we get a 200 response
-        expect(response).to(have_http_status(:unprocessable_entity))
+        expect(response).to(have_http_status(:unprocessable_content))
       end
 
       it 'returns the status as not accepted' do

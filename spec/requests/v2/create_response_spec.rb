@@ -2,6 +2,8 @@
 
 require 'rails_helper'
 RSpec.describe 'Create Response Request', js: false do
+  include_context 'with stubbed ccd'
+
   describe 'POST /api/v2/respondents/build_response' do
     include_context 'with local storage'
 
@@ -15,6 +17,11 @@ RSpec.describe 'Create Response Request', js: false do
     let(:json_response) { JSON.parse(response.body).with_indifferent_access }
     let(:emails_sent) do
       EtApi::Test::EmailsSent.new
+    end
+    let(:non_ccd_background_jobs_filter) do
+      lambda do |job|
+        ['events', 'default'].include?(job['queue_name']) && job[:job] != EtExporter::ExportResponseJob
+      end
     end
 
     shared_context 'with setup for any response' do |json_factory:|
@@ -49,62 +56,39 @@ RSpec.describe 'Create Response Request', js: false do
       before do |example|
         next if example.metadata[:background_jobs] == :disable
 
-        run_background_jobs
+        run_background_jobs(only: non_ccd_background_jobs_filter)
       end
     end
 
     shared_examples 'any response variation' do
-      it 'responda with a 201 status', background_jobs: :disable do
-        # Assert - Make sure we get a 201 - to say the commands have been accepted
-        expect(response).to have_http_status(:accepted)
+      it 'accepts the response and returns its reference and submitted time', background_jobs: :disable do
+        aggregate_failures 'validating accepted response' do
+          expect(response).to have_http_status(:accepted)
+          expect(json_response).to include status: 'accepted', uuid: input_factory.uuid
+          expect(json_response).to include meta: a_hash_including('BuildResponse' => a_hash_including(reference: instance_of(String)))
+          expect(json_response).to include meta: a_hash_including('BuildResponse' => a_hash_including(submitted_at: instance_of(String)))
+        end
       end
 
-      it 'returns the uuid as a reference to what will be created', background_jobs: :disable do
-        # Assert - Make sure we get the uuid in the response
-        expect(json_response).to include status: 'accepted', uuid: input_factory.uuid
-      end
-
-      it 'returns the reference in the metadata for the response', background_jobs: :disable do
-        # Assert - Make sure we get the reference in the metadata
-        expect(json_response).to include meta: a_hash_including('BuildResponse' => a_hash_including(reference: instance_of(String)))
-      end
-
-      it 'returns the submitted_at in the metadata for the response', background_jobs: :disable do
-        # Assert - Make sure we get the reference in the metadata
-        expect(json_response).to include meta: a_hash_including('BuildResponse' => a_hash_including(submitted_at: instance_of(String)))
-      end
-
-      it 'returns the expected pdf url which will return 404 when fetched before background jobs run', background_jobs: :disable do
-        # Assert - Make sure we get the pdf url in the metadata and it returns a 404 when accessed
-        url = json_response.dig(:meta, 'BuildResponse', 'pdf_url')
-        get(url)
-        expect(response).to have_http_status :not_found
-      end
-
-      it 'returns the actual pdf url which should be accessible after the background jobs have run' do
-        # Assert - Make sure we get the pdf url in the metadata and it returns a 404 when accessed
-        url = json_response.dig(:meta, 'BuildResponse', 'pdf_url')
-        get(url)
-        expect(response).to have_http_status :ok
-      end
-
-      it 'returns identical data if called twice with the same uuid', background_jobs: :disable do
-        # Arrange - get the response from the first call and reset the session ready for the second
-        response1 = JSON.parse(response.body).with_indifferent_access
+      it 'returns the same response without creating another response for the same uuid', background_jobs: :disable do
+        response1 = json_response
         reset!
 
-        # Act - Call the endpoint for the second time
-        perform_action
-        response2 = JSON.parse(response.body).with_indifferent_access
-
-        # Arrange - check they are identical
-        expect(response1).to eq response2
+        aggregate_failures 'validating repeat submission' do
+          expect { perform_action }.not_to change(Response, :count)
+          expect(json_response).to eq response1
+        end
       end
 
-      it 'creates no more records if called a second time with same uuid', background_jobs: :disable do
+      it 'makes the pdf available after background jobs run', background_jobs: :disable do
+        url = json_response.dig(:meta, 'BuildResponse', 'pdf_url')
+        get(url)
+        expect(response).to have_http_status(:not_found)
 
-        # Assert
-        expect { perform_action }.not_to change(Response, :count)
+        run_background_jobs(only: non_ccd_background_jobs_filter)
+
+        get(url)
+        expect(response).to have_http_status(:ok)
       end
     end
 
@@ -135,14 +119,11 @@ RSpec.describe 'Create Response Request', js: false do
     end
 
     shared_examples 'any bad request error variation' do
-      it 'responds with a 400 status', background_jobs: :disable do
-        # Assert - Make sure we get a 400 - to say the commands have not been accepted
-        expect(response).to have_http_status(:bad_request)
-      end
-
-      it 'returns the status as not accepted', background_jobs: :disable do
-        # Assert - Make sure we get the uuid in the response
-        expect(json_response).to include status: 'not_accepted', uuid: input_factory.uuid
+      it 'rejects the response with a bad request status', background_jobs: :disable do
+        aggregate_failures 'validating rejected response' do
+          expect(response).to have_http_status(:bad_request)
+          expect(json_response).to include status: 'not_accepted', uuid: input_factory.uuid
+        end
       end
     end
 
