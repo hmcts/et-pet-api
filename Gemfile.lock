@@ -48,13 +48,6 @@ GIT
       rails (>= 7.0.0)
 
 GIT
-  remote: https://github.com/hmcts/et-pet-ccd-export.git
-  revision: 9bd07d4ae7a61b499ef1c66d4f15d3265d8470ed
-  tag: v2.0.4
-  specs:
-    et_ccd_export (2.0.4)
-
-GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
   revision: 13b728e9504791f932437f708b83bb39d859a2a4
   tag: v3.0.5
@@ -86,6 +79,11 @@ PATH
       jbuilder (~> 2.5)
       pg (>= 0.18, < 2.0)
       rails (>= 5.2.0)
+
+PATH
+  remote: vendor/gems/et_ccd_export
+  specs:
+    et_ccd_export (2.0.4)
 
 GEM
   remote: https://rubygems.org/
