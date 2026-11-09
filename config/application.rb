@@ -50,6 +50,10 @@ module EtApi
 
     config.ccd_time_zone = 'London'
 
+    config.et_ccd_export = ActiveSupport::OrderedOptions.new
+    config.et_ccd_export.retry_wait_strategy = ENV.fetch('CCD_EXPORT_RETRY_WAIT_STRATEGY', 'polynomially_longer')
+
+
     config.good_job.max_threads = [ENV.fetch("RAILS_MAX_THREADS", 5).to_i - 2, 1].max
 
     def event_service
