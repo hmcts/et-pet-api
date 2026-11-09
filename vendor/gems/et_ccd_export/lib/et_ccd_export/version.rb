@@ -1,0 +1,3 @@
+module EtCcdExport
+  Version = "2.0.4"
+end
