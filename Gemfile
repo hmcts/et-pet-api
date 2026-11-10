@@ -92,6 +92,7 @@ group :test do
   gem 'factory_bot', '~> 6.1'
   gem 'faker', '~> 3.1'
   gem 'gov_fake_notify', '~> 3.0'
+  gem 'ice_nine', '~> 0.11.2'
   gem 'rspec-eventually', '~> 0.2.2'
   gem "selenium-webdriver", "~> 4.10"
   gem 'super_diff', '~> 0.10'

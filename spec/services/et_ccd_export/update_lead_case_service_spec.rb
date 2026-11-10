@@ -20,13 +20,13 @@ RSpec.describe EtCcdExport::UpdateLeadCaseService do
     context 'with a single case already created' do
       let!(:existing_export_data) do
         perform_enqueued_jobs(only: EtExporter::ExportClaimJob) do
-          EtExporter::ExportClaimJob.perform_later(build(:export, :for_claim).as_json.to_json)
+          EtExporter::ExportClaimJob.perform_later(build(:ccd_export_export, :for_claim).as_json.to_json)
         end
         application_first_export_completed_event
       end
 
       it 'stores any extra documents' do
-        export = build(:export,
+        export = build(:ccd_export_export,
                        :for_claim,
                        :update,
                        claim_traits: [:update_only],
@@ -41,7 +41,7 @@ RSpec.describe EtCcdExport::UpdateLeadCaseService do
     context 'with a multiple case already created' do
       let!(:existing_export_data) do
         EtExporter::ExportClaimJob.perform_later build(
-          :export,
+          :ccd_export_export,
           :for_claim,
           claim_traits: [:default_multiple_claimants]
         ).as_json.to_json
@@ -50,7 +50,7 @@ RSpec.describe EtCcdExport::UpdateLeadCaseService do
       end
 
       it 'stores any extra documents' do
-        export = build(:export,
+        export = build(:ccd_export_export,
                        :for_claim,
                        :update,
                        claim_traits: [:update_only],

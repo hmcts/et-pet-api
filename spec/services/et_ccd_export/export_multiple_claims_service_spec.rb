@@ -130,7 +130,7 @@ RSpec.describe EtCcdExport::ExportMultipleClaimsService do
 
     context 'with secondary claimants from csv file' do
       let(:current_year) { Time.now.year }
-      let(:example_export) { build(:export, :for_claim, claim_traits: [:default_multiple_claimants]) }
+      let(:example_export) { build(:ccd_export_export, :for_claim, claim_traits: [:default_multiple_claimants]) }
 
       include_context 'with stubbed ccd'
       include_context 'with mock workers'
@@ -144,7 +144,7 @@ RSpec.describe EtCcdExport::ExportMultipleClaimsService do
 
       it 'queues the header worker when done with the data from the header presenter' do
         # Act - Call the service
-        service.call(example_export.as_json, sidekiq_job_data: { jid: 'examplejid' })
+        service.call(example_export.as_json.deep_stringify_keys, sidekiq_job_data: { jid: 'examplejid' })
         drain_all_our_jobs
 
         # Assert - Check the batch
@@ -153,7 +153,7 @@ RSpec.describe EtCcdExport::ExportMultipleClaimsService do
 
       it 'informs the application events service of the references allocated' do
         # Act - Call the service
-        service.call(example_export.as_json, sidekiq_job_data: { jid: 'examplejid' })
+        service.call(example_export.as_json.deep_stringify_keys, sidekiq_job_data: { jid: 'examplejid' })
         drain_all_our_jobs
 
         # Assert - Make sure the service was not called
@@ -184,7 +184,7 @@ RSpec.describe EtCcdExport::ExportMultipleClaimsService do
         allow(mock_presenter).to receive(:present).and_return(*presented_values)
 
         # Act - Call the service
-        service.call(example_export.as_json, sidekiq_job_data: { jid: 'examplejid' })
+        service.call(example_export.as_json.deep_stringify_keys, sidekiq_job_data: { jid: 'examplejid' })
         drain_all_our_jobs
 
         # Assert - Check the worker has been queued, first time with the primary set to true
@@ -196,15 +196,15 @@ RSpec.describe EtCcdExport::ExportMultipleClaimsService do
 
       it 'calls the presenter 11 times with the correct parameters' do
         # Act - Call the service
-        service.call(example_export.as_json, sidekiq_job_data: { jid: 'examplejid' })
+        service.call(example_export.as_json.deep_stringify_keys, sidekiq_job_data: { jid: 'examplejid' })
         drain_all_our_jobs
 
         # Assert - Check the worker has been queued
         aggregate_failures "validate all calls in one" do
           expect(mock_presenter).to have_received(:present).exactly(example_export.resource.secondary_claimants.length + 1).times
-          expect(mock_presenter).to have_received(:present).with(example_export.resource.as_json, claimant: example_export.resource.primary_claimant.as_json, files: an_instance_of(Array), lead_claimant: true, multiple_reference: an_instance_of(String), ethos_case_reference: an_instance_of(String))
+          expect(mock_presenter).to have_received(:present).with(example_export.resource.as_json.deep_stringify_keys, claimant: example_export.resource.primary_claimant.as_json.deep_stringify_keys, files: an_instance_of(Array), lead_claimant: true, multiple_reference: an_instance_of(String), ethos_case_reference: an_instance_of(String))
           example_export.resource.secondary_claimants.each do |claimant|
-            expect(mock_presenter).to have_received(:present).with(example_export.resource.as_json, claimant: claimant.as_json, lead_claimant: false, multiple_reference: an_instance_of(String), ethos_case_reference: an_instance_of(String))
+            expect(mock_presenter).to have_received(:present).with(example_export.resource.as_json.deep_stringify_keys, claimant: claimant.as_json.deep_stringify_keys, lead_claimant: false, multiple_reference: an_instance_of(String), ethos_case_reference: an_instance_of(String))
           end
         end
       end
