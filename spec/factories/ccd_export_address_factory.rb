@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :address, class: '::EtCcdExport::Test::Json::Node' do
+  factory :ccd_export_address, class: '::EtApi::Test::Json::Node' do
     building { '1' }
     street { 'street' }
     locality { 'locality' }

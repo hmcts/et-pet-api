@@ -1,9 +1,9 @@
 FactoryBot.define do
-  factory :representative, class: '::EtCcdExport::Test::Json::Node' do
+  factory :ccd_export_representative, class: '::EtApi::Test::Json::Node' do
     trait :full do
       name { "Rep Name" }
       organisation_name { "Org name" }
-      address { build(:address) }
+      address { build(:ccd_export_address) }
       address_telephone_number { "01234 565899" }
       mobile_number { "07771 666555" }
       email_address { "test@email.com" }
@@ -17,7 +17,7 @@ FactoryBot.define do
     trait :basic do
       name { "Rep Name" }
       organisation_name { "Org name" }
-      address { build(:address) }
+      address { build(:ccd_export_address) }
       address_telephone_number { "01234 565899" }
       mobile_number { "07771 666555" }
       email_address { "test@email.com" }

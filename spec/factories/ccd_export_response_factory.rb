@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :response, class: '::EtCcdExport::Test::Json::Node' do
+  factory :ccd_export_response, class: '::EtApi::Test::Json::Node' do
     transient do
       respondent_traits { [:full] }
       respondent_attrs { {} }
@@ -47,19 +47,19 @@ FactoryBot.define do
     uploaded_files { [] }
 
     after(:build) do |response, evaluator|
-      response.respondent = build(:respondent, *evaluator.respondent_traits, **evaluator.respondent_attrs) if response.respondent.blank?
-      response.representative = build(:representative, *evaluator.representative_traits, **evaluator.representative_attrs) unless evaluator.representative_traits.nil?
+      response.respondent = build(:ccd_export_respondent, *evaluator.respondent_traits, **evaluator.respondent_attrs) if response.respondent.blank?
+      response.representative = build(:ccd_export_representative, *evaluator.representative_traits, **evaluator.representative_attrs) unless evaluator.representative_traits.nil?
     end
 
     trait :with_pdf_file do
       after(:build) do |response, _evaluator|
-        response.uploaded_files << build(:uploaded_file, :example_response_pdf)
+        response.uploaded_files << build(:ccd_export_uploaded_file, :example_response_pdf)
       end
     end
 
     trait :with_rtf_file do
       after(:build) do |response, _evaluator|
-        response.uploaded_files << build(:uploaded_file, :example_response_rtf)
+        response.uploaded_files << build(:ccd_export_uploaded_file, :example_response_rtf)
       end
     end
 

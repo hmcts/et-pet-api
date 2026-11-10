@@ -3,7 +3,7 @@ require 'ostruct'
 module EtApi
   module Test
     module Json
-      class Node < OpenStruct
+      class Node < OpenStruct # rubocop:disable Style/OpenStructUse
         def as_json(*)
           to_h.inject({}) do |acc, (k, v)|
             acc[k] = normalize(v)

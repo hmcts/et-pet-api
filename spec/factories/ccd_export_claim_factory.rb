@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :claim, class: '::EtCcdExport::Test::Json::Node' do
+  factory :ccd_export_claim, class: '::EtApi::Test::Json::Node' do
     transient do
       number_of_claimants { 1 }
       number_of_respondents { 1 }
@@ -60,19 +60,19 @@ FactoryBot.define do
     uploaded_files { [] }
 
     after(:build) do |claim, evaluator|
-      claim.primary_claimant = build(:claimant, *evaluator.primary_claimant_traits, **evaluator.primary_claimant_attrs) if claim.primary_claimant.blank? && evaluator.number_of_claimants && evaluator.number_of_claimants > 0
-      claim.secondary_claimants.concat build_list(:claimant, evaluator.number_of_claimants - 1, *evaluator.secondary_claimant_traits) unless evaluator.number_of_claimants.nil? || evaluator.number_of_claimants < 1
-      claim.primary_respondent = build(:respondent, *evaluator.primary_respondent_traits, **evaluator.primary_respondent_attrs) if claim.primary_respondent.blank? && evaluator.number_of_respondents > 0
+      claim.primary_claimant = build(:ccd_export_claimant, *evaluator.primary_claimant_traits, **evaluator.primary_claimant_attrs) if claim.primary_claimant.blank? && evaluator.number_of_claimants && evaluator.number_of_claimants > 0
+      claim.secondary_claimants.concat build_list(:ccd_export_claimant, evaluator.number_of_claimants - 1, *evaluator.secondary_claimant_traits) unless evaluator.number_of_claimants.nil? || evaluator.number_of_claimants < 1
+      claim.primary_respondent = build(:ccd_export_respondent, *evaluator.primary_respondent_traits, **evaluator.primary_respondent_attrs) if claim.primary_respondent.blank? && evaluator.number_of_respondents > 0
       claim.secondary_respondents.concat build_list(:respondent, evaluator.number_of_respondents - 1, *evaluator.secondary_respondent_traits, **evaluator.secondary_respondent_attrs) unless evaluator.number_of_respondents < 1
       claim.claimant_count         = evaluator.number_of_claimants unless evaluator.number_of_claimants.nil?
-      claim.primary_representative = build(:representative, *evaluator.primary_representative_traits, **evaluator.primary_representative_attrs) unless evaluator.primary_representative_traits.nil?
-      claim.employment_details     = build(:employment_details, *evaluator.employment_details_traits, **evaluator.employment_details_attrs) unless evaluator.employment_details_traits.nil?
-      claim.uploaded_files.concat build_list(:uploaded_file, evaluator.number_of_acas_files, :example_acas_pdf)
+      claim.primary_representative = build(:ccd_export_representative, *evaluator.primary_representative_traits, **evaluator.primary_representative_attrs) unless evaluator.primary_representative_traits.nil?
+      claim.employment_details     = build(:ccd_export_employment_details, *evaluator.employment_details_traits, **evaluator.employment_details_attrs) unless evaluator.employment_details_traits.nil?
+      claim.uploaded_files.concat build_list(:ccd_export_uploaded_file, evaluator.number_of_acas_files, :example_acas_pdf)
     end
 
     trait :with_pdf_file do
       after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :example_pdf)
+        claim.uploaded_files << build(:ccd_export_uploaded_file, :example_pdf)
       end
     end
 
@@ -82,19 +82,19 @@ FactoryBot.define do
 
     trait :with_claim_details_file do
       after(:build) do |claim, _evaluator|
-        claim.uploaded_files.unshift build(:uploaded_file, :example_claim_details)
+        claim.uploaded_files.unshift build(:ccd_export_uploaded_file, :example_claim_details)
       end
     end
 
     trait :with_claimants_csv_file do
       after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :example_claim_claimants_csv)
+        claim.uploaded_files << build(:ccd_export_uploaded_file, :example_claim_claimants_csv)
       end
     end
 
     trait :with_unwanted_claim_file do
       after(:build) do |claim, _evaluator|
-        claim.uploaded_files << build(:uploaded_file, :unwanted_claim_file)
+        claim.uploaded_files << build(:ccd_export_uploaded_file, :unwanted_claim_file)
       end
     end
 
@@ -111,16 +111,16 @@ FactoryBot.define do
       with_claimants_csv_file
       secondary_claimants do
         [
-          build(:claimant, :csv_tamara_swift),
-          build(:claimant, :csv_diana_flatley),
-          build(:claimant, :csv_mariana_mccullough),
-          build(:claimant, :csv_eden_upton),
-          build(:claimant, :csv_annie_schulist),
-          build(:claimant, :csv_thad_johns),
-          build(:claimant, :csv_coleman_kreiger),
-          build(:claimant, :csv_jenson_deckow),
-          build(:claimant, :csv_darien_bahringer),
-          build(:claimant, :csv_eulalia_hammes)
+          build(:ccd_export_claimant, :csv_tamara_swift),
+          build(:ccd_export_claimant, :csv_diana_flatley),
+          build(:ccd_export_claimant, :csv_mariana_mccullough),
+          build(:ccd_export_claimant, :csv_eden_upton),
+          build(:ccd_export_claimant, :csv_annie_schulist),
+          build(:ccd_export_claimant, :csv_thad_johns),
+          build(:ccd_export_claimant, :csv_coleman_kreiger),
+          build(:ccd_export_claimant, :csv_jenson_deckow),
+          build(:ccd_export_claimant, :csv_darien_bahringer),
+          build(:ccd_export_claimant, :csv_eulalia_hammes)
         ]
       end
     end

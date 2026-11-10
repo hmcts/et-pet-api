@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :uploaded_file, class: '::EtCcdExport::Test::Json::Node' do
+  factory :ccd_export_uploaded_file, class: '::EtApi::Test::Json::Node' do
     filename { nil }
     url { nil }
     content_type { nil }

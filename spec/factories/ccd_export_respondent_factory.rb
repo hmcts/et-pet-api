@@ -1,11 +1,11 @@
 FactoryBot.define do
-  factory :respondent, class: '::EtCcdExport::Test::Json::Node' do
+  factory :ccd_export_respondent, class: '::EtApi::Test::Json::Node' do
     trait :basic do
       sequence(:name) { |idx| "dodgy_co #{idx}" }
-      address { build(:address) }
+      address { build(:ccd_export_address) }
       work_address_telephone_number { "01234 567891" }
       address_telephone_number { "01234 567890" }
-      work_address { build(:address) }
+      work_address { build(:ccd_export_address) }
       alt_phone_number { "0333 321090" }
       contact { nil }
       dx_number { nil }
@@ -26,10 +26,10 @@ FactoryBot.define do
 
     trait :full do
       sequence(:name) { |idx| "dodgy_co #{idx}" }
-      address { build(:address) }
+      address { build(:ccd_export_address) }
       work_address_telephone_number { "01234 567891" }
       address_telephone_number { "01234 567890" }
-      work_address { build(:address) }
+      work_address { build(:ccd_export_address) }
       alt_phone_number { "0333 321090" }
       contact { "John Smith" }
       dx_number { "" }

@@ -8,7 +8,7 @@ RSpec.describe EtCcdExport::ExportMultiplesHeaderJob do
 
   let(:fake_job_hash) { { 'jid' => 'fakejid', 'args' => fake_job_args } }
   let(:fake_job_args) { ['primary_reference', 'respondent_name', ['case_ref1'], 'fake_case_type_id', example_export.id, true, { 'test_header' => 'true' }] }
-  let(:example_export) { build(:export, :for_claim, claim_traits: [:default_multiple_claimants]) }
+  let(:example_export) { build(:ccd_export_export, :for_claim, claim_traits: [:default_multiple_claimants]) }
   let(:fake_service) { instance_spy(EtCcdExport::ExportMultipleClaimsService, export_header: { 'id' => 'fake_id', 'case_type_id' => 'fake_case_type_id', 'case_data' => { 'multipleReference' => 'fake_reference' } }) }
   let(:fake_service_class) { class_spy(EtCcdExport::ExportMultipleClaimsService, new: fake_service) }
   let(:fake_events_service) { class_spy(EtCcdExport::ApplicationEventsService) }

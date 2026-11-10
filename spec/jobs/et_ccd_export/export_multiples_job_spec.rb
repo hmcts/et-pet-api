@@ -5,7 +5,7 @@ RSpec.describe EtCcdExport::ExportMultiplesJob do
   end
 
   let(:fake_job_hash) { { jid: 'fakejid' } }
-  let(:example_export) { build(:export, :for_claim, claim_traits: [:default_multiple_claimants]) }
+  let(:example_export) { build(:ccd_export_export, :for_claim, claim_traits: [:default_multiple_claimants]) }
   let(:fake_service) { instance_spy(EtCcdExport::ExportMultipleClaimsService, export: [{ 'case_data' => { 'ethosCaseReference' => 'exampleEthosCaseReference' } }, 1]) }
   let(:fake_service_class) { class_spy(EtCcdExport::ExportMultipleClaimsService, new: fake_service) }
   let(:fake_events_service) { class_spy(EtCcdExport::ApplicationEventsService) }

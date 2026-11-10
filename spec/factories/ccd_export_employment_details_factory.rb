@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :employment_details, class: '::EtCcdExport::Test::Json::Node' do
+  factory :ccd_export_employment_details, class: '::EtApi::Test::Json::Node' do
     trait :employed do
       net_pay { 2000 }
       end_date { nil }
