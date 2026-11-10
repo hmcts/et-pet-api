@@ -1,19 +1,13 @@
 require 'rails_helper'
-RSpec.describe "create response", type: :request do
+RSpec.describe "create response" do
   let(:response_job) { EtExporter::ExportResponseJob }
   let(:test_ccd_client) { EtCcdClient::UiClient.new.tap(&:login) }
-  let(:default_headers) do
-    {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-  end
 
   include_context 'with stubbed ccd'
 
   before do
     stub_request(:get, "http://dummy.com/examplepdf").
-      to_return(status: 200, body: File.new(File.absolute_path('../fixtures/chloe_goodwin.pdf', __dir__)), headers: { 'Content-Type' => 'application/pdf' })
+      to_return(status: 200, body: File.new(Rails.root.join('spec/fixtures/chloe_goodwin.pdf')), headers: { 'Content-Type' => 'application/pdf' })
   end
 
   def create_reformed_claim_in_ccd(office_code:, case_type_id:)
@@ -87,7 +81,7 @@ RSpec.describe "create response", type: :request do
   it 'informs the application that it is complete with the office from the case' do
     # Arrange - Produce a claim to respond to and Produce the input JSON (Note: it doesnt matter that the case_type_id is not the special 60 or 80 office)
     ccd_claim_case = create_reformed_claim_in_ccd(office_code: '60', case_type_id: 'Manchester')
-    export = build(:export, :for_response, response_attrs: { case_number: ccd_claim_case.dig('case_fields', 'ethosCaseReference') })
+    export = build(:ccd_export_export, :for_response, response_attrs: { case_number: ccd_claim_case.dig('case_fields', 'ethosCaseReference') })
 
     # Act - Call the response worker as the application would
     response_job.perform_later(export.as_json.to_json)
@@ -98,7 +92,7 @@ RSpec.describe "create response", type: :request do
   end
 
   it 'informs the application that it is complete with no office if the case is not found' do
-    export = build(:export, :for_response)
+    export = build(:ccd_export_export, :for_response)
 
     # Act - Call the response worker as the application would
     response_job.perform_later(export.as_json.to_json)
