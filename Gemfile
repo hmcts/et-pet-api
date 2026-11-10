@@ -109,8 +109,6 @@ gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v3
 
 gem "activerecord-nulldb-adapter", "~> 1.0", group: :test
 
-gem "et_ccd_export", path: "vendor/gems/et_ccd_export"
-
 # The following gems are for et_ccd_export which is in an interim state - it is to be bought into this code base
 
 gem 'et_ccd_client', git: 'https://github.com/hmcts/et-ccd-client-ruby.git', tag: 'v0.6.2'

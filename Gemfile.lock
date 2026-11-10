@@ -80,11 +80,6 @@ PATH
       pg (>= 0.18, < 2.0)
       rails (>= 5.2.0)
 
-PATH
-  remote: vendor/gems/et_ccd_export
-  specs:
-    et_ccd_export (2.0.4)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -587,7 +582,6 @@ DEPENDENCIES
   et_acas_api!
   et_azure_insights (= 0.3.2)!
   et_ccd_client!
-  et_ccd_export!
   et_exporter!
   et_fake_acas_server (~> 4.0.0)
   et_fake_ccd!
