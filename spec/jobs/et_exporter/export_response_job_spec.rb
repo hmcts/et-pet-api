@@ -18,7 +18,7 @@ RSpec.describe EtExporter::ExportResponseJob do
   end
 
   describe '#perform' do
-    let(:example_export) { build(:export, :for_response) }
+    let(:example_export) { build(:ccd_export_export, :for_response) }
 
     it 'calls the service twice if the service responds with a ::EtCcdClient::Exceptions::UnprocessableEntity' do
       # Arrange - change the fake job hash to look like sidekiq's 'job_retry' has had a previous error
@@ -37,7 +37,7 @@ RSpec.describe EtExporter::ExportResponseJob do
 
       # Assert - make sure the singles service was called
       expected_job_hash = { executions: 1, jid: job.job_id, job_id: job.job_id, queue_name: 'default' }.stringify_keys
-      expect(fake_service).to have_received(:call).with(example_export.as_json, sidekiq_job_data: expected_job_hash)
+      expect(fake_service).to have_received(:call).with(example_export.as_json.deep_stringify_keys, sidekiq_job_data: expected_job_hash)
     end
 
     it 'informs the application events service of the process starting' do
@@ -55,9 +55,9 @@ RSpec.describe EtExporter::ExportResponseJob do
       job.perform_now
 
       # Assert - Make sure the service not called
-      expected_case_type_id = example_json.dig('external_system', 'configurations').detect { |c| c['key'] == 'case_type_id' }['value']
+      expected_case_type_id = example_json.dig(:external_system, :configurations).detect { |c| c[:key] == 'case_type_id' }[:value]
       expected_job_hash = { executions: 1, jid: job.job_id, job_id: job.job_id, queue_name: 'default' }.stringify_keys
-      expect(fake_events_service).to have_received(:send_response_exported_event).with(export_id: example_export.id, sidekiq_job_data: expected_job_hash, case_id: 'fake_id', case_reference: example_json.dig('resource', 'case_number'), case_type_id: expected_case_type_id, office: 'Bristol')
+      expect(fake_events_service).to have_received(:send_response_exported_event).with(export_id: example_export.id, sidekiq_job_data: expected_job_hash, case_id: 'fake_id', case_reference: example_json.dig(:resource, :case_number), case_type_id: expected_case_type_id, office: 'Bristol')
     end
 
     it 'informs the application events service of the process finishing and nil office if not found' do
@@ -67,9 +67,9 @@ RSpec.describe EtExporter::ExportResponseJob do
       job.perform_now
 
       # Assert - Make sure the service was called
-      expected_case_type_id = example_json.dig('external_system', 'configurations').detect { |c| c['key'] == 'case_type_id' }['value']
+      expected_case_type_id = example_json.dig(:external_system, :configurations).detect { |c| c[:key] == 'case_type_id' }[:value]
       expected_job_hash = { executions: 1, jid: job.job_id, job_id: job.job_id, queue_name: 'default' }.stringify_keys
-      expect(fake_events_service).to have_received(:send_response_exported_event).with(export_id: example_export.id, sidekiq_job_data: expected_job_hash, case_id: 'fake_id', case_reference: example_json.dig('resource', 'case_number'), case_type_id: expected_case_type_id, office: nil)
+      expect(fake_events_service).to have_received(:send_response_exported_event).with(export_id: example_export.id, sidekiq_job_data: expected_job_hash, case_id: 'fake_id', case_reference: example_json.dig(:resource, :case_number), case_type_id: expected_case_type_id, office: nil)
     end
 
     it 'informs the application events service of an error' do
@@ -97,7 +97,7 @@ RSpec.describe EtExporter::ExportResponseJob do
   end
 
   describe "retries exhausted" do
-    let(:example_export) { build(:export, :for_response) }
+    let(:example_export) { build(:ccd_export_export, :for_response) }
 
     before { stub_const('ApplicationEventsService', fake_events_service) }
 
@@ -142,7 +142,7 @@ RSpec.describe EtExporter::ExportResponseJob do
   end
 
   describe 'non retryable exception handling' do
-    let(:example_export) { build(:export, :for_response) }
+    let(:example_export) { build(:ccd_export_export, :for_response) }
 
     it 'performs one execution if the exception is the special PreventJobRetrying exception' do
       exception_raised = false

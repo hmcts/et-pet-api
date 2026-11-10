@@ -20,7 +20,7 @@ RSpec.describe EtExporter::ExportClaimJob do
 
   describe "#perform" do
     context 'with single claim' do
-      let(:example_export) { build(:export, :for_claim) }
+      let(:example_export) { build(:ccd_export_export, :for_claim) }
 
       it 'informs the application events service of the process starting' do
         # Act - Call the worker expecting the special error
@@ -51,7 +51,7 @@ RSpec.describe EtExporter::ExportClaimJob do
         job.perform_now
 
         # Assert - make sure the singles service was called
-        expect(fake_singles_service).to have_received(:call).with(example_export.as_json, sidekiq_job_data: fake_job_hash)
+        expect(fake_singles_service).to have_received(:call).with(example_export.as_json.deep_stringify_keys, sidekiq_job_data: fake_job_hash)
       end
 
       it 'informs the application events service of an error' do
@@ -94,7 +94,7 @@ RSpec.describe EtExporter::ExportClaimJob do
     end
 
     context 'with multiple claims' do
-      let(:example_export) { build(:export, :for_claim, claim_traits: [:default_multiple_claimants]) }
+      let(:example_export) { build(:ccd_export_export, :for_claim, claim_traits: [:default_multiple_claimants]) }
 
       it 'informs the application events service of the process starting' do
         # Act - Call the job expecting the special error
@@ -117,7 +117,7 @@ RSpec.describe EtExporter::ExportClaimJob do
         job.perform_now
 
         # Assert - make sure the singles service was called
-        expect(fake_multiples_service).to have_received(:call).with(example_export.as_json, sidekiq_job_data: fake_job_hash)
+        expect(fake_multiples_service).to have_received(:call).with(example_export.as_json.deep_stringify_keys, sidekiq_job_data: fake_job_hash)
       end
 
       it 'informs the application events service of an error' do
@@ -137,7 +137,7 @@ RSpec.describe EtExporter::ExportClaimJob do
 
   describe "retries exhausted" do
     context 'with single claim' do
-      let(:example_export) { build(:export, :for_claim) }
+      let(:example_export) { build(:ccd_export_export, :for_claim) }
 
       it 'calls the send_claim_failed_event on the events service' do
         stub_const('MyError', Class.new(RuntimeError))
@@ -165,7 +165,7 @@ RSpec.describe EtExporter::ExportClaimJob do
 
   describe 'non retryable exception handling' do
     context 'with single claim' do
-      let(:example_export) { build(:export, :for_claim) }
+      let(:example_export) { build(:ccd_export_export, :for_claim) }
 
       it 'performs one execution if the exception is the special PreventJobRetrying exception' do
         allow(fake_singles_service).to receive(:call).

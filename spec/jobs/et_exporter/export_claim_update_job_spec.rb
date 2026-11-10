@@ -16,7 +16,7 @@ RSpec.describe EtExporter::ExportClaimUpdateJob do
   describe '#perform' do
     context 'with a single claim' do
       let(:example_export) do
-        build :export,
+        build :ccd_export_export,
               :for_claim,
               :update,
               claim_traits: [:update_only],
