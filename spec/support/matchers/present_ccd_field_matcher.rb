@@ -3,7 +3,7 @@ RSpec::Matchers.define :present_ccd_field do |ccd_field_path|
   expected_result = undefined
   @ccd_field_path = ccd_field_path
   match do |presenter|
-    result = presenter.present(build(*@from_args).as_json, event_token: 'event token')
+    result = presenter.present(build(*@from_args).as_json.deep_stringify_keys, event_token: 'event token')
     nodes = JsonPath.new("$..data.#{ccd_field_path}").on(result)
     @result = nodes.first
     @key_present = nodes.present?

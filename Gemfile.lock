@@ -288,6 +288,8 @@ GEM
     json (2.21.2)
     json-schema (4.1.1)
       addressable (>= 2.8)
+    jsonpath (1.1.5)
+      multi_json
     jwt (3.2.0)
       base64
     language_server-protocol (3.17.0.5)
@@ -597,6 +599,7 @@ DEPENDENCIES
   httparty (~> 0.20)
   ice_nine (~> 0.11.2)
   jbuilder (~> 2.10)
+  jsonpath (~> 1.1)
   libreconv (~> 0.7)
   listen (~> 3.4)
   notifications-ruby-client (~> 6.0)

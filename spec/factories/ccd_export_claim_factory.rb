@@ -63,7 +63,7 @@ FactoryBot.define do
       claim.primary_claimant = build(:ccd_export_claimant, *evaluator.primary_claimant_traits, **evaluator.primary_claimant_attrs) if claim.primary_claimant.blank? && evaluator.number_of_claimants && evaluator.number_of_claimants > 0
       claim.secondary_claimants.concat build_list(:ccd_export_claimant, evaluator.number_of_claimants - 1, *evaluator.secondary_claimant_traits) unless evaluator.number_of_claimants.nil? || evaluator.number_of_claimants < 1
       claim.primary_respondent = build(:ccd_export_respondent, *evaluator.primary_respondent_traits, **evaluator.primary_respondent_attrs) if claim.primary_respondent.blank? && evaluator.number_of_respondents > 0
-      claim.secondary_respondents.concat build_list(:respondent, evaluator.number_of_respondents - 1, *evaluator.secondary_respondent_traits, **evaluator.secondary_respondent_attrs) unless evaluator.number_of_respondents < 1
+      claim.secondary_respondents.concat build_list(:ccd_export_respondent, evaluator.number_of_respondents - 1, *evaluator.secondary_respondent_traits, **evaluator.secondary_respondent_attrs) unless evaluator.number_of_respondents < 1
       claim.claimant_count         = evaluator.number_of_claimants unless evaluator.number_of_claimants.nil?
       claim.primary_representative = build(:ccd_export_representative, *evaluator.primary_representative_traits, **evaluator.primary_representative_attrs) unless evaluator.primary_representative_traits.nil?
       claim.employment_details     = build(:ccd_export_employment_details, *evaluator.employment_details_traits, **evaluator.employment_details_attrs) unless evaluator.employment_details_traits.nil?
