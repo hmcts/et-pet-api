@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'csv'
-require 'factory_bot'
 last_unique_reference = UniqueReference.last
 if last_unique_reference.nil? || last_unique_reference.id < 20000000
   ActiveRecord::Base.connection.execute "ALTER SEQUENCE unique_references_id_seq RESTART WITH 20000001;"
@@ -31,8 +30,8 @@ ccd_manc.update! enabled: true,
   export_responses: true,
   export_queue: 'external_system_ccd',
   office_codes: [24], configurations: [
-     FactoryBot.build(:external_system_configuration, key: "case_type_id", value: 'Manchester'),
-     FactoryBot.build(:external_system_configuration, key: 'multiples_case_type_id', value: 'Manchester_Multiples')
+     ExternalSystemConfiguration.new(key: "case_type_id", value: 'Manchester'),
+     ExternalSystemConfiguration.new(key: 'multiples_case_type_id', value: 'Manchester_Multiples')
    ]
 
 ccd_glasgow = ExternalSystem.find_or_initialize_by name: 'CCD Glasgow', reference: 'ccd_glasgow'
@@ -57,8 +56,8 @@ ccd_bristol.update! enabled: true,
                     export_responses: true,
                     export_queue: 'external_system_ccd',
                     office_codes: [14], configurations: [
-    FactoryBot.build(:external_system_configuration, key: "case_type_id", value: 'Bristol'),
-    FactoryBot.build(:external_system_configuration, key: 'multiples_case_type_id', value: 'Bristol_Multiples')
+    ExternalSystemConfiguration.new(key: "case_type_id", value: 'Bristol'),
+    ExternalSystemConfiguration.new(key: 'multiples_case_type_id', value: 'Bristol_Multiples')
   ]
 
 ExternalSystemConfiguration.find_or_create_by external_system_id: ccd_manc.id,
