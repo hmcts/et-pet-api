@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'csv'
+require 'factory_bot'
 last_unique_reference = UniqueReference.last
 if last_unique_reference.nil? || last_unique_reference.id < 20000000
   ActiveRecord::Base.connection.execute "ALTER SEQUENCE unique_references_id_seq RESTART WITH 20000001;"
