@@ -3,6 +3,7 @@ module Api
     class BlobsController < ::ApplicationController
       include ActiveStorage::SetBlob
       include ActiveStorage::Streaming
+
       before_action :reject_not_uploaded, only: [:show]
 
       def show

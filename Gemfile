@@ -92,6 +92,8 @@ group :test do
   gem 'factory_bot', '~> 6.1'
   gem 'faker', '~> 3.1'
   gem 'gov_fake_notify', '~> 3.0'
+  gem 'jsonpath', '~> 1.1'
+  gem 'ice_nine', '~> 0.11.2'
   gem 'rspec-eventually', '~> 0.2.2'
   gem "selenium-webdriver", "~> 4.10"
   gem 'super_diff', '~> 0.10'
@@ -106,8 +108,6 @@ gem 'et_acas_api', path: 'vendor/gems/et_acas_api'
 gem 'et_exporter', git: 'https://github.com/hmcts/et_exporter_gem.git', tag: 'v3.0.5'
 
 gem "activerecord-nulldb-adapter", "~> 1.0", group: :test
-
-gem "et_ccd_export", git: 'https://github.com/hmcts/et-pet-ccd-export.git', tag: 'v2.0.4'
 
 # The following gems are for et_ccd_export which is in an interim state - it is to be bought into this code base
 

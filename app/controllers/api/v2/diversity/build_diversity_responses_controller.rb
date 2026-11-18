@@ -12,7 +12,7 @@ module Api
           p = build_diversity_response_params.merge(command: 'CreateDiversityResponse').to_h.symbolize_keys
           root_object = ::DiversityResponse.new
           result = CommandService.dispatch root_object: root_object, **p
-          render locals: { result: result }, status: (result.valid? ? :created : :unprocessable_entity)
+          render locals: { result: result }, status: (result.valid? ? :created : :unprocessable_content)
           self.cached_root_object = root_object
         end
 

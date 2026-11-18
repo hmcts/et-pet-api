@@ -10,7 +10,7 @@ module Api
           CommandService.dispatch command: command, root_object: root_object
           render locals: { command: command, root_object: root_object }, status: :ok
         else
-          render locals: { command: command }, status: :unprocessable_entity, template: 'api/v2/shared/command_errors'
+          render locals: { command: command }, status: :unprocessable_content, template: 'api/v2/shared/command_errors'
         end
       end
 

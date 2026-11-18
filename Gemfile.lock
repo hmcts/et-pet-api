@@ -48,13 +48,6 @@ GIT
       rails (>= 7.0.0)
 
 GIT
-  remote: https://github.com/hmcts/et-pet-ccd-export.git
-  revision: 9bd07d4ae7a61b499ef1c66d4f15d3265d8470ed
-  tag: v2.0.4
-  specs:
-    et_ccd_export (2.0.4)
-
-GIT
   remote: https://github.com/hmcts/et_exporter_gem.git
   revision: 13b728e9504791f932437f708b83bb39d859a2a4
   tag: v3.0.5
@@ -277,6 +270,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
+    ice_nine (0.11.2)
     io-console (0.9.5)
     irb (1.19.0)
       pp (>= 0.6.0)
@@ -289,6 +283,8 @@ GEM
     json (2.21.2)
     json-schema (4.1.1)
       addressable (>= 2.8)
+    jsonpath (1.1.5)
+      multi_json
     jwt (3.2.0)
       base64
     language_server-protocol (3.17.0.5)
@@ -365,7 +361,7 @@ GEM
     prism (1.9.0)
     pstore (0.2.1)
     public_suffix (7.0.5)
-    puma (8.0.2)
+    puma (8.1.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
@@ -586,7 +582,6 @@ DEPENDENCIES
   et_acas_api!
   et_azure_insights (= 0.3.2)!
   et_ccd_client!
-  et_ccd_export!
   et_exporter!
   et_fake_acas_server (~> 4.0.0)
   et_fake_ccd!
@@ -596,7 +591,9 @@ DEPENDENCIES
   good_job (~> 4.19.0)
   gov_fake_notify (~> 3.0)
   httparty (~> 0.20)
+  ice_nine (~> 0.11.2)
   jbuilder (~> 2.10)
+  jsonpath (~> 1.1)
   libreconv (~> 0.7)
   listen (~> 3.4)
   notifications-ruby-client (~> 6.0)

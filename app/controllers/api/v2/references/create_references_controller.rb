@@ -10,7 +10,7 @@ module Api
           root_object = {}
           result = CommandService.dispatch root_object: root_object, data: {}, **create_params.to_h.symbolize_keys
           render locals: { result: result, data: root_object },
-                 status: (result.valid? ? :created : :unprocessable_entity)
+                 status: (result.valid? ? :created : :unprocessable_content)
           self.cached_root_object = root_object
         end
 

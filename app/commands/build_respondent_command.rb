@@ -26,7 +26,6 @@ class BuildRespondentCommand < BaseCommand
   validates :address_attributes, presence: true, address: true
   validates :work_address_attributes, address: { allow_empty: true }
 
-
   validates :disability_information, length: { maximum: 350 }, presence: true, if: :disabled?
   validates :disability, inclusion: { in: ['true', 'false', 'not_applicable', '', nil] }
 
@@ -36,7 +35,7 @@ class BuildRespondentCommand < BaseCommand
   validates :organisation_employ_gb, numericality: true, allow_blank: true
   validates :organisation_more_than_one_site, inclusion: { in: [true, false, '', nil] }
   validates :employment_at_site_number, numericality: true, if: :organisation_more_than_one_site
-  validates :type_of_employer, inclusion: { in: ['Individual', 'Limited company', 'Partnership', 'Unincorporated association (such as a sports club)', 'Other', '', nil]}
+  validates :type_of_employer, inclusion: { in: ['Individual', 'Limited company', 'Partnership', 'Unincorporated association (such as a sports club)', 'Other', '', nil] }
   validates :contact_preference, inclusion: { in: ['email', 'post', '', nil] }
 
   def apply(root_object, **_args)

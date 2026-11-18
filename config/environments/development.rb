@@ -98,4 +98,6 @@ Rails.application.configure do
   config.hosts.clear
 
   config.azure_insights.enable = false
+
+  config.ccd_disallowed_file_extensions = []
 end
