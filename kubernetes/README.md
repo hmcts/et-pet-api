@@ -24,21 +24,24 @@ Use `up --build` to build the current checkout instead of using an existing
 
 The health endpoint is <https://api.k8s.orb.local/health>. Separate web and
 GoodJob deployments use the application's existing `run.sh` and
-`run_queue_worker.sh`, both with `RAILS_ENV=production`. Web startup uses
-`DOCKER_STATE=create` to create, migrate and seed the primary and queue databases.
-The worker does not perform database setup. Production chart values are unchanged.
+`run_queue_worker.sh`, both with `RAILS_ENV=production`. Every `up` first runs a
+temporary `et-local-api-db-bootstrap` Job using the rendered web Deployment's
+image and configuration. It creates the databases, runs schema/data migrations,
+and seeds the primary database. Setup commands stop on failure, and Helm only
+deploys after the Job succeeds. Web startup uses `DOCKER_STATE=migrate`, matching
+production. The worker does not perform database setup. Charts are unchanged.
 
-On a completely empty database, the worker can start before migrations finish
-and cache an incomplete schema. This occurred during initial setup. Once web
-startup has completed, restarting the worker cleared the error:
+The bootstrap Job completes before either Deployment starts on a fresh install,
+so the worker sees a migrated database. Job logs are printed by `up`; the Job is
+retained for inspection for one day, or until the next `up` replaces it:
 
 ```sh
-kubectl --context orbstack -n et-full-system rollout restart deployment/et-local-api-queue-worker
-kubectl --context orbstack -n et-full-system rollout status deployment/et-local-api-queue-worker
+kubectl --context orbstack -n et-full-system logs job/et-local-api-db-bootstrap
+kubectl --context orbstack -n et-full-system describe job et-local-api-db-bootstrap
 ```
 
-A permanent startup coordination approach remains to be agreed; a healthy probe
-alone does not prove that the worker has successfully initialized its schema.
+Setup runs on every local `up`, so seeds must remain safe to rerun. This does not
+stop existing pods during an upgrade; migration compatibility is still required.
 
 Blob traffic uses the internal Azurite Service. Rails upload/download/delete
 was verified against both configured containers. The parent initializes the

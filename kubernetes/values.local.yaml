@@ -20,7 +20,7 @@ base: &application
   pdb:
     enabled: false
   environment: &environment
-    DOCKER_STATE: create
+    DOCKER_STATE: migrate
     SECRET_KEY_BASE: local-kubernetes-only-not-a-real-secret-0123456789abcdef0123456789abcdef
     DEVISE_SECRET_KEY: local-kubernetes-only-not-a-real-secret-0123456789abcdef0123456789abcdef
     DB_HOST: postgres.et-full-system-infra.svc.cluster.local
